@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | UniBazaar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --light-bg: #f5f7fa;
+      --text-dark: #222;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: var(--light-bg);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 12px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      margin: 0 14px;
+      transition: color 0.2s;
+    }
+
+    .navbar a:hover {
+      color: var(--primary);
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Checkout container */
+    .checkout-container {
+      width: 90%;
+      max-width: 850px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .checkout-header {
+      background: var(--primary);
+      color: white;
+      padding: 18px;
+      font-size: 22px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .checkout-content {
+      padding: 25px 30px;
+    }
+
+    h3 {
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Order Summary */
+    .summary {
+      background: #f8f9ff;
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 25px;
+    }
+
+    .summary ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .summary li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      color: #555;
+      font-size: 15px;
+    }
+
+    .summary li:last-child {
+      border-bottom: none;
+    }
+
+    .summary strong {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      font-size: 17px;
+      color: var(--text-dark);
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    input, select, textarea {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    /* Button */
+    .pay-btn {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+
+    .pay-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px 20px;
+      }
+
+      .checkout-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index2.html" class="logo">UniBazaar</a>
+    <div>
+      <a href="index2.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="events.html">Events</a>
+      <a href="rentals.html">Rentals</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <div class="checkout-container">
+    <div class="checkout-header">
+      Checkout
+    </div>
+
+    <div class="checkout-content">
+      <div class="summary">
+        <h3>Order Summary</h3>
+        <ul id="orderSummary"></ul>
+        <strong id="totalAmount"></strong>
+      </div>
+
+      <form id="checkoutForm">
+        <input type="text" id="fullname" placeholder="Full Name" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <textarea id="address" placeholder="Delivery Address" required></textarea>
+        <select id="payment" required>
+          <option value="">Select Payment Method</option>
+          <option value="mpesa">M-Pesa</option>
+          <option value="card">Credit/Debit Card</option>
+          <option value="cash">Cash on Delivery</option>
+        </select>
+        <button type="submit" class="pay-btn">Complete Purchase</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Load cart items into checkout summary
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const summaryList = document.getElementById('orderSummary');
+      const totalDisplay = document.getElementById('totalAmount');
+
+      if (cart.length === 0) {
+        summaryList.innerHTML = "<li>Your cart is empty.</li>";
+        totalDisplay.textContent = '';
+        return;
+      }
+
+      let total = 0;
+      summaryList.innerHTML = '';
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        const li = document.createElement('li');
+        li.textContent = `${item.name} — KES ${itemTotal.toLocaleString()}`;
+        summaryList.appendChild(li);
+      });
+
+      totalDisplay.textContent = `Total: KES ${total.toLocaleString()}`;
+    });
+
+    // Handle checkout submission
+    document.getElementById('checkoutForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert("✅ Purchase completed successfully! Thank you for shopping at UniBazaar.");
+      localStorage.removeItem('cart'); // clear cart
+      window.location.href = 'index2.html'; // go back to home
+    });
+  </script>
+
+</body>
+</html>

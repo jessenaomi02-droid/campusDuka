@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Event Bookings - UniBazaar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    img {
+      width: 80px;
+      border-radius: 6px;
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .add-btn {
+      background: orange;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .checkout-btn {
+      display: inline-block;
+      background: green;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .total {
+      text-align: right;
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+    .empty {
+      text-align: center;
+      color: gray;
+      font-size: 18px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Your Event Bookings</h2>
+
+<table id="eventCartTable">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Event</th>
+      <th>Venue</th>
+      <th>Date</th>
+      <th>Price (KES)</th>
+      <th>Qty</th>
+      <th>Total (KES)</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div class="total" id="eventCartTotal">Total: KES 0</div>
+<a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
+<p class="empty" id="emptyEventMsg" style="display:none;">No events booked yet 🎫</p>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+  const tableBody = document.querySelector('#eventCartTable tbody');
+  const totalDisplay = document.getElementById('eventCartTotal');
+  const emptyMsg = document.getElementById('emptyEventMsg');
+  tableBody.innerHTML = '';
+
+  if (eventCart.length === 0) {
+    emptyMsg.style.display = 'block';
+    totalDisplay.style.display = 'none';
+    return;
+  }
+
+  let grandTotal = 0;
+
+  eventCart.forEach((event, index) => {
+    const eventTotal = event.price * event.quantity;
+    grandTotal += eventTotal;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><img src="${event.image || 'placeholder.png'}" alt="${event.name}" /></td>
+      <td>${event.name}</td>
+      <td>${event.venue}</td>
+      <td>${event.date}</td>
+      <td>${event.price}</td>
+      <td>${event.quantity}</td>
+      <td>${eventTotal}</td>
+      <td>
+        <button class="delete-btn" data-index="${index}">Delete</button>
+        <button class="add-btn" data-index="${index}">Add Similar</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  totalDisplay.textContent = `Total: KES ${grandTotal.toLocaleString()}`;
+
+  // Delete item from event cart
+  document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const index = this.getAttribute('data-index');
+      eventCart.splice(index, 1);
+      localStorage.setItem('eventCart', JSON.stringify(eventCart));
+      location.reload();
+    });
+  });
+
+  // Add similar event
+  document.querySelectorAll('.add-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const index = this.getAttribute('data-index');
+      const event = eventCart[index];
+      eventCart.push({ ...event });
+      localStorage.setItem('eventCart', JSON.stringify(eventCart));
+      location.reload();
+    });
+  });
+});
+</script>
+
+</body>
+</html>
