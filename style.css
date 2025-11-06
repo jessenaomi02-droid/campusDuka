@@ -10,6 +10,8 @@
    
 
 }
+.nav-action{
+   margin:50px;
 form{
    margin:0 2rem;
 }
@@ -537,3 +539,4 @@ product-grid{
   animation: fadeInUp 1s ease forwards;
   animation-delay: 0.1s;
 }
+
