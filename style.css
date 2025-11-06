@@ -109,17 +109,17 @@ body {
 }
 
 .home::after {
-  background-image: url("images/item2.jpg");
+  background-image: url("pict.png.png");
   animation-delay: 8s;
 }
 
 .home::nth-child(1) {
-  background-image: url("images/item3.jpg");
+  background-image: url("pict.png.png");
   animation-delay: 16s;
 }
 
 .home::nth-child(2) {
-  background-image: url("images/item4.jpg");
+  background-image: url("pict.png.png");
   animation-delay: 24s;
 }
 
@@ -297,6 +297,7 @@ body {
     font-size: 1.5rem;
   }
 }
+
 
 
 
