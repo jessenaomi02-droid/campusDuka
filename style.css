@@ -71,7 +71,7 @@ body {
   margin-left: 15px;
 }
 
-/* --- HOME SECTION (Fullscreen background with fade) --- */
+/* --- HOME SECTION --- */
 .home {
   position: relative;
   min-height: calc(100vh - 80px);
@@ -80,51 +80,45 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: black;
+  color: white;
   overflow: hidden;
 }
 
-/* Layered images for fading slideshow */
-.home::before,
-.home::after,
-.home::nth-child(1),
-.home::nth-child(2),
-.home::nth-child(3) {
-  content: "";
+/* --- BACKGROUND SLIDESHOW --- */
+.slideshow {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.slideshow img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
-  animation: fadeSlideshow 32s infinite;
-  transition: opacity 1.5s ease-in-out;
+  animation: fadeSlide 32s infinite;
 }
 
-/* 4 images, each appearing in sequence */
+.slideshow img:nth-child(1) { animation-delay: 0s; }
+.slideshow img:nth-child(2) { animation-delay: 8s; }
+.slideshow img:nth-child(3) { animation-delay: 16s; }
+.slideshow img:nth-child(4) { animation-delay: 24s; }
+
+@keyframes fadeSlide {
+  0% { opacity: 1; }
+  20% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* --- DARK OVERLAY --- */
 .home::before {
-  background-image: url("pict.png.png");
-  animation-delay: 0s;
-}
-
-.home::after {
-  background-image: url("pict.png.png");
-  animation-delay: 8s;
-}
-
-.home::nth-child(1) {
-  background-image: url("pict.png.png");
-  animation-delay: 16s;
-}
-
-.home::nth-child(2) {
-  background-image: url("pict.png.png");
-  animation-delay: 24s;
-}
-
-/* dark overlay for readability */
-.home .overlay {
+  content: "";
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -132,15 +126,16 @@ body {
   z-index: 1;
 }
 
-/* make content and search appear above overlay */
+/* --- CONTENT AND SEARCH ABOVE OVERLAY --- */
 .home .content,
 .home .nav-actions {
   position: relative;
   z-index: 2;
 }
 
-/* --- SEARCH AREA (centered perfectly) --- */
+/* --- SEARCH AREA --- */
 .home .nav-actions {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -167,12 +162,11 @@ body {
   border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s;
 }
 
 .home .btn:hover {
   background: #ffd700;
-  transform: scale(1.05);
 }
 
 .home button a {
@@ -213,7 +207,7 @@ body {
 
 .home .content p {
   font-size: 1.1rem;
-  color: black;
+  color: #f0f0f0;
   margin-bottom: 25px;
   max-width: 700px;
 }
@@ -231,12 +225,6 @@ body {
 
 .button:hover {
   background-color: #0056b3;
-}
-
-/* --- FADE SLIDESHOW ANIMATION --- */
-@keyframes fadeSlideshow {
-  0%, 20% { opacity: 1; }
-  25%, 100% { opacity: 0; }
 }
 
 /* --- RESPONSIVE DESIGN --- */
@@ -297,7 +285,4 @@ body {
     font-size: 1.5rem;
   }
 }
-
-
-
 
