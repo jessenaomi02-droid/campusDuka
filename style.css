@@ -213,7 +213,7 @@ body {
 
 .home .content p {
   font-size: 1.1rem;
-  color: #f0f0f0;
+  color: black;
   margin-bottom: 25px;
   max-width: 700px;
 }
@@ -297,5 +297,6 @@ body {
     font-size: 1.5rem;
   }
 }
+
 
 
