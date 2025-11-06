@@ -80,7 +80,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
+  color: black;
   overflow: hidden;
 }
 
@@ -297,4 +297,5 @@ body {
     font-size: 1.5rem;
   }
 }
+
 
