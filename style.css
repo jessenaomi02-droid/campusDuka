@@ -15,7 +15,7 @@ body {
 
 /* --- NAVBAR --- */
 .navbar {
-  background-color: #007bff;
+  background-color: blue;
   padding: 15px 20px;
   display: flex;
   justify-content: center;
@@ -288,3 +288,4 @@ body {
     font-size: 1.5rem;
   }
 }
+
