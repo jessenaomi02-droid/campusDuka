@@ -10,6 +10,7 @@ body {
   line-height: 1.6;
   background: #f8f9fa;
   color: #333;
+  overflow-x: hidden; /* Prevents horizontal scroll if 100vw causes overflow */
 }
 
 /* --- NAVBAR --- */
@@ -89,7 +90,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw; /* Full screen width */
   height: 100%;
   z-index: 0;
   overflow: hidden;
@@ -97,7 +98,9 @@ body {
 
 .slideshow img {
   position: absolute;
-  width: 100%;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ensure full width */
   height: 100%;
   object-fit: cover;
   opacity: 0;
@@ -285,4 +288,3 @@ body {
     font-size: 1.5rem;
   }
 }
-
