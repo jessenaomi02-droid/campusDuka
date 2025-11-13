@@ -8,13 +8,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* General */
+    /* Theme colors */
+    :root {
+      --primary: #87CEEB;   /* Sky Blue */
+      --accent: #FFD700;    /* Yellow */
+      --dark: #000000;      /* Black */
+      --light: #FFFFFF;     /* White */
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
-      color: #333;
+      background: var(--light);
+      color: var(--dark);
     }
 
     a {
@@ -24,7 +31,7 @@
 
     /* Navbar */
     .navbar {
-      background: #0a74da;
+      background: var(--primary);
       padding: 10px 20px;
       position: sticky;
       top: 0;
@@ -36,7 +43,7 @@
     }
 
     .logo {
-      color: #fff;
+      color: var(--dark);
       font-size: 24px;
       font-weight: bold;
     }
@@ -50,34 +57,34 @@
     }
 
     .nav-links li a {
-      color: #fff;
+      color: var(--dark);
       font-weight: 500;
       transition: 0.3s;
     }
 
     .nav-links li a:hover {
-      text-decoration: underline;
+      color: var(--accent);
     }
 
     .menu-icon {
       display: none;
       font-size: 22px;
-      color: #fff;
+      color: var(--dark);
       cursor: pointer;
     }
 
     .cart-link {
       position: relative;
       font-size: 20px;
-      color: #fff;
+      color: var(--dark);
     }
 
     #cart-count {
       position: absolute;
       top: -8px;
       right: -12px;
-      background: red;
-      color: #fff;
+      background: var(--accent);
+      color: var(--dark);
       border-radius: 50%;
       padding: 2px 6px;
       font-size: 12px;
@@ -96,25 +103,29 @@
     .nav-actions input {
       padding: 6px;
       border-radius: 4px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--dark);
       flex: 1 1 150px;
     }
 
     .nav-actions .btn {
-      background: #0a74da;
-      color: #fff;
-      border: none;
+      background: var(--primary);
+      color: var(--dark);
+      border: 2px solid var(--dark);
       padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
     }
 
     .nav-actions .btn:hover {
-      background: #085cb4;
+      background: var(--accent);
+      color: var(--dark);
+      border-color: var(--dark);
     }
 
     .nav-actions button a {
-      color: #fff;
+      color: var(--dark);
     }
 
     /* Home section */
@@ -125,7 +136,7 @@
       align-items: center;
       padding: 20px;
       gap: 20px;
-      background: #eaf2ff;
+      background: var(--light);
     }
 
     .home .content {
@@ -135,7 +146,7 @@
 
     .home h3 {
       font-size: 28px;
-      color: #0a74da;
+      color: var(--primary);
       margin-bottom: 10px;
     }
 
@@ -143,7 +154,7 @@
       display: block;
       margin-bottom: 15px;
       font-size: 18px;
-      color: #333;
+      color: var(--dark);
     }
 
     .home p {
@@ -155,15 +166,17 @@
     .home .button {
       display: inline-block;
       margin-right: 10px;
-      background: #0a74da;
-      color: #fff;
+      background: var(--primary);
+      color: var(--dark);
       padding: 8px 16px;
       border-radius: 5px;
       font-weight: 500;
+      transition: 0.3s;
     }
 
     .home .button:hover {
-      background: #085cb4;
+      background: var(--accent);
+      color: var(--dark);
     }
 
     /* Slideshow */
@@ -182,8 +195,8 @@
     /* Footer */
     footer {
       text-align: center;
-      background: #0a74da;
-      color: #fff;
+      background: var(--primary);
+      color: var(--dark);
       padding: 15px;
       margin-top: 20px;
     }
@@ -194,7 +207,7 @@
         flex-direction: column;
         display: none;
         width: 100%;
-        background: #0a74da;
+        background: var(--primary);
         margin-top: 10px;
       }
 
@@ -304,4 +317,3 @@
   </script>
 </body>
 </html>
-
