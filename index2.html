@@ -2,14 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CampusDuka</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
-    /* ===== RESET ===== */
     * {
       margin: 0;
       padding: 0;
@@ -24,12 +22,12 @@
 
     /* ===== NAVBAR ===== */
     .navbar {
-      background: #ffffff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      background: #0077ff;
       padding: 15px 40px;
       position: sticky;
       top: 0;
       z-index: 100;
+      color: white;
     }
 
     .navdiv {
@@ -42,24 +40,28 @@
     .logo {
       font-size: 24px;
       font-weight: 700;
-      color: #0077ff;
+      color: white;
       text-decoration: none;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 20px;
+      gap: 15px;
     }
 
     .nav-links li a {
       text-decoration: none;
-      color: #333;
-      font-weight: 500;
+      color: white;
+      font-weight: 600;
+      padding: 5px 10px;
+      border: 1px solid white;
+      border-radius: 5px;
       transition: 0.3s;
     }
 
     .nav-links li a:hover {
+      background: white;
       color: #0077ff;
     }
 
@@ -67,13 +69,12 @@
       display: none;
       font-size: 24px;
       cursor: pointer;
-      color: #0077ff;
+      color: white;
     }
 
     .cart-link {
       position: relative;
-      text-decoration: none;
-      color: #333;
+      color: white;
       font-size: 20px;
     }
 
@@ -88,11 +89,45 @@
       right: -12px;
     }
 
+    /* ===== SEARCH BAR BELOW NAVBAR ===== */
+    .search-bar-container {
+      width: 100%;
+      background: #e0f0ff;
+      padding: 15px 5%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar-container input[type="text"] {
+      width: 60%;
+      padding: 8px 12px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid #0077ff;
+      outline: none;
+    }
+
+    .search-bar-container button {
+      padding: 8px 15px;
+      border: 1px solid #0077ff;
+      border-left: none;
+      border-radius: 0 5px 5px 0;
+      background: #0077ff;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .search-bar-container button:hover {
+      background: #005fcc;
+      border-color: #005fcc;
+    }
+
     /* ===== HERO SECTION ===== */
     .hero {
       position: relative;
       width: 100%;
-      height: 80vh;
+      height: 70vh;
       background-size: cover;
       background-position: center;
       display: flex;
@@ -102,6 +137,7 @@
       text-align: center;
       color: white;
       transition: background-image 1s ease-in-out;
+      padding: 0 20px;
     }
 
     .hero h1 {
@@ -117,10 +153,15 @@
       text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     }
 
-    .button {
-      display: inline-block;
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero .button {
       padding: 10px 25px;
-      margin: 5px;
       border-radius: 5px;
       background-color: #0077ff;
       color: white;
@@ -129,8 +170,28 @@
       transition: 0.3s;
     }
 
-    .button:hover {
+    .hero .button:hover {
       background-color: #005fcc;
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    .about {
+      background: white;
+      padding: 50px 5%;
+      text-align: center;
+    }
+
+    .about h2 {
+      color: #0077ff;
+      margin-bottom: 15px;
+    }
+
+    .about p {
+      font-size: 1rem;
+      max-width: 800px;
+      margin: auto;
+      line-height: 1.6;
+      color: #333;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -140,12 +201,11 @@
         flex-direction: column;
         gap: 10px;
         width: 100%;
-        background: white;
+        background: #0077ff;
         position: absolute;
         top: 60px;
         left: 0;
         padding: 10px 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       }
 
       .nav-links.active {
@@ -155,8 +215,11 @@
       .menu-icon {
         display: block;
       }
-    }
 
+      .search-bar-container input[type="text"] {
+        width: 70%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -185,12 +248,26 @@
     </div>
   </nav>
 
+  <!-- SEARCH BAR BELOW NAVBAR -->
+  <div class="search-bar-container">
+    <input type="text" placeholder="Search for products...">
+    <button>Search</button>
+  </div>
+
   <!-- HERO SECTION -->
   <section class="hero" id="hero">
     <h1>Buy Smart, Stay Connected</h1>
     <p>Your trusted student marketplace. Discover affordable items, book events, and shop securely.</p>
-    <a href="products.html" class="button">Shop Now</a>
-    <a href="events.html" class="button">Upcoming Events</a>
+    <div class="hero-buttons">
+      <a href="products.html" class="button">Shop Now</a>
+      <a href="events.html" class="button">Upcoming Events</a>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about">
+    <h2>About CampusDuka</h2>
+    <p>CampusDuka is a trusted student marketplace connecting students with affordable products, study materials, electronics, fast foods, and events. Our goal is to make campus life convenient and cost-effective while ensuring safe and secure transactions through our platform.</p>
   </section>
 
   <script>
@@ -203,22 +280,15 @@
 
     // Hero Background Slideshow
     const hero = document.getElementById("hero");
-    const images = [
-      'pict1.png', 
-      'pict2.png', 
-      'pict3.png', 
-      'pict4.png'
-    ]; // Replace with your actual image paths
-
+    const images = ['pict1.png', 'pict2.png', 'pict3.png', 'pict4.png']; // Replace with your images
     let index = 0;
     function changeBackground() {
       hero.style.backgroundImage = `url(${images[index]})`;
       index = (index + 1) % images.length;
     }
-
-    // Start slideshow
     changeBackground();
-    setInterval(changeBackground, 5000); // change every 5 seconds
+    setInterval(changeBackground, 5000);
   </script>
 </body>
 </html>
+
