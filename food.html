@@ -3,292 +3,301 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uniBazzar</title>
+  <title>uniBazaar | Food</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
+    body {
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: #ffffff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      padding: 15px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navdiv {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0077ff;
+      text-decoration: none;
+    }
+
+    .navdiv ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .navdiv ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navdiv ul li a:hover {
+      color: #0077ff;
+    }
+
+    .search-bar {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      width: 200px;
+      transition: 0.3s;
+    }
+
+    .search-bar:focus {
+      border-color: #0077ff;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #005ecc;
+    }
+
+    button a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .cart-link {
+      margin-left: 15px;
+      color: #0077ff;
+    }
+
+    /* ===== HERO SEARCH SECTION ===== */
+    .search {
+      text-align: center;
+      padding: 40px 10px;
+      background: linear-gradient(90deg, #0077ff, #00b4d8);
+      color: white;
+    }
+
+    .search input {
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      width: 250px;
+      margin-top: 15px;
+    }
+
+    .look {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: none;
+      background: #ffca28;
+      color: #333;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .look:hover {
+      background: #ffc107;
+    }
+
+    /* ===== PRODUCT GRID ===== */
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .product-card h3 {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .product-card p {
+      color: #0077ff;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .bn {
+      padding: 8px 15px;
+      margin: 5px;
+      border-radius: 20px;
+      border: none;
+      background: #0077ff;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .bn:hover {
+      background: #005ecc;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0077ff;
+      color: white;
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #ffca28;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
+
 <body>
-  
-  
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="navdiv">
-      <div> <a href="index2.html" class="logo">uniBazaar</a></div>
+      <a href="index2.html" class="logo">uniBazaar</a>
       <ul>
-        <li> <a href="index2.html">Home</a></li>
-        <li> <a href="products.html">Products</a></li>
-        <li> <a href="food.html">Fast Foods</a></li>
-        <li> <a href="events.html">Events</a></li>
-        
-        <li> <a href="contact.html">Contact us</a></li>
-</ul>
-      <input type="text" placeholder="Search for products..." class="search-bar">
-      <button type="submit" class="btn">Search</button>
+        <li><a href="index2.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="food.html">Fast Foods</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
 
-      <button> <a href="signin.html">Sign In</a></button>
-      
-      <a href="cart.html" class="cart-link" style="position:relative; text-decoration:none; color:black; font-size:20px;">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="cart-count"
-        style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">
-    0
-  </span>
-</a>
-
-
+      <div>
+        <input type="text" placeholder="Search for products..." class="search-bar">
+        <button class="btn">Search</button>
+        <button class="btn"><a href="signin.html">Sign In</a></button>
+        <a href="cart.html" class="cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">0</span>
+        </a>
+      </div>
     </div>
   </nav>
 
-
-  
-
+  <!-- Hero Search Section -->
   <div class="search">
-  <h2>Get Food!</h2>
-  <input type="text" placeholder="search for food..." > </input>
-  <button href="#" class="look">search</button>
-<div class="navigate">
-<nav class="navbar">
-    <div class="navdiv">
-      
-      <ul>
-        <li> <a href="electronics.html">Elecronics</a></li>
-        <li> <a href="clothings.html">Clothings</a></li>
-        <li> <a href="homeappliances.html">Home Decors</a></li>
-        <li> <a href="studymaterials.html">Study Materials</a></li>
-        <li> <a href="beauty.html">Beauty&Personal Care</a></li>
-        
-      </ul>
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-
+    <h2>🍔 Find Your Favorite Meal!</h2>
+    <input type="text" placeholder="Search for food...">
+    <button class="look">Search</button>
   </div>
 
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Laptop</h3>
-      <p class="text-blue-600 font-bold">KES 1</p>
-      
-      <button href="#" class="bn">view</button>
-      <button onclick="addToCart('Laptop', 1, 'pi.png.jfif')" class="bn">Add to Cart</button>
-      
-</div>
+  <!-- Product Grid -->
+  <div class="product-container">
+    <div class="product-card">
+      <img src="pi.png.jfif" alt="Burger">
+      <h3>Delicious Burger</h3>
+      <p>KES 250</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Burger', 250, 'pi.png.jfif')" class="bn">Add to Cart</button>
+    </div>
 
+    <div class="product-card">
+      <img src="lap.png.jfif" alt="Pizza">
+      <h3>Cheese Pizza</h3>
+      <p>KES 400</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Pizza', 400, 'lap.png.jfif')" class="bn">Add to Cart</button>
+    </div>
 
+    <div class="product-card">
+      <img src="lap2.png.jfif" alt="Juice">
+      <h3>Fresh Juice</h3>
+      <p>KES 100</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Juice', 100, 'lap2.png.jfif')" class="bn">Add to Cart</button>
+    </div>
 
+    <div class="product-card">
+      <img src="pi.png.jfif" alt="Fries">
+      <h3>Crispy Fries</h3>
+      <p>KES 150</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Fries', 150, 'pi.png.jfif')" class="bn">Add to Cart</button>
+    </div>
+  </div>
 
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 <a href="index2.html">uniBazaar</a> | Built for Students by Students</p>
+  </footer>
 
-
-<script>
-  function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById('cart-count').innerText = count;
-  }
-
-  function addToCart(name, price, image) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    let existingItem = cart.find(item => item.name === name);
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ name, price, image, quantity: 1 });
+  <script>
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cart-count').innerText = count;
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount(); // update badge number
-    alert(`${name} added to cart!`);
-  }
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert(`${name} added to cart!`);
+    }
 
-  // Run when page loads
-  document.addEventListener("DOMContentLoaded", updateCartCount);
-</script>
-
-<script src="cart.js"></script>
-
-
-
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+  </script>
 </body>
+</html>
+
