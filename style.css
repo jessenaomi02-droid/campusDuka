@@ -289,3 +289,280 @@ body {
   }
 }
 
+
+/* --- products page --- */
+/* === General Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === Navbar Styling === */
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navdiv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 50px;
+}
+
+.logo {
+  color: #2c3e50;
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navdiv ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navdiv ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navdiv ul li a:hover {
+  color: #007bff;
+}
+
+/* === Buttons and Search === */
+.search-bar {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+.btn {
+  padding: 7px 14px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+button a {
+  text-decoration: none;
+  color: white;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* === Product Section === */
+.search {
+  text-align: center;
+  padding: 20px;
+}
+
+.navigate {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.navigate ul {
+  display: inline-flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navigate a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.navigate a:hover {
+  color: #007bff;
+}
+
+/* === Product Grid === */
+.product-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-card h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.product-card p {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.bn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: 0.3s;
+}
+
+.bn:hover {
+  background-color: #0056b3;
+}
+
+/* === Product Grid Container === */
+body {
+  background-color: #f8f9fa;
+}
+
+.search h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Use CSS Grid for layout */
+.search {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search > .product-card {
+  margin: 0; /* will be handled by grid */
+}
+
+/* Grid layout for all product cards */
+body .product-card {
+  display: inline-block;
+}
+
+.search {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 30px;
+}
+
+/* === Modal === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 8% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 60%;
+  text-align: center;
+}
+
+.close-btn {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-img {
+  width: 80%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.thumbnail-container {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail-container img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.thumbnail-container img:hover {
+  transform: scale(1.1);
+  border: 2px solid #007bff;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .navdiv {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navdiv ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .search {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+
