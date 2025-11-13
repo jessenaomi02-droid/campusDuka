@@ -6,25 +6,232 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CampusDuka</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* General */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
 
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
+    /* Navbar */
+    .navbar {
+      background: #0a74da;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links li a:hover {
+      text-decoration: underline;
+    }
+
+    .menu-icon {
+      display: none;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .cart-link {
+      position: relative;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background: red;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+
+    /* Navbar actions */
+    .nav-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-actions input {
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      flex: 1 1 150px;
+    }
+
+    .nav-actions .btn {
+      background: #0a74da;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .nav-actions .btn:hover {
+      background: #085cb4;
+    }
+
+    .nav-actions button a {
+      color: #fff;
+    }
+
+    /* Home section */
+    .home {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      gap: 20px;
+      background: #eaf2ff;
+    }
+
+    .home .content {
+      flex: 1 1 300px;
+      max-width: 500px;
+    }
+
+    .home h3 {
+      font-size: 28px;
+      color: #0a74da;
+      margin-bottom: 10px;
+    }
+
+    .home span {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .home p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .home .button {
+      display: inline-block;
+      margin-right: 10px;
+      background: #0a74da;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .home .button:hover {
+      background: #085cb4;
+    }
+
+    /* Slideshow */
+    .slideshow {
+      flex: 1 1 300px;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .slideshow img {
+      width: 100%;
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background: #0a74da;
+      color: #fff;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+        background: #0a74da;
+        margin-top: 10px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-icon {
+        display: block;
+      }
+
+      .home {
+        flex-direction: column;
+      }
+
+      .home .content,
+      .slideshow {
+        max-width: 100%;
+      }
+
+      .nav-actions {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  
-  
+  <!-- Navbar -->
   <nav class="navbar">
-  <div class="navdiv">
-    <!-- Logo -->
     <a href="index2.html" class="logo">CampusDuka</a>
 
-    <!-- Hamburger icon -->
     <div class="menu-icon" id="menu-icon">
       <i class="fas fa-bars"></i>
     </div>
 
-    <!-- Navigation links -->
     <ul class="nav-links" id="nav-links">
       <li><a href="index2.html">Home</a></li>
       <li><a href="products.html">Products</a></li>
@@ -33,93 +240,68 @@
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
 
-    
-
-      <a href="cart.html" class="cart-link" style="position:relative; text-decoration:none; color:white; font-size:20px;">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count"
-          style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">
-          0
-        </span>
-      </a>
-    </div>
-  </div>
-</nav>
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
+  </nav>
 
   <!-- Search and Buttons -->
-    <div class="nav-actions">
-      <input type="text" placeholder="Search for products..." class="search-bar">
-      <button type="submit" class="btn">Search</button>
+  <div class="nav-actions">
+    <input type="text" placeholder="Search for products..." class="search-bar">
+    <button class="btn">Search</button>
+    <button class="btn"><a href="register.php">Sign In</a></button>
+  </div>
 
-      <button><a href="register.php">Sign In</a></button>
-
-
-
-  
-  
-
-  <!-- home section starts-->
-   <section class="home" id="home">
+  <!-- Home Section -->
+  <section class="home" id="home">
     <div class="content">
-      <h3>Buy Smart,Stay Connected.</h3>
-      
-
-      
-
-
+      <h3>Buy Smart, Stay Connected</h3>
       <span>Your trusted Marketplace</span>
-      
-
       <p>
-        <b>UniBazaar</b> is a trusted student marketplace where you can
-        <b>discover affordable items,</b> <b>Buy</b> and <b>book upcoming events</b>—all in 
-         one place. We are here to serve the
-          <b>campus community</b> better by making sure you get necessities at <b>affordable prices</b>. All transactions are done <b>securely</b>
-           through the platform.
+        <b>CampusDuka</b> is a trusted student marketplace where you can
+        <b>discover affordable items</b>, <b>buy</b> and <b>book upcoming events</b>—all in 
+        one place. We serve the <b>campus community</b> by ensuring necessities are available at <b>affordable prices</b>. All transactions are <b>secure</b> on our platform.
       </p>
-    <a href="products.html" class="button">Shop Now</a>
-    <a href="events.html" class="button">Upcoming Events</a>
-
+      <a href="products.html" class="button">Shop Now</a>
+      <a href="events.html" class="button">Upcoming Events</a>
     </div>
-     <div class="slideshow">
-  <img src="pict.png.png" alt="">
-  <img src="pict.png.png" alt="">
-  <img src="pict.png.png" alt="">
-  <img src="pict.png.png" alt="">
-</div>
 
-    
+    <div class="slideshow">
+      <img src="pict.png.png" alt="Slide 1">
+      <img src="pict.png.png" alt="Slide 2">
+      <img src="pict.png.png" alt="Slide 3">
+      <img src="pict.png.png" alt="Slide 4">
+    </div>
+  </section>
 
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 CampusDuka. All Rights Reserved.
+  </footer>
 
-
-
-
-
-   </section>
-  <!-- home section ends-->
-   
-
-   </section>
   <script>
-  const menuIcon = document.getElementById("menu-icon");
-  const navLinks = document.getElementById("nav-links");
+    // Navbar toggle
+    const menuIcon = document.getElementById("menu-icon");
+    const navLinks = document.getElementById("nav-links");
 
-  menuIcon.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-  });
-</script>
+    menuIcon.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
 
+    // Simple slideshow
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slideshow img");
 
-
+    function showSlides() {
+      slides.forEach(slide => slide.style.display = "none");
+      slideIndex++;
+      if (slideIndex > slides.length) slideIndex = 1;
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 3000); // Change slide every 3 seconds
+    }
+    showSlides();
+  </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
 
