@@ -3,117 +3,271 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uniBazzar</title>
+  <title>UniBazaar | Campus Events</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      color: #0a74da;
+    }
+
+    /* Navigation bar */
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navdiv {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .navdiv ul {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navdiv a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .navdiv a.logo {
+      font-size: 24px;
+      color: #0a74da;
+      font-weight: bold;
+    }
+
+    .btn {
+      background-color: #0a74da;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #085cb4;
+    }
+
+    .view-events-btn {
+      display: inline-block;
+      background: #0a74da;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 20px auto;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      width: fit-content;
+    }
+
+    /* Event container grid */
+    .event-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      transition: 0.3s ease;
+      padding-bottom: 15px;
+    }
+
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .product-card h3 {
+      color: #333;
+      margin: 10px 0;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .bn {
+      background: #0a74da;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .bn:hover {
+      background: #085cb4;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .navdiv {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navdiv ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+
+      .navdiv input.search-bar {
+        width: 100%;
+        margin: 8px 0;
+      }
+
+      .navdiv button,
+      .btn {
+        width: 100%;
+      }
+
+      .event-container {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card img {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      .bn {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
   
-  
+  <!-- Navigation -->
   <nav class="navbar">
     <div class="navdiv">
-      <div> <a href="index2.html" class="logo">uniBazaar</a></div>
+      <div><a href="index2.html" class="logo">uniBazaar</a></div>
       <ul>
-        <li> <a href="index2.html">Home</a></li>
-        <li> <a href="products.html">Products</a></li>
-        <li> <a href="food.html">Fast Foods</a></li>
-        <li> <a href="events.html">Events</a></li>
-       
-        <li> <a href="contact.html">Contact us</a></li>
-
-        
+        <li><a href="index2.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="food.html">Fast Foods</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
       </ul>
-      <input type="text" placeholder="Search for products..." class="search-bar">
-      <button type="submit" class="btn">Search</button>
 
-      <button> <a href="signin.html">Sign In</a></button>
-      
-      <a href="cart.html" class="cart-link" style="position:relative; text-decoration:none; color:black; font-size:20px;">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="cart-count"
-        style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">
-    0
-  </span>
-</a>
+      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+        <input type="text" placeholder="Search for products..." class="search-bar">
+        <button type="submit" class="btn">Search</button>
+        <button><a href="signin.html" style="color:white; text-decoration:none;">Sign In</a></button>
 
-
+        <a href="cart.html" class="cart-link" style="position:relative; color:black; font-size:20px;">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cart-count"
+                style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">
+            0
+          </span>
+        </a>
+      </div>
     </div>
   </nav>
+
   <h2>Campus Events</h2>
 
+  <a href="event_cart.html" class="view-events-btn">View Booked Events</a>
 
+  <!-- Events Grid -->
+  <div class="event-container">
 
-<!-- View booked events button -->
-<a href="event_cart.html" 
-   class="view-events-btn"
-   style="
-     display:inline-block;
-     background:#0a74da;
-     color:#fff;
-     padding:10px 20px;
-     text-decoration:none;
-     border-radius:5px;
-     margin:10px 0;
-     font-weight:bold;
-   ">
-   View Booked Events
-</a>
+    <div class="product-card">
+      <img src="pi.png.jfif" alt="Freshers Night">
+      <h3>Freshers Night</h3>
+      <p><strong>📍 Venue:</strong> Campus Hall</p>
+      <p><strong>🗓️ Date:</strong> Sept 7, 2025</p>
+      <p><strong>⏰ Time:</strong> From 10 PM</p>
+      <p class="text-blue-600 font-bold"><strong>KES 150</strong></p>
+      <button class="bn">View Details</button>
+      <button class="bn book-btn">Book Ticket</button>
+    </div>
 
+    <div class="product-card">
+      <img src="pi.png.jfif" alt="Cultural Festival">
+      <h3>Cultural Festival</h3>
+      <p><strong>📍 Venue:</strong> Sports Field</p>
+      <p><strong>🗓️ Date:</strong> Oct 20, 2025</p>
+      <p><strong>⏰ Time:</strong> From 2 PM</p>
+      <p class="text-blue-600 font-bold"><strong>KES 200</strong></p>
+      <button class="bn">View Details</button>
+      <button class="bn book-btn">Book Ticket</button>
+    </div>
 
-  <div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Freshers Night</h3>
-      <p class="text-blue-600 font-bold">Campus Hall</p>
-      <p class="text-blue-600 font-bold">🗓️ Sept 7, 2025</p>
-      <p class="text-blue-600 font-bold">From 10pm</p>
-      <p class="text-blue-600 font-bold">KES 150</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
-<div class="product-card">
-  <img 
-    src="pi.png.jfif" 
-    alt="Casio Scientific Calculator" 
-  />
-  <h3 class="text-lg font-semibold">Casio Scientific Calculator</h3>
-      <p class="text-blue-600 font-bold">KES 1,200</p>
-      <button href="#" class="bn">view</button>
-      <button href="#" class="bn">Buy</button>
-</div>
+  </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const bookButtons = document.querySelectorAll(".book-btn");
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const buyButtons = document.querySelectorAll(".bn");
+      bookButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const card = button.closest(".product-card");
+          const name = card.querySelector("h3").textContent;
+          const venue = card.querySelector("p:nth-of-type(1)").textContent.replace("📍 Venue:", "").trim();
+          const date = card.querySelector("p:nth-of-type(2)").textContent.replace("🗓️ Date:", "").trim();
+          const priceText = card.querySelector("p.text-blue-600").textContent.replace("KES", "").trim();
+          const price = parseFloat(priceText);
+          const image = card.querySelector("img").src;
 
-  buyButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      if (button.textContent.toLowerCase() === "buy") {
-        const card = button.closest(".product-card");
-        const name = card.querySelector("h3").textContent;
-        const price = parseFloat(card.querySelector("p:last-of-type").textContent.replace("KES", "").trim());
-        const image = card.querySelector("img").src;
-        const venue = card.querySelectorAll("p")[0].textContent;
-        const date = card.querySelectorAll("p")[1].textContent;
+          const eventItem = { name, venue, date, price, image, quantity: 1 };
 
-        const eventItem = { name, venue, date, price, image, quantity: 1 };
+          const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+          eventCart.push(eventItem);
+          localStorage.setItem("eventCart", JSON.stringify(eventCart));
 
-        const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
-        eventCart.push(eventItem);
-        localStorage.setItem("eventCart", JSON.stringify(eventCart));
-
-        alert(`${name} has been added to your bookings.`);
-      }
+          alert(`✅ You have booked "${name}" successfully!`);
+        });
+      });
     });
-  });
-});
-</script>
-<script src="cart.js"></script>
+  </script>
+
 </body>
-
-
+</html>
 
