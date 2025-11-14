@@ -13,14 +13,11 @@
       color: #333;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     /* Navbar */
     .navbar {
-      background: #0a74da;
+      background: #0077ff; /* your color */
       padding: 12px 20px;
       display: flex;
       align-items: center;
@@ -32,7 +29,7 @@
 
     .navbar .logo {
       font-size: 1.5em;
-      font-weight: bold;
+      font-weight: 700;
       color: white;
     }
 
@@ -47,65 +44,48 @@
 
     .navbar ul li a {
       color: white;
-      font-weight: 500;
+      font-weight: 700; /* bold navbar links */
       transition: 0.3s;
     }
 
-    .navbar ul li a:hover {
-      color: #ffcc00;
-    }
+    .navbar ul li a:hover { color: #ffd700; }
 
-    .navbar input.search-bar {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      margin-right: 5px;
-      width: 150px;
-    }
-
-    .navbar .btn, .navbar button {
-      background: #ffcc00;
+    .navbar .btn-signin {
+      background: white;
+      color: #0077ff;
+      font-weight: 700;
       border: none;
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
-      margin-left: 5px;
-      font-weight: bold;
       transition: 0.3s;
     }
 
-    .navbar .btn:hover, .navbar button:hover {
-      background: #ffd84d;
-    }
+    .navbar .btn-signin:hover { background: #f0f0f0; }
 
-    /* Search Section */
-    .search {
-      text-align: center;
-      margin: 30px 10px;
-    }
-
-    .search input {
-      padding: 10px;
-      width: 70%;
-      max-width: 400px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      outline: none;
-    }
-
-    .search .look {
-      background: #0a74da;
+    .cart-link {
       color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      margin-left: 5px;
-      cursor: pointer;
-      transition: 0.3s;
+      font-size: 20px;
+      margin-left: 10px;
+      position: relative;
     }
 
-    .search .look:hover {
-      background: #005bb5;
+    #cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+
+    /* Page title */
+    h2 {
+      text-align: center;
+      margin: 30px 0 20px;
+      color: #0077ff;
     }
 
     /* Category Navigation */
@@ -127,14 +107,12 @@
     }
 
     .navigate ul li a {
-      color: #0a74da;
-      font-weight: 500;
+      color: #0077ff;
+      font-weight: 700; /* bold category links */
       transition: 0.3s;
     }
 
-    .navigate ul li a:hover {
-      color: #ffcc00;
-    }
+    .navigate ul li a:hover { color: #ffd700; }
 
     /* Product Cards */
     .product-container {
@@ -166,19 +144,11 @@
       margin-bottom: 10px;
     }
 
-    .product-card h3 {
-      margin: 10px 0 5px;
-      font-size: 16px;
-    }
-
-    .product-card p {
-      color: #0a74da;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
+    .product-card h3 { margin: 10px 0 5px; font-size: 16px; }
+    .product-card p { color: #0077ff; font-weight: 600; margin-bottom: 10px; }
 
     .bn {
-      background: #0a74da;
+      background: #0077ff;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -186,11 +156,10 @@
       margin: 4px;
       cursor: pointer;
       transition: background 0.3s;
+      font-weight: 600;
     }
 
-    .bn:hover {
-      background: #005bb5;
-    }
+    .bn:hover { background: #005ecc; }
 
     /* Modal */
     .modal {
@@ -225,11 +194,7 @@
       color: #333;
     }
 
-    .gallery-container img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
+    .gallery-container img { width: 100%; border-radius: 10px; }
     .thumbnail-container img {
       width: 70px;
       height: 70px;
@@ -240,9 +205,7 @@
       transition: transform 0.3s;
     }
 
-    .thumbnail-container img:hover {
-      transform: scale(1.1);
-    }
+    .thumbnail-container img:hover { transform: scale(1.1); }
 
     /* Responsive */
     @media screen and (max-width: 768px) {
@@ -251,29 +214,12 @@
         gap: 10px;
         margin-top: 10px;
       }
-
-      .navbar input.search-bar {
-        width: 120px;
-        margin-bottom: 8px;
-      }
-
-      .search input {
-        width: 90%;
-      }
+      .product-card img { height: 150px; }
     }
 
     @media screen and (max-width: 480px) {
-      .product-card img {
-        height: 150px;
-      }
-
-      .product-card h3 {
-        font-size: 14px;
-      }
-
-      .product-card p {
-        font-size: 14px;
-      }
+      .product-card h3 { font-size: 14px; }
+      .product-card p { font-size: 14px; }
     }
   </style>
 </head>
@@ -290,24 +236,16 @@
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
     <div style="display:flex; align-items:center; flex-wrap:wrap;">
-      <input type="text" placeholder="Search..." class="search-bar">
-      <button class="btn">Search</button>
-      <button><a href="signin.html">Sign In</a></button>
-      <a href="cart.html" class="cart-link" style="margin-left:15px; color:white;">
+      <a href="signin.html" class="btn-signin">Sign In</a>
+      <a href="cart.html" class="cart-link">
         <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:relative; top:-8px; right:-5px;">
-          0
-        </span>
+        <span id="cart-count">0</span>
       </a>
     </div>
   </nav>
 
-  <!-- Search Section -->
-  <div class="search">
-    <h2>Study Materials</h2>
-    <input type="text" placeholder="Search study materials...">
-    <button class="look">Search</button>
-  </div>
+  <!-- Page Title -->
+  <h2>Study Materials</h2>
 
   <!-- Category Navigation -->
   <div class="navigate">
@@ -337,8 +275,6 @@
       <button class="bn">View</button>
       <button onclick="addToCart('Casio Scientific Calculator', 1200, 'pi.png.jfif')" class="bn">Add to Cart</button>
     </div>
-
-    <!-- Add more products here -->
   </div>
 
   <!-- Product Modal -->
@@ -352,7 +288,6 @@
     </div>
   </div>
 
-  <!-- JS -->
   <script>
     // Cart functionality
     function updateCartCount() {
