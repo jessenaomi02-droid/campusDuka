@@ -9,9 +9,9 @@
 
 <style>
   :root {
-    --primary: #0056b3;   /* Previous blue */
-    --dark: #000000;      /* Black */
-    --light: #FFFFFF;     /* White */
+    --primary: #0077ff;   /* Your preferred blue */
+    --dark: #000000;
+    --light: #FFFFFF;
   }
 
   body {
@@ -38,79 +38,159 @@
 
   .logo { font-size: 24px; font-weight: 600; color: var(--light); }
 
-  .nav-links { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
-  .nav-links li a { color: var(--light); font-weight: 500; transition: 0.3s; }
-  .nav-links li a:hover { text-decoration: underline; }
+  .nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 15px; 
+    margin: 0; 
+    padding: 0; 
+  }
+
+  .nav-links li a { 
+    color: var(--light); 
+    font-weight: 600; 
+    padding: 6px 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+  }
+
+  .nav-links li a:hover { background: white; color: var(--primary); }
 
   .menu-icon { display: none; font-size: 22px; color: var(--light); cursor: pointer; }
 
   .cart-link { position: relative; font-size: 20px; color: var(--light); }
-  #cart-count { position: absolute; top: -8px; right: -12px; background: red; color: var(--light); border-radius: 50%; padding: 2px 6px; font-size: 12px; }
 
-  /* Search bar */
-  .search-bar { padding: 6px 10px; border-radius: 4px; border: 1px solid var(--dark); width: 100%; max-width: 300px; }
-  .btn { background: var(--primary); color: var(--light); border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; transition: 0.3s; font-weight: 500; }
-  .btn:hover { background: #003f7f; }
+  #cart-count { 
+    position: absolute; 
+    top: -8px; 
+    right: -12px; 
+    background: red; 
+    color: var(--light); 
+    border-radius: 50%; 
+    padding: 2px 6px; 
+    font-size: 12px; 
+  }
+
+  /* Search bar center */
+  .nav-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 0;
+  }
+
+  .search-bar {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    width: 70%;
+    max-width: 330px;
+    font-size: 15px;
+  }
+
+  .btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn:hover { background: #005fcc; }
 
   /* Category Nav */
   .category-nav {
-    background: var(--light);
+    background: white;
     padding: 12px;
     text-align: center;
     margin: 15px 5%;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
-  .category-nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 0; list-style: none; }
-  .category-nav ul li a { color: var(--primary); font-weight: 500; transition: 0.3s; }
-  .category-nav ul li a:hover { text-decoration: underline; }
+
+  .category-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .category-nav ul li a {
+    color: var(--primary);
+    font-weight: 600;
+  }
 
   /* Product cards */
   .products-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
-    padding: 30px 5%;
+    padding: 20px 5%;
   }
+
   .product-card {
-    background: var(--light);
+    background: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     padding: 15px;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.3s;
+    transition: 0.3s;
   }
-  .product-card:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-  .product-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
-  .product-card h3 { margin: 10px 0 6px; color: var(--dark); }
-  .product-card p { color: var(--primary); font-weight: bold; margin-bottom: 10px; }
-  .product-card .bn { background: var(--primary); color: var(--light); border-radius: 5px; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin: 5px 3px; border: none; }
-  .product-card .bn:hover { background: #003f7f; }
 
-  /* Modal */
-  .modal { display: none; position: fixed; z-index: 999; padding-top: 80px; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-  .modal-content { background: var(--light); margin: auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 500px; }
-  .close-btn { float: right; font-size: 24px; cursor: pointer; color: var(--dark); }
-  .gallery-container img { width: 100%; border-radius: 8px; }
-  .thumbnail-container img { width: 60px; margin: 5px; border-radius: 5px; cursor: pointer; }
+  .product-card:hover { 
+    transform: scale(1.03); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+  }
 
-  /* Footer */
-  footer { text-align: center; background: var(--primary); color: var(--light); padding: 15px; }
+  .product-card img { 
+    width: 100%; 
+    height: 160px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+  }
 
-  /* Responsive */
+  .bn {
+    background: var(--primary);
+    color: white;
+    padding: 7px 14px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .bn:hover { background: #005fcc; }
+
+  /* Responsive mobile */
   @media (max-width: 768px) {
-    .nav-links { flex-direction: column; display: none; width: 100%; margin-top: 10px; }
+    .nav-links { display: none; flex-direction: column; width: 100%; }
     .nav-links.active { display: flex; }
     .menu-icon { display: block; }
+  }
+
+  footer {
+    text-align: center;
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    margin-top: 20px;
   }
 </style>
 </head>
 
 <body>
+
   <!-- Navbar -->
   <nav class="navbar">
     <a href="index2.html" class="logo">CampusDuka</a>
+
     <div class="menu-icon" id="menu-icon"><i class="fas fa-bars"></i></div>
+
     <ul class="nav-links" id="nav-links">
       <li><a href="index2.html">Home</a></li>
       <li><a href="products.html">Products</a></li>
@@ -118,17 +198,20 @@
       <li><a href="events.html">Events</a></li>
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
-    <a href="cart.html" class="cart-link"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
   </nav>
 
-  <!-- Search -->
+  <!-- Centered Search Bar -->
   <div class="nav-actions">
     <input type="text" placeholder="Search for products..." class="search-bar">
     <button class="btn">Search</button>
-    <button class="btn"><a href="register.php">Sign In</a></button>
   </div>
 
-  <!-- Category Nav -->
+  <!-- Category Navigation -->
   <div class="category-nav">
     <ul>
       <li><a href="electronics.html">Electronics</a></li>
@@ -139,7 +222,7 @@
     </ul>
   </div>
 
-  <!-- Products -->
+  <!-- Products Section -->
   <div class="products-container">
     <div class="product-card">
       <img src="pi.png.jfif" alt="Laptop">
@@ -152,18 +235,7 @@
       <img src="pi.png.jfif" alt="Calculator">
       <h3>Casio Scientific Calculator</h3>
       <p>KES 1,200</p>
-      <button class="bn" onclick="addToCart('Casio Scientific Calculator',1200,'pi.png.jfif')">Add to Cart</button>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="viewModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div class="gallery-container">
-        <img id="mainImage" src="" alt="Product Image">
-        <div class="thumbnail-container" id="thumbnails"></div>
-      </div>
+      <button class="bn" onclick="addToCart('Calculator',1200,'pi.png.jfif')">Add to Cart</button>
     </div>
   </div>
 
@@ -171,41 +243,35 @@
     &copy; 2025 CampusDuka. All Rights Reserved.
   </footer>
 
-  <script>
-    const menuIcon = document.getElementById("menu-icon");
-    const navLinks = document.getElementById("nav-links");
-    menuIcon.addEventListener("click", () => { navLinks.classList.toggle("active"); });
+<script>
+  const menuIcon = document.getElementById("menu-icon");
+  const navLinks = document.getElementById("nav-links");
 
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let count = cart.reduce((sum,item)=>sum+item.quantity,0);
-      document.getElementById('cart-count').innerText = count;
-    }
+  menuIcon.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
 
-    function addToCart(name,price,image){
-      let cart=JSON.parse(localStorage.getItem('cart'))||[];
-      let existing=cart.find(i=>i.name===name);
-      if(existing){ existing.quantity+=1; }else{ cart.push({name,price,image,quantity:1}); }
-      localStorage.setItem('cart',JSON.stringify(cart));
-      updateCartCount();
-      alert(`${name} added to cart!`);
-    }
-    document.addEventListener("DOMContentLoaded", updateCartCount);
+  function updateCartCount(){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cart-count').innerText = count;
+  }
 
-    function viewProduct(images){
-      const modal=document.getElementById("viewModal");
-      const mainImage=document.getElementById("mainImage");
-      const thumbnails=document.getElementById("thumbnails");
-      mainImage.src=images[0]; thumbnails.innerHTML="";
-      images.forEach(src=>{
-        const thumb=document.createElement("img"); thumb.src=src;
-        thumb.onclick=()=>mainImage.src=src; thumbnails.appendChild(thumb);
-      });
-      modal.style.display="block";
-    }
-    document.querySelector(".close-btn").onclick=()=>document.getElementById("viewModal").style.display="none";
-    window.onclick=e=>{ if(e.target===document.getElementById("viewModal")) document.getElementById("viewModal").style.display="none"; }
-  </script>
+  function addToCart(name, price, image){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let existing = cart.find(item => item.name === name);
+
+    if(existing){ existing.quantity++; }
+    else{ cart.push({name, price, image, quantity: 1}); }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(name + " added to cart!");
+  }
+
+  document.addEventListener("DOMContentLoaded", updateCartCount);
+</script>
+
 </body>
 </html>
 
