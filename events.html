@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UniBazaar | Campus Events</title>
+  <title>CampusDuka | Campus Events</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
 
   <style>
+    /* Global */
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
       margin: 0;
       padding: 0;
     }
@@ -18,14 +18,14 @@
     h2 {
       text-align: center;
       margin: 20px 0;
-      color: #0a74da;
+      color: #0077ff;
+      font-weight: 700;
     }
 
-    /* Navigation bar */
+    /* Navbar */
     .navbar {
-      background-color: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 10px 20px;
+      background-color: #0077ff;
+      padding: 15px 25px;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -33,65 +33,90 @@
 
     .navdiv {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
     }
 
-    .navdiv ul {
-      display: flex;
-      list-style: none;
-      gap: 15px;
-      padding: 0;
-      margin: 0;
-    }
-
-    .navdiv a {
+    .logo {
+      font-size: 26px;
+      color: #fff;
+      font-weight: 800;
       text-decoration: none;
-      color: #333;
-      font-weight: 600;
     }
 
-    .navdiv a.logo {
-      font-size: 24px;
-      color: #0a74da;
-      font-weight: bold;
+    /* Nav menu */
+    .navdiv ul {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+    }
+
+    .navdiv ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 4px;
+      transition: 0.2s;
+    }
+
+    .navdiv ul li a:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Search Bar */
+    .search-area {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .search-bar {
+      padding: 8px;
+      width: 250px;
+      border: none;
+      border-radius: 4px;
+      outline: none;
     }
 
     .btn {
-      background-color: #0a74da;
-      color: white;
+      background: #fff;
+      color: #0077ff;
       border: none;
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 4px;
+      font-weight: 600;
       cursor: pointer;
     }
 
     .btn:hover {
-      background-color: #085cb4;
+      background: #e3e3e3;
     }
 
+    /* Event Button */
     .view-events-btn {
-      display: inline-block;
-      background: #0a74da;
+      display: block;
+      background: #0077ff;
       color: #fff;
       padding: 10px 20px;
-      text-decoration: none;
       border-radius: 5px;
-      margin: 20px auto;
-      font-weight: bold;
-      display: block;
       text-align: center;
+      margin: 25px auto;
+      text-decoration: none;
+      font-weight: 700;
       width: fit-content;
     }
 
-    /* Event container grid */
+    /* Event Cards */
     .event-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 20px;
       padding: 20px;
-      justify-content: center;
     }
 
     .product-card {
@@ -99,13 +124,13 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       overflow: hidden;
-      text-align: center;
-      transition: 0.3s ease;
       padding-bottom: 15px;
+      transition: .3s;
+      text-align: center;
     }
 
     .product-card:hover {
-      transform: scale(1.02);
+      transform: scale(1.03);
     }
 
     .product-card img {
@@ -115,30 +140,33 @@
     }
 
     .product-card h3 {
-      color: #333;
       margin: 10px 0;
-    }
-
-    .product-card p {
-      margin: 5px 0;
-      color: #555;
+      color: #333;
     }
 
     .bn {
-      background: #0a74da;
+      background: #0077ff;
       color: #fff;
       border: none;
       padding: 8px 12px;
+      margin: 5px;
       border-radius: 5px;
       cursor: pointer;
-      margin: 5px;
+      font-weight: 600;
     }
 
     .bn:hover {
-      background: #085cb4;
+      background: #005fcc;
     }
 
-    /* Mobile responsiveness */
+    /* Cart icon */
+    .cart-link {
+      color: white;
+      font-size: 20px;
+      position: relative;
+    }
+
+    /* Mobile Fixes */
     @media (max-width: 768px) {
       .navdiv {
         flex-direction: column;
@@ -148,45 +176,25 @@
       .navdiv ul {
         flex-direction: column;
         width: 100%;
-        gap: 10px;
       }
 
-      .navdiv input.search-bar {
-        width: 100%;
-        margin: 8px 0;
-      }
-
-      .navdiv button,
-      .btn {
+      .search-area {
         width: 100%;
       }
 
-      .event-container {
-        grid-template-columns: 1fr;
-      }
-
-      .product-card img {
-        height: 200px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h2 {
-        font-size: 20px;
-      }
-
-      .bn {
-        width: 90%;
+      .search-bar {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  
+
   <!-- Navigation -->
   <nav class="navbar">
     <div class="navdiv">
-      <div><a href="index2.html" class="logo">uniBazaar</a></div>
+      <a href="index2.html" class="logo">CampusDuka</a>
+
       <ul>
         <li><a href="index2.html">Home</a></li>
         <li><a href="products.html">Products</a></li>
@@ -195,20 +203,28 @@
         <li><a href="contact.html">Contact Us</a></li>
       </ul>
 
-      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-        <input type="text" placeholder="Search for products..." class="search-bar">
-        <button type="submit" class="btn">Search</button>
-        <button><a href="signin.html" style="color:white; text-decoration:none;">Sign In</a></button>
-
-        <a href="cart.html" class="cart-link" style="position:relative; color:black; font-size:20px;">
-          <i class="fas fa-shopping-cart"></i>
-          <span id="cart-count"
-                style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">
-            0
-          </span>
-        </a>
-      </div>
+      <a href="cart.html" class="cart-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count" style="
+          background:red; 
+          color:white; 
+          border-radius:50%; 
+          padding:2px 6px; 
+          font-size:12px; 
+          position:absolute; 
+          top:-8px; right:-12px;">
+          0
+        </span>
+      </a>
     </div>
+
+    <!-- Search bar below navbar -->
+    <div class="search-area">
+      <input type="text" class="search-bar" placeholder="Search for products...">
+      <button class="btn">Search</button>
+      <button class="btn"><a href="signin.html" style="text-decoration:none; color:#0077ff;">Sign In</a></button>
+    </div>
+
   </nav>
 
   <h2>Campus Events</h2>
@@ -222,9 +238,9 @@
       <img src="pi.png.jfif" alt="Freshers Night">
       <h3>Freshers Night</h3>
       <p><strong>📍 Venue:</strong> Campus Hall</p>
-      <p><strong>🗓️ Date:</strong> Sept 7, 2025</p>
+      <p><strong>🗓 Date:</strong> Sept 7, 2025</p>
       <p><strong>⏰ Time:</strong> From 10 PM</p>
-      <p class="text-blue-600 font-bold"><strong>KES 150</strong></p>
+      <p style="color:#0077ff; font-weight:bold;">KES 150</p>
       <button class="bn">View Details</button>
       <button class="bn book-btn">Book Ticket</button>
     </div>
@@ -233,9 +249,9 @@
       <img src="pi.png.jfif" alt="Cultural Festival">
       <h3>Cultural Festival</h3>
       <p><strong>📍 Venue:</strong> Sports Field</p>
-      <p><strong>🗓️ Date:</strong> Oct 20, 2025</p>
+      <p><strong>🗓 Date:</strong> Oct 20, 2025</p>
       <p><strong>⏰ Time:</strong> From 2 PM</p>
-      <p class="text-blue-600 font-bold"><strong>KES 200</strong></p>
+      <p style="color:#0077ff; font-weight:bold;">KES 200</p>
       <button class="bn">View Details</button>
       <button class="bn book-btn">Book Ticket</button>
     </div>
@@ -246,23 +262,24 @@
     document.addEventListener("DOMContentLoaded", () => {
       const bookButtons = document.querySelectorAll(".book-btn");
 
-      bookButtons.forEach(button => {
-        button.addEventListener("click", () => {
-          const card = button.closest(".product-card");
-          const name = card.querySelector("h3").textContent;
-          const venue = card.querySelector("p:nth-of-type(1)").textContent.replace("📍 Venue:", "").trim();
-          const date = card.querySelector("p:nth-of-type(2)").textContent.replace("🗓️ Date:", "").trim();
-          const priceText = card.querySelector("p.text-blue-600").textContent.replace("KES", "").trim();
-          const price = parseFloat(priceText);
-          const image = card.querySelector("img").src;
+      bookButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".product-card");
 
-          const eventItem = { name, venue, date, price, image, quantity: 1 };
+          const eventItem = {
+            name: card.querySelector("h3").textContent,
+            venue: card.querySelector("p:nth-of-type(1)").textContent.replace("📍 Venue:", "").trim(),
+            date: card.querySelector("p:nth-of-type(2)").textContent.replace("🗓 Date:", "").trim(),
+            price: parseFloat(card.querySelector("p:nth-of-type(3)").textContent.replace("KES", "").trim()),
+            image: card.querySelector("img").src,
+            quantity: 1
+          };
 
-          const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
-          eventCart.push(eventItem);
-          localStorage.setItem("eventCart", JSON.stringify(eventCart));
+          const cart = JSON.parse(localStorage.getItem("eventCart")) || [];
+          cart.push(eventItem);
+          localStorage.setItem("eventCart", JSON.stringify(cart));
 
-          alert(`✅ You have booked "${name}" successfully!`);
+          alert(`✅ You have booked "${eventItem.name}" successfully!`);
         });
       });
     });
