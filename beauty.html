@@ -22,12 +22,12 @@
     h2 {
       text-align: center;
       margin: 30px 0 10px;
-      color: #0a74da;
+      color: #0077ff; /* keep your theme */
     }
 
     /* ---------- Navbar ---------- */
     .navbar {
-      background: #0a74da;
+      background: #0077ff; /* changed to your color */
       padding: 12px 20px;
       color: white;
       display: flex;
@@ -51,7 +51,7 @@
 
     .navbar ul li a {
       color: white;
-      font-weight: 500;
+      font-weight: bold; /* made bold */
       transition: 0.3s;
     }
 
@@ -59,32 +59,18 @@
       color: #ffcc00;
     }
 
-    .navbar input.search-bar {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      width: 180px;
-    }
-
-    .navbar .btn,
-    .navbar button {
+    /* Sign In button */
+    .navbar .signin-btn {
       background: #ffcc00;
       border: none;
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
-      margin-left: 10px;
       font-weight: bold;
       transition: 0.3s;
     }
 
-    .navbar button a {
-      color: black;
-      font-weight: bold;
-    }
-
-    .navbar .btn:hover,
-    .navbar button:hover {
+    .navbar .signin-btn:hover {
       background: #ffd84d;
     }
 
@@ -104,7 +90,7 @@
     }
 
     .search .look {
-      background: #0a74da;
+      background: #0077ff; /* match theme */
       color: white;
       padding: 10px 20px;
       border: none;
@@ -112,10 +98,11 @@
       margin-left: 5px;
       cursor: pointer;
       transition: 0.3s;
+      font-weight: bold;
     }
 
     .search .look:hover {
-      background: #005bb5;
+      background: #005ecc;
     }
 
     /* ---------- Category Navigation ---------- */
@@ -134,8 +121,8 @@
     }
 
     .navigate ul li a {
-      color: #0a74da;
-      font-weight: 500;
+      color: #0077ff; /* match theme */
+      font-weight: bold; /* made bold */
       transition: 0.3s;
     }
 
@@ -179,13 +166,13 @@
     }
 
     .product-card p {
-      color: #0a74da;
+      color: #0077ff;
       font-weight: 600;
       margin-bottom: 10px;
     }
 
     .bn {
-      background: #0a74da;
+      background: #0077ff;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -193,10 +180,11 @@
       margin: 4px;
       cursor: pointer;
       transition: background 0.3s;
+      font-weight: bold;
     }
 
     .bn:hover {
-      background: #005bb5;
+      background: #005ecc;
     }
 
     /* ---------- Modal ---------- */
@@ -253,7 +241,7 @@
 
     /* ---------- Footer ---------- */
     footer {
-      background: #0a74da;
+      background: #0077ff; /* match theme */
       color: white;
       text-align: center;
       padding: 20px;
@@ -275,9 +263,7 @@
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
     <div style="display:flex; align-items:center;">
-      <input type="text" placeholder="Search..." class="search-bar" />
-      <button class="btn">Search</button>
-      <button><a href="signin.html">Sign In</a></button>
+      <a href="signin.html" class="signin-btn">Sign In</a>
       <a href="cart.html" class="cart-link" style="margin-left:15px; color:white;">
         <i class="fas fa-shopping-cart"></i>
         <span id="cart-count"
@@ -347,37 +333,27 @@
     function addToCart(name, price, image) {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       let existingItem = cart.find((item) => item.name === name);
-
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ name, price, image, quantity: 1 });
-      }
-
+      if (existingItem) existingItem.quantity += 1;
+      else cart.push({ name, price, image, quantity: 1 });
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartCount();
       alert(`${name} added to cart!`);
     }
 
     document.addEventListener("DOMContentLoaded", updateCartCount);
-  </script>
 
-  <script>
     function viewProduct(images) {
       const modal = document.getElementById("viewModal");
       const mainImage = document.getElementById("mainImage");
       const thumbnails = document.getElementById("thumbnails");
-
       mainImage.src = images[0];
       thumbnails.innerHTML = "";
-
       images.forEach((imgSrc) => {
         const thumb = document.createElement("img");
         thumb.src = imgSrc;
         thumb.onclick = () => (mainImage.src = imgSrc);
         thumbnails.appendChild(thumb);
       });
-
       modal.style.display = "flex";
     }
 
@@ -387,9 +363,7 @@
 
     window.onclick = function (event) {
       const modal = document.getElementById("viewModal");
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
+      if (event.target === modal) modal.style.display = "none";
     };
   </script>
 
@@ -398,4 +372,3 @@
   </footer>
 </body>
 </html>
-
