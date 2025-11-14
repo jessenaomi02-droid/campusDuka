@@ -13,11 +13,14 @@
       color: #333;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-    /* Navbar */
+    /* ---------- Navbar ---------- */
     .navbar {
-      background: #0077ff; /* your color */
+      background: #0a74da; /* Your color */
       padding: 12px 20px;
       display: flex;
       align-items: center;
@@ -29,7 +32,7 @@
 
     .navbar .logo {
       font-size: 1.5em;
-      font-weight: 700;
+      font-weight: bold;
       color: white;
     }
 
@@ -44,51 +47,77 @@
 
     .navbar ul li a {
       color: white;
-      font-weight: 700; /* bold navbar links */
+      font-weight: bold; /* Bold navbar links */
       transition: 0.3s;
     }
 
-    .navbar ul li a:hover { color: #ffd700; }
+    .navbar ul li a:hover {
+      color: #ffcc00;
+    }
 
-    .navbar .btn-signin {
-      background: white;
-      color: #0077ff;
-      font-weight: 700;
-      border: none;
+    .btn-signin {
+      background: #ffcc00; /* Sign in button color */
+      color: #0a74da;
       padding: 8px 14px;
       border-radius: 6px;
-      cursor: pointer;
+      font-weight: bold;
       transition: 0.3s;
+      margin-right: 10px;
+      display: inline-block;
     }
 
-    .navbar .btn-signin:hover { background: #f0f0f0; }
+    .btn-signin:hover {
+      background: #ffd84d;
+    }
 
     .cart-link {
       color: white;
       font-size: 20px;
-      margin-left: 10px;
       position: relative;
     }
 
     #cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
       background: red;
       color: white;
       border-radius: 50%;
       padding: 2px 6px;
       font-size: 12px;
+      position: absolute;
+      top: -8px;
+      right: -10px;
     }
 
-    /* Page title */
-    h2 {
+    /* ---------- Search Section (Below Navbar) ---------- */
+    .search {
       text-align: center;
-      margin: 30px 0 20px;
-      color: #0077ff;
+      margin: 30px 10px;
     }
 
-    /* Category Navigation */
+    .search input {
+      padding: 10px;
+      width: 70%;
+      max-width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .search .look {
+      background: #0a74da;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-left: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search .look:hover {
+      background: #005bb5;
+    }
+
+    /* ---------- Category Navigation ---------- */
     .navigate {
       background: white;
       padding: 10px 0;
@@ -107,14 +136,16 @@
     }
 
     .navigate ul li a {
-      color: #0077ff;
-      font-weight: 700; /* bold category links */
+      color: #0a74da;
+      font-weight: bold; /* Bold category links */
       transition: 0.3s;
     }
 
-    .navigate ul li a:hover { color: #ffd700; }
+    .navigate ul li a:hover {
+      color: #ffcc00;
+    }
 
-    /* Product Cards */
+    /* ---------- Product Cards ---------- */
     .product-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -144,11 +175,19 @@
       margin-bottom: 10px;
     }
 
-    .product-card h3 { margin: 10px 0 5px; font-size: 16px; }
-    .product-card p { color: #0077ff; font-weight: 600; margin-bottom: 10px; }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    .product-card p {
+      color: #0a74da;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
 
     .bn {
-      background: #0077ff;
+      background: #0a74da;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -156,12 +195,13 @@
       margin: 4px;
       cursor: pointer;
       transition: background 0.3s;
-      font-weight: 600;
     }
 
-    .bn:hover { background: #005ecc; }
+    .bn:hover {
+      background: #005bb5;
+    }
 
-    /* Modal */
+    /* ---------- Modal ---------- */
     .modal {
       display: none;
       position: fixed;
@@ -194,7 +234,11 @@
       color: #333;
     }
 
-    .gallery-container img { width: 100%; border-radius: 10px; }
+    .gallery-container img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
     .thumbnail-container img {
       width: 70px;
       height: 70px;
@@ -205,21 +249,34 @@
       transition: transform 0.3s;
     }
 
-    .thumbnail-container img:hover { transform: scale(1.1); }
+    .thumbnail-container img:hover {
+      transform: scale(1.1);
+    }
 
-    /* Responsive */
+    /* ---------- Responsive ---------- */
     @media screen and (max-width: 768px) {
       .navbar ul {
         flex-direction: column;
         gap: 10px;
         margin-top: 10px;
       }
-      .product-card img { height: 150px; }
+      .btn-signin {
+        margin-top: 8px;
+      }
     }
 
     @media screen and (max-width: 480px) {
-      .product-card h3 { font-size: 14px; }
-      .product-card p { font-size: 14px; }
+      .product-card img {
+        height: 150px;
+      }
+
+      .product-card h3 {
+        font-size: 14px;
+      }
+
+      .product-card p {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -244,8 +301,12 @@
     </div>
   </nav>
 
-  <!-- Page Title -->
-  <h2>Study Materials</h2>
+  <!-- Search Section -->
+  <div class="search">
+    <h2>Study Materials</h2>
+    <input type="text" placeholder="Search study materials...">
+    <button class="look">Search</button>
+  </div>
 
   <!-- Category Navigation -->
   <div class="navigate">
@@ -288,8 +349,8 @@
     </div>
   </div>
 
+  <!-- JS -->
   <script>
-    // Cart functionality
     function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       let count = cart.reduce((sum, item) => sum + item.quantity, 0);
