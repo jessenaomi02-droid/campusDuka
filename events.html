@@ -3,171 +3,269 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusDuka | Campus Events</title>
+  <title>CampusDuka - Electronics</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
-    /* Global */
+    /* ---------- Global ---------- */
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #f8f9fa;
       margin: 0;
-      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fc;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
     h2 {
       text-align: center;
-      margin: 20px 0;
-      color: #0077ff;
-      font-weight: 700;
+      margin: 30px 0 10px;
+      color: #0a74da;
     }
 
-    /* Navbar */
+    /* ---------- Navbar ---------- */
     .navbar {
-      background-color: #0077ff;
-      padding: 15px 25px;
+      background: #ffffff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      padding: 15px 40px;
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
     }
 
     .navdiv {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
     }
 
-    .logo {
-      font-size: 26px;
-      color: #fff;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    /* Nav menu */
     .navdiv ul {
+      display: flex;
       list-style: none;
-      display: flex;
-      gap: 18px;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
     }
 
-    .navdiv ul li a {
-      color: white;
+    .navdiv a {
       text-decoration: none;
-      font-weight: 600;
-      padding: 6px 12px;
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 4px;
-      transition: 0.2s;
+      color: #333;
+      font-weight: 500;
     }
 
-    .navdiv ul li a:hover {
-      background: rgba(255,255,255,0.25);
-    }
-
-    /* Search Bar */
-    .search-area {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .search-bar {
-      padding: 8px;
-      width: 250px;
-      border: none;
-      border-radius: 4px;
-      outline: none;
+    .navdiv a.logo {
+      font-size: 24px;
+      color: #0077ff;
+      font-weight: bold;
     }
 
     .btn {
-      background: #fff;
-      color: #0077ff;
+      background-color: #0077ff;
+      color: white;
       border: none;
-      padding: 8px 14px;
-      border-radius: 4px;
-      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     .btn:hover {
-      background: #e3e3e3;
+      background-color: #005ecc;
     }
 
-    /* Event Button */
-    .view-events-btn {
-      display: block;
-      background: #0077ff;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
+    .search-bar {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      width: 200px;
+      transition: 0.3s;
+    }
+
+    .search-bar:focus {
+      border-color: #0077ff;
+    }
+
+    .cart-link {
+      margin-left: 15px;
+      color: #0077ff;
+      position: relative;
+      font-size: 20px;
+    }
+
+    /* ---------- Search Section ---------- */
+    .search {
       text-align: center;
-      margin: 25px auto;
-      text-decoration: none;
-      font-weight: 700;
-      width: fit-content;
+      margin: 30px 10px;
     }
 
-    /* Event Cards */
-    .event-container {
+    .search input {
+      padding: 10px;
+      width: 70%;
+      max-width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    .search .look {
+      background: #0077ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      margin-left: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search .look:hover {
+      background: #005ecc;
+    }
+
+    /* ---------- Category Navigation ---------- */
+    .navigate {
+      background: white;
+      padding: 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .navigate ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navigate ul li a {
+      color: #0077ff;
+      font-weight: 700; /* Bold */
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .navigate ul li a:hover {
+      color: #ffca28;
+    }
+
+    /* ---------- Product Cards ---------- */
+    .product-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      padding: 20px;
+      padding: 0 15px 50px;
     }
 
     .product-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      padding-bottom: 15px;
-      transition: .3s;
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .product-card:hover {
-      transform: scale(1.03);
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     }
 
     .product-card img {
       width: 100%;
       height: 180px;
       object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
 
     .product-card h3 {
-      margin: 10px 0;
-      color: #333;
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    .product-card p {
+      color: #0077ff;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
 
     .bn {
       background: #0077ff;
-      color: #fff;
+      color: white;
       border: none;
       padding: 8px 12px;
-      margin: 5px;
-      border-radius: 5px;
+      border-radius: 20px;
+      margin: 4px;
       cursor: pointer;
-      font-weight: 600;
+      transition: 0.3s;
     }
 
     .bn:hover {
-      background: #005fcc;
+      background: #005ecc;
     }
 
-    /* Cart icon */
-    .cart-link {
-      color: white;
-      font-size: 20px;
+    /* ---------- Modal ---------- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
       position: relative;
     }
 
-    /* Mobile Fixes */
-    @media (max-width: 768px) {
+    .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .gallery-container img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .thumbnail-container img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .thumbnail-container img:hover {
+      transform: scale(1.1);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media screen and (max-width: 768px) {
       .navdiv {
         flex-direction: column;
         align-items: flex-start;
@@ -176,25 +274,59 @@
       .navdiv ul {
         flex-direction: column;
         width: 100%;
+        gap: 10px;
+        margin-top: 10px;
       }
 
-      .search-area {
+      .navdiv input.search-bar {
+        width: 100%;
+        margin: 8px 0;
+      }
+
+      .navdiv button,
+      .btn {
         width: 100%;
       }
 
-      .search-bar {
-        width: 100%;
+      .product-container {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card img {
+        height: 200px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      .bn {
+        width: 90%;
+      }
+
+      .product-card img {
+        height: 150px;
+      }
+
+      .product-card h3 {
+        font-size: 14px;
+      }
+
+      .product-card p {
+        font-size: 14px;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Navigation -->
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="navdiv">
       <a href="index2.html" class="logo">CampusDuka</a>
-
       <ul>
         <li><a href="index2.html">Home</a></li>
         <li><a href="products.html">Products</a></li>
@@ -203,83 +335,113 @@
         <li><a href="contact.html">Contact Us</a></li>
       </ul>
 
-      <a href="cart.html" class="cart-link">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count" style="
-          background:red; 
-          color:white; 
-          border-radius:50%; 
-          padding:2px 6px; 
-          font-size:12px; 
-          position:absolute; 
-          top:-8px; right:-12px;">
-          0
-        </span>
-      </a>
+      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+        <input type="text" placeholder="Search for products..." class="search-bar">
+        <button class="btn">Search</button>
+        <button class="btn"><a href="signin.html" style="color:white; text-decoration:none;">Sign In</a></button>
+        <a href="cart.html" class="cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">0</span>
+        </a>
+      </div>
     </div>
-
-    
   </nav>
 
-  <h2>Campus Events</h2>
+  <!-- Search Section -->
+  <div class="search">
+    <h2>Electronics</h2>
+    <input type="text" placeholder="Search electronics...">
+    <button class="look">Search</button>
+  </div>
 
-  <a href="event_cart.html" class="view-events-btn">View Booked Events</a>
+  <!-- Category Navigation -->
+  <div class="navigate">
+    <ul>
+      <li><a href="electronics.html">Electronics</a></li>
+      <li><a href="clothings.html">Clothings</a></li>
+      <li><a href="homeappliances.html">Home Decors</a></li>
+      <li><a href="studymaterials.html">Study Materials</a></li>
+      <li><a href="beauty.html">Beauty & Personal Care</a></li>
+    </ul>
+  </div>
 
-  <!-- Events Grid -->
-  <div class="event-container">
-
+  <!-- Products -->
+  <div class="product-container">
     <div class="product-card">
-      <img src="pi.png.jfif" alt="Freshers Night">
-      <h3>Freshers Night</h3>
-      <p><strong>📍 Venue:</strong> Campus Hall</p>
-      <p><strong>🗓 Date:</strong> Sept 7, 2025</p>
-      <p><strong>⏰ Time:</strong> From 10 PM</p>
-      <p style="color:#0077ff; font-weight:bold;">KES 150</p>
-      <button class="bn">View Details</button>
-      <button class="bn book-btn">Book Ticket</button>
+      <img src="pi.png.jfif" alt="Laptop">
+      <h3>Laptop</h3>
+      <p>KES 1</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Laptop', 1, 'pi.png.jfif')" class="bn">Add to Cart</button>
     </div>
 
     <div class="product-card">
-      <img src="pi.png.jfif" alt="Cultural Festival">
-      <h3>Cultural Festival</h3>
-      <p><strong>📍 Venue:</strong> Sports Field</p>
-      <p><strong>🗓 Date:</strong> Oct 20, 2025</p>
-      <p><strong>⏰ Time:</strong> From 2 PM</p>
-      <p style="color:#0077ff; font-weight:bold;">KES 200</p>
-      <button class="bn">View Details</button>
-      <button class="bn book-btn">Book Ticket</button>
+      <img src="pi.png.jfif" alt="Casio Calculator">
+      <h3>Casio Scientific Calculator</h3>
+      <p>KES 1,200</p>
+      <button class="bn">View</button>
+      <button onclick="addToCart('Casio Scientific Calculator', 1200, 'pi.png.jfif')" class="bn">Add to Cart</button>
     </div>
+  </div>
 
+  <!-- Modal -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div class="gallery-container">
+        <img id="mainImage" src="" alt="Product Image">
+        <div class="thumbnail-container" id="thumbnails"></div>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const bookButtons = document.querySelectorAll(".book-btn");
+    // Cart functionality
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cart-count').innerText = count;
+    }
 
-      bookButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const card = btn.closest(".product-card");
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let existingItem = cart.find(item => item.name === name);
+      if (existingItem) existingItem.quantity += 1;
+      else cart.push({ name, price, image, quantity: 1 });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert(`${name} added to cart!`);
+    }
 
-          const eventItem = {
-            name: card.querySelector("h3").textContent,
-            venue: card.querySelector("p:nth-of-type(1)").textContent.replace("📍 Venue:", "").trim(),
-            date: card.querySelector("p:nth-of-type(2)").textContent.replace("🗓 Date:", "").trim(),
-            price: parseFloat(card.querySelector("p:nth-of-type(3)").textContent.replace("KES", "").trim()),
-            image: card.querySelector("img").src,
-            quantity: 1
-          };
+    document.addEventListener("DOMContentLoaded", updateCartCount);
 
-          const cart = JSON.parse(localStorage.getItem("eventCart")) || [];
-          cart.push(eventItem);
-          localStorage.setItem("eventCart", JSON.stringify(cart));
-
-          alert(`✅ You have booked "${eventItem.name}" successfully!`);
-        });
+    // Modal functionality
+    function viewProduct(images) {
+      const modal = document.getElementById("viewModal");
+      const mainImage = document.getElementById("mainImage");
+      const thumbnails = document.getElementById("thumbnails");
+      mainImage.src = images[0];
+      thumbnails.innerHTML = "";
+      images.forEach(src => {
+        const thumb = document.createElement("img");
+        thumb.src = src;
+        thumb.onclick = () => mainImage.src = src;
+        thumbnails.appendChild(thumb);
       });
-    });
+      modal.style.display = "flex";
+    }
+
+    document.querySelector(".close-btn").onclick = function() {
+      document.getElementById("viewModal").style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target === document.getElementById("viewModal")) {
+        document.getElementById("viewModal").style.display = "none";
+      }
+    };
   </script>
 
 </body>
 </html>
-
 
