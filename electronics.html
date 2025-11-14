@@ -135,7 +135,8 @@
 
     .navigate ul li a {
       color: #0a74da;
-      font-weight: 500;
+      font-weight: 700; /* Bold */
+      font-size: 17px;
       transition: 0.3s;
     }
 
@@ -388,23 +389,5 @@
       images.forEach(src => {
         const thumb = document.createElement("img");
         thumb.src = src;
-        thumb.onclick = () => mainImage.src = src;
-        thumbnails.appendChild(thumb);
-      });
-      modal.style.display = "flex";
-    }
-
-    document.querySelector(".close-btn").onclick = function() {
-      document.getElementById("viewModal").style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target === document.getElementById("viewModal")) {
-        document.getElementById("viewModal").style.display = "none";
-      }
-    };
-  </script>
-
-</body>
-</html>
+        thumb.onclick = (
 
