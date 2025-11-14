@@ -1,393 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusDuka - Electronics</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <style>
-    /* ---------- Global ---------- */
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f8f9fc;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusDuka - Electronics</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+<style>
+  :root {
+    --primary: #0077ff; /* your blue */
+    --dark: #000;
+    --light: #fff;
+  }
 
-    h2 {
-      text-align: center;
-      margin: 30px 0 10px;
-      color: #0a74da;
-    }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9;
+    color: var(--dark);
+  }
 
-    /* ---------- Navbar ---------- */
-    .navbar {
-      background: #0a74da;
-      padding: 12px 20px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+  a { text-decoration: none; color: inherit; }
 
-    .navbar .logo {
-      font-size: 1.5em;
-      font-weight: 700;
-      color: white;
-    }
+  h2 {
+    text-align: center;
+    margin: 30px 0 15px;
+    color: var(--primary);
+  }
 
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 0;
-      padding: 0;
-    }
+  /* ---------- Navbar ---------- */
+  .navbar {
+    background: var(--primary);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-    .navbar ul li a {
-      color: white;
-      font-weight: 500;
-      transition: 0.3s;
-    }
+  .navbar .logo {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--light);
+  }
 
-    .navbar ul li a:hover {
-      color: #ffcc00;
-    }
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
 
-    .navbar input.search-bar {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      width: 150px;
-      margin-right: 5px;
-    }
+  .navbar ul li a {
+    color: var(--light);
+    font-weight: 700; /* bold links */
+    transition: 0.3s;
+  }
 
-    .navbar .btn, .navbar button {
-      background: #ffcc00;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 5px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
+  .navbar ul li a:hover {
+    color: #ffd700;
+  }
 
-    .navbar .btn:hover, .navbar button:hover {
-      background: #ffd84d;
-    }
+  .menu-icon {
+    display: none;
+    font-size: 22px;
+    color: var(--light);
+    cursor: pointer;
+  }
 
-    /* ---------- Search Section ---------- */
-    .search {
-      text-align: center;
-      margin: 30px 10px;
-    }
+  .cart-link {
+    position: relative;
+    font-size: 20px;
+    color: var(--light);
+  }
 
-    .search input {
-      padding: 10px;
-      width: 70%;
-      max-width: 400px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      outline: none;
-    }
+  #cart-count {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: red;
+    color: var(--light);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+  }
 
-    .search .look {
-      background: #0a74da;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      margin-left: 5px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+  /* ---------- Category Navigation ---------- */
+  .navigate {
+    background: #fff;
+    padding: 12px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    margin: 15px 5%;
+    border-radius: 8px;
+  }
 
-    .search .look:hover {
-      background: #005bb5;
-    }
+  .navigate ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    /* ---------- Category Navigation ---------- */
-    .navigate {
-      background: white;
-      padding: 10px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-    }
+  .navigate ul li a {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 16px;
+    transition: 0.3s;
+  }
 
-    .navigate ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      flex-wrap: wrap;
-      padding: 0;
-      margin: 0;
-    }
+  .navigate ul li a:hover {
+    color: #ffd700;
+  }
 
-    .navigate ul li a {
-      color: #0a74da;
-      font-weight: 700; /* Bold */
-      font-size: 17px;
-      transition: 0.3s;
-    }
+  /* ---------- Product Cards ---------- */
+  .product-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 5% 50px;
+  }
 
-    .navigate ul li a:hover {
-      color: #ffcc00;
-    }
+  .product-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-    /* ---------- Product Cards ---------- */
-    .product-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 0 15px 50px;
-    }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
 
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+  .product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
 
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    }
+  .product-card h3 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+  }
 
-    .product-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
+  .product-card p {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
 
-    .product-card h3 {
-      margin: 10px 0 5px;
-      font-size: 16px;
-    }
+  .bn {
+    background: var(--primary);
+    color: var(--light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 600;
+  }
 
-    .product-card p {
-      color: #0a74da;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
+  .bn:hover {
+    background: #005bb5;
+  }
 
-    .bn {
-      background: #0a74da;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+  /* ---------- Modal ---------- */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+  }
 
-    .bn:hover {
-      background: #005bb5;
-    }
+  .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+  }
 
-    /* ---------- Modal ---------- */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-    }
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+  }
 
-    .modal-content {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      position: relative;
-    }
+  .gallery-container img {
+    width: 100%;
+    border-radius: 10px;
+  }
 
-    .close-btn {
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      font-size: 20px;
-      cursor: pointer;
-      color: #333;
-    }
+  .thumbnail-container img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
 
-    .gallery-container img {
-      width: 100%;
-      border-radius: 10px;
-    }
+  .thumbnail-container img:hover {
+    transform: scale(1.1);
+  }
 
-    .thumbnail-container img {
-      width: 70px;
-      height: 70px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin: 5px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
+  /* ---------- Responsive ---------- */
+  @media (max-width: 768px) {
+    .navbar ul { flex-direction: column; gap: 10px; display: none; width: 100%; }
+    .navbar ul.active { display: flex; }
+    .menu-icon { display: block; }
+    .product-container { grid-template-columns: 1fr; padding: 0 10px; }
+  }
 
-    .thumbnail-container img:hover {
-      transform: scale(1.1);
-    }
+  @media (max-width: 480px) {
+    .product-card img { height: 150px; }
+    .product-card h3 { font-size: 14px; }
+    .product-card p { font-size: 14px; }
+  }
 
-    /* ---------- Responsive ---------- */
-    @media screen and (max-width: 768px) {
-      .navbar ul {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .navbar input.search-bar {
-        width: 120px;
-        margin-bottom: 8px;
-      }
-
-      .search input {
-        width: 90%;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .product-card img {
-        height: 150px;
-      }
-
-      .product-card h3 {
-        font-size: 14px;
-      }
-
-      .product-card p {
-        font-size: 14px;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div><a href="index2.html" class="logo">CampusDuka</a></div>
-    <ul>
-      <li><a href="index2.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="food.html">Fast Foods</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
-    </ul>
-    <div style="display:flex; align-items:center; flex-wrap:wrap;">
-      
-      <button><a href="signin.html">Sign In</a></button>
-      <a href="cart.html" class="cart-link" style="margin-left:15px; color:white;">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count"
-          style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:relative; top:-8px; right:-5px;">
-          0
-        </span>
-      </a>
-    </div>
-  </nav>
+<!-- Navbar -->
+<nav class="navbar">
+  <div><a href="index2.html" class="logo">CampusDuka</a></div>
+  <div class="menu-icon" id="menu-icon"><i class="fas fa-bars"></i></div>
+  <ul id="nav-links">
+    <li><a href="index2.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="food.html">Fast Foods</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+  </ul>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <a href="signin.html" class="bn">Sign In</a>
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
+  </div>
+</nav>
 
-  <!-- Search Section -->
-  <div class="search">
-    <h2>Electronics</h2>
-    <input type="text" placeholder="Search electronics...">
-    <button class="look">Search</button>
+<!-- Page Title -->
+<h2>Electronics</h2>
+
+<!-- Category Navigation -->
+<div class="navigate">
+  <ul>
+    <li><a href="electronics.html">Electronics</a></li>
+    <li><a href="clothings.html">Clothings</a></li>
+    <li><a href="homeappliances.html">Home Decors</a></li>
+    <li><a href="studymaterials.html">Study Materials</a></li>
+    <li><a href="beauty.html">Beauty & Personal Care</a></li>
+  </ul>
+</div>
+
+<!-- Products -->
+<div class="product-container">
+  <div class="product-card">
+    <img src="pi.png.jfif" alt="Laptop">
+    <h3>Laptop</h3>
+    <p>KES 1</p>
+    <button class="bn">View</button>
+    <button onclick="addToCart('Laptop', 1, 'pi.png.jfif')" class="bn">Add to Cart</button>
   </div>
 
-  <!-- Category Navigation -->
-  <div class="navigate"><b>
-    <ul>
-      <li><a href="electronics.html">Electronics</a></li>
-      <li><a href="clothings.html">Clothings</a></li>
-      <li><a href="homeappliances.html">Home Decors</a></li>
-      <li><a href="studymaterials.html">Study Materials</a></li>
-      <li><a href="beauty.html">Beauty & Personal Care</a></li>
-    </ul></b>
+  <div class="product-card">
+    <img src="pi.png.jfif" alt="Casio Calculator">
+    <h3>Casio Scientific Calculator</h3>
+    <p>KES 1,200</p>
+    <button class="bn">View</button>
+    <button onclick="addToCart('Casio Scientific Calculator', 1200, 'pi.png.jfif')" class="bn">Add to Cart</button>
   </div>
+</div>
 
-  <!-- Products -->
-  <div class="product-container">
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Laptop">
-      <h3>Laptop</h3>
-      <p>KES 1</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Laptop', 1, 'pi.png.jfif')" class="bn">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Casio Calculator">
-      <h3>Casio Scientific Calculator</h3>
-      <p>KES 1,200</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Casio Scientific Calculator', 1200, 'pi.png.jfif')" class="bn">Add to Cart</button>
+<!-- Modal -->
+<div id="viewModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div class="gallery-container">
+      <img id="mainImage" src="" alt="Product Image">
+      <div class="thumbnail-container" id="thumbnails"></div>
     </div>
   </div>
+</div>
 
-  <!-- Modal -->
-  <div id="viewModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div class="gallery-container">
-        <img id="mainImage" src="" alt="Product Image">
-        <div class="thumbnail-container" id="thumbnails"></div>
-      </div>
-    </div>
-  </div>
+<script>
+  // Hamburger menu toggle
+  const menuIcon = document.getElementById("menu-icon");
+  const navLinks = document.getElementById("nav-links");
+  menuIcon.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
 
-  <script>
-    // Cart functionality
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('cart-count').innerText = count;
+  // Cart functionality
+  function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cart-count').innerText = count;
+  }
+
+  function addToCart(name, price, image) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let existingItem = cart.find(item => item.name === name);
+    if (existingItem) existingItem.quantity += 1;
+    else cart.push({ name, price, image, quantity: 1 });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`${name} added to cart!`);
+  }
+
+  document.addEventListener("DOMContentLoaded", updateCartCount);
+
+  // Modal functionality
+  function viewProduct(images) {
+    const modal = document.getElementById("viewModal");
+    const mainImage = document.getElementById("mainImage");
+    const thumbnails = document.getElementById("thumbnails");
+    mainImage.src = images[0];
+    thumbnails.innerHTML = "";
+    images.forEach(src => {
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.onclick = () => mainImage.src = src;
+      thumbnails.appendChild(thumb);
+    });
+    modal.style.display = "flex";
+  }
+
+  document.querySelector(".close-btn").onclick = () => {
+    document.getElementById("viewModal").style.display = "none";
+  };
+  window.onclick = e => {
+    if (e.target === document.getElementById("viewModal")) {
+      document.getElementById("viewModal").style.display = "none";
     }
+  };
+</script>
 
-    function addToCart(name, price, image) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let existingItem = cart.find(item => item.name === name);
-      if (existingItem) existingItem.quantity += 1;
-      else cart.push({ name, price, image, quantity: 1 });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      alert(`${name} added to cart!`);
-    }
-
-    document.addEventListener("DOMContentLoaded", updateCartCount);
-
-    // Modal functionality
-    function viewProduct(images) {
-      const modal = document.getElementById("viewModal");
-      const mainImage = document.getElementById("mainImage");
-      const thumbnails = document.getElementById("thumbnails");
-      mainImage.src = images[0];
-      thumbnails.innerHTML = "";
-      images.forEach(src => {
-        const thumb = document.createElement("img");
-        thumb.src = src;
-        thumb.onclick = (
-
-
+</body>
+</html>
