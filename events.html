@@ -15,7 +15,7 @@
 
     /* Navbar */
     .navbar {
-      background-color: #fff;
+      background-color: #fff; /* your original navbar color */
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       padding: 12px 20px;
       position: sticky;
@@ -56,12 +56,6 @@
 
     .navdiv ul li a:hover {
       color: #0a74da;
-    }
-
-    .search-bar {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
     }
 
     .btn {
@@ -171,10 +165,6 @@
         flex-direction: column;
         gap: 8px;
       }
-      .search-bar {
-        width: 100%;
-        margin-top: 5px;
-      }
       .event-container {
         grid-template-columns: 1fr;
       }
@@ -195,8 +185,6 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
 
-      <input type="text" placeholder="Search for products..." class="search-bar">
-      <button class="btn">Search</button>
       <a href="signin.html" class="btn">Sign In</a>
       <a href="cart.html" class="cart-link">
         <i class="fas fa-shopping-cart"></i>
@@ -240,7 +228,6 @@
   </footer>
 
   <script>
-    // Cart count
     function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       let count = cart.reduce((sum, item) => sum + item.quantity, 0);
