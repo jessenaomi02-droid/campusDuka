@@ -6,7 +6,6 @@
   <title>CampusDuka - Home Decors</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <style>
-    /* ---------- Global ---------- */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -14,29 +13,26 @@
       color: #333;
     }
 
-    a { text-decoration: none; color: inherit; }
-
-    h2 {
-      text-align: center;
-      margin: 30px 0 20px;
-      color: #0077ff;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
     /* ---------- Navbar ---------- */
     .navbar {
-      background: #0077ff; /* your color */
+      background: #0a74da; /* Your color */
       padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .navbar .logo {
       font-size: 1.5em;
-      font-weight: 700;
+      font-weight: bold;
       color: white;
     }
 
@@ -51,43 +47,74 @@
 
     .navbar ul li a {
       color: white;
-      font-weight: 700; /* bold navbar links */
+      font-weight: bold; /* Bold navbar links */
       transition: 0.3s;
     }
 
-    .navbar ul li a:hover { color: #ffd700; }
+    .navbar ul li a:hover {
+      color: #ffcc00;
+    }
 
-    .navbar .btn-signin {
-      background: white;
-      color: #0077ff;
-      font-weight: 700;
-      border: none;
+    .btn-signin {
+      background: #ffcc00; /* Sign in button color */
+      color: #0a74da;
       padding: 8px 14px;
       border-radius: 6px;
-      cursor: pointer;
+      font-weight: bold;
       transition: 0.3s;
+      margin-right: 10px;
+      display: inline-block;
     }
 
-    .navbar .btn-signin:hover {
-      background: #f0f0f0;
+    .btn-signin:hover {
+      background: #ffd84d;
     }
 
     .cart-link {
       color: white;
       font-size: 20px;
-      margin-left: 10px;
       position: relative;
     }
 
     #cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
       background: red;
       color: white;
       border-radius: 50%;
       padding: 2px 6px;
       font-size: 12px;
+      position: absolute;
+      top: -8px;
+      right: -10px;
+    }
+
+    /* ---------- Search Section (Below Navbar) ---------- */
+    .search {
+      text-align: center;
+      margin: 30px 10px;
+    }
+
+    .search input {
+      padding: 10px;
+      width: 70%;
+      max-width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .search .look {
+      background: #0a74da;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-left: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search .look:hover {
+      background: #005bb5;
     }
 
     /* ---------- Category Navigation ---------- */
@@ -109,12 +136,14 @@
     }
 
     .navigate ul li a {
-      color: #0077ff;
-      font-weight: 700; /* bold category links */
+      color: #0a74da;
+      font-weight: bold; /* Bold category links */
       transition: 0.3s;
     }
 
-    .navigate ul li a:hover { color: #ffd700; }
+    .navigate ul li a:hover {
+      color: #ffcc00;
+    }
 
     /* ---------- Product Cards ---------- */
     .product-container {
@@ -146,11 +175,19 @@
       margin-bottom: 10px;
     }
 
-    .product-card h3 { margin: 10px 0 5px; font-size: 16px; }
-    .product-card p { color: #0077ff; font-weight: 600; margin-bottom: 10px; }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    .product-card p {
+      color: #0a74da;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
 
     .bn {
-      background: #0077ff;
+      background: #0a74da;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -158,10 +195,11 @@
       margin: 4px;
       cursor: pointer;
       transition: background 0.3s;
-      font-weight: 600;
     }
 
-    .bn:hover { background: #005ecc; }
+    .bn:hover {
+      background: #005bb5;
+    }
 
     /* ---------- Modal ---------- */
     .modal {
@@ -196,7 +234,10 @@
       color: #333;
     }
 
-    .gallery-container img { width: 100%; border-radius: 10px; }
+    .gallery-container img {
+      width: 100%;
+      border-radius: 10px;
+    }
 
     .thumbnail-container img {
       width: 70px;
@@ -208,7 +249,9 @@
       transition: transform 0.3s;
     }
 
-    .thumbnail-container img:hover { transform: scale(1.1); }
+    .thumbnail-container img:hover {
+      transform: scale(1.1);
+    }
 
     /* ---------- Responsive ---------- */
     @media screen and (max-width: 768px) {
@@ -217,8 +260,23 @@
         gap: 10px;
         margin-top: 10px;
       }
+      .btn-signin {
+        margin-top: 8px;
+      }
+    }
 
-      .product-card img { height: 150px; }
+    @media screen and (max-width: 480px) {
+      .product-card img {
+        height: 150px;
+      }
+
+      .product-card h3 {
+        font-size: 14px;
+      }
+
+      .product-card p {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -243,9 +301,11 @@
     </div>
   </nav>
 
-  <!-- Page Title -->
-  <div style="text-align:center; margin:30px 0;">
+  <!-- Search Section -->
+  <div class="search">
     <h2>Home Decors</h2>
+    <input type="text" placeholder="Search home decors...">
+    <button class="look">Search</button>
   </div>
 
   <!-- Category Navigation -->
@@ -278,7 +338,7 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Product Modal -->
   <div id="viewModal" class="modal">
     <div class="modal-content">
       <span class="close-btn">&times;</span>
@@ -289,6 +349,7 @@
     </div>
   </div>
 
+  <!-- JS -->
   <script>
     function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -299,8 +360,8 @@
     function addToCart(name, price, image) {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       let existingItem = cart.find(item => item.name === name);
-      if (existingItem) existingItem.quantity += 1;
-      else cart.push({ name, price, image, quantity: 1 });
+      if(existingItem) existingItem.quantity += 1;
+      else cart.push({ name, price, image, quantity:1 });
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
       alert(`${name} added to cart!`);
@@ -325,14 +386,15 @@
 
     document.querySelector(".close-btn").onclick = function() {
       document.getElementById("viewModal").style.display = "none";
-    };
+    }
 
     window.onclick = function(event) {
-      if (event.target === document.getElementById("viewModal")) {
+      if(event.target === document.getElementById("viewModal")) {
         document.getElementById("viewModal").style.display = "none";
       }
-    };
+    }
   </script>
+
 </body>
 </html>
 
