@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uniBazaar | Food</title>
+  <title>CampusDuka | Food</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
   <style>
-    /* ===== RESET ===== */
     * {
       margin: 0;
       padding: 0;
@@ -15,122 +15,117 @@
     }
 
     body {
-      background: #f8f9fa;
+      background: #f4f6f9;
       color: #333;
     }
 
     /* ===== NAVBAR ===== */
     .navbar {
-      background: #ffffff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      padding: 15px 40px;
+      background: #0077ff;
+      padding: 15px 30px;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     .navdiv {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
-      color: #0077ff;
+      color: #fff;
       text-decoration: none;
     }
 
     .navdiv ul {
       display: flex;
       list-style: none;
-      gap: 20px;
+      gap: 15px;
     }
 
     .navdiv ul li a {
       text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      padding: 6px 14px;
+      border: 1px solid white;
+      border-radius: 6px;
+      transition: 0.3s;
     }
 
     .navdiv ul li a:hover {
+      background: #fff;
       color: #0077ff;
     }
 
-    .search-bar {
-      padding: 8px 12px;
+    /* NAVBAR SEARCH BELOW NAV */
+    .navbar-search {
+      background: white;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      border-bottom: 2px solid #0077ff;
+    }
+
+    .navbar-search input {
+      width: 75%;
+      padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 20px;
+      border-radius: 6px;
       outline: none;
-      width: 200px;
-      transition: 0.3s;
     }
 
-    .search-bar:focus {
-      border-color: #0077ff;
-    }
-
-    .btn {
-      padding: 8px 16px;
-      background-color: #0077ff;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #005ecc;
-    }
-
-    button a {
-      text-decoration: none;
-      color: white;
-    }
-
-    .cart-link {
-      margin-left: 15px;
-      color: #0077ff;
-    }
-
-    /* ===== HERO SEARCH SECTION ===== */
-    .search {
-      text-align: center;
-      padding: 40px 10px;
-      background: linear-gradient(90deg, #0077ff, #00b4d8);
-      color: white;
-    }
-
-    .search input {
+    .navbar-search button {
       padding: 10px 15px;
-      border-radius: 25px;
+      background: #0077ff;
+      color: white;
       border: none;
-      outline: none;
-      width: 250px;
-      margin-top: 15px;
-    }
-
-    .look {
-      padding: 10px 20px;
-      border-radius: 25px;
-      border: none;
-      background: #ffca28;
-      color: #333;
-      margin-left: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .look:hover {
-      background: #ffc107;
+    /* ===== HERO SECTION WITH BACKGROUND IMAGES ===== */
+    .hero {
+      position: relative;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
     }
 
-    /* ===== PRODUCT GRID ===== */
+    .hero img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      opacity: 0.45;
+      z-index: -1;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: black;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      font-size: 17px;
+      color: #222;
+    }
+
+    /* PRODUCT GRID */
     .product-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -139,13 +134,13 @@
     }
 
     .product-card {
-      background: #fff;
-      border-radius: 15px;
+      background: white;
+      border-radius: 12px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
       overflow: hidden;
       text-align: center;
       padding-bottom: 15px;
-      transition: transform 0.3s ease;
+      transition: 0.3s;
     }
 
     .product-card:hover {
@@ -181,34 +176,37 @@
     }
 
     .bn:hover {
-      background: #005ecc;
+      background: #005ecb;
     }
 
-    /* ===== FOOTER ===== */
+    /* FOOTER */
     footer {
       background: #0077ff;
       color: white;
       text-align: center;
-      padding: 15px 10px;
+      padding: 15px;
       margin-top: 40px;
     }
 
     footer a {
-      color: #ffca28;
+      color: yellow;
       text-decoration: none;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 32px; }
+      .navdiv ul { flex-wrap: wrap; justify-content: center; }
+      .navbar-search input { width: 60%; }
     }
   </style>
 </head>
-
 <body>
-  <!-- Navbar -->
+
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navdiv">
-      <a href="index2.html" class="logo">uniBazaar</a>
+      <a href="index2.html" class="logo">CampusDuka</a>
+
       <ul>
         <li><a href="index2.html">Home</a></li>
         <li><a href="products.html">Products</a></li>
@@ -217,29 +215,34 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
 
-      <div>
-        <input type="text" placeholder="Search for products..." class="search-bar">
-        <button class="btn">Search</button>
-        <button class="btn"><a href="signin.html">Sign In</a></button>
-        <a href="cart.html" class="cart-link">
-          <i class="fas fa-shopping-cart"></i>
-          <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">0</span>
-        </a>
-      </div>
+      <a href="cart.html" class="cart-link" style="color:white; font-size:20px; position:relative;">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">0</span>
+      </a>
     </div>
   </nav>
 
-  <!-- Hero Search Section -->
-  <div class="search">
-    <h2>🍔 Find Your Favorite Meal!</h2>
-    <input type="text" placeholder="Search for food...">
-    <button class="look">Search</button>
+  <!-- SEARCH BAR BELOW NAV -->
+  <div class="navbar-search">
+    <input type="text" placeholder="Search for foods, snacks, drinks...">
+    <button><i class="fa fa-search"></i></button>
   </div>
 
-  <!-- Product Grid -->
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <img src="food1.jpg">
+    <img src="food2.jpg">
+    
+    <div>
+      <h1>Buy Smart, Eat Smart</h1>
+      <p>Discover campus meals delivered fast & affordably.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT GRID -->
   <div class="product-container">
     <div class="product-card">
-      <img src="pi.png.jfif" alt="Burger">
+      <img src="pi.png.jfif">
       <h3>Delicious Burger</h3>
       <p>KES 250</p>
       <button class="bn">View</button>
@@ -247,7 +250,7 @@
     </div>
 
     <div class="product-card">
-      <img src="lap.png.jfif" alt="Pizza">
+      <img src="lap.png.jfif">
       <h3>Cheese Pizza</h3>
       <p>KES 400</p>
       <button class="bn">View</button>
@@ -255,7 +258,7 @@
     </div>
 
     <div class="product-card">
-      <img src="lap2.png.jfif" alt="Juice">
+      <img src="lap2.png.jfif">
       <h3>Fresh Juice</h3>
       <p>KES 100</p>
       <button class="bn">View</button>
@@ -263,7 +266,7 @@
     </div>
 
     <div class="product-card">
-      <img src="pi.png.jfif" alt="Fries">
+      <img src="pi.png.jfif">
       <h3>Crispy Fries</h3>
       <p>KES 150</p>
       <button class="bn">View</button>
@@ -271,9 +274,9 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 <a href="index2.html">uniBazaar</a> | Built for Students by Students</p>
+    <p>&copy; 2025 <a href="index2.html">CampusDuka</a> | Built for Students</p>
   </footer>
 
   <script>
@@ -286,18 +289,21 @@
     function addToCart(name, price, image) {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       let existingItem = cart.find(item => item.name === name);
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
         cart.push({ name, price, image, quantity: 1 });
       }
+
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
-      alert(`${name} added to cart!`);
+      alert(name + " added to cart!");
     }
 
     document.addEventListener("DOMContentLoaded", updateCartCount);
   </script>
+
 </body>
 </html>
 
