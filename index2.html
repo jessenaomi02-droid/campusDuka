@@ -1,4 +1,5 @@
 
+{"id":"72616","variant":"standard","title":"Homepage with Smooth Hero Fade Animation"}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,6 +111,7 @@
       padding: 0 20px;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       transition: background-image 1s ease-in-out;
     }
 
@@ -219,19 +221,27 @@
   <script>
     const hero = document.getElementById("hero");
     const images = [
-      'pict1.png',
-      'pict2.png',
-      'pict3.png',
-      'pict4.png'
-    ]; // Replace with your actual image paths
+      '/static/images/pict1.jpeg',
+      '/static/images/pict2.jpeg',
+      '/static/images/pict3.jpeg',
+      '/static/images/pict4.jpeg'
+    ];
+
     let index = 0;
 
     function changeBackground() {
-      hero.style.backgroundImage = `url(${images[index]})`;
-      index = (index + 1) % images.length;
+      // fade out first
+      hero.style.opacity = 0;
+      setTimeout(() => {
+        hero.style.backgroundImage = `url(${images[index]})`;
+        hero.style.opacity = 1;
+        index = (index + 1) % images.length;
+      }, 500); // half of transition duration
     }
 
+    // Initialize background
     changeBackground();
+    // Change every 5 seconds
     setInterval(changeBackground, 5000);
 
     // CART COUNT
@@ -245,4 +255,3 @@
 
 </body>
 </html>
-
