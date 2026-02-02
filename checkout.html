@@ -3,247 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout | UniBazaar</title>
+  <title>Checkout | CampusDuka</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
   <style>
-    :root {
-      --primary: #007bff;
-      --primary-dark: #0056b3;
-      --light-bg: #f5f7fa;
-      --text-dark: #222;
-      --radius: 12px;
+    :root{
+      --primary:#0d6efd;
+      --primary-dark:#0b5ed7;
+      --bg:#f4f6fb;
+      --card:#ffffff;
+      --text:#222;
+      --radius:14px;
     }
 
-    body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: var(--light-bg);
-      margin: 0;
-      padding: 0;
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:"Poppins", Arial, sans-serif;
     }
 
-    /* Navbar */
-    .navbar {
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding: 12px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    body{
+      background:var(--bg);
+      color:var(--text);
     }
 
-    .navbar a {
-      text-decoration: none;
-      color: var(--text-dark);
-      font-weight: 500;
-      margin: 0 14px;
-      transition: color 0.2s;
+    /* NAVBAR */
+    .navbar{
+      background:#fff;
+      padding:14px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      position:sticky;
+      top:0;
+      z-index:100;
     }
 
-    .navbar a:hover {
-      color: var(--primary);
+    .logo{
+      font-size:24px;
+      font-weight:700;
+      color:var(--primary);
+      text-decoration:none;
     }
 
-    .navbar .logo {
-      font-size: 24px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: 0.5px;
+    .nav-links{
+      display:flex;
+      gap:18px;
+      list-style:none;
     }
 
-    /* Checkout container */
-    .checkout-container {
-      width: 90%;
-      max-width: 850px;
-      margin: 50px auto;
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      overflow: hidden;
+    .nav-links a{
+      text-decoration:none;
+      color:#333;
+      font-weight:500;
     }
 
-    .checkout-header {
-      background: var(--primary);
-      color: white;
-      padding: 18px;
-      font-size: 22px;
-      text-align: center;
-      font-weight: 600;
+    .nav-links a:hover{
+      color:var(--primary);
     }
 
-    .checkout-content {
-      padding: 25px 30px;
+    .menu-icon{
+      display:none;
+      font-size:24px;
+      cursor:pointer;
     }
 
-    h3 {
-      color: var(--text-dark);
-      margin-bottom: 10px;
+    /* CHECKOUT CARD */
+    .checkout-wrapper{
+      max-width:900px;
+      margin:40px auto;
+      padding:0 16px;
     }
 
-    /* Order Summary */
-    .summary {
-      background: #f8f9ff;
-      border-radius: var(--radius);
-      padding: 15px;
-      margin-bottom: 25px;
+    .checkout-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+      overflow:hidden;
     }
 
-    .summary ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .checkout-header{
+      background:linear-gradient(135deg,var(--primary),#4da3ff);
+      color:#fff;
+      padding:22px;
+      text-align:center;
+      font-size:22px;
+      font-weight:600;
     }
 
-    .summary li {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      color: #555;
-      font-size: 15px;
+    .checkout-body{
+      padding:26px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
     }
 
-    .summary li:last-child {
-      border-bottom: none;
+    /* ORDER SUMMARY */
+    .summary{
+      background:#f8faff;
+      padding:18px;
+      border-radius:var(--radius);
     }
 
-    .summary strong {
-      display: block;
-      text-align: right;
-      margin-top: 10px;
-      font-size: 17px;
-      color: var(--text-dark);
+    .summary h3{
+      margin-bottom:12px;
+      font-size:18px;
     }
 
-    /* Form styling */
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .summary ul{
+      list-style:none;
     }
 
-    input, select, textarea {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: var(--radius);
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s;
+    .summary li{
+      padding:10px 0;
+      border-bottom:1px solid #e6e6e6;
+      font-size:15px;
     }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
+    .summary li:last-child{
+      border-bottom:none;
     }
 
-    textarea {
-      resize: none;
-      height: 80px;
+    .summary .total{
+      margin-top:12px;
+      font-weight:700;
+      text-align:right;
+      font-size:17px;
     }
 
-    /* Button */
-    .pay-btn {
-      background: var(--primary);
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.25s ease;
+    /* FORM */
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
 
-    .pay-btn:hover {
-      background: var(--primary-dark);
+    input, textarea, select{
+      padding:12px;
+      border-radius:var(--radius);
+      border:1px solid #ccc;
+      font-size:15px;
+      outline:none;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .navbar {
-        flex-direction: column;
-        text-align: center;
-        padding: 10px 20px;
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--primary);
+    }
+
+    textarea{
+      resize:none;
+      height:90px;
+    }
+
+    .pay-btn{
+      background:var(--primary);
+      border:none;
+      color:white;
+      padding:14px;
+      font-size:16px;
+      font-weight:600;
+      border-radius:var(--radius);
+      cursor:pointer;
+      transition:0.25s;
+    }
+
+    .pay-btn:hover{
+      background:var(--primary-dark);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .checkout-body{
+        grid-template-columns:1fr;
       }
 
-      .checkout-content {
-        padding: 20px;
+      .menu-icon{
+        display:block;
+      }
+
+      .nav-links{
+        position:absolute;
+        top:64px;
+        left:0;
+        width:100%;
+        background:#fff;
+        flex-direction:column;
+        align-items:center;
+        display:none;
+        padding:15px 0;
+      }
+
+      .nav-links.active{
+        display:flex;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <nav class="navbar">
-    <a href="index2.html" class="logo">UniBazaar</a>
-    <div>
-      <a href="index2.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="events.html">Events</a>
-      <a href="rentals.html">Rentals</a>
-      <a href="contact.html">Contact</a>
-    </div>
+    <a href="index2.html" class="logo">CampusDuka</a>
+
+    <i class="fas fa-bars menu-icon" id="menuIcon"></i>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index2.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="rentals.html">Rentals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
   </nav>
 
-  <div class="checkout-container">
-    <div class="checkout-header">
-      Checkout
-    </div>
+  <!-- CHECKOUT -->
+  <div class="checkout-wrapper">
+    <div class="checkout-card">
+      <div class="checkout-header">Secure Checkout</div>
 
-    <div class="checkout-content">
-      <div class="summary">
-        <h3>Order Summary</h3>
-        <ul id="orderSummary"></ul>
-        <strong id="totalAmount"></strong>
+      <div class="checkout-body">
+
+        <!-- SUMMARY -->
+        <div class="summary">
+          <h3>Order Summary</h3>
+          <ul id="orderSummary"></ul>
+          <div class="total" id="totalAmount"></div>
+        </div>
+
+        <!-- FORM -->
+        <form id="checkoutForm">
+          <input type="text" placeholder="Full Name" required>
+          <input type="tel" placeholder="Phone Number" required>
+          <textarea placeholder="Delivery Location / Hostel / Block" required></textarea>
+
+          <select required>
+            <option value="">Select Payment Method</option>
+            <option>M-Pesa</option>
+            <option>Cash on Delivery</option>
+            <option>Debit / Credit Card</option>
+          </select>
+
+          <button class="pay-btn">Complete Order</button>
+        </form>
+
       </div>
-
-      <form id="checkoutForm">
-        <input type="text" id="fullname" placeholder="Full Name" required>
-        <input type="text" id="phone" placeholder="Phone Number" required>
-        <textarea id="address" placeholder="Delivery Address" required></textarea>
-        <select id="payment" required>
-          <option value="">Select Payment Method</option>
-          <option value="mpesa">M-Pesa</option>
-          <option value="card">Credit/Debit Card</option>
-          <option value="cash">Cash on Delivery</option>
-        </select>
-        <button type="submit" class="pay-btn">Complete Purchase</button>
-      </form>
     </div>
   </div>
 
   <script>
-    // Load cart items into checkout summary
-    document.addEventListener('DOMContentLoaded', () => {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const summaryList = document.getElementById('orderSummary');
-      const totalDisplay = document.getElementById('totalAmount');
+    // MOBILE MENU
+    const menuIcon = document.getElementById("menuIcon");
+    const navLinks = document.getElementById("navLinks");
 
-      if (cart.length === 0) {
-        summaryList.innerHTML = "<li>Your cart is empty.</li>";
-        totalDisplay.textContent = '';
+    menuIcon.addEventListener("click",()=>{
+      navLinks.classList.toggle("active");
+    });
+
+    // LOAD CART
+    document.addEventListener("DOMContentLoaded",()=>{
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const list = document.getElementById("orderSummary");
+      const totalBox = document.getElementById("totalAmount");
+
+      if(cart.length === 0){
+        list.innerHTML = "<li>Your cart is empty 😢</li>";
         return;
       }
 
       let total = 0;
-      summaryList.innerHTML = '';
+      list.innerHTML = "";
 
-      cart.forEach(item => {
+      cart.forEach(item=>{
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
-        const li = document.createElement('li');
-        li.textContent = `${item.name} — KES ${itemTotal.toLocaleString()}`;
-        summaryList.appendChild(li);
+
+        const li = document.createElement("li");
+        li.textContent = `${item.name} × ${item.quantity} — KES ${itemTotal.toLocaleString()}`;
+        list.appendChild(li);
       });
 
-      totalDisplay.textContent = `Total: KES ${total.toLocaleString()}`;
+      totalBox.textContent = `Total: KES ${total.toLocaleString()}`;
     });
 
-    // Handle checkout submission
-    document.getElementById('checkoutForm').addEventListener('submit', e => {
+    // SUBMIT
+    document.getElementById("checkoutForm").addEventListener("submit",e=>{
       e.preventDefault();
-      alert("✅ Purchase completed successfully! Thank you for shopping at UniBazaar.");
-      localStorage.removeItem('cart'); // clear cart
-      window.location.href = 'index2.html'; // go back to home
+      alert("✅ Order placed successfully! Thank you for shopping on CampusDuka.");
+      localStorage.removeItem("cart");
+      window.location.href="index2.html";
     });
   </script>
 
