@@ -25,33 +25,41 @@ body{
 
 a{text-decoration:none;color:inherit}
 
-/* ---------- NAVBAR ---------- */
+/* ================= NAVBAR ================= */
 .navbar{
   background:var(--primary);
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   padding:12px 20px;
   position:sticky;
   top:0;
-  z-index:999;
+  z-index:1000;
 }
 
-.logo{font-size:22px;font-weight:700;color:white}
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:white;
+}
 
 .nav-links{
   list-style:none;
   display:flex;
   gap:20px;
-  padding:0;margin:0;
+  margin:0;
+  padding:0;
 }
 
-.nav-links a{color:white;font-weight:600}
+.nav-links a{
+  color:white;
+  font-weight:600;
+}
 
 .cart-link{
+  position:relative;
   color:white;
   font-size:20px;
-  position:relative;
 }
 
 #cart-count{
@@ -65,7 +73,14 @@ a{text-decoration:none;color:inherit}
   border-radius:50%;
 }
 
-/* ---------- SEARCH ---------- */
+.menu-icon{
+  display:none;
+  font-size:24px;
+  color:white;
+  cursor:pointer;
+}
+
+/* ================= SEARCH ================= */
 .search-section{
   text-align:center;
   margin:30px 0;
@@ -91,9 +106,10 @@ a{text-decoration:none;color:inherit}
   border:none;
   padding:10px 18px;
   border-radius:6px;
+  cursor:pointer;
 }
 
-/* ---------- CATEGORY ---------- */
+/* ================= CATEGORY ================= */
 .category-nav{
   background:white;
   margin:0 5%;
@@ -103,16 +119,21 @@ a{text-decoration:none;color:inherit}
 }
 
 .category-nav ul{
+  list-style:none;
   display:flex;
   justify-content:center;
   gap:15px;
-  list-style:none;
-  padding:0;margin:0;
+  padding:0;
+  margin:0;
+  flex-wrap:wrap;
 }
 
-.category-nav a{color:var(--primary);font-weight:600}
+.category-nav a{
+  color:var(--primary);
+  font-weight:600;
+}
 
-/* ---------- PRODUCTS ---------- */
+/* ================= PRODUCTS ================= */
 .products-container{
   padding:30px 5%;
   display:grid;
@@ -135,8 +156,15 @@ a{text-decoration:none;color:inherit}
   border-radius:8px;
 }
 
-.product-card h3{margin:10px 0 6px;font-size:16px}
-.product-card p{color:var(--primary);font-weight:600}
+.product-card h3{
+  font-size:16px;
+  margin:10px 0 6px;
+}
+
+.product-card p{
+  color:var(--primary);
+  font-weight:600;
+}
 
 .bn{
   background:var(--primary);
@@ -148,7 +176,7 @@ a{text-decoration:none;color:inherit}
   cursor:pointer;
 }
 
-/* ---------- MODAL ---------- */
+/* ================= MODAL ================= */
 .modal{
   display:none;
   position:fixed;
@@ -156,7 +184,7 @@ a{text-decoration:none;color:inherit}
   background:rgba(0,0,0,.6);
   justify-content:center;
   align-items:center;
-  z-index:1000;
+  z-index:2000;
 }
 
 .modal-content{
@@ -165,8 +193,8 @@ a{text-decoration:none;color:inherit}
   max-width:500px;
   padding:20px;
   border-radius:10px;
-  text-align:center;
   position:relative;
+  text-align:center;
 }
 
 .close-btn{
@@ -202,7 +230,7 @@ a{text-decoration:none;color:inherit}
   border-color:var(--primary);
 }
 
-/* ---------- FOOTER ---------- */
+/* ================= FOOTER ================= */
 footer{
   background:var(--primary);
   color:white;
@@ -211,20 +239,48 @@ footer{
   margin-top:30px;
 }
 
+/* ================= MOBILE ================= */
 @media(max-width:768px){
-  .nav-links{display:none}
-  .search-box input{width:85%}
+
+  .menu-icon{
+    display:block;
+  }
+
+  .nav-links{
+    position:absolute;
+    top:60px;
+    left:0;
+    width:100%;
+    background:var(--primary);
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+    padding:15px 0;
+    display:none;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .search-box input{
+    width:85%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
   <div class="logo"><a href="index2.html">CampusDuka</a></div>
 
-  <ul class="nav-links">
+  <div class="menu-icon" id="menuIcon">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
     <li><a href="index2.html">Home</a></li>
     <li><a href="products.html">Products</a></li>
     <li><a href="food.html">Fast Foods</a></li>
@@ -238,7 +294,7 @@ footer{
   </a>
 </nav>
 
-<!-- SEARCH -->
+<!-- ================= SEARCH ================= -->
 <section class="search-section">
   <h2>All Products</h2>
   <div class="search-box">
@@ -247,7 +303,7 @@ footer{
   </div>
 </section>
 
-<!-- CATEGORY -->
+<!-- ================= CATEGORY ================= -->
 <div class="category-nav">
   <ul>
     <li><a href="electronics.html">Electronics</a></li>
@@ -258,7 +314,7 @@ footer{
   </ul>
 </div>
 
-<!-- PRODUCTS -->
+<!-- ================= PRODUCTS ================= -->
 <div class="products-container">
 
   <div class="product-card">
@@ -279,7 +335,7 @@ footer{
 
 </div>
 
-<!-- MODAL -->
+<!-- ================= MODAL ================= -->
 <div class="modal" id="viewModal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -293,6 +349,15 @@ footer{
 </footer>
 
 <script>
+/* NAVBAR TOGGLE */
+const menuIcon = document.getElementById("menuIcon");
+const navLinks = document.getElementById("navLinks");
+
+menuIcon.addEventListener("click",()=>{
+  navLinks.classList.toggle("active");
+});
+
+/* CART */
 function updateCartCount(){
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   let count = cart.reduce((s,i)=>s+i.quantity,0);
@@ -306,10 +371,10 @@ function addToCart(name,price,image){
   else cart.push({name,price,image,quantity:1});
   localStorage.setItem('cart',JSON.stringify(cart));
   updateCartCount();
-  alert(name+" added to cart!");
+  alert(name + " added to cart!");
 }
 
-/* ---------- VIEW PRODUCT ---------- */
+/* VIEW MODAL */
 function viewProduct(images){
   const modal = document.getElementById("viewModal");
   const main = document.getElementById("mainImage");
@@ -325,7 +390,7 @@ function viewProduct(images){
     thumbs.appendChild(t);
   });
 
-  modal.style.display="flex";
+  modal.style.display = "flex";
 }
 
 function closeModal(){
