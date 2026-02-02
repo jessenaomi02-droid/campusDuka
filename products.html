@@ -3,478 +3,294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka | Beauty & Personal Care</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<title>CampusDuka | All Products</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  :root {
-    --primary: #0077ff;  /* Your navbar color */
-    --light: #ffffff;
-    --dark: #000000;
-    --sign-btn: #ffcc00;
-  }
+:root{
+  --primary:#0077ff;
+  --light:#ffffff;
+  --dark:#000000;
+}
 
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background: #f8f9fc;
-    color: var(--dark);
-  }
+*{box-sizing:border-box}
 
-  a { text-decoration: none; color: inherit; }
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#f5f7fb;
+  color:var(--dark);
+}
 
-  /* ---------- Navbar ---------- */
-  .navbar {
-    background: var(--primary);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    flex-wrap: wrap;
-  }
+a{text-decoration:none;color:inherit}
 
-  .logo { font-size: 24px; font-weight: 700; color: var(--light); }
+/* ---------- NAVBAR ---------- */
+.navbar{
+  background:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
+  position:sticky;
+  top:0;
+  z-index:999;
+}
 
-  .nav-links { 
-    list-style: none; 
-    display: flex; 
-    gap: 20px; 
-    margin: 0; 
-    padding: 0; 
-  }
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:var(--light);
+}
 
-  .nav-links li a { 
-    color: var(--light); 
-    font-weight: 600; 
-    padding: 6px 10px; 
-  }
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:20px;
+  margin:0;
+  padding:0;
+}
 
-  .nav-links li a:hover { 
-    color: var(--sign-btn); 
-  }
+.nav-links a{
+  color:var(--light);
+  font-weight:600;
+}
 
-  .cart-link { 
-    position: relative; 
-    font-size: 20px; 
-    color: var(--light); 
-  }
+.nav-links a:hover{opacity:.85}
 
-  #cart-count { 
-    position: absolute; 
-    top: -8px; 
-    right: -12px; 
-    background: red; 
-    color: var(--light); 
-    border-radius: 50%; 
-    padding: 2px 6px; 
-    font-size: 12px; 
-  }
+.cart-link{
+  position:relative;
+  font-size:20px;
+  color:var(--light);
+}
 
-  /* Sign In button */
-  .sign-btn {
-    background: var(--sign-btn);
-    color: var(--dark);
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+#cart-count{
+  position:absolute;
+  top:-6px;
+  right:-10px;
+  background:red;
+  color:white;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:50%;
+}
 
-  .sign-btn:hover { background: #ffd84d; }
+/* ---------- SEARCH ---------- */
+.search-section{
+  text-align:center;
+  margin:30px 0;
+}
 
-  /* ---------- Search Section ---------- */
-  .search {
-    text-align: center;
-    margin: 30px 0;
-  }
+.search-section h2{
+  margin-bottom:12px;
+}
 
-  .search input {
-    padding: 10px;
-    width: 60%;
-    max-width: 400px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    outline: none;
-  }
+.search-box{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
 
-  .search .look {
-    background: var(--primary);
-    color: var(--light);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    margin-left: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+.search-box input{
+  width:60%;
+  max-width:400px;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ddd;
+}
 
-  .search .look:hover { background: #005fcc; }
+.search-box button{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
-  /* ---------- Category Navigation ---------- */
-  .category-nav {
-    background: white;
-    padding: 12px;
-    text-align: center;
-    margin: 15px 5%;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
+/* ---------- CATEGORY NAV ---------- */
+.category-nav{
+  background:white;
+  margin:0 5%;
+  padding:12px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
 
-  .category-nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 0;
-    list-style: none;
-  }
+.category-nav ul{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:15px;
+  padding:0;
+  margin:0;
+}
 
-  .category-nav ul li a {
-    color: var(--primary);
-    font-weight: 600;
-  }
+.category-nav a{
+  color:var(--primary);
+  font-weight:600;
+}
 
-  /* ---------- Product Cards ---------- */
-  .products-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px 5%;
-  }
+/* ---------- PRODUCTS ---------- */
+.products-container{
+  padding:30px 5%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
 
-  .product-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    padding: 15px;
-    text-align: center;
-    transition: 0.3s;
-  }
+.product-card{
+  background:white;
+  border-radius:10px;
+  padding:15px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  text-align:center;
+  transition:.3s;
+}
 
-  .product-card:hover { 
-    transform: scale(1.03); 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
-  }
+.product-card:hover{
+  transform:translateY(-5px);
+}
 
-  .product-card img { 
-    width: 100%; 
-    height: 160px; 
-    object-fit: cover; 
-    border-radius: 8px; 
-    margin-bottom: 10px;
-  }
+.product-card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:8px;
+}
 
-  .product-card h3 { font-size: 16px; margin: 8px 0; }
-  .product-card p { color: var(--primary); font-weight: 600; margin-bottom: 10px; }
+.product-card h3{
+  font-size:16px;
+  margin:10px 0 6px;
+}
 
-  .product-card .bn {
-    background: var(--primary);
-    color: var(--light);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+.product-card p{
+  color:var(--primary);
+  font-weight:600;
+}
 
-  .product-card .bn:hover { background: #005fcc; }
+.bn{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  margin:4px;
+}
 
-  /* ---------- Modal ---------- */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left:0; top:0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-  }
+.bn:hover{background:#005fcc}
 
-  .modal-content {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-  }
+/* ---------- FOOTER ---------- */
+footer{
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:15px;
+  margin-top:30px;
+}
 
-  .close-btn {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-  }
-
-  .gallery-container img { width: 100%; border-radius: 10px; }
-  .thumbnail-container img {
-    width: 70px; height: 70px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin: 5px;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-
-  .thumbnail-container img:hover { transform: scale(1.1); }
-
-  /* ---------- Responsive ---------- */
-  @media screen and (max-width: 768px) {
-    .nav-links { flex-direction: column; gap: 10px; margin-top: 10px; }
-    .search input { width: 90%; }
-  }
-
-  @media screen and (max-width: 480px) {
-    .product-card img { height: 140px; }
-    .product-card h3 { font-size: 14px; }
-    .product-card p { font-size: 14px; }
-  }
-</style>
-</head>
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo"><a href="index2.html">CampusDuka</a></div>
-    <ul class="nav-links">
-      <li><a href="index2.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="food.html">Fast Foods</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
-    </ul>
-    <div style="display:flex; align-items:center; gap:10px;">
-      <button class="sign-btn"><a href="signin.html">Sign In</a></button>
-      <a href="cart.html" class="cart-link">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count">0</span>
-      </a>
-    </div>
-  </nav>
-
-  <!-- Search Section -->
-  <div class="search">
-    <h2>Beauty & Personal Care</h2>
-    <input type="text" placeholder="Search beauty products..." />
-    <button class="look">Search</button>
-  </div>
-
-  <!-- Category Navigation -->
-  <div class="category-nav">
-    <ul>
-      <li><a href="electronics.html">Electronics</a></li>
-      <li><a href="clothings.html">Clothings</a></li>
-      <li><a href="homeappliances.html">Home Decors</a></li>
-      <li><a href="studymaterials.html">Study Materials</a></li>
-      <li><a href="beauty.html">Beauty & Personal Care</a></li>
-    </ul>
-  </div>
-
-  <!-- Products -->
-  <div class="products-container">
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Lipstick">
-      <h3>Lipstick</h3>
-      <p>KES 500</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Lipstick',500,'pi.png.jfif')" class="bn">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Face Cream">
-      <h3>Face Cream</h3>
-      <p>KES 1,200</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Face Cream',1200,'pi.png.jfif')" class="bn">Add to Cart</button>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="viewModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div class="gallery-container">
-        <img id="mainImage" src="" alt="Product Image" />
-        <div class="thumbnail-container" id="thumbnails"></div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function updateCartCount(){
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let count = cart.reduce((sum,item)=>sum+item.quantity,0);
-      document.getElementById('cart-count').innerText = count;
-    }
-
-    function addToCart(name, price, image){
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let existing = cart.find(item=>item.name===name);
-      if(existing) existing.quantity +=1;
-      else cart.push({name,price,image,quantity:1});
-      localStorage.setItem('cart',JSON.stringify(cart));
-      updateCartCount();
-      alert(`${name} added to cart!`);
-    }
-
-    document.addEventListener("DOMContentLoaded", updateCartCount);
-
-    // Modal
-    function viewProduct(images){
-      const modal = document.getElementById("viewModal");
-      const main = document.getElementById("mainImage");
-      const thumbs = document.getElementById("thumbnails");
-      main.src = images[0];
-      thumbs.innerHTML='';
-      images.forEach(src=>{
-        let img = document.createElement('img');
-        img.src=src;
-        img.onclick=()=>main.src=src;
-        thumbs.appendChild(img);
-      });
-      modal.style.display='flex';
-    }
-
-    document.querySelector(".close-btn").onclick = ()=>document.getElementById("viewModal").style.display='none';
-    window.onclick = (e)=>{if(e.target===document.getElementById("viewModal"))document.getElementById("viewModal").style.display='none';};
-  </script>
-</body>
-</html>
-
-    object-fit: cover; 
-    border-radius: 8px; 
-  }
-
-  .bn {
-    background: var(--primary);
-    color: white;
-    padding: 7px 14px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-  }
-
-  .bn:hover { background: #005fcc; }
-
-  /* Responsive mobile */
-  @media (max-width: 768px) {
-    .nav-links { display: none; flex-direction: column; width: 100%; }
-    .nav-links.active { display: flex; }
-    .menu-icon { display: block; }
-  }
-
-  footer {
-    text-align: center;
-    background: var(--primary);
-    color: white;
-    padding: 15px;
-    margin-top: 20px;
-  }
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .search-box input{width:85%}
+}
 </style>
 </head>
 
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="index2.html" class="logo">CampusDuka</a>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo"><a href="index2.html">CampusDuka</a></div>
 
-    <div class="menu-icon" id="menu-icon"><i class="fas fa-bars"></i></div>
+  <ul class="nav-links">
+    <li><a href="index2.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="food.html">Fast Foods</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
 
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index2.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="food.html">Fast Foods</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
-    </ul>
+  <a href="cart.html" class="cart-link">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cart-count">0</span>
+  </a>
+</nav>
 
-    <a href="cart.html" class="cart-link">
-      <i class="fas fa-shopping-cart"></i>
-      <span id="cart-count">0</span>
-    </a>
-  </nav>
+<!-- SEARCH -->
+<section class="search-section">
+  <h2>All Products</h2>
+  <div class="search-box">
+    <input type="text" placeholder="Search products on CampusDuka...">
+    <button>Search</button>
+  </div>
+</section>
 
-  <!-- Centered Search Bar -->
-  <div class="nav-actions">
-    <input type="text" placeholder="Search for products..." class="search-bar">
-    <button class="btn">Search</button>
+<!-- CATEGORY NAV -->
+<div class="category-nav">
+  <ul>
+    <li><a href="electronics.html">Electronics</a></li>
+    <li><a href="clothings.html">Clothings</a></li>
+    <li><a href="homeappliances.html">Home Decors</a></li>
+    <li><a href="studymaterials.html">Study Materials</a></li>
+    <li><a href="beauty.html">Beauty & Care</a></li>
+  </ul>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-container">
+
+  <div class="product-card">
+    <img src="laptop.jpg" alt="Laptop">
+    <h3>Laptop</h3>
+    <p>KES 45,000</p>
+    <button class="bn" onclick="addToCart('Laptop',45000,'laptop.jpg')">Add to Cart</button>
   </div>
 
-  <!-- Category Navigation -->
-  <div class="category-nav">
-    <ul>
-      <li><a href="electronics.html">Electronics</a></li>
-      <li><a href="clothings.html">Clothings</a></li>
-      <li><a href="homeappliances.html">Home Decors</a></li>
-      <li><a href="studymaterials.html">Study Materials</a></li>
-      <li><a href="beauty.html">Beauty & Personal Care</a></li>
-    </ul>
+  <div class="product-card">
+    <img src="lipstick.jpg" alt="Lipstick">
+    <h3>Lipstick</h3>
+    <p>KES 500</p>
+    <button class="bn" onclick="addToCart('Lipstick',500,'lipstick.jpg')">Add to Cart</button>
   </div>
 
-  <!-- Products Section -->
-  <div class="products-container">
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Laptop">
-      <h3>Laptop</h3>
-      <p>KES 1</p>
-      <button class="bn" onclick="addToCart('Laptop',1,'pi.png.jfif')">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-      <img src="pi.png.jfif" alt="Calculator">
-      <h3>Casio Scientific Calculator</h3>
-      <p>KES 1,200</p>
-      <button class="bn" onclick="addToCart('Calculator',1200,'pi.png.jfif')">Add to Cart</button>
-    </div>
+  <div class="product-card">
+    <img src="calculator.jpg" alt="Calculator">
+    <h3>Scientific Calculator</h3>
+    <p>KES 1,200</p>
+    <button class="bn" onclick="addToCart('Calculator',1200,'calculator.jpg')">Add to Cart</button>
   </div>
 
-  <footer>
-    &copy; 2025 CampusDuka. All Rights Reserved.
-  </footer>
+</div>
+
+<footer>
+  &copy; 2025 CampusDuka. All Rights Reserved.
+</footer>
 
 <script>
-  const menuIcon = document.getElementById("menu-icon");
-  const navLinks = document.getElementById("nav-links");
+function updateCartCount(){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let count = cart.reduce((sum,item)=>sum+item.quantity,0);
+  document.getElementById('cart-count').innerText = count;
+}
 
-  menuIcon.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-  });
+function addToCart(name,price,image){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let item = cart.find(p=>p.name===name);
 
-  function updateCartCount(){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById('cart-count').innerText = count;
-  }
+  if(item){item.quantity++}
+  else{cart.push({name,price,image,quantity:1})}
 
-  function addToCart(name, price, image){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let existing = cart.find(item => item.name === name);
+  localStorage.setItem('cart',JSON.stringify(cart));
+  updateCartCount();
+  alert(name + " added to cart!");
+}
 
-    if(existing){ existing.quantity++; }
-    else{ cart.push({name, price, image, quantity: 1}); }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    alert(name + " added to cart!");
-  }
-
-  document.addEventListener("DOMContentLoaded", updateCartCount);
+document.addEventListener("DOMContentLoaded",updateCartCount);
 </script>
 
 </body>
 </html>
-
-
