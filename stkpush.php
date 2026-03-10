@@ -2,36 +2,16 @@
 
 include('config.php');
 
-/* STEP 1: GENERATE ACCESS TOKEN */
+/* STEP 1: GET ACCESS TOKEN FROM access_token.php */
 
-$credentials = base64_encode($consumerKey . ":" . $consumerSecret);
+$access_token = file_get_contents("https://your-render-url.onrender.com/access_token.php");
 
-$tokenUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-
-$curl = curl_init();
-
-curl_setopt($curl, CURLOPT_URL, $tokenUrl);
-curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-    "Authorization: Basic $credentials"
-));
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($curl);
-
-if ($response === false) {
-    die("Failed to connect to Safaricom for token.");
+if (!$access_token) {
+    die("Failed to retrieve access token.");
 }
 
-$result = json_decode($response);
 
-if (!isset($result->access_token)) {
-    die("Access token not generated.");
-}
-
-$access_token = $result->access_token;
-
-
-/* STEP 2: PREPARE STK PUSH */
+/* STEP 2: PREPARE PASSWORD */
 
 $timestamp = date("YmdHis");
 
@@ -40,7 +20,7 @@ $password = base64_encode($shortcode . $passkey . $timestamp);
 
 /* STEP 3: STK PUSH REQUEST */
 
-$stkUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+$url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
 
 $data = array(
     "BusinessShortCode" => $shortcode,
@@ -58,10 +38,10 @@ $data = array(
 
 $curl = curl_init();
 
-curl_setopt($curl, CURLOPT_URL, $stkUrl);
+curl_setopt($curl, CURLOPT_URL, $url);
 curl_setopt($curl, CURLOPT_HTTPHEADER, array(
     "Content-Type: application/json",
-    "Authorization: Bearer $access_token"
+    "Authorization: Bearer " . $access_token
 ));
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_POST, true);
@@ -76,5 +56,4 @@ if ($response === false) {
 echo $response;
 
 ?>
-
    
