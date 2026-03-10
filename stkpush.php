@@ -4,8 +4,7 @@ include('config.php');
 
 /* STEP 1: GET ACCESS TOKEN FROM access_token.php */
 
-$access_token = file_get_contents("https://your-render-url.onrender.com/access_token.php");
-
+$access_token = file_get_contents("https://campusduka.onrender.com/access_token.php");
 if (!$access_token) {
     die("Failed to retrieve access token.");
 }
