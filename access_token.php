@@ -1,5 +1,5 @@
 <?php
-
+// access_token.php
 include('config.php');
 
 $credentials = base64_encode($consumerKey . ":" . $consumerSecret);
@@ -16,20 +16,18 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($curl);
 
+curl_close($curl);
+
+// Check for errors
 if($response === false){
     die("Curl Error: ".curl_error($curl));
 }
 
-$data = json_decode($response);
+$token_data = json_decode($response);
 
-if(!isset($data->access_token)){
+if(!isset($token_data->access_token)){
     die("Token Error: ".$response);
 }
 
-$access_token = $data->access_token;
-
-curl_close($curl);
-
-return $access_token;
-
-?>
+// Return only the access token
+return $token_data->access_token;
