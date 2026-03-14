@@ -1,36 +1,35 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include('config.php');
 
 $credentials = base64_encode($consumerKey . ":" . $consumerSecret);
 
 $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
-$curl = curl_init();
+$curl = curl_init($url);
 
-curl_setopt($curl, CURLOPT_URL, $url);
-curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+curl_setopt($curl, CURLOPT_HTTPHEADER, [
     "Authorization: Basic ".$credentials
-));
+]);
+
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
 $response = curl_exec($curl);
 
-if ($response === false) {
-    echo "Curl Error: " . curl_error($curl);
-    exit;
+if($response === false){
+    die("Curl Error: ".curl_error($curl));
 }
 
-$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+$data = json_decode($response);
 
-echo "HTTP Status Code: " . $httpCode . "<br><br>";
-echo "Response:<br>";
-echo $response;
+if(!isset($data->access_token)){
+    die("Token Error: ".$response);
+}
+
+$access_token = $data->access_token;
 
 curl_close($curl);
+
+return $access_token;
 
 ?>
