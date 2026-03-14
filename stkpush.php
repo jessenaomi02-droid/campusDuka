@@ -7,25 +7,7 @@ include('config.php');
 
 /* GET ACCESS TOKEN */
 
-$credentials = base64_encode($consumerKey.":".$consumerSecret);
-
-$token_url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-
-$ch = curl_init($token_url);
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: Basic ".$credentials
-]);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$token_response = curl_exec($ch);
-
-$token_data = json_decode($token_response);
-
-$access_token = $token_data->access_token;
-
-curl_close($ch);
+$access_token = include('access_token.php');
 
 
 /* GENERATE PASSWORD */
@@ -35,7 +17,7 @@ $timestamp = date("YmdHis");
 $password = base64_encode($shortcode.$passkey.$timestamp);
 
 
-/* STK PUSH */
+/* STK PUSH REQUEST */
 
 $url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
 
@@ -53,9 +35,9 @@ $data = array(
 "TransactionDesc"=>"Test Payment"
 );
 
-$payload=json_encode($data);
+$payload = json_encode($data);
 
-$curl=curl_init($url);
+$curl = curl_init($url);
 
 curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 "Content-Type: application/json",
@@ -66,10 +48,17 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 curl_setopt($curl, CURLOPT_POST,true);
 curl_setopt($curl, CURLOPT_POSTFIELDS,$payload);
 
-$response=curl_exec($curl);
+$response = curl_exec($curl);
 
-echo $response;
+if($response === false){
+    echo "Curl Error: ".curl_error($curl);
+}else{
+    echo $response;
+}
 
 curl_close($curl);
 
 ?>
+
+
+
