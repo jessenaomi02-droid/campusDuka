@@ -5,7 +5,7 @@ $consumerSecret = "PuRoGTNg4NeRJYsswH32GGVIldt89Kosyejwp2TGNb95AMXw9iLOKG0njghcA
 
 $shortcode = "174379";
 
-$passkey = "bfb279f9aa9bdbcf158e97ddf9b3bcd11";
+$passkey = "bfb279f9aa9bdbcf158e97ddf9b3bcd";
 
 $callbackUrl = "https://campusduka.onrender.com/callback.php";
 
