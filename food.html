@@ -229,15 +229,82 @@
   </div>
 
   <!-- HERO SECTION -->
-  <section class="hero">
-    <img src="food1.jpg">
-    <img src="food2.jpg">
-    
-    <div>
-      <h1>Buy Smart, Eat Smart</h1>
-      <p>Discover campus meals delivered fast & affordably.</p>
-    </div>
-  </section>
+<section class="hero">
+
+  <div class="slider">
+    <img class="slide active" src="images/food1.jpg" alt="Food">
+    <img class="slide" src="images/food2.jpg" alt="Food">
+    <img class="slide" src="images/food3.jpg" alt="Food">
+    <img class="slide" src="images/food4.jpg" alt="Food">
+  </div>
+
+  <div class="hero-text">
+    <h1>Buy Smart, Eat Smart</h1>
+    <p>Discover campus meals delivered fast & affordably.</p>
+  </div>
+
+</section>
+
+<style>
+.hero{
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.slider{
+    position:absolute;
+    width:100%;
+    height:100%;
+}
+
+.slide{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:opacity 1.5s ease-in-out;
+}
+
+.slide.active{
+    opacity:1;
+}
+
+.hero-text{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    top:50%;
+    transform:translateY(-50%);
+    color:white;
+    background:rgba(0,0,0,0.4);
+    padding:20px;
+    width:fit-content;
+    margin:auto;
+    border-radius:10px;
+}
+</style>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+
+function changeSlide() {
+   slides[current].classList.remove("active");
+
+   current++;
+
+   if(current >= slides.length){
+      current = 0;
+   }
+
+   slides[current].classList.add("active");
+}
+
+setInterval(changeSlide,3000);
+</script>
 
   <!-- PRODUCT GRID -->
   <div class="product-container">
