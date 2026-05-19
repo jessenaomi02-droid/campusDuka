@@ -318,31 +318,48 @@ footer{
 <div class="products-container">
 
   <div class="product-card">
-    <img src="/images/laptop1.jpg">
 
-    <h3>Laptop</h3>
+<style>
+.product-card small{
+  display:block;
+  color:#666;
+  font-size:13px;
+  margin-top:6px;
+  line-height:1.5;
+}
+</style>
 
-    <p>KES 45,000</p>
+<img src="/images/laptop1.jpg">
 
-    <button class="bn"
-    onclick="viewProduct([
-    '/images/laptop1.jpg',
-    '/images/laptop2.jpg',
-    '/images/laptop3.jpg'
-    ])">
-    View
-    </button>
+<h3>Laptop</h3>
 
-    <button class="bn"
-    onclick="addToCart(
-    'Laptop',
-    45000,
-    '/images/laptop1.jpg'
-    )">
-    Add to Cart
-    </button>
+<p>KES 45,000</p>
+
+<small>
+HP EliteBook • 8GB RAM • 512GB SSD • Good battery life • Perfect for assignments, coding and daily student use.
+</small>
+
+<br><br>
+
+<button class="bn"
+onclick="viewProduct([
+'/images/laptop1.jpg',
+'/images/laptop2.jpg',
+'/images/laptop3.jpg'
+])">
+View
+</button>
+
+<button class="bn"
+onclick="addToCart(
+'Laptop',
+45000,
+'/images/laptop1.jpg'
+)">
+Add to Cart
+</button>
+
 </div>
-
   <div class="product-card">
     <img src="lipstick1.jpg">
     <h3>Lipstick</h3>
