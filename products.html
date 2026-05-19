@@ -318,12 +318,30 @@ footer{
 <div class="products-container">
 
   <div class="product-card">
-    <img src="laptop1.jpg">
+    <img src="/images/laptop1.jpg">
+
     <h3>Laptop</h3>
+
     <p>KES 45,000</p>
-    <button class="bn" onclick="viewProduct(['laptop1.jpg','laptop2.jpg','laptop3.jpg'])">View</button>
-    <button class="bn" onclick="addToCart('Laptop',45000,'laptop1.jpg')">Add to Cart</button>
-  </div>
+
+    <button class="bn"
+    onclick="viewProduct([
+    '/images/laptop1.jpg',
+    '/images/laptop2.jpg',
+    '/images/laptop3.jpg'
+    ])">
+    View
+    </button>
+
+    <button class="bn"
+    onclick="addToCart(
+    'Laptop',
+    45000,
+    '/images/laptop1.jpg'
+    )">
+    Add to Cart
+    </button>
+</div>
 
   <div class="product-card">
     <img src="lipstick1.jpg">
