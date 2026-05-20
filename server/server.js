@@ -79,7 +79,49 @@ err.message
 
 });
 
+app.post("/signup",async(req,res)=>{
 
+try{
+
+const{
+fullname,
+email,
+phone,
+password
+}=req.body;
+
+await db.query(
+
+`INSERT INTO users
+(fullname,email,phone,password)
+
+VALUES($1,$2,$3,$4)`,
+
+[
+fullname,
+email,
+phone,
+password
+]
+
+);
+
+res.json({
+success:true,
+message:"User created"
+});
+
+}catch(err){
+
+res.status(500)
+.json({
+success:false,
+error:err.message
+});
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
