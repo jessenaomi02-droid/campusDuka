@@ -225,6 +225,55 @@ res.send(err.message);
 }
 
 });
+app.post("/add-product",async(req,res)=>{
+
+try{
+
+const{
+name,
+description,
+price,
+image,
+category
+}=req.body;
+
+await db.query(
+
+`INSERT INTO products
+(name,description,price,image,category)
+
+VALUES($1,$2,$3,$4,$5)`,
+
+[
+name,
+description,
+price,
+image,
+category
+]
+
+);
+
+res.json({
+
+success:true,
+message:"Product added"
+
+});
+
+}catch(err){
+
+res.status(500)
+.json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
