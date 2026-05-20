@@ -122,6 +122,39 @@ error:err.message
 }
 
 });
+app.get("/test-signup",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`INSERT INTO users
+(fullname,email,phone,password)
+
+VALUES($1,$2,$3,$4)`,
+
+[
+"Jesse",
+"jesse@test.com",
+"0712345678",
+"12345"
+]
+
+);
+
+res.send(
+"Test user added"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
