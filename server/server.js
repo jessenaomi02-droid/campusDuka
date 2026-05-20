@@ -198,6 +198,33 @@ error:err.message
 }
 
 });
+app.get("/create-products",async(req,res)=>{
+
+try{
+
+await db.query(`
+
+CREATE TABLE IF NOT EXISTS products(
+id SERIAL PRIMARY KEY,
+name VARCHAR(100),
+description TEXT,
+price INT,
+image TEXT,
+category VARCHAR(50),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
+`);
+
+res.send("Products table created");
+
+}catch(err){
+
+res.send(err.message);
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
