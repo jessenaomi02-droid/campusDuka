@@ -155,6 +155,49 @@ err.message
 }
 
 });
+app.post("/login",async(req,res)=>{
+
+try{
+
+const {email,password}=req.body;
+
+const user=
+await db.query(
+
+`SELECT * FROM users
+WHERE email=$1
+AND password=$2`,
+
+[email,password]
+
+);
+
+if(user.rows.length===0){
+
+return res.json({
+success:false,
+message:"Invalid email or password"
+});
+
+}
+
+res.json({
+success:true,
+message:"Login successful",
+user:user.rows[0]
+});
+
+}catch(err){
+
+res.status(500)
+.json({
+success:false,
+error:err.message
+});
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
