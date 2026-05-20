@@ -274,6 +274,28 @@ error:err.message
 }
 
 });
+app.get("/products",async(req,res)=>{
+
+try{
+
+const products=
+await db.query(
+"SELECT * FROM products ORDER BY id DESC"
+);
+
+res.json(
+products.rows
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
