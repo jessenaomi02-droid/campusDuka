@@ -9,435 +9,518 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
-  --primary:#0077ff;
-  --light:#ffffff;
-  --dark:#000000;
+--primary:#0077ff;
+--light:#ffffff;
 }
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box;
+}
 
 body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:#f5f7fb;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#f5f7fb;
 }
 
-a{text-decoration:none;color:inherit}
+a{
+text-decoration:none;
+color:inherit;
+}
 
-/* ================= NAVBAR ================= */
+/* NAVBAR */
+
 .navbar{
-  background:var(--primary);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 20px;
-  position:sticky;
-  top:0;
-  z-index:1000;
+background:var(--primary);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 20px;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .logo{
-  font-size:22px;
-  font-weight:700;
-  color:white;
+font-size:22px;
+font-weight:700;
+color:white;
 }
 
 .nav-links{
-  list-style:none;
-  display:flex;
-  gap:20px;
-  margin:0;
-  padding:0;
+list-style:none;
+display:flex;
+gap:20px;
+margin:0;
+padding:0;
 }
 
 .nav-links a{
-  color:white;
-  font-weight:600;
+color:white;
+font-weight:600;
 }
 
 .cart-link{
-  position:relative;
-  color:white;
-  font-size:20px;
+position:relative;
+color:white;
+font-size:20px;
 }
 
 #cart-count{
-  position:absolute;
-  top:-6px;
-  right:-10px;
-  background:red;
-  color:white;
-  font-size:11px;
-  padding:2px 6px;
-  border-radius:50%;
+position:absolute;
+top:-6px;
+right:-10px;
+background:red;
+color:white;
+font-size:11px;
+padding:2px 6px;
+border-radius:50%;
 }
 
 .menu-icon{
-  display:none;
-  font-size:24px;
-  color:white;
-  cursor:pointer;
+display:none;
+font-size:24px;
+color:white;
+cursor:pointer;
 }
 
-/* ================= SEARCH ================= */
+/* SEARCH */
+
 .search-section{
-  text-align:center;
-  margin:30px 0;
+text-align:center;
+margin:30px 0;
 }
 
 .search-box{
-  display:flex;
-  justify-content:center;
-  gap:8px;
+display:flex;
+justify-content:center;
+gap:8px;
 }
 
 .search-box input{
-  width:60%;
-  max-width:400px;
-  padding:10px;
-  border-radius:6px;
-  border:1px solid #ddd;
+width:60%;
+max-width:400px;
+padding:10px;
+border-radius:6px;
+border:1px solid #ddd;
 }
 
 .search-box button{
-  background:var(--primary);
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:6px;
-  cursor:pointer;
+background:var(--primary);
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
 }
 
-/* ================= CATEGORY ================= */
+/* CATEGORY */
+
 .category-nav{
-  background:white;
-  margin:0 5%;
-  padding:12px;
-  border-radius:8px;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
+background:white;
+margin:0 5%;
+padding:12px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
 
 .category-nav ul{
-  list-style:none;
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  padding:0;
-  margin:0;
-  flex-wrap:wrap;
+list-style:none;
+display:flex;
+justify-content:center;
+gap:15px;
+padding:0;
+margin:0;
+flex-wrap:wrap;
 }
 
 .category-nav a{
-  color:var(--primary);
-  font-weight:600;
+color:var(--primary);
+font-weight:600;
 }
 
-/* ================= PRODUCTS ================= */
+/* PRODUCTS */
+
 .products-container{
-  padding:30px 5%;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
+padding:30px 5%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
 }
 
 .product-card{
-  background:white;
-  border-radius:10px;
-  padding:15px;
-  text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
+background:white;
+border-radius:10px;
+padding:15px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .product-card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:8px;
+width:100%;
+height:160px;
+object-fit:cover;
+border-radius:8px;
 }
 
 .product-card h3{
-  font-size:16px;
-  margin:10px 0 6px;
+font-size:16px;
+margin:10px 0;
 }
 
 .product-card p{
-  color:var(--primary);
-  font-weight:600;
+color:var(--primary);
+font-weight:600;
+}
+
+.product-card small{
+display:block;
+color:#666;
+font-size:13px;
+margin-top:6px;
+line-height:1.5;
 }
 
 .bn{
-  background:var(--primary);
-  color:white;
-  border:none;
-  padding:8px 14px;
-  border-radius:6px;
-  margin:4px;
-  cursor:pointer;
+background:var(--primary);
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+margin:4px;
+cursor:pointer;
 }
 
-/* ================= MODAL ================= */
+/* MODAL */
+
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  justify-content:center;
-  align-items:center;
-  z-index:2000;
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+justify-content:center;
+align-items:center;
+z-index:2000;
 }
 
 .modal-content{
-  background:white;
-  width:90%;
-  max-width:500px;
-  padding:20px;
-  border-radius:10px;
-  position:relative;
-  text-align:center;
+background:white;
+width:90%;
+max-width:500px;
+padding:20px;
+border-radius:10px;
+position:relative;
 }
 
 .close-btn{
-  position:absolute;
-  top:10px;
-  right:14px;
-  font-size:22px;
-  cursor:pointer;
+position:absolute;
+top:10px;
+right:14px;
+font-size:22px;
+cursor:pointer;
 }
 
 #mainImage{
-  width:100%;
-  height:280px;
-  object-fit:cover;
-  border-radius:10px;
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:10px;
 }
 
-.thumbnail-container{
-  margin-top:10px;
-}
+/* FOOTER */
 
-.thumbnail-container img{
-  width:70px;
-  height:70px;
-  object-fit:cover;
-  border-radius:6px;
-  margin:4px;
-  cursor:pointer;
-  border:2px solid transparent;
-}
-
-.thumbnail-container img:hover{
-  border-color:var(--primary);
-}
-
-/* ================= FOOTER ================= */
 footer{
-  background:var(--primary);
-  color:white;
-  text-align:center;
-  padding:15px;
-  margin-top:30px;
+background:var(--primary);
+color:white;
+text-align:center;
+padding:15px;
+margin-top:30px;
 }
 
-/* ================= MOBILE ================= */
+/* MOBILE */
+
 @media(max-width:768px){
 
-  .menu-icon{
-    display:block;
-  }
-
-  .nav-links{
-    position:absolute;
-    top:60px;
-    left:0;
-    width:100%;
-    background:var(--primary);
-    flex-direction:column;
-    align-items:center;
-    gap:15px;
-    padding:15px 0;
-    display:none;
-  }
-
-  .nav-links.active{
-    display:flex;
-  }
-
-  .search-box input{
-    width:85%;
-  }
+.menu-icon{
+display:block;
 }
+
+.nav-links{
+position:absolute;
+top:60px;
+left:0;
+width:100%;
+background:var(--primary);
+flex-direction:column;
+align-items:center;
+padding:15px 0;
+display:none;
+}
+
+.nav-links.active{
+display:flex;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
-  <div class="logo"><a href="index2.html">CampusDuka</a></div>
 
-  <div class="menu-icon" id="menuIcon">
-    <i class="fas fa-bars"></i>
-  </div>
-
-  <ul class="nav-links" id="navLinks">
-    <li><a href="index2.html">Home</a></li>
-    <li><a href="products.html">Products</a></li>
-    <li><a href="food.html">Fast Foods</a></li>
-    <li><a href="events.html">Events</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-
-  <a href="cart.html" class="cart-link">
-    <i class="fas fa-shopping-cart"></i>
-    <span id="cart-count">0</span>
-  </a>
-</nav>
-
-<!-- ================= SEARCH ================= -->
-<section class="search-section">
-  <h2>All Products</h2>
-  <div class="search-box">
-    <input type="text" placeholder="Search products on CampusDuka...">
-    <button>Search</button>
-  </div>
-</section>
-
-<!-- ================= CATEGORY ================= -->
-<div class="category-nav">
-  <ul>
-    <li><a href="electronics.html">Electronics</a></li>
-    <li><a href="clothings.html">Clothings</a></li>
-    <li><a href="homeappliances.html">Home Decors</a></li>
-    <li><a href="studymaterials.html">Study Materials</a></li>
-    <li><a href="beauty.html">Beauty & Care</a></li>
-  </ul>
+<div class="logo">
+<a href="index2.html">
+CampusDuka
+</a>
 </div>
 
-<!-- ================= PRODUCTS ================= -->
-<div class="products-container">
+<div class="menu-icon" id="menuIcon">
+<i class="fas fa-bars"></i>
+</div>
 
-  <div class="product-card">
+<ul class="nav-links" id="navLinks">
+<li><a href="index2.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="food.html">Fast Foods</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="signup.html">Sign Up</a></li>
+</ul>
 
-<style>
-.product-card small{
-  display:block;
-  color:#666;
-  font-size:13px;
-  margin-top:6px;
-  line-height:1.5;
+<a href="cart.html" class="cart-link">
+<i class="fas fa-shopping-cart"></i>
+<span id="cart-count">0</span>
+</a>
+
+</nav>
+
+<section class="search-section">
+
+<h2>All Products</h2>
+
+<div class="search-box">
+
+<input
+type="text"
+placeholder="Search products on CampusDuka...">
+
+<button>
+Search
+</button>
+
+</div>
+
+</section>
+
+
+<div class="category-nav">
+
+<ul>
+
+<li><a href="#">Electronics</a></li>
+<li><a href="#">Clothings</a></li>
+<li><a href="#">Study Materials</a></li>
+<li><a href="#">Beauty & Care</a></li>
+
+</ul>
+
+</div>
+
+
+<div class="products-container"
+id="product-container">
+
+</div>
+
+
+<div class="modal" id="viewModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeModal()">
+
+&times;
+
+</span>
+
+<img id="mainImage">
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 2025 CampusDuka
+
+</footer>
+
+
+<script>
+
+/* NAV */
+
+menuIcon.onclick=()=>{
+
+navLinks.classList.toggle(
+"active"
+);
+
+};
+
+
+/* CART */
+
+function updateCartCount(){
+
+let cart=
+JSON.parse(
+localStorage.getItem(
+'cart'
+)
+)||[];
+
+let count=
+cart.reduce(
+(s,i)=>s+i.quantity,
+0
+);
+
+document
+.getElementById(
+'cart-count'
+)
+.innerText=count;
+
 }
-</style>
 
-<img src="/images/laptop1.jpg">
 
-<h3>Laptop</h3>
+function addToCart(
+name,
+price,
+image
+){
 
-<p>KES 45,000</p>
+let cart=
+JSON.parse(
+localStorage.getItem(
+'cart'
+)
+)||[];
+
+let item=
+cart.find(
+p=>p.name===name
+);
+
+if(item){
+
+item.quantity++;
+
+}else{
+
+cart.push({
+name,
+price,
+image,
+quantity:1
+});
+
+}
+
+localStorage.setItem(
+'cart',
+JSON.stringify(cart)
+);
+
+updateCartCount();
+
+alert(
+name+
+" added to cart"
+);
+
+}
+
+
+/* LOAD DATABASE PRODUCTS */
+
+async function loadProducts(){
+
+const response=
+await fetch(
+"https://campusduka-api.onrender.com/products"
+);
+
+const products=
+await response.json();
+
+const container=
+document.getElementById(
+"product-container"
+);
+
+container.innerHTML="";
+
+products.forEach(product=>{
+
+container.innerHTML+=`
+
+<div class="product-card">
+
+<img src="${product.image || '/images/laptop1.jpg'}">
+
+<h3>${product.name}</h3>
+
+<p>KES ${product.price}</p>
 
 <small>
-HP EliteBook • 8GB RAM • 512GB SSD • Good battery life • Perfect for assignments, coding and daily student use.
+
+${product.description}
+
 </small>
 
 <br><br>
 
-<button class="bn"
-onclick="viewProduct([
-'/images/laptop1.jpg',
-'/images/laptop2.jpg',
-'/images/laptop3.jpg'
-])">
-View
-</button>
-
-<button class="bn"
+<button
+class="bn"
 onclick="addToCart(
-'Laptop',
-45000,
-'/images/laptop1.jpg'
+'${product.name}',
+${product.price},
+'${product.image}'
 )">
-Add to Cart
+
+Add To Cart
+
 </button>
 
 </div>
-  <div class="product-card">
-    <img src="lipstick1.jpg">
-    <h3>Lipstick</h3>
-    <p>KES 500</p>
-    <button class="bn" onclick="viewProduct(['lipstick1.jpg','lipstick2.jpg','lipstick3.jpg'])">View</button>
-    <button class="bn" onclick="addToCart('Lipstick',500,'lipstick1.jpg')">Add to Cart</button>
-  </div>
 
-</div>
+`;
 
-<!-- ================= MODAL ================= -->
-<div class="modal" id="viewModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <img id="mainImage">
-    <div class="thumbnail-container" id="thumbnails"></div>
-  </div>
-</div>
-
-<footer>
-  &copy; 2025 CampusDuka. All Rights Reserved.
-</footer>
-
-<script>
-/* NAVBAR TOGGLE */
-const menuIcon = document.getElementById("menuIcon");
-const navLinks = document.getElementById("navLinks");
-
-menuIcon.addEventListener("click",()=>{
-  navLinks.classList.toggle("active");
 });
 
-/* CART */
-function updateCartCount(){
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  let count = cart.reduce((s,i)=>s+i.quantity,0);
-  document.getElementById('cart-count').innerText = count;
 }
 
-function addToCart(name,price,image){
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  let item = cart.find(p=>p.name===name);
-  if(item) item.quantity++;
-  else cart.push({name,price,image,quantity:1});
-  localStorage.setItem('cart',JSON.stringify(cart));
-  updateCartCount();
-  alert(name + " added to cart!");
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+updateCartCount();
+
+loadProducts();
+
 }
+);
 
-/* VIEW MODAL */
-function viewProduct(images){
-  const modal = document.getElementById("viewModal");
-  const main = document.getElementById("mainImage");
-  const thumbs = document.getElementById("thumbnails");
-
-  main.src = images[0];
-  thumbs.innerHTML = "";
-
-  images.forEach(img=>{
-    let t = document.createElement("img");
-    t.src = img;
-    t.onclick = ()=> main.src = img;
-    thumbs.appendChild(t);
-  });
-
-  modal.style.display = "flex";
-}
-
-function closeModal(){
-  document.getElementById("viewModal").style.display="none";
-}
-
-window.onclick = e=>{
-  if(e.target.id==="viewModal") closeModal();
-}
-
-document.addEventListener("DOMContentLoaded",updateCartCount);
 </script>
 
 </body>
 </html>
+
