@@ -7,11 +7,16 @@ const app=express();
 app.use(cors());
 app.use(express.json());
 
+/* Home route */
+
 app.get("/",(req,res)=>{
+
 res.send("CampusDuka backend running");
+
 });
 
-/* database test */
+
+/* Database test */
 
 app.get("/test-db",async(req,res)=>{
 
@@ -38,6 +43,43 @@ error:err.message
 }
 
 });
+
+
+/* Create users table */
+
+app.get("/create-users",async(req,res)=>{
+
+try{
+
+await db.query(`
+
+CREATE TABLE IF NOT EXISTS users(
+id SERIAL PRIMARY KEY,
+fullname VARCHAR(100),
+email VARCHAR(100) UNIQUE,
+phone VARCHAR(20),
+password VARCHAR(255),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
+`);
+
+res.send(
+"Users table created"
+);
+
+}catch(err){
+
+res.status(500)
+.send(
+err.message
+);
+
+}
+
+});
+
+
 const PORT=
 process.env.PORT || 3000;
 
@@ -48,14 +90,3 @@ console.log(
 );
 
 });
-const PORT=
-process.env.PORT || 3000;
-
-app.listen(PORT,()=>{
-
-console.log(
-"Server running"
-);
-
-});
-
