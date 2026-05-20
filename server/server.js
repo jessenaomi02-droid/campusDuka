@@ -1,25 +1,52 @@
 const express=require("express");
 const cors=require("cors");
+const db=require("./db");
 
 const app=express();
 
 app.use(cors());
 app.use(express.json());
 
-const products=require("./routes/products");
-const events=require("./routes/events");
-const users=require("./routes/users");
-
-app.use("/api/products",products);
-app.use("/api/events",events);
-app.use("/api/users",users);
-
 app.get("/",(req,res)=>{
 res.send("CampusDuka backend running");
 });
 
-const PORT=process.env.PORT || 3000;
+/* database test */
+
+app.get("/test-db",async(req,res)=>{
+
+try{
+
+const result=
+await db.query(
+"SELECT NOW()"
+);
+
+res.json({
+success:true,
+time:result.rows[0]
+});
+
+}catch(err){
+
+res.status(500)
+.json({
+success:false,
+error:err.message
+});
+
+}
+
+});
+
+const PORT=
+process.env.PORT || 3000;
 
 app.listen(PORT,()=>{
-console.log("Server running");
+
+console.log(
+"Server running"
+);
+
 });
+
