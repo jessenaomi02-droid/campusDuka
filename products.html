@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka | All Products</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CampusDuka | Products</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
@@ -23,6 +24,8 @@ background:#f5f7fb;
 box-sizing:border-box;
 }
 
+/* NAVBAR */
+
 .navbar{
 background:var(--primary);
 display:flex;
@@ -36,7 +39,7 @@ z-index:1000;
 
 .logo a{
 color:white;
-font-size:22px;
+font-size:24px;
 font-weight:bold;
 text-decoration:none;
 }
@@ -45,14 +48,21 @@ text-decoration:none;
 display:flex;
 gap:20px;
 list-style:none;
-padding:0;
 margin:0;
+padding:0;
 }
 
 .nav-links a{
 color:white;
 text-decoration:none;
 font-weight:600;
+}
+
+.menu-icon{
+display:none;
+color:white;
+font-size:24px;
+cursor:pointer;
 }
 
 .cart-link{
@@ -72,16 +82,11 @@ padding:2px 6px;
 font-size:12px;
 }
 
-.menu-icon{
-display:none;
-color:white;
-font-size:24px;
-cursor:pointer;
-}
+/* SEARCH */
 
 .search-section{
 text-align:center;
-margin:30px 0;
+margin:30px;
 }
 
 .search-box{
@@ -92,7 +97,6 @@ gap:8px;
 
 .search-box input{
 width:60%;
-max-width:400px;
 padding:10px;
 border:1px solid #ddd;
 border-radius:6px;
@@ -100,14 +104,16 @@ border-radius:6px;
 
 .search-box button{
 background:var(--primary);
-color:white;
 border:none;
-padding:10px 18px;
+color:white;
+padding:10px 15px;
 border-radius:6px;
 }
 
+/* PRODUCTS */
+
 .products-container{
-padding:30px 5%;
+padding:30px;
 display:grid;
 grid-template-columns:
 repeat(auto-fit,minmax(220px,1fr));
@@ -119,7 +125,8 @@ background:white;
 padding:15px;
 border-radius:10px;
 text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
+box-shadow:
+0 2px 8px rgba(0,0,0,.1);
 }
 
 .product-card img{
@@ -134,10 +141,10 @@ color:var(--primary);
 font-weight:bold;
 }
 
-.product-card small{
+small{
 display:block;
+margin:8px 0;
 color:#666;
-margin-top:6px;
 }
 
 .bn{
@@ -145,12 +152,12 @@ background:var(--primary);
 color:white;
 border:none;
 padding:8px 14px;
-border-radius:6px;
 margin:4px;
+border-radius:6px;
 cursor:pointer;
 }
 
-/* modal */
+/* MODAL */
 
 .modal{
 display:none;
@@ -159,15 +166,15 @@ inset:0;
 background:rgba(0,0,0,.7);
 justify-content:center;
 align-items:center;
-z-index:2000;
+z-index:1000;
 }
 
 .modal-content{
 background:white;
 padding:20px;
-width:90%;
-max-width:550px;
 border-radius:10px;
+width:90%;
+max-width:500px;
 position:relative;
 text-align:center;
 }
@@ -197,20 +204,9 @@ height:70px;
 margin:4px;
 cursor:pointer;
 border-radius:8px;
-border:2px solid transparent;
 }
 
-.thumbnail-container img:hover{
-border-color:var(--primary);
-}
-
-footer{
-background:var(--primary);
-color:white;
-text-align:center;
-padding:15px;
-margin-top:30px;
-}
+/* MOBILE */
 
 @media(max-width:768px){
 
@@ -226,8 +222,8 @@ left:0;
 width:100%;
 background:var(--primary);
 flex-direction:column;
+padding:20px;
 text-align:center;
-padding:20px 0;
 }
 
 .nav-links.active{
@@ -259,7 +255,6 @@ CampusDuka
 <li><a href="products.html">Products</a></li>
 <li><a href="food.html">Fast Foods</a></li>
 <li><a href="events.html">Events</a></li>
-<li><a href="contact.html">Contact</a></li>
 
 </ul>
 
@@ -284,11 +279,12 @@ All Products
 
 <div class="search-box">
 
-<input
-placeholder="Search products...">
+<input placeholder="Search">
 
 <button>
+
 Search
+
 </button>
 
 </div>
@@ -307,8 +303,7 @@ id="product-container">
 class="modal"
 id="viewModal">
 
-<div
-class="modal-content">
+<div class="modal-content">
 
 <span
 class="close-btn"
@@ -331,16 +326,7 @@ id="thumbnails">
 </div>
 
 
-<footer>
-
-© 2025 CampusDuka
-
-</footer>
-
-
 <script>
-
-/* mobile menu */
 
 menuIcon.onclick=()=>{
 
@@ -351,14 +337,12 @@ navLinks.classList.toggle(
 };
 
 
-/* cart */
-
 function updateCartCount(){
 
 let cart=
 JSON.parse(
 localStorage.getItem(
-'cart'
+"cart"
 )
 )||[];
 
@@ -386,20 +370,9 @@ image
 let cart=
 JSON.parse(
 localStorage.getItem(
-'cart'
+"cart"
 )
 )||[];
-
-let item=
-cart.find(
-p=>p.name===name
-);
-
-if(item){
-
-item.quantity++;
-
-}else{
 
 cart.push({
 name,
@@ -407,8 +380,6 @@ price,
 image,
 quantity:1
 });
-
-}
 
 localStorage.setItem(
 "cart",
@@ -419,13 +390,13 @@ updateCartCount();
 
 alert(
 name+
-" added to cart"
+" added"
 );
 
 }
 
 
-/* view images */
+/* VIEW */
 
 function viewProduct(images){
 
@@ -451,8 +422,6 @@ thumbs.innerHTML="";
 
 images.forEach(img=>{
 
-if(img){
-
 let t=
 document.createElement(
 "img"
@@ -467,8 +436,6 @@ main.src=img;
 };
 
 thumbs.appendChild(t);
-
-}
 
 });
 
@@ -489,7 +456,7 @@ document
 }
 
 
-/* load database products */
+/* LOAD PRODUCTS */
 
 async function loadProducts(){
 
@@ -508,23 +475,29 @@ document.getElementById(
 
 container.innerHTML="";
 
+
 products.forEach(product=>{
 
 const imgs=
-product.images ||
-[
-product.image
-] ||
-[];
-const firstImage=
-const firstImage=
-imgs[0] ||
-"/images/food1.jpg";
+product.images &&
+product.images.length
+
+? product.images
+
+:
+
+["/images/food1.jpg"];
+
+
+const first=
+imgs[0];
+
+
 container.innerHTML+=`
 
 <div class="product-card">
 
-<img src="${firstImage}">
+<img src="${first}">
 
 <h3>
 ${product.name}
@@ -535,18 +508,20 @@ KES ${product.price}
 </p>
 
 <small>
-${product.description}
-</small>
 
-<br><br>
+${product.description}
+
+</small>
 
 <button
 class="bn"
+
 onclick='viewProduct(${JSON.stringify(imgs)})'>
 
 View
 
 </button>
+
 
 <button
 class="bn"
@@ -554,7 +529,7 @@ class="bn"
 onclick="addToCart(
 '${product.name}',
 ${product.price},
-'${firstImage}'
+'${first}'
 )">
 
 Add To Cart
@@ -584,4 +559,3 @@ loadProducts();
 
 </body>
 </html>
-
