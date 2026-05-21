@@ -511,12 +511,15 @@ container.innerHTML="";
 products.forEach(product=>{
 
 const imgs=
-product.images||[];
-
+product.images ||
+[
+product.image
+] ||
+[];
 const firstImage=
-imgs[0]||
-"/images/laptop1.jpg";
-
+const firstImage=
+imgs[0] ||
+"/images/food1.jpg";
 container.innerHTML+=`
 
 <div class="product-card">
