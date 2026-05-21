@@ -279,9 +279,11 @@ All Products
 
 <div class="search-box">
 
-<input placeholder="Search">
+<input
+id="searchInput"
+placeholder="Search products on CampusDuka...">
 
-<button>
+<button onclick="searchProducts()">
 
 Search
 
@@ -458,6 +460,8 @@ document
 
 /* LOAD PRODUCTS */
 
+let allProducts=[];
+
 async function loadProducts(){
 
 const response=
@@ -465,8 +469,10 @@ await fetch(
 "https://campusduka-api.onrender.com/products"
 );
 
-const products=
+allProducts=
 await response.json();
+
+const products=allProducts;
 
 const container=
 document.getElementById(
@@ -543,7 +549,94 @@ Add To Cart
 });
 
 }
+function searchProducts(){
 
+const text=
+document
+.getElementById(
+"searchInput"
+)
+.value
+.toLowerCase();
+
+const filtered=
+allProducts.filter(product=>
+
+product.name
+.toLowerCase()
+.includes(text)
+
+||
+
+product.description
+.toLowerCase()
+.includes(text)
+
+);
+
+const container=
+document.getElementById(
+"product-container"
+);
+
+container.innerHTML="";
+
+filtered.forEach(product=>{
+
+const imgs=
+product.images &&
+product.images.length
+
+? product.images
+
+:
+
+["/images/food1.jpg"];
+
+const first=
+imgs[0];
+
+container.innerHTML+=`
+
+<div class="product-card">
+
+<img src="${first}">
+
+<h3>${product.name}</h3>
+
+<p>KES ${product.price}</p>
+
+<small>
+${product.description}
+</small>
+
+<button
+class="bn"
+onclick='viewProduct(${JSON.stringify(imgs)})'>
+
+View
+
+</button>
+
+<button
+class="bn"
+onclick="addToCart(
+'${product.name}',
+${product.price},
+'${first}'
+)">
+
+Add To Cart
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
 document.addEventListener(
 "DOMContentLoaded",
 ()=>{
