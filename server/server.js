@@ -230,25 +230,27 @@ app.post("/add-product",async(req,res)=>{
 try{
 
 const{
+
 name,
 description,
 price,
-image,
+images,
 category
+
 }=req.body;
 
 await db.query(
 
 `INSERT INTO products
-(name,description,price,image,category)
+(name,description,price,images,category)
 
-VALUES($1,$2,$3,$4,$5)`,
+VALUES($1,$2,$3,$4,$5)`
 
 [
 name,
 description,
 price,
-image,
+images,
 category
 ]
 
