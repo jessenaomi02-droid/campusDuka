@@ -6,59 +6,52 @@
 <title>CampusDuka | All Products</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
 --primary:#0077ff;
---light:#ffffff;
+}
+
+body{
+margin:0;
+font-family:Poppins,sans-serif;
+background:#f5f7fb;
 }
 
 *{
 box-sizing:border-box;
 }
 
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:#f5f7fb;
-}
-
-a{
-text-decoration:none;
-color:inherit;
-}
-
-/* NAVBAR */
-
 .navbar{
 background:var(--primary);
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 padding:12px 20px;
 position:sticky;
 top:0;
 z-index:1000;
 }
 
-.logo{
-font-size:22px;
-font-weight:700;
+.logo a{
 color:white;
+font-size:22px;
+font-weight:bold;
+text-decoration:none;
 }
 
 .nav-links{
-list-style:none;
 display:flex;
 gap:20px;
-margin:0;
+list-style:none;
 padding:0;
+margin:0;
 }
 
 .nav-links a{
 color:white;
+text-decoration:none;
 font-weight:600;
 }
 
@@ -70,23 +63,21 @@ font-size:20px;
 
 #cart-count{
 position:absolute;
-top:-6px;
+top:-8px;
 right:-10px;
 background:red;
 color:white;
-font-size:11px;
-padding:2px 6px;
 border-radius:50%;
+padding:2px 6px;
+font-size:12px;
 }
 
 .menu-icon{
 display:none;
-font-size:24px;
 color:white;
+font-size:24px;
 cursor:pointer;
 }
-
-/* SEARCH */
 
 .search-section{
 text-align:center;
@@ -103,8 +94,8 @@ gap:8px;
 width:60%;
 max-width:400px;
 padding:10px;
-border-radius:6px;
 border:1px solid #ddd;
+border-radius:6px;
 }
 
 .search-box button{
@@ -113,74 +104,40 @@ color:white;
 border:none;
 padding:10px 18px;
 border-radius:6px;
-cursor:pointer;
 }
-
-/* CATEGORY */
-
-.category-nav{
-background:white;
-margin:0 5%;
-padding:12px;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
-}
-
-.category-nav ul{
-list-style:none;
-display:flex;
-justify-content:center;
-gap:15px;
-padding:0;
-margin:0;
-flex-wrap:wrap;
-}
-
-.category-nav a{
-color:var(--primary);
-font-weight:600;
-}
-
-/* PRODUCTS */
 
 .products-container{
 padding:30px 5%;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
 .product-card{
 background:white;
-border-radius:10px;
 padding:15px;
+border-radius:10px;
 text-align:center;
 box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .product-card img{
 width:100%;
-height:160px;
+height:170px;
 object-fit:cover;
 border-radius:8px;
 }
 
-.product-card h3{
-font-size:16px;
-margin:10px 0;
-}
-
 .product-card p{
 color:var(--primary);
-font-weight:600;
+font-weight:bold;
 }
 
 .product-card small{
 display:block;
 color:#666;
-font-size:13px;
 margin-top:6px;
-line-height:1.5;
 }
 
 .bn{
@@ -193,13 +150,13 @@ margin:4px;
 cursor:pointer;
 }
 
-/* MODAL */
+/* modal */
 
 .modal{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.6);
+background:rgba(0,0,0,.7);
 justify-content:center;
 align-items:center;
 z-index:2000;
@@ -207,29 +164,45 @@ z-index:2000;
 
 .modal-content{
 background:white;
-width:90%;
-max-width:500px;
 padding:20px;
+width:90%;
+max-width:550px;
 border-radius:10px;
 position:relative;
+text-align:center;
 }
 
 .close-btn{
 position:absolute;
 top:10px;
-right:14px;
-font-size:22px;
+right:15px;
+font-size:25px;
 cursor:pointer;
 }
 
 #mainImage{
 width:100%;
-height:280px;
+height:300px;
 object-fit:cover;
 border-radius:10px;
 }
 
-/* FOOTER */
+.thumbnail-container{
+margin-top:10px;
+}
+
+.thumbnail-container img{
+width:70px;
+height:70px;
+margin:4px;
+cursor:pointer;
+border-radius:8px;
+border:2px solid transparent;
+}
+
+.thumbnail-container img:hover{
+border-color:var(--primary);
+}
 
 footer{
 background:var(--primary);
@@ -239,8 +212,6 @@ padding:15px;
 margin-top:30px;
 }
 
-/* MOBILE */
-
 @media(max-width:768px){
 
 .menu-icon{
@@ -248,15 +219,15 @@ display:block;
 }
 
 .nav-links{
+display:none;
 position:absolute;
 top:60px;
 left:0;
 width:100%;
 background:var(--primary);
 flex-direction:column;
-align-items:center;
-padding:15px 0;
-display:none;
+text-align:center;
+padding:20px 0;
 }
 
 .nav-links.active{
@@ -283,30 +254,38 @@ CampusDuka
 </div>
 
 <ul class="nav-links" id="navLinks">
+
 <li><a href="index2.html">Home</a></li>
 <li><a href="products.html">Products</a></li>
 <li><a href="food.html">Fast Foods</a></li>
 <li><a href="events.html">Events</a></li>
 <li><a href="contact.html">Contact</a></li>
-<li><a href="signup.html">Sign Up</a></li>
+
 </ul>
 
 <a href="cart.html" class="cart-link">
+
 <i class="fas fa-shopping-cart"></i>
-<span id="cart-count">0</span>
+
+<span id="cart-count">
+0
+</span>
+
 </a>
 
 </nav>
 
+
 <section class="search-section">
 
-<h2>All Products</h2>
+<h2>
+All Products
+</h2>
 
 <div class="search-box">
 
 <input
-type="text"
-placeholder="Search products on CampusDuka...">
+placeholder="Search products...">
 
 <button>
 Search
@@ -317,31 +296,22 @@ Search
 </section>
 
 
-<div class="category-nav">
-
-<ul>
-
-<li><a href="#">Electronics</a></li>
-<li><a href="#">Clothings</a></li>
-<li><a href="#">Study Materials</a></li>
-<li><a href="#">Beauty & Care</a></li>
-
-</ul>
-
-</div>
-
-
-<div class="products-container"
+<div
+class="products-container"
 id="product-container">
 
 </div>
 
 
-<div class="modal" id="viewModal">
+<div
+class="modal"
+id="viewModal">
 
-<div class="modal-content">
+<div
+class="modal-content">
 
-<span class="close-btn"
+<span
+class="close-btn"
 onclick="closeModal()">
 
 &times;
@@ -349,6 +319,12 @@ onclick="closeModal()">
 </span>
 
 <img id="mainImage">
+
+<div
+class="thumbnail-container"
+id="thumbnails">
+
+</div>
 
 </div>
 
@@ -364,7 +340,7 @@ onclick="closeModal()">
 
 <script>
 
-/* NAV */
+/* mobile menu */
 
 menuIcon.onclick=()=>{
 
@@ -375,7 +351,7 @@ navLinks.classList.toggle(
 };
 
 
-/* CART */
+/* cart */
 
 function updateCartCount(){
 
@@ -394,7 +370,7 @@ cart.reduce(
 
 document
 .getElementById(
-'cart-count'
+"cart-count"
 )
 .innerText=count;
 
@@ -435,7 +411,7 @@ quantity:1
 }
 
 localStorage.setItem(
-'cart',
+"cart",
 JSON.stringify(cart)
 );
 
@@ -449,7 +425,71 @@ name+
 }
 
 
-/* LOAD DATABASE PRODUCTS */
+/* view images */
+
+function viewProduct(images){
+
+const modal=
+document.getElementById(
+"viewModal"
+);
+
+const main=
+document.getElementById(
+"mainImage"
+);
+
+const thumbs=
+document.getElementById(
+"thumbnails"
+);
+
+main.src=
+images[0];
+
+thumbs.innerHTML="";
+
+images.forEach(img=>{
+
+if(img){
+
+let t=
+document.createElement(
+"img"
+);
+
+t.src=img;
+
+t.onclick=()=>{
+
+main.src=img;
+
+};
+
+thumbs.appendChild(t);
+
+}
+
+});
+
+modal.style.display=
+"flex";
+
+}
+
+
+function closeModal(){
+
+document
+.getElementById(
+"viewModal"
+)
+.style.display="none";
+
+}
+
+
+/* load database products */
 
 async function loadProducts(){
 
@@ -470,30 +510,48 @@ container.innerHTML="";
 
 products.forEach(product=>{
 
+const imgs=
+product.images||[];
+
+const firstImage=
+imgs[0]||
+"/images/laptop1.jpg";
+
 container.innerHTML+=`
 
 <div class="product-card">
 
-<img src="${product.image || '/images/laptop1.jpg'}">
+<img src="${firstImage}">
 
-<h3>${product.name}</h3>
+<h3>
+${product.name}
+</h3>
 
-<p>KES ${product.price}</p>
+<p>
+KES ${product.price}
+</p>
 
 <small>
-
 ${product.description}
-
 </small>
 
 <br><br>
 
 <button
 class="bn"
+onclick='viewProduct(${JSON.stringify(imgs)})'>
+
+View
+
+</button>
+
+<button
+class="bn"
+
 onclick="addToCart(
 '${product.name}',
 ${product.price},
-'${product.image}'
+'${firstImage}'
 )">
 
 Add To Cart
