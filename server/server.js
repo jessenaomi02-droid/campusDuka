@@ -296,6 +296,30 @@ err.message
 }
 
 });
+app.get("/update-products",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`ALTER TABLE products
+ADD COLUMN IF NOT EXISTS images TEXT[]`
+
+);
+
+res.send(
+"Products updated"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 const PORT=
 process.env.PORT || 3000;
 
