@@ -7,7 +7,7 @@ const app=express();
 app.use(cors());
 app.use(express.json());
 
-/* Home route */
+/* HOME */
 
 app.get("/",(req,res)=>{
 
@@ -16,7 +16,7 @@ res.send("CampusDuka backend running");
 });
 
 
-/* Database test */
+/* DATABASE TEST */
 
 app.get("/test-db",async(req,res)=>{
 
@@ -28,16 +28,19 @@ await db.query(
 );
 
 res.json({
+
 success:true,
 time:result.rows[0]
+
 });
 
 }catch(err){
 
-res.status(500)
-.json({
+res.status(500).json({
+
 success:false,
 error:err.message
+
 });
 
 }
@@ -45,7 +48,7 @@ error:err.message
 });
 
 
-/* Create users table */
+/* USERS TABLE */
 
 app.get("/create-users",async(req,res)=>{
 
@@ -54,12 +57,20 @@ try{
 await db.query(`
 
 CREATE TABLE IF NOT EXISTS users(
+
 id SERIAL PRIMARY KEY,
+
 fullname VARCHAR(100),
+
 email VARCHAR(100) UNIQUE,
+
 phone VARCHAR(20),
+
 password VARCHAR(255),
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+created_at TIMESTAMP
+DEFAULT CURRENT_TIMESTAMP
+
 )
 
 `);
@@ -70,8 +81,7 @@ res.send(
 
 }catch(err){
 
-res.status(500)
-.send(
+res.send(
 err.message
 );
 
@@ -79,15 +89,20 @@ err.message
 
 });
 
+
+/* SIGNUP */
+
 app.post("/signup",async(req,res)=>{
 
 try{
 
 const{
+
 fullname,
 email,
 phone,
 password
+
 }=req.body;
 
 await db.query(
@@ -107,43 +122,115 @@ password
 );
 
 res.json({
+
 success:true,
 message:"User created"
+
 });
 
 }catch(err){
 
-res.status(500)
-.json({
+res.status(500).json({
+
 success:false,
 error:err.message
+
 });
 
 }
 
 });
-app.get("/test-signup",async(req,res)=>{
+
+
+/* LOGIN */
+
+app.post("/login",async(req,res)=>{
 
 try{
 
+const{
+email,
+password
+}=req.body;
+
+const user=
 await db.query(
 
-`INSERT INTO users
-(fullname,email,phone,password)
-
-VALUES($1,$2,$3,$4)`,
+`SELECT * FROM users
+WHERE email=$1
+AND password=$2`,
 
 [
-"Jesse",
-"jesse@test.com",
-"0712345678",
-"12345"
+email,
+password
 ]
 
 );
 
+if(user.rows.length===0){
+
+return res.json({
+
+success:false,
+message:"Invalid email"
+
+});
+
+}
+
+res.json({
+
+success:true,
+message:"Login successful",
+user:user.rows[0]
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
+
+
+/* CREATE PRODUCTS TABLE */
+
+app.get("/create-products",async(req,res)=>{
+
+try{
+
+await db.query(`
+
+CREATE TABLE IF NOT EXISTS products(
+
+id SERIAL PRIMARY KEY,
+
+name VARCHAR(100),
+
+description TEXT,
+
+price INT,
+
+image TEXT,
+
+category VARCHAR(50),
+
+created_at TIMESTAMP
+DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
+
 res.send(
-"Test user added"
+"Products table created"
 );
 
 }catch(err){
@@ -155,76 +242,38 @@ err.message
 }
 
 });
-app.post("/login",async(req,res)=>{
+
+
+/* UPDATE PRODUCTS */
+
+app.get("/update-products",async(req,res)=>{
 
 try{
 
-const {email,password}=req.body;
-
-const user=
 await db.query(
 
-`SELECT * FROM users
-WHERE email=$1
-AND password=$2`,
-
-[email,password]
+`ALTER TABLE products
+ADD COLUMN IF NOT EXISTS images TEXT[]`
 
 );
 
-if(user.rows.length===0){
-
-return res.json({
-success:false,
-message:"Invalid email or password"
-});
-
-}
-
-res.json({
-success:true,
-message:"Login successful",
-user:user.rows[0]
-});
+res.send(
+"Products updated"
+);
 
 }catch(err){
 
-res.status(500)
-.json({
-success:false,
-error:err.message
-});
+res.send(
+err.message
+);
 
 }
 
 });
-app.get("/create-products",async(req,res)=>{
 
-try{
 
-await db.query(`
+/* ADD PRODUCT */
 
-CREATE TABLE IF NOT EXISTS products(
-id SERIAL PRIMARY KEY,
-name VARCHAR(100),
-description TEXT,
-price INT,
-image TEXT,
-category VARCHAR(50),
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
-`);
-
-res.send("Products table created");
-
-}catch(err){
-
-res.send(err.message);
-
-}
-
-});
 app.post("/add-product",async(req,res)=>{
 
 try{
@@ -275,33 +324,19 @@ error:err.message
 }
 
 });
-res.json({
 
-success:true,
-message:"Product added"
 
-});
+/* GET PRODUCTS */
 
-}catch(err){
-
-res.status(500)
-.json({
-
-success:false,
-error:err.message
-
-});
-
-}
-
-});
 app.get("/products",async(req,res)=>{
 
 try{
 
 const products=
 await db.query(
+
 "SELECT * FROM products ORDER BY id DESC"
+
 );
 
 res.json(
@@ -317,32 +352,11 @@ err.message
 }
 
 });
-app.get("/update-products",async(req,res)=>{
 
-try{
 
-await db.query(
-
-`ALTER TABLE products
-ADD COLUMN IF NOT EXISTS images TEXT[]`
-
-);
-
-res.send(
-"Products updated"
-);
-
-}catch(err){
-
-res.send(
-err.message
-);
-
-}
-
-});
 const PORT=
 process.env.PORT || 3000;
+
 
 app.listen(PORT,()=>{
 
