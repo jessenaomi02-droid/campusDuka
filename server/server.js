@@ -244,18 +244,37 @@ await db.query(
 `INSERT INTO products
 (name,description,price,images,category)
 
-VALUES($1,$2,$3,$4,$5)`
+VALUES($1,$2,$3,$4,$5)`,
 
 [
 name,
 description,
 price,
-images,
+images || [],
 category
 ]
 
 );
 
+res.json({
+
+success:true,
+message:"Product added"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 res.json({
 
 success:true,
