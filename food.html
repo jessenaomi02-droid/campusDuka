@@ -1,316 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusDuka | Food</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<title>CampusDuka | Food</title>
 
-    body {
-      background: #f4f6f9;
-      color: #333;
-    }
-
-    /* ===== NAVBAR ===== */
-    .navbar {
-      background: #0077ff;
-      padding: 15px 30px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-
-    .navdiv {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-size: 26px;
-      font-weight: 700;
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .navdiv ul {
-      display: flex;
-      list-style: none;
-      gap: 15px;
-    }
-
-    .navdiv ul li a {
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      padding: 6px 14px;
-      border: 1px solid white;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-
-    .navdiv ul li a:hover {
-      background: #fff;
-      color: #0077ff;
-    }
-
-    /* NAVBAR SEARCH BELOW NAV */
-    .navbar-search {
-      background: white;
-      padding: 12px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      border-bottom: 2px solid #0077ff;
-    }
-
-    .navbar-search input {
-      width: 75%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      outline: none;
-    }
-
-    .navbar-search button {
-      padding: 10px 15px;
-      background: #0077ff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    /* ===== HERO SECTION WITH BACKGROUND IMAGES ===== */
-    .hero {
-      position: relative;
-      height: 60vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .hero img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      top: 0;
-      left: 0;
-      opacity: 0.45;
-      z-index: -1;
-    }
-
-    .hero h1 {
-      font-size: 42px;
-      font-weight: 800;
-      color: black;
-    }
-
-    .hero p {
-      margin-top: 10px;
-      font-size: 17px;
-      color: #222;
-    }
-
-    /* PRODUCT GRID */
-    .product-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 40px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-      text-align: center;
-      padding-bottom: 15px;
-      transition: 0.3s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .product-card h3 {
-      margin-top: 10px;
-      font-size: 18px;
-    }
-
-    .product-card p {
-      color: #0077ff;
-      font-weight: bold;
-      margin: 8px 0;
-    }
-
-    .bn {
-      padding: 8px 15px;
-      margin: 5px;
-      border-radius: 20px;
-      border: none;
-      background: #0077ff;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .bn:hover {
-      background: #005ecb;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #0077ff;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 40px;
-    }
-
-    footer a {
-      color: yellow;
-      text-decoration: none;
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 32px; }
-      .navdiv ul { flex-wrap: wrap; justify-content: center; }
-      .navbar-search input { width: 60%; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="navdiv">
-      <a href="index2.html" class="logo">CampusDuka</a>
-
-      <ul>
-        <li><a href="index2.html">Home</a></li>
-        <li><a href="products.html">Products</a></li>
-        <li><a href="food.html">Fast Foods</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-
-      <a href="cart.html" class="cart-link" style="color:white; font-size:20px; position:relative;">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; position:absolute; top:-8px; right:-12px;">0</span>
-      </a>
-    </div>
-  </nav>
-
-  <!-- SEARCH BAR BELOW NAV -->
-  <div class="navbar-search">
-    <input type="text" placeholder="Search for foods, snacks, drinks...">
-    <button><i class="fa fa-search"></i></button>
-  </div>
-
-  <!-- HERO SECTION -->
-<section class="hero">
-
-  <div class="slider">
-    <img class="slide active" src="images/food1.jpg" alt="Food">
-    <img class="slide" src="images/food2.jpg" alt="Food">
-    <img class="slide" src="images/food3.jpg" alt="Food">
-    <img class="slide" src="images/food4.jpg" alt="Food">
-    <img class="slide" src="images/food5.jpg" alt="Food">
-    <img class="slide" src="images/food8.jpg" alt="Food">
-    <img class="slide" src="images/food9.jpg" alt="Food">
-    <img class="slide" src="images/food10.jpg" alt="Food">
-  </div>
-
-  <div class="hero-text">
-    <h1>Buy Smart, Eat Smart</h1>
-    <p>Discover campus meals delivered fast & affordably.</p>
-  </div>
-
-</section>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#0077ff;
+padding:15px 30px;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.navdiv{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.logo{
+font-size:26px;
+font-weight:700;
+color:white;
+text-decoration:none;
+}
+
+.navdiv ul{
+display:flex;
+list-style:none;
+gap:15px;
+}
+
+.navdiv ul li a{
+text-decoration:none;
+color:white;
+font-weight:600;
+padding:6px 14px;
+border:1px solid white;
+border-radius:6px;
+}
+
+.cart-link{
+color:white;
+font-size:20px;
+position:relative;
+}
+
+#cart-count{
+background:red;
+color:white;
+border-radius:50%;
+padding:2px 6px;
+font-size:12px;
+position:absolute;
+top:-8px;
+right:-12px;
+}
+
+/* SEARCH */
+
+.navbar-search{
+background:white;
+padding:12px;
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.navbar-search input{
+width:70%;
+padding:10px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+.navbar-search button{
+background:#0077ff;
+border:none;
+color:white;
+padding:10px 15px;
+border-radius:6px;
+}
+
+/* HERO */
+
 .hero{
-    position: relative;
-    width:100%;
-    height:350px;
-    overflow:hidden;
-    border-radius:20px;
+position:relative;
+width:100%;
+height:350px;
+overflow:hidden;
 }
 
 .slider{
-    position:absolute;
-    width:100%;
-    height:100%;
+position:absolute;
+width:100%;
+height:100%;
 }
 
 .slide{
-    position:absolute;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-    opacity:0;
-
-    /* smoother fade */
-    transition:opacity 2.5s ease-in-out;
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0;
+transition:2s;
 }
+
 .slide.active{
-    opacity:1;
+opacity:1;
 }
 
 .hero-text{
-    position:relative;
-    z-index:2;
-    text-align:center;
-    top:50%;
-    transform:translateY(-50%);
-    color:white;
-    background:rgba(0,0,0,0.4);
-    padding:20px;
-    width:fit-content;
-    margin:auto;
-    border-radius:10px;
+position:relative;
+z-index:2;
+top:50%;
+transform:translateY(-50%);
+text-align:center;
+color:white;
+background:rgba(0,0,0,.5);
+padding:20px;
+width:fit-content;
+margin:auto;
+border-radius:10px;
 }
+
+/* PRODUCTS */
+
+.product-container{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+padding:40px;
+}
+
+.product-card{
+background:white;
+border-radius:12px;
+box-shadow:
+0 3px 10px rgba(0,0,0,.1);
+
+overflow:hidden;
+text-align:center;
+padding-bottom:15px;
+}
+
+.product-card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.product-card h3{
+margin-top:10px;
+}
+
+.product-card p{
+color:#0077ff;
+font-weight:bold;
+margin:8px;
+}
+
+.bn{
+padding:8px 15px;
+margin:5px;
+border-radius:20px;
+border:none;
+background:#0077ff;
+color:white;
+cursor:pointer;
+}
+
+/* MODAL */
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+border-radius:10px;
+width:90%;
+max-width:500px;
+position:relative;
+text-align:center;
+}
+
+.close-btn{
+position:absolute;
+right:15px;
+top:10px;
+font-size:25px;
+cursor:pointer;
+}
+
+#mainImage{
+width:100%;
+height:300px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.thumbnail-container{
+margin-top:10px;
+}
+
+.thumbnail-container img{
+width:70px;
+height:70px;
+margin:5px;
+border-radius:8px;
+cursor:pointer;
+}
+
+footer{
+background:#0077ff;
+color:white;
+padding:15px;
+text-align:center;
+}
+
 </style>
-<script>
-let slides = document.querySelectorAll(".slide");
-let current = 0;
 
-function changeSlide() {
-    slides[current].classList.remove("active");
+</head>
+<body>
 
-    current = (current + 1) % slides.length;
+<nav class="navbar">
 
-    slides[current].classList.add("active");
-}
+<div class="navdiv">
 
-/* Change every 6 seconds */
-setInterval(changeSlide, 6000);
-</script>
+<a href="index2.html"
+class="logo">
 
-  
-  <!-- PRODUCT GRID -->
+CampusDuka
+
+</a>
+
+<ul>
+
+<li><a href="index2.html">Home</a></li>
+
+<li><a href="products.html">Products</a></li>
+
+<li><a href="food.html">Fast Foods</a></li>
+
+<li><a href="events.html">Events</a></li>
+
+</ul>
+
+<a href="cart.html"
+class="cart-link">
+
+<i class="fas fa-shopping-cart"></i>
+
+<span id="cart-count">
+
+0
+
+</span>
+
+</a>
+
+</div>
+
+</nav>
+
+
+<div class="navbar-search">
+
+<input
+placeholder="Search food...">
+
+<button>
+
+<i class="fa fa-search"></i>
+
+</button>
+
+</div>
+
+
+<section class="hero">
+
+<div class="slider">
+
+<img class="slide active"
+src="images/food1.jpg">
+
+<img class="slide"
+src="images/food2.jpg">
+
+<img class="slide"
+src="images/food3.jpg">
+
+<img class="slide"
+src="images/food4.jpg">
+
+</div>
+
+<div class="hero-text">
+
+<h1>
+
+Buy Smart, Eat Smart
+
+</h1>
+
+<p>
+
+Discover campus meals
+
+</p>
+
+</div>
+
+</section>
+
 
 <div
 class="product-container"
@@ -318,57 +353,213 @@ id="product-container">
 
 </div>
 
-    <div class="product-card">
-      <img src="lap.png.jfif">
-      <h3>Cheese Pizza</h3>
-      <p>KES 400</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Pizza', 400, 'lap.png.jfif')" class="bn">Add to Cart</button>
-    </div>
 
-    <div class="product-card">
-      <img src="lap2.png.jfif">
-      <h3>Fresh Juice</h3>
-      <p>KES 100</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Juice', 100, 'lap2.png.jfif')" class="bn">Add to Cart</button>
-    </div>
+<div
+class="modal"
+id="viewModal">
 
-    <div class="product-card">
-      <img src="pi.png.jfif">
-      <h3>Crispy Fries</h3>
-      <p>KES 150</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Fries', 150, 'pi.png.jfif')" class="bn">Add to Cart</button>
-    </div>
-  </div>
+<div class="modal-content">
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 <a href="index2.html">CampusDuka</a> | Built for Students</p>
-  </footer>
+<span
+class="close-btn"
+onclick="closeModal()">
 
-  <script>
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('cart-count').innerText = count;
-    }
+&times;
 
-    function addToCart(name, price, image) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let existingItem = cart.find(item => item.name === name);
+</span>
 
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ name, price, image, quantity: 1 });
-      }
+<img id="mainImage">
 
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      alert(name + " added to cart!");
-    }
+<div
+id="thumbnails"
+class="thumbnail-container">
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 2025 CampusDuka
+
+</footer>
+
+
+<script>
+
+/* HERO */
+
+let slides=
+document.querySelectorAll(
+".slide"
+);
+
+let current=0;
+
+setInterval(()=>{
+
+slides[current]
+.classList.remove(
+"active"
+);
+
+current=
+(current+1)
+%
+slides.length;
+
+slides[current]
+.classList.add(
+"active"
+);
+
+},6000);
+
+
+/* CART */
+
+function updateCartCount(){
+
+let cart=
+JSON.parse(
+localStorage.getItem(
+'cart'
+)
+)||[];
+
+let count=
+cart.reduce(
+(sum,item)=>
+sum+item.quantity,
+0
+);
+
+document
+.getElementById(
+'cart-count'
+)
+.innerText=count;
+
+}
+
+
+function addToCart(
+name,
+price,
+image
+){
+
+let cart=
+JSON.parse(
+localStorage.getItem(
+'cart'
+)
+)||[];
+
+let existing=
+cart.find(
+item=>
+item.name===name
+);
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+
+name,
+price,
+image,
+quantity:1
+
+});
+
+}
+
+localStorage.setItem(
+'cart',
+JSON.stringify(cart)
+);
+
+updateCartCount();
+
+alert(
+name+
+" added!"
+);
+
+}
+
+
+/* VIEW */
+
+function viewProduct(images){
+
+const modal=
+document.getElementById(
+"viewModal"
+);
+
+const main=
+document.getElementById(
+"mainImage"
+);
+
+const thumbs=
+document.getElementById(
+"thumbnails"
+);
+
+main.src=
+images[0];
+
+thumbs.innerHTML="";
+
+images.forEach(img=>{
+
+let t=
+document.createElement(
+"img"
+);
+
+t.src=img;
+
+t.onclick=()=>{
+
+main.src=img;
+
+};
+
+thumbs.appendChild(t);
+
+});
+
+modal.style.display=
+"flex";
+
+}
+
+
+function closeModal(){
+
+document
+.getElementById(
+"viewModal"
+)
+.style.display=
+"none";
+
+}
+
+
+/* LOAD FOOD */
+
 async function loadProducts(){
 
 const response=
@@ -417,15 +608,21 @@ container.innerHTML+=`
 <img src="${first}">
 
 <h3>
+
 ${product.name}
+
 </h3>
 
 <p>
+
 KES ${product.price}
+
 </p>
 
 <small>
+
 ${product.description}
+
 </small>
 
 <button
@@ -451,20 +648,13 @@ Add To Cart
 </div>
 
 `;
+
 });
-function viewProduct(images){
-
-const first=
-images[0];
-
-alert(
-"Food gallery ready: "+
-first
-);
 
 }
-}
-    document.addEventListener(
+
+
+document.addEventListener(
 "DOMContentLoaded",
 ()=>{
 
@@ -474,8 +664,8 @@ loadProducts();
 
 }
 );
-  </script>
+
+</script>
 
 </body>
 </html>
-
