@@ -109,7 +109,32 @@ color:white;
 padding:10px 15px;
 border-radius:6px;
 }
+/* CATEGORY FILTERS */
 
+.category-nav{
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+margin:20px;
+}
+
+.cat-btn{
+
+background:var(--primary);
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:20px;
+cursor:pointer;
+
+}
+
+.cat-btn:hover{
+
+opacity:.8;
+
+}
 /* PRODUCTS */
 
 .products-container{
@@ -292,7 +317,57 @@ Search
 </div>
 
 </section>
+<div class="category-nav">
 
+<button
+class="cat-btn"
+onclick="filterProducts('All')">
+
+All
+
+</button>
+
+<button
+class="cat-btn"
+onclick="filterProducts('Electronics')">
+
+Electronics
+
+</button>
+
+<button
+class="cat-btn"
+onclick="filterProducts('Clothes')">
+
+Clothes
+
+</button>
+
+<button
+class="cat-btn"
+onclick="filterProducts('Household')">
+
+Household
+
+</button>
+
+<button
+class="cat-btn"
+onclick="filterProducts('Study Materials')">
+
+Study Materials
+
+</button>
+
+<button
+class="cat-btn"
+onclick="filterProducts('Beauty & Care')">
+
+Beauty & Care
+
+</button>
+
+</div>
 
 <div
 class="products-container"
@@ -608,6 +683,95 @@ container.innerHTML+=`
 
 <small>
 ${product.description}
+</small>
+
+<button
+class="bn"
+onclick='viewProduct(${JSON.stringify(imgs)})'>
+
+View
+
+</button>
+
+<button
+class="bn"
+onclick="addToCart(
+'${product.name}',
+${product.price},
+'${first}'
+)">
+
+Add To Cart
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+  function filterProducts(category){
+
+const filtered=
+
+category==="All"
+
+? allProducts
+
+: allProducts.filter(
+product=>
+
+product.category===category
+);
+
+const container=
+document.getElementById(
+"product-container"
+);
+
+container.innerHTML="";
+
+filtered.forEach(product=>{
+
+const imgs=
+product.images &&
+product.images.length
+
+? product.images
+
+:
+
+["/images/food1.jpg"];
+
+
+const first=
+imgs[0];
+
+
+container.innerHTML+=`
+
+<div class="product-card">
+
+<img src="${first}">
+
+<h3>
+
+${product.name}
+
+</h3>
+
+<p>
+
+KES ${product.price}
+
+</p>
+
+<small>
+
+${product.description}
+
 </small>
 
 <button
