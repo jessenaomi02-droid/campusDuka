@@ -417,16 +417,24 @@ container.innerHTML+=`
 <img src="${first}">
 
 <h3>
-
 ${product.name}
-
 </h3>
 
 <p>
-
 KES ${product.price}
-
 </p>
+
+<small>
+${product.description}
+</small>
+
+<button
+class="bn"
+onclick='viewProduct(${JSON.stringify(imgs)})'>
+
+View
+
+</button>
 
 <button
 class="bn"
@@ -443,9 +451,18 @@ Add To Cart
 </div>
 
 `;
-
 });
+function viewProduct(images){
 
+const first=
+images[0];
+
+alert(
+"Food gallery ready: "+
+first
+);
+
+}
 }
     document.addEventListener(
 "DOMContentLoaded",
