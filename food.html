@@ -309,15 +309,14 @@ function changeSlide() {
 setInterval(changeSlide, 6000);
 </script>
 
+  
   <!-- PRODUCT GRID -->
-  <div class="product-container">
-    <div class="product-card">
-      <img src="pi.png.jfif">
-      <h3>Delicious Burger</h3>
-      <p>KES 250</p>
-      <button class="bn">View</button>
-      <button onclick="addToCart('Burger', 250, 'pi.png.jfif')" class="bn">Add to Cart</button>
-    </div>
+
+<div
+class="product-container"
+id="product-container">
+
+</div>
 
     <div class="product-card">
       <img src="lap.png.jfif">
@@ -370,8 +369,94 @@ setInterval(changeSlide, 6000);
       updateCartCount();
       alert(name + " added to cart!");
     }
+async function loadProducts(){
 
-    document.addEventListener("DOMContentLoaded", updateCartCount);
+const response=
+await fetch(
+"https://campusduka-api.onrender.com/products"
+);
+
+const products=
+await response.json();
+
+const foodOnly=
+
+products.filter(
+product=>
+
+product.category==="Food"
+);
+
+const container=
+document.getElementById(
+"product-container"
+);
+
+container.innerHTML="";
+
+foodOnly.forEach(product=>{
+
+const imgs=
+
+product.images &&
+product.images.length
+
+? product.images
+
+:
+
+["images/food1.jpg"];
+
+const first=
+imgs[0];
+
+container.innerHTML+=`
+
+<div class="product-card">
+
+<img src="${first}">
+
+<h3>
+
+${product.name}
+
+</h3>
+
+<p>
+
+KES ${product.price}
+
+</p>
+
+<button
+class="bn"
+onclick="addToCart(
+'${product.name}',
+${product.price},
+'${first}'
+)">
+
+Add To Cart
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+    document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+updateCartCount();
+
+loadProducts();
+
+}
+);
   </script>
 
 </body>
