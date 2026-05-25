@@ -390,6 +390,59 @@ error:err.message
 }
 
 });
+app.put("/edit-product/:id",async(req,res)=>{
+
+try{
+
+const id=req.params.id;
+
+const{
+
+name,
+description,
+price
+
+}=req.body;
+
+await db.query(
+
+`UPDATE products
+
+SET
+name=$1,
+description=$2,
+price=$3
+
+WHERE id=$4`,
+
+[
+name,
+description,
+price,
+id
+]
+
+);
+
+res.json({
+
+success:true,
+message:"Updated"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
