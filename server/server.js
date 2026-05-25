@@ -357,7 +357,39 @@ err.message
 const PORT=
 process.env.PORT || 3000;
 
+app.delete("/delete-product/:id", async(req,res)=>{
 
+try{
+
+const id=req.params.id;
+
+await db.query(
+
+"DELETE FROM products WHERE id=$1",
+
+[id]
+
+);
+
+res.json({
+
+success:true,
+message:"Deleted"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
