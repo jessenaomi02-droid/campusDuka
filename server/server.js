@@ -335,7 +335,11 @@ try{
 const products=
 await db.query(
 
-"SELECT * FROM products ORDER BY id DESC"
+`SELECT * FROM products
+
+WHERE status='approved'
+
+ORDER BY id DESC`
 
 );
 
@@ -352,7 +356,6 @@ err.message
 }
 
 });
-
 
 const PORT=
 process.env.PORT || 3000;
