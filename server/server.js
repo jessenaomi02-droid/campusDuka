@@ -443,6 +443,32 @@ error:err.message
 }
 
 });
+app.get("/update-status",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`ALTER TABLE products
+ADD COLUMN IF NOT EXISTS status
+VARCHAR(20)
+DEFAULT 'approved'`
+
+);
+
+res.send(
+"Status column added"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
