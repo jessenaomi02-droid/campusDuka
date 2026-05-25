@@ -1,18 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>CampusDuka Admin</title>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
 
 <style>
 
 body{
+
 font-family:Poppins,sans-serif;
 padding:30px;
 background:#f5f7fb;
+
 }
 
 h1{
+
 color:#0077ff;
+text-align:center;
+
+}
+
+#products{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+margin-top:30px;
+
 }
 
 .item{
@@ -21,38 +44,57 @@ background:white;
 
 padding:15px;
 
-margin:15px 0;
-
 border-radius:10px;
 
 box-shadow:
 0 2px 8px rgba(0,0,0,.1);
 
-}
-
-button{
-
-background:red;
-color:white;
-
-border:none;
-
-padding:10px 15px;
-
-border-radius:6px;
-
-cursor:pointer;
+text-align:center;
 
 }
 
 img{
 
-width:100px;
-height:100px;
+width:100%;
+height:180px;
 
 object-fit:cover;
 
 border-radius:8px;
+
+}
+
+h3{
+
+margin:10px 0;
+
+}
+
+button{
+
+border:none;
+
+padding:10px 15px;
+
+margin:5px;
+
+border-radius:6px;
+
+cursor:pointer;
+
+color:white;
+
+}
+
+.edit{
+
+background:#0077ff;
+
+}
+
+.delete{
+
+background:red;
 
 }
 
@@ -68,7 +110,9 @@ CampusDuka Admin
 
 </h1>
 
-<div id="products"></div>
+<div id="products">
+
+</div>
 
 
 <script>
@@ -125,7 +169,33 @@ KES ${product.price}
 
 </p>
 
+<p>
+
+${product.category}
+
+</p>
+
+
 <button
+class="edit"
+
+onclick="
+editProduct(
+${product.id},
+'${product.name}',
+'${product.description}',
+'${product.price}'
+)
+">
+
+Edit
+
+</button>
+
+
+<button
+class="delete"
+
 onclick="
 deleteProduct(
 ${product.id}
@@ -145,15 +215,17 @@ Delete
 }
 
 
+
 async function deleteProduct(id){
 
 if(
 !confirm(
-"Delete item?"
+"Delete this item?"
 )
 )return;
 
 
+const response=
 await fetch(
 
 `https://campusduka-api.onrender.com/delete-product/${id}`,
@@ -164,13 +236,92 @@ method:"DELETE"
 
 );
 
+const data=
+await response.json();
+
 alert(
-"Deleted"
+data.message
 );
 
 loadProducts();
 
 }
+
+
+
+async function editProduct(
+id,
+oldName,
+oldDescription,
+oldPrice
+){
+
+const name=
+prompt(
+"Edit name",
+oldName
+);
+
+if(!name)return;
+
+
+const description=
+prompt(
+"Edit description",
+oldDescription
+);
+
+if(!description)return;
+
+
+const price=
+prompt(
+"Edit price",
+oldPrice
+);
+
+if(!price)return;
+
+
+const response=
+await fetch(
+
+`https://campusduka-api.onrender.com/edit-product/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":
+"application/json"
+
+},
+
+body:JSON.stringify({
+
+name,
+description,
+price
+
+})
+
+}
+
+);
+
+const data=
+await response.json();
+
+alert(
+data.message
+);
+
+loadProducts();
+
+}
+
 
 loadProducts();
 
