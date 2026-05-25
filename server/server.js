@@ -472,6 +472,73 @@ err.message
 }
 
 });
+app.get("/pending-products",async(req,res)=>{
+
+try{
+
+const products=
+await db.query(
+
+`SELECT * FROM products
+
+WHERE status='pending'
+
+ORDER BY id DESC`
+
+);
+
+res.json(
+products.rows
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
+
+
+app.put("/approve-product/:id",async(req,res)=>{
+
+try{
+
+const id=req.params.id;
+
+await db.query(
+
+`UPDATE products
+
+SET status='approved'
+
+WHERE id=$1`,
+
+[id]
+
+);
+
+res.json({
+
+success:true,
+message:"Product approved"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
