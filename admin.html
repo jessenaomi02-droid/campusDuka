@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CampusDuka Admin</title>
+
+<style>
+
+body{
+font-family:Poppins,sans-serif;
+padding:30px;
+background:#f5f7fb;
+}
+
+h1{
+color:#0077ff;
+}
+
+.item{
+
+background:white;
+
+padding:15px;
+
+margin:15px 0;
+
+border-radius:10px;
+
+box-shadow:
+0 2px 8px rgba(0,0,0,.1);
+
+}
+
+button{
+
+background:red;
+color:white;
+
+border:none;
+
+padding:10px 15px;
+
+border-radius:6px;
+
+cursor:pointer;
+
+}
+
+img{
+
+width:100px;
+height:100px;
+
+object-fit:cover;
+
+border-radius:8px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+
+CampusDuka Admin
+
+</h1>
+
+<div id="products"></div>
+
+
+<script>
+
+async function loadProducts(){
+
+const response=
+await fetch(
+"https://campusduka-api.onrender.com/products"
+);
+
+const products=
+await response.json();
+
+const container=
+document.getElementById(
+"products"
+);
+
+container.innerHTML="";
+
+
+products.forEach(product=>{
+
+const image=
+
+product.images &&
+product.images.length
+
+?
+
+product.images[0]
+
+:
+
+"images/food1.jpg";
+
+
+container.innerHTML+=`
+
+<div class="item">
+
+<img src="${image}">
+
+<h3>
+
+${product.name}
+
+</h3>
+
+<p>
+
+KES ${product.price}
+
+</p>
+
+<button
+onclick="
+deleteProduct(
+${product.id}
+)
+">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+async function deleteProduct(id){
+
+if(
+!confirm(
+"Delete item?"
+)
+)return;
+
+
+await fetch(
+
+`https://campusduka-api.onrender.com/delete-product/${id}`,
+
+{
+method:"DELETE"
+}
+
+);
+
+alert(
+"Deleted"
+);
+
+loadProducts();
+
+}
+
+loadProducts();
+
+</script>
+
+</body>
+
+</html>
