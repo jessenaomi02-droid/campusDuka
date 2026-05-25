@@ -278,47 +278,48 @@ app.post("/add-product",async(req,res)=>{
 
 try{
 
-const{
-
+// 1. Get data from frontend
+const {
 name,
 description,
 price,
 images,
-category,
-status
+category
+} = req.body;
 
-}=req.body;
+// 2. Force status = pending (VERY IMPORTANT)
+const status = "pending";
 
+// 3. Save to database
 await db.query(
 
-INSERT INTO products
+`INSERT INTO products
 (name,description,price,images,category,status)
 
-VALUES($1,$2,$3,$4,$5,$6)
+VALUES($1,$2,$3,$4,$5,$6)`,
+
 [
 name,
 description,
 price,
 images || [],
 category,
-status || "pending"
+status
 ]
+
 );
 
+// 4. Response
 res.json({
-
 success:true,
-message:"Product added"
-
+message:"Product submitted for approval"
 });
 
 }catch(err){
 
 res.status(500).json({
-
 success:false,
 error:err.message
-
 });
 
 }
