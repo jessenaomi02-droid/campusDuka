@@ -284,25 +284,25 @@ name,
 description,
 price,
 images,
-category
+category,
+status
 
 }=req.body;
 
 await db.query(
 
-`INSERT INTO products
-(name,description,price,images,category)
+INSERT INTO products
+(name,description,price,images,category,status)
 
-VALUES($1,$2,$3,$4,$5)`,
-
+VALUES($1,$2,$3,$4,$5,$6)
 [
 name,
 description,
 price,
 images || [],
-category
+category,
+status || "pending"
 ]
-
 );
 
 res.json({
