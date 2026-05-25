@@ -146,6 +146,13 @@ placeholder="Third Image URL">
 <input
 id="image4"
 placeholder="Fourth Image URL">
+  <h3>Or Upload Images</h3>
+
+<input
+type="file"
+id="imageUpload"
+multiple
+accept="image/*">
 
 <select id="category">
 
@@ -191,25 +198,16 @@ Add Product
 <script>
 
 async function addProduct(){
+let uploadedFiles=
 
-const product={
+document
+.getElementById(
+"imageUpload"
+)
+.files;
 
-name:
-document.getElementById(
-"name"
-).value,
 
-description:
-document.getElementById(
-"description"
-).value,
-
-price:
-document.getElementById(
-"price"
-).value,
-
-images:[
+let images=[
 
 document.getElementById(
 "image1"
@@ -227,8 +225,34 @@ document.getElementById(
 "image4"
 ).value
 
-],
+].filter(img=>img!="");
 
+
+for(let file of uploadedFiles){
+
+images.push(
+URL.createObjectURL(file)
+);
+
+}
+const product={
+
+name:
+document.getElementById(
+"name"
+).value,
+
+description:
+document.getElementById(
+"description"
+).value,
+
+price:
+document.getElementById(
+"price"
+).value,
+
+images:images,
 category:
 document.getElementById(
 "category"
