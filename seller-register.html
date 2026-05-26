@@ -77,35 +77,34 @@ type="password"
 placeholder="Password">
 
 <button
-onclick="register()">
+<button onclick="register()">
 
 Create Account
+
 
 </button>
 
 </div>
 
 
+
+
 <script>
 
 async function register(){
 
+try{
+
 const data={
 
 name:
-document.getElementById(
-"name"
-).value,
+document.getElementById("name").value,
 
 email:
-document.getElementById(
-"email"
-).value,
+document.getElementById("email").value,
 
 password:
-document.getElementById(
-"password"
-).value
+document.getElementById("password").value
 
 };
 
@@ -115,16 +114,13 @@ await fetch(
 "https://campusduka-api.onrender.com/seller-register",
 
 {
-
 method:"POST",
 
 headers:{
-"Content-Type":
-"application/json"
+"Content-Type":"application/json"
 },
 
-body:
-JSON.stringify(data)
+body:JSON.stringify(data)
 
 }
 
@@ -133,13 +129,20 @@ JSON.stringify(data)
 const result=
 await response.json();
 
-alert(
-result.message
-);
+alert(result.message);
+
+}catch(error){
+
+console.log(error);
+
+alert("Something went wrong");
+
+}
 
 }
 
 </script>
+
 
 </body>
 </html>
