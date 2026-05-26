@@ -554,6 +554,50 @@ error:err.message
 }
 
 });
+app.post("/seller-register",async(req,res)=>{
+
+try{
+
+const{
+name,
+email,
+password
+}=req.body;
+
+await db.query(
+
+`INSERT INTO sellers
+(name,email,password)
+
+VALUES($1,$2,$3)`,
+
+[
+name,
+email,
+password
+]
+
+);
+
+res.json({
+
+success:true,
+message:"Account created"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
