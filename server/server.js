@@ -47,7 +47,6 @@ error:err.message
 
 });
 
-
 /* USERS TABLE */
 
 app.get("/create-users",async(req,res)=>{
@@ -224,6 +223,21 @@ category VARCHAR(50),
 
 created_at TIMESTAMP
 DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
+  db.query(`
+
+CREATE TABLE IF NOT EXISTS sellers(
+
+id SERIAL PRIMARY KEY,
+
+name TEXT,
+
+email TEXT UNIQUE,
+
+password TEXT
 
 )
 
