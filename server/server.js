@@ -216,7 +216,7 @@ name VARCHAR(100),
 description TEXT,
 
 price INT,
-seller_id INTEGER
+seller_id INTEGER,
 image TEXT,
 
 category VARCHAR(50),
