@@ -656,6 +656,31 @@ error:err.message
 }
 
 });
+app.get("/add-seller-id",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`ALTER TABLE products
+
+ADD COLUMN IF NOT EXISTS seller_id INTEGER`
+
+);
+
+res.send(
+"seller_id column added"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
