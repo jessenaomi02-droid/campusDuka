@@ -235,6 +235,11 @@ URL.createObjectURL(file)
 );
 
 }
+  const seller=
+
+JSON.parse(
+localStorage.getItem("seller")
+);
 const product={
 
 name:
@@ -253,13 +258,15 @@ document.getElementById(
 ).value,
 
 images:images,
+
 category:
 document.getElementById(
 "category"
-).value
+).value,
+
+seller_id:seller.id
 
 };
-
 const response=
 await fetch(
 
