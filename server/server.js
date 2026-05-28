@@ -681,6 +681,42 @@ err.message
 }
 
 });
+app.get("/seller-products/:seller_id",async(req,res)=>{
+
+try{
+
+const seller_id=
+req.params.seller_id;
+
+const products=
+await db.query(
+
+`SELECT * FROM products
+
+WHERE seller_id=$1
+
+ORDER BY id DESC`,
+
+[seller_id]
+
+);
+
+res.json(
+products.rows
+);
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
