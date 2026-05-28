@@ -496,11 +496,23 @@ try{
 const products=
 await db.query(
 
-`SELECT * FROM products
+`SELECT
+
+products.*,
+
+sellers.name AS seller_name,
+
+sellers.email AS seller_email
+
+FROM products
+
+LEFT JOIN sellers
+
+ON products.seller_id=sellers.id
 
 WHERE status='pending'
 
-ORDER BY id DESC`
+ORDER BY products.id DESC`
 
 );
 
