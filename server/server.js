@@ -598,6 +598,62 @@ error:err.message
 }
 
 });
+app.post("/seller-login",async(req,res)=>{
+
+try{
+
+const{
+email,
+password
+}=req.body;
+
+const seller=
+await db.query(
+
+`SELECT * FROM sellers
+
+WHERE email=$1
+AND password=$2`,
+
+[
+email,
+password
+]
+
+);
+
+if(seller.rows.length===0){
+
+return res.json({
+
+success:false,
+message:"Invalid credentials"
+
+});
+
+}
+
+res.json({
+
+success:true,
+message:"Login successful",
+
+seller:seller.rows[0]
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
