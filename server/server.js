@@ -311,7 +311,7 @@ await db.query(
 `INSERT INTO products
 (name,description,price,images,category,status,seller_id)
 
-VALUES($1,$2,$3,$4,$5,$6,$7)
+VALUES($1,$2,$3,$4,$5,$6,$7)`,
 
 [
 name,
