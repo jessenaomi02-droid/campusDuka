@@ -298,7 +298,8 @@ name,
 description,
 price,
 images,
-category
+category,
+seller_id
 } = req.body;
 
 // 2. Force status = pending (VERY IMPORTANT)
@@ -308,9 +309,9 @@ const status = "pending";
 await db.query(
 
 `INSERT INTO products
-(name,description,price,images,category,status)
+(name,description,price,images,category,status,seller_id)
 
-VALUES($1,$2,$3,$4,$5,$6)`,
+VALUES($1,$2,$3,$4,$5,$6,$7)
 
 [
 name,
@@ -318,7 +319,8 @@ description,
 price,
 images || [],
 category,
-status
+status,
+seller_id
 ]
 
 );
