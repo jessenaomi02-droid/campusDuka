@@ -240,6 +240,16 @@ URL.createObjectURL(file)
 JSON.parse(
 localStorage.getItem("seller")
 );
+  if(!seller){
+
+alert("Please login first");
+
+window.location.href=
+"seller-login.html";
+
+return;
+
+}
 const product={
 
 name:
@@ -292,7 +302,7 @@ product
 
 const data=
 await response.json();
-
+console.log(data);
 alert(
 data.message
 );
