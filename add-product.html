@@ -304,7 +304,13 @@ const data=
 await response.json();
 console.log(data);
 alert(
-data.message
+
+data.message ||
+
+data.error ||
+
+"Unknown error"
+
 );
 
 }
