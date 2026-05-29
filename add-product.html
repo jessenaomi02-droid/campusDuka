@@ -303,17 +303,30 @@ product
 const data=
 await response.json();
 console.log(data);
+if(data.success){
+
 alert(
 
-data.message ||
+"Product submitted successfully ✅\n\nTrack approval progress from your Seller Dashboard."
+
+);
+
+window.location.href=
+"seller-dashboard.html";
+
+}else{
+
+alert(
 
 data.error ||
 
-"Unknown error"
+"Something went wrong"
 
 );
 
 }
+
+
 
 </script>
 
