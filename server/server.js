@@ -237,10 +237,11 @@ name TEXT,
 
 email TEXT UNIQUE,
 
+phone VARCHAR(20),
+
 password TEXT
 
 )
-
 `);
 
 res.send(
@@ -575,22 +576,22 @@ try{
 const{
 name,
 email,
+phone,
 password
 }=req.body;
-
 await db.query(
 
-`INSERT INTO sellers
-(name,email,password)
+INSERT INTO sellers
+(name,email,phone,password)
 
 VALUES($1,$2,$3)`,
 
 [
 name,
 email,
+phone,
 password
 ]
-
 );
 
 res.json({
