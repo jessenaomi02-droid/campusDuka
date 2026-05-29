@@ -615,9 +615,7 @@ error:err.message
 }
 
 });
-}
 
-});
 app.post("/seller-login",async(req,res)=>{
 
 try{
