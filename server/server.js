@@ -733,6 +733,31 @@ error:err.message
 }
 
 });
+app.get("/add-seller-phone",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`ALTER TABLE sellers
+
+ADD COLUMN IF NOT EXISTS phone VARCHAR(20)`
+
+);
+
+res.send(
+"Phone column added"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
