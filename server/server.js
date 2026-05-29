@@ -581,11 +581,10 @@ password
 }=req.body;
 await db.query(
 
-INSERT INTO sellers
+`INSERT INTO sellers
 (name,email,phone,password)
 
-VALUES($1,$2,$3)`,
-
+VALUES($1,$2,$3,$4)`
 [
 name,
 email,
