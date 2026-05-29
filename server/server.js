@@ -579,18 +579,21 @@ email,
 phone,
 password
 }=req.body;
+
 await db.query(
 
 `INSERT INTO sellers
 (name,email,phone,password)
 
-VALUES($1,$2,$3,$4)`
+VALUES($1,$2,$3,$4)`,
+
 [
 name,
 email,
 phone,
 password
 ]
+
 );
 
 res.json({
@@ -609,6 +612,9 @@ error:err.message
 
 });
 
+}
+
+});
 }
 
 });
