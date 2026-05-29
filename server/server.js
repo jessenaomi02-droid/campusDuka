@@ -505,6 +505,8 @@ sellers.name AS seller_name,
 
 sellers.email AS seller_email
 
+sellers.phone AS seller_phone
+
 FROM products
 
 LEFT JOIN sellers
