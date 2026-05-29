@@ -758,6 +758,35 @@ err.message
 }
 
 });
+app.get("/all-sellers",async(req,res)=>{
+
+try{
+
+const sellers=
+await db.query(
+
+`SELECT * FROM sellers
+
+ORDER BY id DESC`
+
+);
+
+res.json(
+sellers.rows
+);
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
