@@ -1,11 +1,26 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
 
-<title>Seller Dashboard</title>
+<title>CampusDuka Seller Dashboard</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+rel="stylesheet">
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
 
@@ -15,9 +30,25 @@ background:#f5f7fb;
 
 padding:20px;
 
+color:#333;
+
 }
 
-.top{
+/* HEADER */
+
+.header{
+
+background:linear-gradient(
+135deg,
+#0077ff,
+#005fcc
+);
+
+padding:30px;
+
+border-radius:20px;
+
+color:white;
 
 display:flex;
 
@@ -25,40 +56,184 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:20px;
+flex-wrap:wrap;
+
+margin-bottom:30px;
+
+box-shadow:
+0 5px 15px rgba(0,0,0,.1);
 
 }
+
+.header h1{
+
+font-size:32px;
+
+}
+
+.header p{
+
+margin-top:8px;
+
+opacity:.9;
+
+}
+
+/* BUTTONS */
+
+.actions{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+margin-top:20px;
+
+}
+
+button{
+
+border:none;
+
+padding:12px 20px;
+
+border-radius:10px;
+
+font-size:15px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.upload-btn{
+
+background:white;
+
+color:#0077ff;
+
+}
+
+.upload-btn:hover{
+
+transform:translateY(-3px);
+
+}
+
+.logout-btn{
+
+background:#ff4d4d;
+
+color:white;
+
+}
+
+.logout-btn:hover{
+
+background:#e60000;
+
+}
+
+/* PRODUCTS */
+
+#products{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+gap:20px;
+
+}
+
+/* CARD */
 
 .card{
 
 background:white;
 
-padding:20px;
+padding:18px;
 
-border-radius:12px;
-
-margin-bottom:15px;
+border-radius:18px;
 
 box-shadow:
-0 4px 10px rgba(0,0,0,.1);
+0 4px 15px rgba(0,0,0,.08);
+
+transition:.3s;
+
+overflow:hidden;
+
+}
+
+.card:hover{
+
+transform:translateY(-5px);
 
 }
 
 img{
 
-width:120px;
+width:100%;
 
-height:120px;
+height:220px;
 
 object-fit:cover;
 
-border-radius:10px;
+border-radius:12px;
+
+margin-bottom:15px;
 
 }
 
-.status{
+.card h2{
+
+margin-bottom:10px;
+
+font-size:22px;
+
+}
+
+.price{
+
+color:#0077ff;
+
+font-size:22px;
+
+font-weight:700;
+
+margin:12px 0;
+
+}
+
+.category{
+
+display:inline-block;
+
+background:#e6f0ff;
+
+color:#0077ff;
 
 padding:6px 12px;
+
+border-radius:20px;
+
+font-size:13px;
+
+margin-bottom:12px;
+
+}
+
+/* STATUS */
+
+.status{
+
+padding:8px 15px;
 
 border-radius:20px;
 
@@ -66,16 +241,61 @@ color:white;
 
 display:inline-block;
 
-margin-top:10px;
+margin-top:15px;
+
+font-size:14px;
+
+font-weight:600;
 
 }
 
 .pending{
+
 background:orange;
+
 }
 
 .approved{
+
 background:green;
+
+}
+
+/* EMPTY */
+
+.empty{
+
+background:white;
+
+padding:40px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-shadow:
+0 4px 12px rgba(0,0,0,.08);
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.header h1{
+
+font-size:26px;
+
+}
+
 }
 
 </style>
@@ -84,19 +304,47 @@ background:green;
 
 <body>
 
-<div class="top">
+<div class="header">
+
+<div>
 
 <h1>
 
-Seller Dashboard
+CampusDuka Seller Dashboard
 
 </h1>
 
-<button onclick="logout()">
+<p>
+
+Welcome back,
+<span id="sellerName"></span>
+🚀
+
+</p>
+
+</div>
+
+<div class="actions">
+
+<a href="add-product.html">
+
+<button class="upload-btn">
+
++ Upload Product
+
+</button>
+
+</a>
+
+<button
+class="logout-btn"
+onclick="logout()">
 
 Logout
 
 </button>
+
+</div>
 
 </div>
 
@@ -117,6 +365,10 @@ window.location.href=
 "seller-login.html";
 
 }
+
+document.getElementById(
+"sellerName"
+).innerText=seller.name;
 
 function logout(){
 
@@ -148,6 +400,32 @@ document.getElementById(
 
 container.innerHTML="";
 
+if(products.length===0){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<h2>
+
+No Products Yet
+
+</h2>
+
+<p>
+
+Click Upload Product to start selling on CampusDuka.
+
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
 products.forEach(product=>{
 
 const image=
@@ -155,7 +433,9 @@ const image=
 product.images &&
 product.images.length
 
-? product.images[0]
+?
+
+product.images[0]
 
 : "images/food1.jpg";
 
@@ -166,29 +446,42 @@ container.innerHTML+=`
 <img src="${image}">
 
 <h2>
+
 ${product.name}
+
 </h2>
 
-<p>
-${product.description}
-</p>
+<div class="price">
 
-<h3>
 KES ${product.price}
-</h3>
+
+</div>
+
+<div class="category">
+
+${product.category}
+
+</div>
+
+<p>
+
+${product.description}
+
+</p>
 
 <div class="status ${product.status}">
 
 ${product.status}
 
 </div>
-<p>
+
+<p style="margin-top:12px;">
 
 ${product.status==="approved"
 
-? "✅ Your product was approved"
+? "✅ Your product was approved and is now visible to buyers."
 
-: "⏳ Waiting for admin approval"}
+: "⏳ Waiting for admin approval."}
 
 </p>
 
