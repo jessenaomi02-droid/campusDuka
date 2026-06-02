@@ -497,7 +497,7 @@ try{
 const products=
 await db.query(
 
-SELECT
+`SELECT
 
 products.*,
 
@@ -515,7 +515,8 @@ ON products.seller_id=sellers.id
 
 WHERE status='pending'
 
-ORDER BY products.id DESC
+ORDER BY products.id DESC`
+
 );
 
 res.json(
@@ -531,7 +532,6 @@ err.message
 }
 
 });
-
 
 app.put("/approve-product/:id",async(req,res)=>{
 
