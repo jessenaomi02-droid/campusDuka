@@ -1,106 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
+<nav class="navbar">
 
-<title>CampusDuka Admin</title>
+<div class="logo">
+CampusDuka Admin
+</div>
 
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<ul>
 
-<style>
+<li>
+<a href="#dashboard">
+Dashboard
+</a>
+</li>
 
-body{
+<li>
+<a href="#pending">
+Pending Products
+</a>
+</li>
 
-font-family:Poppins,sans-serif;
-padding:30px;
-background:#f5f7fb;
+<li>
+<a href="#approved">
+Approved Products
+</a>
+</li>
 
-}
+<li>
+<a href="#sellers-section">
+Sellers
+</a>
+</li>
 
-h1{
+<li>
+<a href="#users-section">
+Users
+</a>
+</li>
 
-color:#0077ff;
-text-align:center;
+</ul>
 
-}
+</nav>
 
-#products{
+<section id="dashboard">
 
-display:grid;
+<h1>
+CampusDuka Dashboard
+</h1>
 
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
+<div class="stats">
 
-gap:20px;
+<div class="stat-card">
+<h3>Pending</h3>
+<p id="pendingCount">0</p>
+</div>
 
-margin-top:30px;
+<div class="stat-card">
+<h3>Approved</h3>
+<p id="approvedCount">0</p>
+</div>
 
-}
+<div class="stat-card">
+<h3>Sellers</h3>
+<p id="sellerCount">0</p>
+</div>
 
-.item{
+<div class="stat-card">
+<h3>Users</h3>
+<p id="userCount">0</p>
+</div>
 
-background:white;
+</div>
 
-padding:15px;
-
-border-radius:10px;
-
-box-shadow:
-0 2px 8px rgba(0,0,0,.1);
-
-text-align:center;
-
-}
-
-img{
-
-width:100%;
-height:180px;
-
-object-fit:cover;
-
-border-radius:8px;
-
-}
-
-h3{
-
-margin:10px 0;
-
-}
-
-button{
-
-border:none;
-
-padding:10px 15px;
-
-margin:5px;
-
-border-radius:6px;
-
-cursor:pointer;
-
-color:white;
-
-}
-
-.edit{
-
-background:#0077ff;
-
-}
-
-.delete{
-
-background:red;
-
-}
-
-</style>
-
-</head>
+</section>
 
 <body>
 
@@ -130,6 +100,7 @@ Approved Products
 <div id="products">
 
 </div>
+  
 
 
 <script>
@@ -480,6 +451,89 @@ loadProducts();
 
 loadPendingProducts();
 </script>
+  html{
+scroll-behavior:smooth;
+}
+
+.navbar{
+
+position:sticky;
+top:0;
+
+background:#0077ff;
+
+padding:15px 25px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+z-index:1000;
+}
+
+.logo{
+
+color:white;
+font-size:24px;
+font-weight:bold;
+
+}
+
+.navbar ul{
+
+display:flex;
+gap:15px;
+
+list-style:none;
+
+}
+
+.navbar a{
+
+color:white;
+text-decoration:none;
+font-weight:600;
+
+}
+
+.stats{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+
+gap:20px;
+
+margin:30px 0;
+
+}
+
+.stat-card{
+
+background:white;
+
+padding:20px;
+
+border-radius:12px;
+
+text-align:center;
+
+box-shadow:
+0 4px 10px rgba(0,0,0,.1);
+
+}
+
+.stat-card p{
+
+font-size:28px;
+
+font-weight:bold;
+
+color:#0077ff;
+
+}
+  
 
 </body>
 
