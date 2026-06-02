@@ -788,6 +788,37 @@ error:err.message
 }
 
 });
+app.get("/all-users",async(req,res)=>{
+
+try{
+
+const users=
+await db.query(
+
+`SELECT *
+
+FROM users
+
+ORDER BY id DESC`
+
+);
+
+res.json(
+users.rows
+);
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
