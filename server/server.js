@@ -497,13 +497,13 @@ try{
 const products=
 await db.query(
 
-`SELECT
+SELECT
 
 products.*,
 
 sellers.name AS seller_name,
 
-sellers.email AS seller_email
+sellers.email AS seller_email,
 
 sellers.phone AS seller_phone
 
@@ -515,8 +515,7 @@ ON products.seller_id=sellers.id
 
 WHERE status='pending'
 
-ORDER BY products.id DESC`
-
+ORDER BY products.id DESC
 );
 
 res.json(
