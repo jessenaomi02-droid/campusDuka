@@ -105,6 +105,7 @@ margin-top:10px;
 </style>
 
 </head>
+  <body>
 <nav class="navbar">
 
 <div class="logo">
@@ -446,9 +447,21 @@ Approve
 
 </button>
 
+<button
+class="delete"
+onclick="
+rejectProduct(
+${product.id}
+)
+">
+
+Reject
+
+</button>
 
 <button
 class="delete"
+
 onclick="
 deleteProduct(
 ${product.id}
@@ -458,6 +471,7 @@ ${product.id}
 Delete
 
 </button>
+
 
 </div>
 
