@@ -599,11 +599,25 @@ document.getElementById(
 ).innerText=
 sellers.length;
 
+const usersResponse=
+await fetch(
+"https://campusduka-api.onrender.com/all-users"
+);
+
+const users=
+await usersResponse.json();
+
+document.getElementById(
+"userCount"
+).innerText=
+users.length;
+
 }catch(err){
 
 console.log(err);
 
 }
+
 
 }
 loadProducts();
