@@ -543,7 +543,11 @@ await db.query(
 
 `UPDATE products
 
-SET status='approved'
+SET
+
+status='approved',
+
+rejection_reason=NULL
 
 WHERE id=$1`,
 
