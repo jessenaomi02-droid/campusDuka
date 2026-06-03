@@ -479,9 +479,14 @@ ${product.status}
 
 ${product.status==="approved"
 
-? "✅ Your product was approved and is now visible to buyers."
+? "✅ Your product was approved"
 
-: "⏳ Waiting for admin approval."}
+: product.status==="rejected"
+
+? `❌ Product Rejected<br><br>
+Reason: ${product.rejection_reason || "No reason provided"}`
+
+: "⏳ Waiting for admin approval"}
 
 </p>
 
