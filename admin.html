@@ -101,6 +101,27 @@ color:#0077ff;
 margin-top:10px;
 
 }
+  .item{
+
+background:white;
+
+padding:20px;
+
+margin:15px 0;
+
+border-radius:12px;
+
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+
+}
+  #sellersList,
+#usersList{
+
+max-width:1000px;
+
+margin:auto;
+
+}
 
 </style>
 
@@ -133,13 +154,15 @@ Dashboard
 </li>
 
 <li>
-<a href="#sellers-section">
+<a href="#"
+onclick="showSellers()">
 🏪 Sellers
 </a>
 </li>
 
 <li>
-<a href="#users-section">
+<a href="#"
+onclick="showUsers()">
 👥 Users
 </a>
 </li>
@@ -782,6 +805,11 @@ ID: ${seller.id}
 `;
 
 });
+    document.getElementById(
+"sellers-section"
+).scrollIntoView({
+behavior:"smooth"
+});
 
 }
   async function showUsers(){
@@ -831,6 +859,11 @@ User ID: ${user.id}
 
 `;
 
+});
+    document.getElementById(
+"users-section"
+).scrollIntoView({
+behavior:"smooth"
 });
 
 }
