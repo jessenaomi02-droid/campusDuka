@@ -819,6 +819,32 @@ error:err.message
 }
 
 });
+app.get("/add-rejection-reason",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`ALTER TABLE products
+
+ADD COLUMN IF NOT EXISTS rejection_reason TEXT`
+
+);
+
+res.send(
+"rejection_reason column added"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
+
 app.listen(PORT,()=>{
 
 console.log(
