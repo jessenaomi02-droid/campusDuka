@@ -345,19 +345,18 @@ Edit
 
 </button>
 
-
 <button
 class="delete"
-
 onclick="
-deleteProduct(
+rejectProduct(
 ${product.id}
 )
 ">
 
-Delete
+Reject
 
 </button>
+
 
 </div>
 
@@ -526,6 +525,56 @@ loadPendingProducts();
 loadProducts();
 
 }
+  async function rejectProduct(id){
+
+const reason=
+prompt(
+"Enter rejection reason:"
+);
+
+if(!reason)return;
+
+const response=
+await fetch(
+
+`https://campusduka-api.onrender.com/reject-product/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":
+"application/json"
+
+},
+
+body:JSON.stringify({
+
+reason
+
+})
+
+}
+
+);
+
+const data=
+await response.json();
+
+alert(
+data.message
+);
+
+loadPendingProducts();
+
+loadProducts();
+
+loadStats();
+
+}
+
 
 async function editProduct(
 id,
