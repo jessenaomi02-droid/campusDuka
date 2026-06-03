@@ -58,6 +58,49 @@ border-radius:12px;
 text-align:center;
 box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
+  .stat-card{
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+transition:.3s;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.stat-card h3{
+
+margin:0;
+
+color:#666;
+
+font-size:16px;
+
+}
+
+.stat-card p{
+
+font-size:32px;
+
+font-weight:bold;
+
+color:#0077ff;
+
+margin-top:10px;
+
+}
 
 </style>
 
@@ -78,25 +121,25 @@ Dashboard
 
 <li>
 <a href="#pending">
-Pending Products
+⏳ Pending Products
 </a>
 </li>
 
 <li>
 <a href="#approved">
-Approved Products
+✅ Approved Products
 </a>
 </li>
 
 <li>
 <a href="#sellers-section">
-Sellers
+🏪 Sellers
 </a>
 </li>
 
 <li>
 <a href="#users-section">
-Users
+👥 Users
 </a>
 </li>
 
@@ -511,9 +554,62 @@ loadProducts();
 
 }
 
+async function loadStats(){
 
+try{
+
+const pendingResponse=
+await fetch(
+"https://campusduka-api.onrender.com/pending-products"
+);
+
+const pending=
+await pendingResponse.json();
+
+document.getElementById(
+"pendingCount"
+).innerText=
+pending.length;
+
+
+const approvedResponse=
+await fetch(
+"https://campusduka-api.onrender.com/products"
+);
+
+const approved=
+await approvedResponse.json();
+
+document.getElementById(
+"approvedCount"
+).innerText=
+approved.length;
+
+
+const sellersResponse=
+await fetch(
+"https://campusduka-api.onrender.com/all-sellers"
+);
+
+const sellers=
+await sellersResponse.json();
+
+document.getElementById(
+"sellerCount"
+).innerText=
+sellers.length;
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
 loadProducts();
 
 loadPendingProducts();
+
+loadStats();
 </script>
   
