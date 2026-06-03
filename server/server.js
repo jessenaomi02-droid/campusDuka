@@ -570,6 +570,56 @@ error:err.message
 }
 
 });
+app.put("/reject-product/:id",async(req,res)=>{
+
+try{
+
+const id=
+req.params.id;
+
+const{
+reason
+}=req.body;
+
+await db.query(
+
+`UPDATE products
+
+SET
+
+status='rejected',
+
+rejection_reason=$1
+
+WHERE id=$2`,
+
+[
+reason,
+id
+]
+
+);
+
+res.json({
+
+success:true,
+message:"Product rejected"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
+
 app.post("/seller-register",async(req,res)=>{
 
 try{
