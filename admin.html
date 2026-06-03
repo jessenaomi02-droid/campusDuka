@@ -165,9 +165,17 @@ CampusDuka Dashboard
 <p id="approvedCount">0</p>
 </div>
 
-<div class="stat-card">
-<h3>Sellers</h3>
+<div
+class="stat-card"
+onclick="showSellers()"
+style="cursor:pointer;">
+
+<h3>🏪 Sellers</h3>
+
 <p id="sellerCount">0</p>
+
+<small>Click to view</small>
+
 </div>
 
 <div class="stat-card">
@@ -186,6 +194,21 @@ CampusDuka Dashboard
 CampusDuka Admin
 
 </h1>
+  <div
+id="sellers-section"
+style="display:none;padding:20px;">
+
+<h2>
+
+🏪 Registered Sellers
+
+</h2>
+
+<div id="sellersList">
+
+</div>
+
+</div>
 
 <h2>
 
@@ -625,5 +648,55 @@ loadProducts();
 loadPendingProducts();
 
 loadStats();
+  async function showSellers(){
+
+document.getElementById(
+"sellers-section"
+).style.display="block";
+
+const response=
+await fetch(
+"https://campusduka-api.onrender.com/all-sellers"
+);
+
+const sellers=
+await response.json();
+
+const container=
+document.getElementById(
+"sellersList"
+);
+
+container.innerHTML="";
+
+sellers.forEach(seller=>{
+
+container.innerHTML+=`
+
+<div class="item">
+
+<h3>
+${seller.name}
+</h3>
+
+<p>
+📧 ${seller.email}
+</p>
+
+<p>
+📞 ${seller.phone || "No phone"}
+</p>
+
+<p>
+ID: ${seller.id}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
 </script>
   
