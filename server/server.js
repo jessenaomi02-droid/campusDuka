@@ -9,6 +9,13 @@ process.env.CONSUMER_KEY;
 
 const CONSUMER_SECRET=
 process.env.CONSUMER_SECRET;
+
+const BUSINESS_SHORTCODE=
+process.env.BUSINESS_SHORTCODE;
+
+const PASSKEY=
+process.env.PASSKEY;
+
 app.use(cors());
 app.use(express.json());
 
@@ -1056,6 +1063,112 @@ res.status(500).json({
 success:false,
 error:err.message
 
+});
+
+}
+
+});
+
+app.post("/stkpush",async(req,res)=>{
+
+try{
+
+const {phone,amount}=req.body;
+
+const auth=
+
+Buffer.from(
+
+`${CONSUMER_KEY}:${CONSUMER_SECRET}`
+
+).toString("base64");
+
+const tokenResponse=
+await axios.get(
+
+"https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+
+{
+headers:{
+Authorization:`Basic ${auth}`
+}
+}
+
+);
+
+const token=
+tokenResponse.data.access_token;
+
+const timestamp=
+
+new Date()
+.toISOString()
+.replace(/[-:TZ.]/g,"")
+.substring(0,14);
+
+const password=
+
+Buffer.from(
+BUSINESS_SHORTCODE+
+PASSKEY+
+timestamp
+).toString("base64");
+
+const response=
+await axios.post(
+
+"https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+
+{
+BusinessShortCode:
+BUSINESS_SHORTCODE,
+
+Password:
+password,
+
+Timestamp:
+timestamp,
+
+TransactionType:
+"CustomerPayBillOnline",
+
+Amount:
+amount,
+
+PartyA:
+phone,
+
+PartyB:
+BUSINESS_SHORTCODE,
+
+PhoneNumber:
+phone,
+
+CallBackURL:
+"https://campusduka-api.onrender.com/mpesa-callback",
+
+AccountReference:
+"CampusDuka",
+
+TransactionDesc:
+"CampusDuka Order"
+},
+
+{
+headers:{
+Authorization:`Bearer ${token}`
+}
+}
+
+);
+
+res.json(response.data);
+
+}catch(err){
+
+res.status(500).json({
+success:false,
+error:err.message
 });
 
 }
