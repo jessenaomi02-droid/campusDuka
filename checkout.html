@@ -272,103 +272,105 @@ text-align:center;
 
   <script>
     // MOBILE MENU
-    const menuIcon = document.getElementById("menuIcon");
-    const navLinks = document.getElementById("navLinks");
+const menuIcon = document.getElementById("menuIcon");
+const navLinks = document.getElementById("navLinks");
 
-    menuIcon.addEventListener("click",()=>{
-      navLinks.classList.toggle("active");
-    });
+menuIcon.addEventListener("click", () => {
+  navLinks.classList.toggle("active");
+});
 
-    // LOAD CART
-    document.addEventListener("DOMContentLoaded",()=>{
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const list = document.getElementById("orderSummary");
-      const totalBox = document.getElementById("totalAmount");
+// LOAD CART
+document.addEventListener("DOMContentLoaded", () => {
 
-      if(cart.length === 0){
-        list.innerHTML = "<li>Your cart is empty 😢</li>";
-        return;
-      }
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const list = document.getElementById("orderSummary");
+  const totalBox = document.getElementById("totalAmount");
 
-      let total = 0;
-      list.innerHTML = "";
+  if (cart.length === 0) {
+    list.innerHTML = "<li>Your cart is empty 😢</li>";
+    return;
+  }
 
-      cart.forEach(item=>{
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
+  let total = 0;
+  list.innerHTML = "";
 
-        const li = document.createElement("li");
-        li.textContent = `${item.name} × ${item.quantity} — KES ${itemTotal.toLocaleString()}`;
-        list.appendChild(li);
-      });
+  cart.forEach(item => {
 
-      totalBox.textContent = `Total: KES ${total.toLocaleString()}`;
-    });
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
 
-    
+    const li = document.createElement("li");
+    li.textContent =
+      `${item.name} × ${item.quantity} — KES ${itemTotal.toLocaleString()}`;
+
+    list.appendChild(li);
+
+  });
+
+  totalBox.textContent =
+    `Total: KES ${total.toLocaleString()}`;
+
+});
+
 // SUBMIT
-document.getElementById(
-"checkoutForm"
-).addEventListener("submit", async (e) => {
+document.getElementById("checkoutForm")
+.addEventListener("submit", async (e) => {
 
-e.preventDefault();
+  e.preventDefault();
 
-alert("Submit clicked");
+  alert("Submit clicked");
 
-const phone =
-document.getElementById("phone").value;
+  const phone =
+    document.getElementById("phone").value;
 
-const cart =
-JSON.parse(localStorage.getItem("cart")) || [];
+  const cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
 
-if(cart.length === 0){
-  alert("Cart is empty");
-  return;
-}
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
 
-const amount =
-cart.reduce(
-(sum,item)=>sum + (item.price * item.quantity),
-0
-);
+  const amount =
+    cart.reduce(
+      (sum, item) => sum + (item.price * item.quantity),
+      0
+    );
 
-try{
+  try {
 
-const mpesaResponse =
-await fetch(
-"https://campusduka-api.onrender.com/stkpush",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-phone:
-phone.startsWith("0")
-? "254" + phone.substring(1)
-: phone,
-amount
-})
-}
-);
+    const mpesaResponse = await fetch(
+      "https://campusduka-api.onrender.com/stkpush",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          phone: phone.startsWith("0")
+            ? "254" + phone.substring(1)
+            : phone,
+          amount
+        })
+      }
+    );
 
-const mpesaData =
-await mpesaResponse.json();
+    const mpesaData =
+      await mpesaResponse.json();
 
-console.log(mpesaData);
+    console.log(mpesaData);
 
-alert(JSON.stringify(mpesaData));
+    alert(JSON.stringify(mpesaData));
 
-}catch(err){
+  } catch (err) {
 
-console.log(err);
+    console.log(err);
 
-alert("Error connecting to M-Pesa");
+    alert("Error connecting to M-Pesa");
 
-}
+  }
 
 });
   </script>
-
 </body>
 </html>
