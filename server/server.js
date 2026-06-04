@@ -945,6 +945,67 @@ err.message
 
 });
 
+app.post("/create-order",async(req,res)=>{
+
+try{
+
+const{
+
+buyer_name,
+buyer_phone,
+delivery_location,
+seller_id,
+product_id,
+amount
+
+}=req.body;
+
+await db.query(
+
+`INSERT INTO orders
+
+(
+buyer_name,
+buyer_phone,
+delivery_location,
+seller_id,
+product_id,
+amount
+)
+
+VALUES($1,$2,$3,$4,$5,$6)`,
+
+[
+buyer_name,
+buyer_phone,
+delivery_location,
+seller_id,
+product_id,
+amount
+]
+
+);
+
+res.json({
+
+success:true,
+message:"Order created"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
+
 app.listen(PORT,()=>{
 
 console.log(
