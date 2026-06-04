@@ -327,6 +327,7 @@ document.getElementById(
 "location"
 ).value;
 
+// SUBMIT
 document.getElementById(
 "checkoutForm"
 ).addEventListener("submit",async e=>{
@@ -354,12 +355,19 @@ return;
 
 }
 
-const firstItem=cart[0];
+const amount=
+cart.reduce(
+(sum,item)=>
+sum+(item.price*item.quantity),
+0
+);
 
-const response=
+try{
+
+const mpesaResponse=
 await fetch(
 
-"https://campusduka-api.onrender.com/create-order",
+"https://campusduka-api.onrender.com/stkpush",
 
 {
 
@@ -371,14 +379,14 @@ headers:{
 
 body:JSON.stringify({
 
-buyer_name:fullname,
-buyer_phone:phone,
-delivery_location:location,
+phone:
+phone.startsWith("0")
+?
+"254"+phone.substring(1)
+:
+phone,
 
-seller_id:firstItem.seller_id || 0,
-product_id:firstItem.id || 0,
-
-amount:firstItem.price * firstItem.quantity
+amount
 
 })
 
@@ -386,28 +394,36 @@ amount:firstItem.price * firstItem.quantity
 
 );
 
-const data=
-await response.json();
+const mpesaData=
+await mpesaResponse.json();
 
-if(data.success){
+console.log(mpesaData);
+
+if(mpesaData.ResponseCode==="0"){
 
 alert(
-"Order created successfully"
-);
-
-localStorage.removeItem(
-"cart"
+"M-Pesa prompt sent to your phone."
 );
 
 }else{
 
 alert(
-data.error
+"Payment request failed."
 );
+
+console.log(mpesaData);
 
 }
 
-});
+}catch(err){
+
+console.log(err);
+
+alert(
+"Error connecting to M-Pesa."
+);
+
+}
 
 });
   </script>
