@@ -334,14 +334,10 @@ document.getElementById(
 
 e.preventDefault();
 
-const fullname=
-document.getElementById("fullname").value;
+alert("Submit clicked");
 
 const phone=
 document.getElementById("phone").value;
-
-const location=
-document.getElementById("location").value;
 
 const cart=
 JSON.parse(
@@ -366,32 +362,22 @@ try{
 
 const mpesaResponse=
 await fetch(
-
 "https://campusduka-api.onrender.com/stkpush",
-
 {
-
 method:"POST",
-
 headers:{
 "Content-Type":"application/json"
 },
-
 body:JSON.stringify({
-
 phone:
 phone.startsWith("0")
 ?
 "254"+phone.substring(1)
 :
 phone,
-
 amount
-
 })
-
 }
-
 );
 
 const mpesaData=
@@ -399,29 +385,13 @@ await mpesaResponse.json();
 
 console.log(mpesaData);
 
-if(mpesaData.ResponseCode==="0"){
-
-alert(
-"M-Pesa prompt sent to your phone."
-);
-
-}else{
-
-alert(
-"Payment request failed."
-);
-
-console.log(mpesaData);
-
-}
+alert(JSON.stringify(mpesaData));
 
 }catch(err){
 
 console.log(err);
 
-alert(
-"Error connecting to M-Pesa."
-);
+alert("Error connecting to M-Pesa");
 
 }
 
