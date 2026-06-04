@@ -235,16 +235,33 @@
 
         <!-- FORM -->
         <form id="checkoutForm">
-          <input type="text" placeholder="Full Name" required>
-          <input type="tel" placeholder="Phone Number" required>
-          <textarea placeholder="Delivery Location / Hostel / Block" required></textarea>
+         
+          <input
+id="fullname"
+type="text"
+placeholder="Full Name"
+required>
 
-          <select required>
-            <option value="">Select Payment Method</option>
-            <option>M-Pesa</option>
-            <option>Cash on Delivery</option>
-            <option>Debit / Credit Card</option>
-          </select>
+<input
+id="phone"
+type="tel"
+placeholder="Phone Number"
+required>
+
+<textarea
+id="location"
+placeholder="Delivery Location / Hostel / Block"
+required></textarea>
+
+          <input
+type="text"
+value="M-Pesa Payment"
+readonly
+style="
+background:#e8f5e9;
+font-weight:bold;
+text-align:center;
+">
 
           <button class="pay-btn">Complete Order</button>
         </form>
@@ -289,12 +306,38 @@
     });
 
     // SUBMIT
-    document.getElementById("checkoutForm").addEventListener("submit",e=>{
-      e.preventDefault();
-      alert("✅ Order placed successfully! Thank you for shopping on CampusDuka.");
-      localStorage.removeItem("cart");
-      window.location.href="index2.html";
-    });
+document.getElementById(
+"checkoutForm"
+).addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const fullname=
+document.getElementById(
+"fullname"
+).value;
+
+const phone=
+document.getElementById(
+"phone"
+).value;
+
+const location=
+document.getElementById(
+"location"
+).value;
+
+alert(
+`M-Pesa request will be sent to ${phone}`
+);
+
+console.log({
+fullname,
+phone,
+location
+});
+
+});
   </script>
 
 </body>
