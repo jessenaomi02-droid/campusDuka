@@ -899,6 +899,52 @@ err.message
 
 });
 
+app.get("/create-orders",async(req,res)=>{
+
+try{
+
+await db.query(`
+
+CREATE TABLE IF NOT EXISTS orders(
+
+id SERIAL PRIMARY KEY,
+
+buyer_name TEXT,
+
+buyer_phone VARCHAR(20),
+
+delivery_location TEXT,
+
+seller_id INTEGER,
+
+product_id INTEGER,
+
+amount INTEGER,
+
+payment_status VARCHAR(30) DEFAULT 'pending',
+
+delivery_status VARCHAR(30) DEFAULT 'pending',
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
+
+res.send(
+"Orders table created"
+);
+
+}catch(err){
+
+res.send(
+err.message
+);
+
+}
+
+});
+
 app.listen(PORT,()=>{
 
 console.log(
