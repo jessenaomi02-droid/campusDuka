@@ -330,37 +330,32 @@ document.getElementById(
 // SUBMIT
 document.getElementById(
 "checkoutForm"
-).addEventListener("submit",async e=>{
+).addEventListener("submit", async (e) => {
 
 e.preventDefault();
 
 alert("Submit clicked");
 
-const phone=
+const phone =
 document.getElementById("phone").value;
 
-const cart=
-JSON.parse(
-localStorage.getItem("cart")
-) || [];
+const cart =
+JSON.parse(localStorage.getItem("cart")) || [];
 
-if(cart.length===0){
-
-alert("Cart is empty");
-return;
-
+if(cart.length === 0){
+  alert("Cart is empty");
+  return;
 }
 
-const amount=
+const amount =
 cart.reduce(
-(sum,item)=>
-sum+(item.price*item.quantity),
+(sum,item)=>sum + (item.price * item.quantity),
 0
 );
 
 try{
 
-const mpesaResponse=
+const mpesaResponse =
 await fetch(
 "https://campusduka-api.onrender.com/stkpush",
 {
@@ -371,16 +366,14 @@ headers:{
 body:JSON.stringify({
 phone:
 phone.startsWith("0")
-?
-"254"+phone.substring(1)
-:
-phone,
+? "254" + phone.substring(1)
+: phone,
 amount
 })
 }
 );
 
-const mpesaData=
+const mpesaData =
 await mpesaResponse.json();
 
 console.log(mpesaData);
