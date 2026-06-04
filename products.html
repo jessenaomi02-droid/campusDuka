@@ -439,11 +439,12 @@ document
 
 
 function addToCart(
+id,
+seller_id,
 name,
 price,
 image
 ){
-
 let cart=
 JSON.parse(
 localStorage.getItem(
@@ -452,6 +453,8 @@ localStorage.getItem(
 )||[];
 
 cart.push({
+id,
+seller_id,
 name,
 price,
 image,
@@ -608,6 +611,8 @@ View
 class="bn"
 
 onclick="addToCart(
+${product.id},
+${product.seller_id},
 '${product.name}',
 ${product.price},
 '${first}'
