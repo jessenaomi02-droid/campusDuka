@@ -327,14 +327,86 @@ document.getElementById(
 "location"
 ).value;
 
-alert(
-`M-Pesa request will be sent to ${phone}`
+document.getElementById(
+"checkoutForm"
+).addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const fullname=
+document.getElementById("fullname").value;
+
+const phone=
+document.getElementById("phone").value;
+
+const location=
+document.getElementById("location").value;
+
+const cart=
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+if(cart.length===0){
+
+alert("Cart is empty");
+return;
+
+}
+
+const firstItem=cart[0];
+
+const response=
+await fetch(
+
+"https://campusduka-api.onrender.com/create-order",
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+buyer_name:fullname,
+buyer_phone:phone,
+delivery_location:location,
+
+seller_id:firstItem.seller_id || 0,
+product_id:firstItem.id || 0,
+
+amount:firstItem.price * firstItem.quantity
+
+})
+
+}
+
 );
 
-console.log({
-fullname,
-phone,
-location
+const data=
+await response.json();
+
+if(data.success){
+
+alert(
+"Order created successfully"
+);
+
+localStorage.removeItem(
+"cart"
+);
+
+}else{
+
+alert(
+data.error
+);
+
+}
+
 });
 
 });
