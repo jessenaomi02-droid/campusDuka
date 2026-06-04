@@ -4,6 +4,11 @@ const axios=require("axios");
 const db=require("./db");
 const app=express();
 
+const CONSUMER_KEY=
+process.env.CONSUMER_KEY;
+
+const CONSUMER_SECRET=
+process.env.CONSUMER_SECRET;
 app.use(cors());
 app.use(express.json());
 
@@ -990,6 +995,57 @@ res.json({
 
 success:true,
 message:"Order created"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
+
+app.get("/mpesa-token",async(req,res)=>{
+
+try{
+
+const auth=
+
+Buffer.from(
+
+`${CONSUMER_KEY}:${CONSUMER_SECRET}`
+
+).toString("base64");
+
+const response=
+await axios.get(
+
+"https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+
+{
+
+headers:{
+
+Authorization:
+`Basic ${auth}`
+
+}
+
+}
+
+);
+
+res.json({
+
+success:true,
+token:
+response.data.access_token
 
 });
 
