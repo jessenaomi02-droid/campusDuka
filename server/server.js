@@ -1175,6 +1175,20 @@ error:err.message
 
 });
 
+app.post("/mpesa-callback", async (req, res) => {
+
+console.log(
+"M-Pesa Callback:",
+JSON.stringify(req.body, null, 2)
+);
+
+res.status(200).json({
+ResultCode: 0,
+ResultDesc: "Accepted"
+});
+
+});
+
 app.listen(PORT,()=>{
 
 console.log(
