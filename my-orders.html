@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Orders | CampusDuka</title>
+
+<style>
+body{
+font-family:Poppins,sans-serif;
+background:#f5f7fb;
+padding:20px;
+}
+
+.item{
+background:white;
+padding:20px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+</style>
+</head>
+<body>
+
+<h1>📦 My Orders</h1>
+
+<div id="ordersList">
+Loading...
+</div>
+
+<script>
+
+const phone =
+prompt("Enter your phone number");
+
+const formattedPhone =
+phone.startsWith("0")
+? "254"+phone.substring(1)
+: phone;
+
+async function loadOrders(){
+
+const response =
+await fetch(
+`https://campusduka-api.onrender.com/buyer-orders/${formattedPhone}`
+);
+
+const orders =
+await response.json();
+
+const container =
+document.getElementById("ordersList");
+
+container.innerHTML="";
+
+orders.forEach(order=>{
+
+container.innerHTML += `
+
+<div class="item">
+
+<h3>
+Order #${order.id}
+</h3>
+
+<p>
+Amount: KES ${order.amount}
+</p>
+
+<p>
+Payment Status:
+${order.payment_status}
+</p>
+
+<p>
+Delivery Status:
+${order.delivery_status}
+</p>
+
+<p>
+Location:
+${order.delivery_location}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>
