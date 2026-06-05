@@ -347,12 +347,23 @@ document.getElementById("checkoutForm")
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          phone: phone.startsWith("0")
-            ? "254" + phone.substring(1)
-            : phone,
-          amount
-        })
+       body: JSON.stringify({
+
+  fullname:
+    document.getElementById("fullname").value,
+
+  phone: phone.startsWith("0")
+    ? "254" + phone.substring(1)
+    : phone,
+
+  location:
+    document.getElementById("location").value,
+
+  cart,
+
+  amount
+
+})
       }
     );
 
