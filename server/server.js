@@ -1266,6 +1266,18 @@ await db.query(
 res.json(result.rows);
 
 });
+
+app.get("/product/:id", async (req,res)=>{
+
+const result =
+await db.query(
+"SELECT * FROM products WHERE id=$1",
+[req.params.id]
+);
+
+res.json(result.rows[0]);
+
+});
 app.listen(PORT,()=>{
 
 console.log(
