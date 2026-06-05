@@ -1234,6 +1234,16 @@ ResultDesc: "Accepted"
 
 });
 
+app.get("/orders", async (req,res)=>{
+
+const result =
+await db.query(
+"SELECT * FROM orders"
+);
+
+res.json(result.rows);
+
+});
 app.listen(PORT,()=>{
 
 console.log(
