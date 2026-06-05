@@ -319,7 +319,13 @@ document.getElementById("checkoutForm")
 
   e.preventDefault();
 
-  
+  const payBtn =
+    document.querySelector(".pay-btn");
+
+  payBtn.disabled = true;
+
+  payBtn.textContent =
+    "Processing Payment...";
 
   const phone =
     document.getElementById("phone").value;
