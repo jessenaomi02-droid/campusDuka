@@ -1278,6 +1278,35 @@ await db.query(
 res.json(result.rows[0]);
 
 });
+
+app.get("/buyer-orders/:phone", async (req,res)=>{
+
+try{
+
+const result = await db.query(
+`
+SELECT *
+FROM orders
+WHERE buyer_phone=$1
+ORDER BY created_at DESC
+`,
+[
+req.params.phone
+]
+);
+
+res.json(result.rows);
+
+}catch(err){
+
+res.status(500).json({
+success:false,
+error:err.message
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
