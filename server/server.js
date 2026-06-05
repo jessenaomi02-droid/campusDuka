@@ -1073,7 +1073,23 @@ app.post("/stkpush",async(req,res)=>{
 
 try{
 
-const {phone,amount}=req.body;
+const {
+  fullname,
+  phone,
+  location,
+  cart,
+  amount
+}=req.body;
+  console.log(
+"Checkout Data:",
+{
+  fullname,
+  phone,
+  location,
+  amount,
+  cart
+}
+);
 
 const auth=
 
