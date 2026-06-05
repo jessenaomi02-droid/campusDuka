@@ -360,7 +360,19 @@ document.getElementById("checkoutForm")
 
     console.log(mpesaData);
 
-    alert(JSON.stringify(mpesaData));
+   if(mpesaData.ResponseCode==="0"){
+
+alert(
+"M-Pesa prompt sent to your phone. Complete the payment to continue."
+);
+
+}else{
+
+alert(
+"Failed to send M-Pesa prompt."
+);
+
+}
 
   } catch (err) {
 
