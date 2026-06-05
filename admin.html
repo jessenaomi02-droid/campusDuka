@@ -784,7 +784,14 @@ document.getElementById(
 
 container.innerHTML = "";
 
-orders.forEach(order=>{
+for (const order of orders) {
+  const productResponse =
+await fetch(
+`https://campusduka-api.onrender.com/product/${order.product_id}`
+);
+
+const product =
+await productResponse.json();
 
 container.innerHTML += `
 
@@ -819,8 +826,8 @@ Delivery:
 ${order.delivery_status}
 </p>
 <p>
-Product ID:
-${order.product_id}
+Product:
+${product.name}
 </p>
 <p>
 Location:
@@ -831,7 +838,7 @@ ${order.delivery_location}
 
 `;
 
-});
+}
 
 }
 loadProducts();
