@@ -1307,6 +1307,39 @@ error:err.message
 }
 
 });
+
+app.put("/update-delivery-status/:id", async (req,res)=>{
+
+try{
+
+const {status}=req.body;
+
+await db.query(
+`
+UPDATE orders
+SET delivery_status=$1
+WHERE id=$2
+`,
+[
+status,
+req.params.id
+]
+);
+
+res.json({
+success:true
+});
+
+}catch(err){
+
+res.status(500).json({
+success:false,
+error:err.message
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
