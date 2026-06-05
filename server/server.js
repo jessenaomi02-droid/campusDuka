@@ -1080,6 +1080,35 @@ const {
   cart,
   amount
 }=req.body;
+  const firstItem = cart[0];
+
+const orderResult = await db.query(
+`
+INSERT INTO orders
+(
+buyer_name,
+buyer_phone,
+delivery_location,
+seller_id,
+product_id,
+amount
+)
+VALUES($1,$2,$3,$4,$5,$6)
+RETURNING id
+`,
+[
+fullname,
+phone,
+location,
+firstItem.seller_id,
+firstItem.id,
+amount
+]
+);
+
+const orderId = orderResult.rows[0].id;
+
+console.log("Order Created:", orderId);
   console.log(
 "Checkout Data:",
 {
@@ -1164,7 +1193,7 @@ CallBackURL:
 "https://campusduka-api.onrender.com/mpesa-callback",
 
 AccountReference:
-"CampusDuka",
+`ORDER_${orderId}`,
 
 TransactionDesc:
 "CampusDuka Order"
