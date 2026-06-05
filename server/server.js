@@ -1260,7 +1260,7 @@ app.get("/orders", async (req,res)=>{
 
 const result =
 await db.query(
-"SELECT * FROM orders"
+"SELECT * FROM orders ORDER BY id DESC"
 );
 
 res.json(result.rows);
