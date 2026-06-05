@@ -1340,6 +1340,23 @@ error:err.message
 }
 
 });
+
+app.get("/orders/:phone", async (req,res)=>{
+
+const result =
+await db.query(
+`
+SELECT *
+FROM orders
+WHERE buyer_phone=$1
+ORDER BY id DESC
+`,
+[req.params.phone]
+);
+
+res.json(result.rows);
+
+});
 app.listen(PORT,()=>{
 
 console.log(
