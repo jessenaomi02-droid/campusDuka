@@ -169,15 +169,15 @@ padding:20px;
 
 <h2>CampusDuka</h2>
 
-<a href="#" onclick="showSection('dashboard')">
+<a href="javascript:void(0)" onclick="showSection('dashboard')">
 📊 Dashboard
 </a>
 
-<a href="#" onclick="showSection('orders')">
+<a href="javascript:void(0)" onclick="showSection('orders')">
 📦 Orders
 </a>
 
-<a href="#" onclick="showSection('products')">
+<a href="javascript:void(0)" onclick="showSection('products')">
 🛍 Products
 </a>
 
@@ -185,7 +185,7 @@ padding:20px;
 🏪 Sellers
 </a>
 
-<a href="#" onclick="showSection('users')">
+<a href="javascript:void(0)" onclick="showSection('users')">
 👥 Users
 </a>
 
@@ -300,15 +300,7 @@ style="display:none;padding:20px;">
 
 </div>
 
-🏪 Registered Sellers
 
-</h2>
-
-<div id="sellersList">
-
-</div>
-
-</div>
  <div
 id="users-section"
 style="display:none;padding:20px;">
@@ -323,60 +315,23 @@ style="display:none;padding:20px;">
 
 </div>
 
-👥 Registered Users
+<div id="orders-section" style="display:none;padding:20px;">
 
-</h2>
-
-<div id="usersList">
-
-</div>
-
-</div>
-
-<div
-id="orders-section"
-style="display:none;padding:20px;">
-<h2>
-📦 Orders
-</h2>
-
-<div id="ordersList">
-
-Loading orders...
- <div id="preparing-section" style="padding:20px;">
+<h2>📦 New Orders</h2>
+<div id="ordersList"></div>
 
 <h2>📦 Preparing Orders</h2>
-
 <div id="preparingOrders"></div>
 
-</div>
-
-
-<div id="delivery-section" style="padding:20px;">
-
 <h2>🚚 Out For Delivery</h2>
-
 <div id="deliveryOrders"></div>
 
-</div>
-
-
-<div id="delivered-section" style="padding:20px;">
-
 <h2>✅ Delivered Orders</h2>
-
 <div id="deliveredOrders"></div>
 
-
 </div>
 
-</div>
-    <div id="preparing-section" style="padding:20px;">
 
-<h2>📦 Preparing Orders</h2>
-
-
-</div>
 <div id="products-section" style="display:none;">
 <h2>
 
@@ -384,15 +339,16 @@ Pending Products
 
 </h2>
 <div id="pendingProducts">
-
-</div>
-
-
-<h2>
+  <h2>
 
 Approved Products
 
 </h2>
+
+</div>
+
+
+
 
 <div id="products">
 
