@@ -225,10 +225,14 @@ View My Orders
 
 async function loadOrders(){
 
-const phone =
-document.getElementById(
-"phone"
-).value;
+let phone =
+document.getElementById("phone").value.trim();
+
+if(phone.startsWith("0")){
+phone =
+"254" + phone.substring(1);
+}
+  console.log(phone);
 
 const response =
 await fetch(
