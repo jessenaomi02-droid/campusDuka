@@ -122,11 +122,76 @@ max-width:1000px;
 margin:auto;
 
 }
+body{
+margin:0;
+background:#f5f7fb;
+font-family:Poppins,sans-serif;
+}
 
+.sidebar{
+width:250px;
+height:100vh;
+background:#0077ff;
+position:fixed;
+left:0;
+top:0;
+padding:20px;
+overflow-y:auto;
+}
+
+.sidebar h2{
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin-bottom:10px;
+color:white;
+text-decoration:none;
+border-radius:10px;
+}
+
+.sidebar a:hover{
+background:rgba(255,255,255,.2);
+}
+
+.main-content{
+margin-left:270px;
+padding:20px;
+}
 </style>
 
 </head>
   <body>
+    <div class="sidebar">
+
+<h2>CampusDuka</h2>
+
+<a href="#" onclick="showSection('dashboard')">
+📊 Dashboard
+</a>
+
+<a href="#" onclick="showSection('orders')">
+📦 Orders
+</a>
+
+<a href="#" onclick="showSection('products')">
+🛍 Products
+</a>
+
+<a href="#" onclick="showSection('sellers')">
+🏪 Sellers
+</a>
+
+<a href="#" onclick="showSection('users')">
+👥 Users
+</a>
+
+</div>
+
+<div class="main-content">
 <nav class="navbar">
 
 <div class="logo">
@@ -171,7 +236,7 @@ onclick="showUsers()">
 
 </nav>
 
-<section id="dashboard">
+<section id="dashboard-section">
 
 <h1>
 CampusDuka Dashboard
@@ -226,10 +291,8 @@ style="cursor:pointer;">
 CampusDuka Admin
 
 </h1>
-  <div
-id="sellers-section"
-style="display:none;padding:20px;">
-
+ id="sellers-section"
+style="display:none;padding:20px;"
 <h2>
 
 🏪 Registered Sellers
@@ -243,8 +306,7 @@ style="display:none;padding:20px;">
 </div>
   <div
 id="users-section"
-style="display:none;padding:20px;">
-
+style="display:none;padding:20px;"
 <h2>
 
 👥 Registered Users
@@ -259,8 +321,7 @@ style="display:none;padding:20px;">
 
 <div
 id="orders-section"
-style="padding:20px;">
-
+style="display:none;padding:20px;">
 <h2>
 📦 Orders
 </h2>
@@ -297,7 +358,7 @@ Loading orders...
 <div id="deliveredOrders"></div>
 
 </div>
-
+<div id="products-section" style="display:none;">
 <h2>
 
 Pending Products
@@ -317,10 +378,37 @@ Approved Products
 <div id="products">
 
 </div>
-  
+  </div>
 
 
 <script>
+  function showSection(section){
+
+document.getElementById(
+"dashboard-section"
+).style.display="none";
+
+document.getElementById(
+"orders-section"
+).style.display="none";
+
+document.getElementById(
+"products-section"
+).style.display="none";
+
+document.getElementById(
+"sellers-section"
+).style.display="none";
+
+document.getElementById(
+"users-section"
+).style.display="none";
+
+document.getElementById(
+section + "-section"
+).style.display="block";
+
+}
 
 async function loadProducts(){
 
@@ -1082,6 +1170,7 @@ behavior:"smooth"
 
 }
 </script>
+  </div>
     </body>
 
 </html>
