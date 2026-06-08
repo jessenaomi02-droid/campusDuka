@@ -272,6 +272,31 @@ Loading orders...
 </div>
 
 </div>
+    <div id="preparing-section" style="padding:20px;">
+
+<h2>📦 Preparing Orders</h2>
+
+<div id="preparingOrders"></div>
+
+</div>
+
+
+<div id="delivery-section" style="padding:20px;">
+
+<h2>🚚 Out For Delivery</h2>
+
+<div id="deliveryOrders"></div>
+
+</div>
+
+
+<div id="delivered-section" style="padding:20px;">
+
+<h2>✅ Delivered Orders</h2>
+
+<div id="deliveredOrders"></div>
+
+</div>
 
 <h2>
 
@@ -783,6 +808,24 @@ document.getElementById(
 );
 
 container.innerHTML = "";
+    const preparingContainer =
+document.getElementById(
+"preparingOrders"
+);
+
+const deliveryContainer =
+document.getElementById(
+"deliveryOrders"
+);
+
+const deliveredContainer =
+document.getElementById(
+"deliveredOrders"
+);
+
+preparingContainer.innerHTML = "";
+deliveryContainer.innerHTML = "";
+deliveredContainer.innerHTML = "";
 
 for (const order of orders) {
   const productResponse =
@@ -792,8 +835,21 @@ await fetch(
 
 const product =
 await productResponse.json();
+  let targetContainer = container;
 
-container.innerHTML += `
+if(order.delivery_status==="preparing"){
+targetContainer = preparingContainer;
+}
+
+if(order.delivery_status==="out_for_delivery"){
+targetContainer = deliveryContainer;
+}
+
+if(order.delivery_status==="delivered"){
+targetContainer = deliveredContainer;
+}
+
+targetContainer.innerHTML += `
 
 <div class="item">
 
