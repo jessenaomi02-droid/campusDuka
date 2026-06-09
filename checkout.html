@@ -380,9 +380,19 @@ document.getElementById("checkoutForm")
 
    if(mpesaData.ResponseCode==="0"){
 
-alert(
-"M-Pesa prompt sent to your phone. Complete the payment to continue."
+localStorage.setItem(
+"buyerPhone",
+phone.startsWith("0")
+? "254" + phone.substring(1)
+: phone
 );
+
+alert(
+"M-Pesa prompt sent successfully."
+);
+
+window.location.href =
+"my-orders.html";
 
 }else{
 
