@@ -281,6 +281,20 @@ container.innerHTML +=
 `
 <div class="order-card">
 
+<img
+src="${order.product_images?.[0] || ''}"
+style="
+width:100%;
+max-height:220px;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:15px;
+">
+
+<h2>
+${order.product_name}
+</h2>
+
 <div class="order-header">
 
 <div class="order-id">
@@ -291,7 +305,7 @@ Order #${order.id}
 
 <div class="amount">
 
-KES ${order.amount}
+KES ${order.product_price}
 
 </div>
 
@@ -299,7 +313,8 @@ KES ${order.amount}
 
 <div class="info">
 
-📞 ${order.buyer_phone}
+🛍 Product:
+${order.product_name}
 
 </div>
 
