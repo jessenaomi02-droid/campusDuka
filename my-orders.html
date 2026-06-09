@@ -226,8 +226,9 @@ View My Orders
 async function loadOrders(){
 
 let phone =
-document.getElementById("phone").value.trim();
-
+localStorage.getItem(
+"buyerPhone"
+);
 if(phone.startsWith("0")){
 phone =
 "254" + phone.substring(1);
@@ -380,6 +381,20 @@ order.delivery_status==="delivered"
 });
 
 }
+  window.onload = ()=>{
+
+const phone =
+localStorage.getItem(
+"buyerPhone"
+);
+
+if(phone){
+
+loadOrders();
+
+}
+
+};
 
 </script>
 
