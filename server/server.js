@@ -1357,6 +1357,72 @@ ORDER BY id DESC
 res.json(result.rows);
 
 });
+app.delete(
+"/delete-order/:id",
+async(req,res)=>{
+
+try{
+
+const order =
+await db.query(
+
+"SELECT * FROM orders WHERE id=$1",
+
+[req.params.id]
+
+);
+
+if(order.rows.length===0){
+
+return res.status(404).json({
+
+success:false,
+message:"Order not found"
+
+});
+
+}
+
+if(
+order.rows[0].delivery_status!=="delivered"
+){
+
+return res.status(400).json({
+
+success:false,
+message:"Only delivered orders can be deleted"
+
+});
+
+}
+
+await db.query(
+
+"DELETE FROM orders WHERE id=$1",
+
+[req.params.id]
+
+);
+
+res.json({
+
+success:true,
+message:"Order deleted successfully"
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
