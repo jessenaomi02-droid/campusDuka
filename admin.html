@@ -982,6 +982,29 @@ ${order.id},
 ✅ Delivered
 </button>
 
+${order.delivery_status==="delivered" ? `
+
+<button
+onclick="
+deleteOrder(${order.id})
+"
+style="
+background:#dc2626;
+color:white;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+">
+
+🗑 Delete Order
+
+</button>
+
+` : ""}
+
 </div>
 
 `;
@@ -1032,6 +1055,34 @@ alert(
 loadOrders();
 
 }
+
+}
+
+  async function deleteOrder(orderId){
+
+if(
+!confirm(
+"Delete this order permanently?"
+)
+)return;
+
+const response =
+await fetch(
+
+`https://campusduka-api.onrender.com/delete-order/${orderId}`,
+
+{
+method:"DELETE"
+}
+
+);
+
+const data =
+await response.json();
+
+alert(data.message);
+
+loadOrders();
 
 }
   async function showSellers(){
