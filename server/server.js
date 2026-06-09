@@ -1343,18 +1343,44 @@ error:err.message
 
 app.get("/orders/:phone", async (req,res)=>{
 
+try{
+
 const result =
 await db.query(
 `
-SELECT *
+SELECT
+
+orders.*,
+
+products.name AS product_name,
+
+products.images AS product_images,
+
+products.price AS product_price
+
 FROM orders
-WHERE buyer_phone=$1
-ORDER BY id DESC
+
+LEFT JOIN products
+
+ON orders.product_id = products.id
+
+WHERE orders.buyer_phone = $1
+
+ORDER BY orders.id DESC
 `,
 [req.params.phone]
 );
 
 res.json(result.rows);
+
+}catch(err){
+
+res.status(500).json({
+success:false,
+error:err.message
+});
+
+}
 
 });
 app.delete(
