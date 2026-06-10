@@ -1221,7 +1221,8 @@ error:err.message
 }); 
 
 app.post("/mpesa-callback", async (req, res) => {
-
+console.log("CALLBACK RECEIVED");
+  
 const callback =
 req.body.Body.stkCallback;
 
