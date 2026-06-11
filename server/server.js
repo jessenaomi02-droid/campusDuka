@@ -1250,6 +1250,24 @@ console.log(
 );
 
 }
+  }else{
+
+await db.query(
+`
+UPDATE orders
+SET payment_status='failed'
+WHERE id=(
+SELECT MAX(id)
+FROM orders
+)
+`
+);
+
+console.log(
+"Order marked as FAILED"
+);
+
+}
 
 console.log(
 "M-Pesa Callback:",
