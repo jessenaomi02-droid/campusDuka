@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Waiting For Payment | CampusDuka</title>
+
+<style>
+body{
+font-family:Poppins,sans-serif;
+background:#f5f7fb;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+text-align:center;
+max-width:500px;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:6px solid #ddd;
+border-top:6px solid #0077ff;
+border-radius:50%;
+margin:auto;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+h2{
+margin-top:20px;
+}
+
+p{
+color:#666;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="loader"></div>
+
+<h2>Waiting for Payment Confirmation</h2>
+
+<p>
+Complete the M-Pesa payment on your phone.
+You will be redirected automatically.
+</p>
+
+</div>
+
+<script>
+
+const phone =
+localStorage.getItem("buyerPhone");
+
+async function checkPayment(){
+
+try{
+
+const response =
+await fetch(
+`https://campusduka-api.onrender.com/orders/${phone}`
+);
+
+const orders =
+await response.json();
+
+if(
+orders.length > 0 &&
+orders[0].payment_status === "paid"
+){
+
+window.location.href =
+"my-orders.html";
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+setInterval(
+checkPayment,
+3000
+);
+
+</script>
+
+</body>
+</html>
