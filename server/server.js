@@ -1227,40 +1227,36 @@ error:err.message
 }); 
 
 app.post("/mpesa-callback", async (req, res) => {
+
 console.log("CALLBACK RECEIVED");
-  
+
 const callback =
 req.body.Body.stkCallback;
 
 if(callback.ResultCode === 0){
 
 await db.query(
-`
-UPDATE orders
+`UPDATE orders
 SET payment_status='paid'
 WHERE id=(
 SELECT MAX(id)
 FROM orders
-)
-`
+)`
 );
 
 console.log(
 "Order marked as PAID"
 );
 
-}
-  }else{
+}else{
 
 await db.query(
-`
-UPDATE orders
+`UPDATE orders
 SET payment_status='failed'
 WHERE id=(
 SELECT MAX(id)
 FROM orders
-)
-`
+)`
 );
 
 console.log(
