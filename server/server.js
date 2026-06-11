@@ -3,6 +3,13 @@ const cors=require("cors");
 const axios=require("axios");
 const db=require("./db");
 const app=express();
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+api_key: process.env.CLOUDINARY_API_KEY,
+api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const CONSUMER_KEY=
 process.env.CONSUMER_KEY;
@@ -1465,6 +1472,28 @@ res.status(500).json({
 success:false,
 error:err.message
 
+});
+
+}
+
+});
+app.get("/test-cloudinary", async(req,res)=>{
+
+try{
+
+const result =
+await cloudinary.api.ping();
+
+res.json({
+success:true,
+result
+});
+
+}catch(err){
+
+res.json({
+success:false,
+error:err.message
 });
 
 }
