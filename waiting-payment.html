@@ -96,6 +96,20 @@ window.location.href =
 
 }
 
+if(
+orders.length > 0 &&
+orders[0].payment_status === "failed"
+){
+
+alert(
+"You did not complete the M-Pesa payment."
+);
+
+window.location.href =
+"checkout.html";
+
+}
+
 }catch(err){
 
 console.log(err);
