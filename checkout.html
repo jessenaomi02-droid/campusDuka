@@ -387,12 +387,13 @@ phone.startsWith("0")
 : phone
 );
 
-alert(
-"M-Pesa prompt sent successfully."
+localStorage.setItem(
+"latestOrderId",
+mpesaData.orderId
 );
 
 window.location.href =
-"my-orders.html";
+"waiting-payment.html";
 
 }else{
 
@@ -401,7 +402,6 @@ alert(
 );
 
 }
-
   } catch (err) {
 
     console.log(err);
