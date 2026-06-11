@@ -411,7 +411,20 @@ alert(
 );
 
 }
-  
+  }catch(err){
+
+payBtn.disabled = false;
+
+payBtn.textContent =
+"Complete Order";
+
+console.log(err);
+
+alert("Error connecting to M-Pesa");
+
+}
+
+});
 
 });
   </script>
