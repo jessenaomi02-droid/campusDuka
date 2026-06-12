@@ -4,11 +4,16 @@ const axios=require("axios");
 const db=require("./db");
 const app=express();
 const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
 
 cloudinary.config({
 cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 api_key: process.env.CLOUDINARY_API_KEY,
 api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const upload = multer({
+storage: multer.memoryStorage()
 });
 
 const CONSUMER_KEY=
@@ -1492,6 +1497,36 @@ result
 }catch(err){
 
 res.json({
+success:false,
+error:err.message
+});
+
+}
+
+});
+
+app.post(
+"/upload-image",
+upload.single("image"),
+async(req,res)=>{
+
+try{
+
+const result =
+await cloudinary.uploader.upload(
+`data:${req.file.mimetype};base64,${
+req.file.buffer.toString("base64")
+}`
+);
+
+res.json({
+success:true,
+url:result.secure_url
+});
+
+}catch(err){
+
+res.status(500).json({
 success:false,
 error:err.message
 });
