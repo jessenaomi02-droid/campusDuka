@@ -1534,6 +1534,10 @@ error:err.message
 }
 
 });
+
+app.get("/test-upload",(req,res)=>{
+res.send("UPLOAD ROUTE WORKING");
+});
 app.listen(PORT,()=>{
 
 console.log(
