@@ -1529,7 +1529,7 @@ url:result.secure_url
 res.status(500).json({
 success:false,
 error:err.message
-});
+}); 
 
 }
 
