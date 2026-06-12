@@ -230,9 +230,32 @@ document.getElementById(
 
 for(let file of uploadedFiles){
 
-images.push(
-URL.createObjectURL(file)
+const formData = new FormData();
+
+formData.append(
+"image",
+file
 );
+
+const uploadResponse =
+await fetch(
+"https://campusduka-api.onrender.com/upload-image",
+{
+method:"POST",
+body:formData
+}
+);
+
+const uploadData =
+await uploadResponse.json();
+
+if(uploadData.success){
+
+images.push(
+uploadData.url
+);
+
+}
 
 }
   const seller=
