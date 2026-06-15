@@ -1704,6 +1704,28 @@ behavior:"smooth"
 
 }
 
+  async function viewSeller(id){
+
+showSection(
+"seller-details"
+);
+
+const response=
+
+await fetch(
+
+`https://campusduka-api.onrender.com/seller-details/${id}`
+
+);
+
+const data=
+
+await response.json();
+
+console.log(data);
+
+}
+
   
 </script>
   </div>
