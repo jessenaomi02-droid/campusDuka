@@ -1596,6 +1596,94 @@ error:err.message
 
 });
 
+app.get(
+
+"/seller-details/:id",
+
+async(req,res)=>{
+
+try{
+
+const seller=
+
+await db.query(
+
+"SELECT * FROM sellers WHERE id=$1",
+
+[req.params.id]
+
+);
+
+const products=
+
+await db.query(
+
+`
+
+SELECT *
+
+FROM products
+
+WHERE seller_id=$1
+
+ORDER BY id DESC
+
+`,
+
+[req.params.id]
+
+);
+
+const orders=
+
+await db.query(
+
+`
+
+SELECT *
+
+FROM orders
+
+WHERE seller_id=$1
+
+ORDER BY id DESC
+
+`,
+
+[req.params.id]
+
+);
+
+res.json({
+
+seller:
+
+seller.rows[0],
+
+products:
+
+products.rows,
+
+orders:
+
+orders.rows
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+
+error:err.message
+
+});
+
+}
+
+});
+
 app.get("/test-upload",(req,res)=>{
 res.send("UPLOAD ROUTE WORKING");
 });
