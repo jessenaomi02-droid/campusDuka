@@ -341,7 +341,19 @@ style="display:none;padding:20px;">
 id="users-section"
 style="display:none;padding:20px;">
 
-   <div
+   
+
+<h2>
+👥 Registered Users
+</h2>
+
+<div id="usersList">
+
+</div>
+
+</div>
+
+  <div
 
 id="seller-details-section"
 
@@ -350,16 +362,6 @@ style="display:none;padding:20px;"
 >
 
 <div id="sellerDetails">
-
-</div>
-
-</div>
-
-<h2>
-👥 Registered Users
-</h2>
-
-<div id="usersList">
 
 </div>
 
@@ -1131,6 +1133,263 @@ font-weight:bold;
 
 `;
 }
+
+}
+
+  async function viewSeller(id){
+
+showSection(
+"seller-details"
+);
+
+const response=
+
+await fetch(
+
+`https://campusduka-api.onrender.com/seller-details/${id}`
+
+);
+
+const data=
+
+await response.json();
+
+const seller=
+data.seller;
+
+const products=
+data.products;
+
+const orders=
+data.orders;
+
+
+const approved=
+
+products.filter(
+
+p=>p.status==="approved"
+
+).length;
+
+const pending=
+
+products.filter(
+
+p=>p.status==="pending"
+
+).length;
+
+const rejected=
+
+products.filter(
+
+p=>p.status==="rejected"
+
+).length;
+
+
+let revenue=0;
+
+orders.forEach(order=>{
+
+revenue +=
+
+Number(order.amount);
+
+});
+
+
+const container=
+
+document.getElementById(
+
+"sellerDetails"
+
+);
+
+
+container.innerHTML=`
+
+<div class="item">
+
+<h1>
+
+🏪 ${seller.name}
+
+</h1>
+
+<p>
+
+📧 ${seller.email}
+
+</p>
+
+<p>
+
+📞 ${seller.phone || "No phone"}
+
+</p>
+
+<hr>
+
+<p>
+
+📦 Total Products:
+
+${products.length}
+
+</p>
+
+<p>
+
+⏳ Pending:
+
+${pending}
+
+</p>
+
+<p>
+
+✅ Approved:
+
+${approved}
+
+</p>
+
+<p>
+
+❌ Rejected:
+
+${rejected}
+
+</p>
+
+<hr>
+
+<p>
+
+📦 Orders:
+
+${orders.length}
+
+</p>
+
+<p>
+
+💰 Revenue:
+
+KES ${revenue}
+
+</p>
+
+</div>
+
+<h2>
+
+🛍 Seller Products
+
+</h2>
+
+`;
+
+
+
+products.forEach(product=>{
+
+container.innerHTML+=`
+
+<div class="item">
+
+<h3>
+
+${product.name}
+
+</h3>
+
+<p>
+
+KES ${product.price}
+
+</p>
+
+<p>
+
+Status:
+
+${product.status}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+
+
+container.innerHTML+=`
+
+<h2>
+
+📦 Seller Orders
+
+</h2>
+
+`;
+
+
+
+orders.forEach(order=>{
+
+container.innerHTML+=`
+
+<div class="item">
+
+<h3>
+
+Order #${order.id}
+
+</h3>
+
+<p>
+
+Buyer:
+
+${order.buyer_name}
+
+</p>
+
+<p>
+
+Phone:
+
+${order.buyer_phone}
+
+</p>
+
+<p>
+
+Amount:
+
+KES ${order.amount}
+
+</p>
+
+<p>
+
+Delivery:
+
+${order.delivery_status}
+
+</p>
+
+</div>
+
+`;
+
+});
 
 }
 loadProducts();
