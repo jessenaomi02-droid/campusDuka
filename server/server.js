@@ -1304,41 +1304,31 @@ ResultDesc: "Accepted"
 
 app.get("/orders", async (req,res)=>{
 
-const result =
-await db.query(
-"SELECT * FROM orders ORDER BY id DESC"
-);
-
-res.json(result.rows);
-
-});
-
-app.get("/product/:id", async (req,res)=>{
-
-const result =
-await db.query(
-"SELECT * FROM products WHERE id=$1",
-[req.params.id]
-);
-
-res.json(result.rows[0]);
-
-});
-
-app.get("/buyer-orders/:phone", async (req,res)=>{
-
 try{
 
-const result = await db.query(
+const result =
+await db.query(
+
 `
-SELECT *
+SELECT
+
+orders.*,
+
+products.name AS product_name,
+
+products.images AS product_images,
+
+products.price AS product_price
+
 FROM orders
-WHERE buyer_phone=$1
-ORDER BY created_at DESC
-`,
-[
-req.params.phone
-]
+
+LEFT JOIN products
+
+ON orders.product_id = products.id
+
+ORDER BY orders.id DESC
+`
+
 );
 
 res.json(result.rows);
@@ -1346,8 +1336,11 @@ res.json(result.rows);
 }catch(err){
 
 res.status(500).json({
+
 success:false,
+
 error:err.message
+
 });
 
 }
