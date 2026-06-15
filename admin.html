@@ -193,8 +193,16 @@ margin-bottom:10px;
 📦 Orders
 </a>
 
-<a href="javascript:void(0)" onclick="showSection('products')">
-🛍 Products
+<a onclick="showSection('pending')">
+
+⏳ Pending Products
+
+</a>
+
+<a onclick="showSection('approved')">
+
+✅ Approved Products
+
 </a>
 
 <a href="#" onclick="showSection('sellers')">
@@ -348,18 +356,19 @@ style="display:none;padding:20px;">
 </div>
 
 
-<div id="products-section" style="display:none;">
-<h2>
+<div id="pending-section" style="display:none;">
 
-Pending Products
+<h2>⏳ Pending Products</h2>
 
-</h2>
-<div id="pendingProducts">
-  <h2>
+<div id="pendingProducts"></div>
 
-Approved Products
+</div>
 
-</h2>
+<div id="approved-section" style="display:none;">
+
+<h2>✅ Approved Products</h2>
+
+<div id="products"></div>
 
 </div>
 
@@ -373,7 +382,7 @@ Approved Products
 
 
 <script>
-  function showSection(section){
+ function showSection(section){
 
 document.getElementById(
 "dashboard-section"
@@ -384,7 +393,11 @@ document.getElementById(
 ).style.display="none";
 
 document.getElementById(
-"products-section"
+"pending-section"
+).style.display="none";
+
+document.getElementById(
+"approved-section"
 ).style.display="none";
 
 document.getElementById(
@@ -395,12 +408,14 @@ document.getElementById(
 "users-section"
 ).style.display="none";
 
+
 document.getElementById(
+
 section + "-section"
+
 ).style.display="block";
 
 }
-
 async function loadProducts(){
 
 const response=
