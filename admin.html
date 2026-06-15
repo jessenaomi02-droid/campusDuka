@@ -458,6 +458,12 @@ KES ${product.price}
 ${product.category}
 
 </p>
+
+<p>
+
+${product.description}
+
+</p>
 <p>
 
 Seller:
@@ -565,6 +571,12 @@ KES ${product.price}
 ${product.category}
 </p>
 <p>
+
+<p>
+
+${product.description}
+
+</p>
 
 Seller:
 ${product.seller_name}
@@ -923,13 +935,7 @@ deliveryContainer.innerHTML = "";
 deliveredContainer.innerHTML = "";
 
 for (const order of orders) {
-  const productResponse =
-await fetch(
-`https://campusduka-api.onrender.com/product/${order.product_id}`
-);
-
-const product =
-await productResponse.json();
+  
   let targetContainer = container;
 
 if(order.delivery_status==="preparing"){
@@ -979,7 +985,8 @@ ${order.delivery_status}
 
 <p>
 Product:
-${product.name}
+
+${order.product_name}
 </p>
 
 <p>
