@@ -377,11 +377,25 @@ try{
 const products=
 await db.query(
 
-`SELECT * FROM products
+`SELECT
+
+products.*,
+
+sellers.name AS seller_name,
+
+sellers.email AS seller_email,
+
+sellers.phone AS seller_phone
+
+FROM products
+
+LEFT JOIN sellers
+
+ON products.seller_id=sellers.id
 
 WHERE status='approved'
 
-ORDER BY id DESC`
+ORDER BY products.id DESC`
 
 );
 
@@ -398,7 +412,6 @@ err.message
 }
 
 });
-
 const PORT=
 process.env.PORT || 3000;
 
