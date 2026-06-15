@@ -1541,6 +1541,61 @@ error:err.message
 
 });
 
+app.get(
+"/rejected-products",
+
+async(req,res)=>{
+
+try{
+
+const products=
+
+await db.query(
+
+`
+
+SELECT
+
+products.*,
+
+sellers.name AS seller_name,
+
+sellers.email AS seller_email
+
+FROM products
+
+LEFT JOIN sellers
+
+ON products.seller_id=sellers.id
+
+WHERE status='rejected'
+
+ORDER BY products.id DESC
+
+`
+
+);
+
+res.json(
+
+products.rows
+
+);
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+
+error:err.message
+
+});
+
+}
+
+});
+
 app.get("/test-upload",(req,res)=>{
 res.send("UPLOAD ROUTE WORKING");
 });
