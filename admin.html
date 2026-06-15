@@ -341,6 +341,20 @@ style="display:none;padding:20px;">
 id="users-section"
 style="display:none;padding:20px;">
 
+   <div
+
+id="seller-details-section"
+
+style="display:none;padding:20px;"
+
+>
+
+<div id="sellerDetails">
+
+</div>
+
+</div>
+
 <h2>
 👥 Registered Users
 </h2>
@@ -442,6 +456,10 @@ document.getElementById(
 "users-section"
 ).style.display="none";
 
+   document.getElementById(
+"seller-details-section"
+).style.display="none";
+
 
 document.getElementById(
 
@@ -526,7 +544,23 @@ ${product.seller_email}
 
 </p>
 
+<button
 
+onclick="
+
+viewSeller(
+
+${seller.id}
+
+)
+
+"
+
+>
+
+View Details
+
+</button>
 <button
 class="edit"
 
