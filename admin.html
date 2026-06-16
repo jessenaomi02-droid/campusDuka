@@ -396,7 +396,7 @@ style="display:none;padding:20px;"
 
 <h2>✅ Approved Products</h2>
 
-<div id="products"></div>
+
 
 </div>
 
@@ -546,23 +546,7 @@ ${product.seller_email}
 
 </p>
 
-<button
 
-onclick="
-
-viewSeller(
-
-${seller.id}
-
-)
-
-"
-
->
-
-View Details
-
-</button>
 <button
 class="edit"
 
@@ -1595,9 +1579,9 @@ loadOrders();
 }
   async function showSellers(){
 
-document.getElementById(
-"sellers-section"
-).style.display="block";
+showSection(
+"sellers"
+);
 
 const response=
 await fetch(
@@ -1635,6 +1619,17 @@ ${seller.name}
 <p>
 ID: ${seller.id}
 </p>
+
+<button
+onclick="
+viewSeller(
+${seller.id}
+)
+">
+
+View Details
+
+</button>
 
 </div>
 
@@ -1704,28 +1699,7 @@ behavior:"smooth"
 
 }
 
-  async function viewSeller(id){
-
-showSection(
-"seller-details"
-);
-
-const response=
-
-await fetch(
-
-`https://campusduka-api.onrender.com/seller-details/${id}`
-
-);
-
-const data=
-
-await response.json();
-
-console.log(data);
-
-}
-
+  
   
 </script>
   </div>
