@@ -28,13 +28,17 @@ box-shadow:
 
 }
 
-input,button{
+input,
+select,
+button{
 
 width:100%;
 
 padding:12px;
 
 margin:10px 0;
+
+box-sizing:border-box;
 
 }
 
@@ -73,8 +77,32 @@ placeholder="Email">
   
 <input
 id="phone"
-placeholder="Phone Number">  
-  
+placeholder="Phone Number">
+
+<select id="sellerType">
+
+<option value="student">
+Student Seller
+</option>
+
+<option value="institution">
+Institution / Business
+</option>
+
+</select>
+
+<select id="businessModel">
+
+<option value="subscription">
+Monthly Listing Subscription
+</option>
+
+<option value="commission">
+CampusDuka Sells On My Behalf (Commission)
+</option>
+
+</select>
+
 <input
 id="password"
 type="password"
@@ -117,7 +145,13 @@ phone:
 document.getElementById("phone").value,
 
 password:
-document.getElementById("password").value
+document.getElementById("password").value,
+
+seller_type:
+document.getElementById("sellerType").value,
+
+business_model:
+document.getElementById("businessModel").value
 
 };
 const response=
