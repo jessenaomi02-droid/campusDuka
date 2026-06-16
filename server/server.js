@@ -1687,6 +1687,44 @@ error:err.message
 app.get("/test-upload",(req,res)=>{
 res.send("UPLOAD ROUTE WORKING");
 });
+
+app.get("/add-seller-model",async(req,res)=>{
+
+try{
+
+await db.query(
+
+`
+
+ALTER TABLE sellers
+
+ADD COLUMN IF NOT EXISTS seller_type VARCHAR(20);
+
+ALTER TABLE sellers
+
+ADD COLUMN IF NOT EXISTS business_model VARCHAR(20);
+
+`
+
+);
+
+res.send(
+
+"seller_type and business_model added"
+
+);
+
+}catch(err){
+
+res.send(
+
+err.message
+
+);
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
