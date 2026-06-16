@@ -666,19 +666,74 @@ app.post("/seller-register",async(req,res)=>{
 try{
 
 const{
+
 name,
+
 email,
+
 phone,
-password
+
+password,
+
+seller_type,
+
+business_model
+
 }=req.body;
 
 await db.query(
 
-`INSERT INTO sellers
-(name,email,phone,password)
+`
 
-VALUES($1,$2,$3,$4)`,
+INSERT INTO sellers(
 
+name,
+
+email,
+
+phone,
+
+password,
+
+seller_type,
+
+business_model
+
+)
+
+VALUES(
+
+$1,
+
+$2,
+
+$3,
+
+$4,
+
+$5,
+
+$6
+
+)
+
+`,
+
+[
+name,
+
+email,
+
+phone,
+
+password,
+
+seller_type,
+
+business_model
+]
+
+);
 [
 name,
 email,
