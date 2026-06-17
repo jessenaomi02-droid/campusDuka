@@ -351,7 +351,7 @@ if(
 
 sellerData.subscription_plan==="free"
 
-){
+){ 
 
 limit=2;
 
