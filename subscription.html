@@ -1,27 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<title>CampusDuka Subscriptions</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>
+
+CampusDuka | Seller Plans
+
+</title>
 
 <style>
 
-body{
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
 
 font-family:Poppins,sans-serif;
 
+}
+
+body{
+
 background:#f5f7fb;
 
-padding:30px;
+}
+
+header{
+
+background:#0077ff;
+
+color:white;
+
+padding:25px;
+
+text-align:center;
+
+box-shadow:
+0 4px 10px rgba(0,0,0,.1);
+
+}
+
+header h1{
+
+font-size:35px;
+
+}
+
+header p{
+
+margin-top:10px;
+
+opacity:.9;
 
 }
 
 .container{
 
-max-width:900px;
+max-width:1200px;
 
 margin:auto;
+
+padding:40px 20px;
+
+}
+
+.section-title{
+
+text-align:center;
+
+margin-bottom:40px;
+
+}
+
+.section-title h2{
+
+font-size:32px;
+
+color:#222;
+
+}
+
+.section-title p{
+
+color:#666;
+
+margin-top:10px;
+
+}
+
+.plans{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:25px;
 
 }
 
@@ -29,20 +112,100 @@ margin:auto;
 
 background:white;
 
-padding:20px;
+padding:30px;
 
-margin-bottom:20px;
-
-border-radius:15px;
+border-radius:20px;
 
 box-shadow:
-0 4px 10px rgba(0,0,0,.1);
+0 5px 15px rgba(0,0,0,.08);
+
+transition:.3s;
+
+position:relative;
+
+}
+
+.plan:hover{
+
+transform:translateY(-10px);
+
+}
+
+.popular{
+
+border:3px solid #0077ff;
+
+}
+
+.badge{
+
+position:absolute;
+
+top:-15px;
+
+right:20px;
+
+background:#0077ff;
+
+color:white;
+
+padding:8px 15px;
+
+border-radius:20px;
+
+font-size:14px;
+
+}
+
+.plan h3{
+
+font-size:30px;
+
+color:#222;
+
+}
+
+.price{
+
+font-size:35px;
+
+font-weight:bold;
+
+margin:20px 0;
+
+color:#0077ff;
+
+}
+
+.price span{
+
+font-size:16px;
+
+color:#666;
+
+}
+
+ul{
+
+list-style:none;
+
+margin-bottom:25px;
+
+}
+
+ul li{
+
+margin:15px 0;
+
+color:#444;
 
 }
 
 button{
 
-padding:12px 20px;
+width:100%;
+
+padding:15px;
 
 background:#0077ff;
 
@@ -50,9 +213,46 @@ color:white;
 
 border:none;
 
-border-radius:8px;
+border-radius:10px;
+
+font-size:17px;
 
 cursor:pointer;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+.footer-box{
+
+margin-top:50px;
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:
+0 4px 10px rgba(0,0,0,.08);
+
+}
+
+.footer-box h2{
+
+margin-bottom:20px;
+
+}
+
+.footer-box p{
+
+margin:10px 0;
+
+line-height:1.8;
 
 }
 
@@ -62,7 +262,7 @@ cursor:pointer;
 
 <body>
 
-<div class="container">
+<header>
 
 <h1>
 
@@ -70,53 +270,138 @@ CampusDuka Seller Plans
 
 </h1>
 
-<div class="plan">
+<p>
+
+Grow your business with CampusDuka
+
+</p>
+
+</header>
+
+
+<div class="container">
+
+<div class="section-title">
 
 <h2>
 
-Starter (Free)
+Choose Your Plan
 
 </h2>
 
 <p>
 
-✓ Upload up to 2 products
-
-</p>
-
-<p>
-
-✓ Normal listing
+From students to businesses,
+CampusDuka has a plan for everyone.
 
 </p>
 
 </div>
 
+
+<div class="plans">
+
+
+<!-- STARTER -->
+
 <div class="plan">
 
-<h2>
+<h3>
+
+Starter
+
+</h3>
+
+<div class="price">
+
+FREE
+
+</div>
+
+<ul>
+
+<li>
+
+✓ Upload 2 products
+
+</li>
+
+<li>
+
+✓ Normal listings
+
+</li>
+
+<li>
+
+✓ Sell to CampusDuka users
+
+</li>
+
+<li>
+
+✓ Great for beginners
+
+</li>
+
+</ul>
+
+<button>
+
+Current Plan
+
+</button>
+
+</div>
+
+
+<!-- COPPER -->
+
+<div class="plan">
+
+<h3>
 
 Copper
 
-</h2>
+</h3>
 
-<p>
+<div class="price">
 
-✓ Upload up to 20 products
+KSh 99
 
-</p>
+<span>
 
-<p>
+/month</span>
+
+</div>
+
+<ul>
+
+<li>
+
+✓ Upload 20 products
+
+</li>
+
+<li>
 
 ✓ Featured seller badge ⭐
 
-</p>
+</li>
 
-<p>
+<li>
 
 ✓ Products appear before free sellers
 
-</p>
+</li>
+
+<li>
+
+✓ More visibility
+
+</li>
+
+</ul>
 
 <button
 
@@ -130,31 +415,66 @@ Upgrade to Copper
 
 </div>
 
-<div class="plan">
 
-<h2>
+<!-- BRONZE -->
+
+<div class="plan popular">
+
+<div class="badge">
+
+POPULAR
+
+</div>
+
+<h3>
 
 Bronze
 
-</h2>
+</h3>
 
-<p>
+<div class="price">
 
-✓ Upload up to 100 products
+KSh 299
 
-</p>
+<span>
 
-<p>
+/month</span>
 
-✓ Featured badge ⭐
+</div>
 
-</p>
+<ul>
 
-<p>
+<li>
+
+✓ Upload 100 products
+
+</li>
+
+<li>
+
+✓ Featured seller badge ⭐
+
+</li>
+
+<li>
 
 ✓ Priority approval
 
-</p>
+</li>
+
+<li>
+
+✓ Seller analytics
+
+</li>
+
+<li>
+
+✓ Higher visibility
+
+</li>
+
+</ul>
 
 <button
 
@@ -168,31 +488,66 @@ Upgrade to Bronze
 
 </div>
 
+
+<!-- GOLD -->
+
 <div class="plan">
 
-<h2>
+<h3>
 
 Gold
 
-</h2>
+</h3>
 
-<p>
+<div class="price">
+
+KSh 699
+
+<span>
+
+/month</span>
+
+</div>
+
+<ul>
+
+<li>
 
 ✓ Unlimited uploads
 
-</p>
+</li>
 
-<p>
+<li>
 
-✓ Featured badge ⭐
+✓ Featured seller badge ⭐
 
-</p>
+</li>
 
-<p>
+<li>
 
 ✓ Homepage promotion
 
-</p>
+</li>
+
+<li>
+
+✓ Seller analytics
+
+</li>
+
+<li>
+
+✓ Priority approval
+
+</li>
+
+<li>
+
+✓ Maximum visibility
+
+</li>
+
+</ul>
 
 <button
 
@@ -208,6 +563,73 @@ Upgrade to Gold
 
 </div>
 
+
+
+<div class="footer-box">
+
+<h2>
+
+Business & Institution Sellers
+
+</h2>
+
+<p>
+
+Large businesses and institutions can choose the
+
+<strong>
+
+Commission Model
+
+</strong>
+
+instead of subscriptions.
+
+</p>
+
+<p>
+
+CampusDuka lists your products,
+buyers pay through CampusDuka,
+we keep a commission after a successful sale
+and send the remaining amount to you.
+
+</p>
+
+<p>
+
+This is ideal for:
+
+</p>
+
+<p>
+
+🏢 Shops
+
+<br>
+
+🏫 Institutions
+
+<br>
+
+📚 Bookstores
+
+<br>
+
+💻 Electronics stores
+
+<br>
+
+👕 Clothing brands
+
+</p>
+
+</div>
+
+</div>
+
+
+
 <script>
 
 async function upgrade(plan){
@@ -219,6 +641,20 @@ JSON.parse(
 localStorage.getItem("seller")
 
 );
+
+if(!seller){
+
+alert(
+
+"Please login first"
+
+);
+
+return;
+
+}
+
+try{
 
 const response=
 
@@ -250,7 +686,23 @@ const result=
 
 await response.json();
 
-alert(result.message);
+alert(
+
+result.message
+
+);
+
+}catch(err){
+
+alert(
+
+"Something went wrong"
+
+);
+
+console.log(err);
+
+}
 
 }
 
