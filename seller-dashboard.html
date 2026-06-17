@@ -326,11 +326,19 @@ Welcome back,
 
 <div class="actions">
 
-<a href="add-product.html">
+<button
+class="upload-btn"
+onclick="goToUpload()">
+
++ Upload Product
+
+</button>
+
+<a href="subscriptions.html">
 
 <button class="upload-btn">
 
-+ Upload Product
+⭐ Subscription Plans
 
 </button>
 
@@ -347,7 +355,44 @@ Logout
 </div>
 
 </div>
+<div
+id="subscriptionCard"
 
+style="
+background:white;
+padding:20px;
+border-radius:18px;
+margin-bottom:25px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+">
+
+<h2>
+
+Current Subscription
+
+</h2>
+
+<p id="planName">
+
+Loading...
+
+</p>
+
+<p id="uploadInfo">
+
+</p>
+
+<a href="subscriptions.html">
+
+<button class="upload-btn">
+
+Upgrade Subscription
+
+</button>
+
+</a>
+
+</div>
 <div id="products">
 
 </div>
@@ -497,7 +542,62 @@ Reason: ${product.rejection_reason || "No reason provided"}`
 });
 
 }
+function goToUpload(){
 
+if(
+
+!seller.subscription_plan ||
+
+seller.subscription_plan==="free"
+
+){
+
+alert(
+
+"You must subscribe before uploading products."
+
+);
+
+window.location.href=
+
+"subscriptions.html";
+
+return;
+
+}
+
+window.location.href=
+
+"add-product.html";
+
+}
+
+  document.getElementById(
+
+"planName"
+
+).innerHTML=
+
+seller.subscription_plan
+
+?
+
+"⭐ "+seller.subscription_plan.toUpperCase()
+
+:
+
+"❌ No Active Subscription";
+
+
+document.getElementById(
+
+"uploadInfo"
+
+).innerHTML=
+
+"Uploads used: "+
+
+(seller.uploads_used||0);
 loadSellerProducts();
 
 </script>
