@@ -330,6 +330,47 @@ seller_id
 // 2. Force status = pending (VERY IMPORTANT)
 const status = "pending";
 
+  const seller=
+
+await db.query(
+
+"SELECT * FROM sellers WHERE id=$1",
+
+[seller_id]
+
+);
+
+const sellerData=
+
+seller.rows[0];
+
+
+if(
+
+sellerData.business_model==="subscription"
+
+&&
+
+sellerData.subscription_plan==="free"
+
+&&
+
+sellerData.uploads_used>=2
+
+){
+
+return res.json({
+
+success:false,
+
+message:
+
+"Free plan allows only 2 uploads. Upgrade your plan."
+
+});
+
+}
+
 // 3. Save to database
 await db.query(
 
@@ -347,6 +388,24 @@ category,
 status,
 seller_id
 ]
+
+);
+
+  await db.query(
+
+`
+
+UPDATE sellers
+
+SET uploads_used=
+
+uploads_used+1
+
+WHERE id=$1
+
+`,
+
+[seller_id]
 
 );
 
@@ -674,10 +733,11 @@ password,
 
 seller_type,
 
-business_model
+business_model,
+
+subscription_plan
 
 }=req.body;
-
 
 await db.query(
 
@@ -697,7 +757,9 @@ password,
 
 seller_type,
 
-business_model
+business_model,
+
+subscription_plan
 
 )
 
@@ -715,11 +777,33 @@ $4,
 
 $5,
 
-$6
+$6,
+
+$7
 
 )
 
 `,
+
+[
+
+name,
+
+email,
+
+phone,
+
+password,
+
+seller_type,
+
+business_model,
+
+subscription_plan || "free"
+
+]
+
+);
 
 [
 
@@ -1771,6 +1855,37 @@ res.send(
 
 err.message
 
+);
+
+}
+
+});
+app.get("/upgrade-subscriptions",async(req,res)=>{
+
+try{
+
+await db.query(`
+
+ALTER TABLE sellers
+
+ADD COLUMN IF NOT EXISTS subscription_plan VARCHAR(20)
+DEFAULT 'free',
+
+ADD COLUMN IF NOT EXISTS uploads_used INTEGER
+DEFAULT 0,
+
+ADD COLUMN IF NOT EXISTS subscription_expiry DATE
+
+`);
+
+res.send(
+"Subscription columns added"
+);
+
+}catch(err){
+
+res.send(
+err.message
 );
 
 }
