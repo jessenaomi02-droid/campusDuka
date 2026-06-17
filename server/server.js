@@ -1900,6 +1900,79 @@ res.send(err.message);
 }
 
 });
+
+app.put("/upgrade-plan/:seller_id",async(req,res)=>{
+
+try{
+
+const seller_id=
+req.params.seller_id;
+
+const{
+plan
+}=req.body;
+
+let expiry=
+new Date();
+
+expiry.setDate(
+
+expiry.getDate()+30
+
+);
+
+await db.query(
+
+`
+
+UPDATE sellers
+
+SET
+
+subscription_plan=$1,
+
+subscription_expiry=$2
+
+WHERE id=$3
+
+`,
+
+[
+
+plan,
+
+expiry,
+
+seller_id
+
+]
+
+);
+
+res.json({
+
+success:true,
+
+message:
+
+`Plan upgraded to ${plan}`
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+
+error:err.message
+
+});
+
+}
+
+});
+
 app.listen(PORT,()=>{
 
 console.log(
