@@ -345,17 +345,56 @@ const sellerData=
 seller.rows[0];
 
 
+let limit=0;
+
+if(
+
+sellerData.subscription_plan==="free"
+
+){
+
+limit=2;
+
+}
+
+else if(
+
+sellerData.subscription_plan==="copper"
+
+){
+
+limit=20;
+
+}
+
+else if(
+
+sellerData.subscription_plan==="bronze"
+
+){
+
+limit=100;
+
+}
+
+else if(
+
+sellerData.subscription_plan==="gold"
+
+){
+
+limit=999999;
+
+}
+
+
 if(
 
 sellerData.business_model==="subscription"
 
 &&
 
-sellerData.subscription_plan==="free"
-
-&&
-
-sellerData.uploads_used>=2
+sellerData.uploads_used>=limit
 
 ){
 
@@ -365,19 +404,57 @@ success:false,
 
 message:
 
-"Free plan allows only 2 uploads. Upgrade your plan."
+`Your ${sellerData.subscription_plan} plan upload limit has been reached.`
 
 });
 
 }
-
 // 3. Save to database
 await db.query(
 
-`INSERT INTO products
-(name,description,price,images,category,status,seller_id)
+INSERT INTO products
 
-VALUES($1,$2,$3,$4,$5,$6,$7)`,
+(
+
+name,
+
+description,
+
+price,
+
+images,
+
+category,
+
+status,
+
+seller_id,
+
+featured
+
+)
+
+VALUES
+
+(
+
+$1,
+
+$2,
+
+$3,
+
+$4,
+
+$5,
+
+$6,
+
+$7,
+
+$8
+
+)
 
 [
 name,
@@ -386,7 +463,8 @@ price,
 images || [],
 category,
 status,
-seller_id
+seller_id,
+featured
 ]
 
 );
@@ -454,7 +532,11 @@ ON products.seller_id=sellers.id
 
 WHERE status='approved'
 
-ORDER BY products.id DESC`
+ORDER BY
+
+products.featured DESC,
+
+products.id DESC
 
 );
 
