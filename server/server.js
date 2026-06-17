@@ -661,18 +661,15 @@ error:err.message
 
 });
 
-app.post("/seller-register",async(req,res)=>{
+app.post("/seller-register", async(req,res)=>{
 
 try{
 
 const{
 
 name,
-
 email,
-
 phone,
-
 password,
 
 seller_type,
@@ -681,11 +678,14 @@ business_model
 
 }=req.body;
 
+
 await db.query(
 
 `
 
-INSERT INTO sellers(
+INSERT INTO sellers
+
+(
 
 name,
 
@@ -701,7 +701,9 @@ business_model
 
 )
 
-VALUES(
+VALUES
+
+(
 
 $1,
 
@@ -720,6 +722,7 @@ $6
 `,
 
 [
+
 name,
 
 email,
@@ -731,21 +734,16 @@ password,
 seller_type,
 
 business_model
+
 ]
 
 );
-[
-name,
-email,
-phone,
-password
-]
 
-);
 
 res.json({
 
 success:true,
+
 message:"Account created"
 
 });
@@ -755,6 +753,7 @@ message:"Account created"
 res.status(500).json({
 
 success:false,
+
 error:err.message
 
 });
@@ -762,7 +761,6 @@ error:err.message
 }
 
 });
-
 app.post("/seller-login",async(req,res)=>{
 
 try{
@@ -1749,17 +1747,15 @@ try{
 
 await db.query(
 
-`
+`ALTER TABLE sellers
+ADD COLUMN IF NOT EXISTS seller_type VARCHAR(20)`
 
-ALTER TABLE sellers
+);
 
-ADD COLUMN IF NOT EXISTS seller_type VARCHAR(20);
+await db.query(
 
-ALTER TABLE sellers
-
-ADD COLUMN IF NOT EXISTS business_model VARCHAR(20);
-
-`
+`ALTER TABLE sellers
+ADD COLUMN IF NOT EXISTS business_model VARCHAR(20)`
 
 );
 
