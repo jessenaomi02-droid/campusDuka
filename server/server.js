@@ -805,23 +805,6 @@ subscription_plan || "free"
 
 );
 
-[
-
-name,
-
-email,
-
-phone,
-
-password,
-
-seller_type,
-
-business_model
-
-]
-
-);
 
 
 res.json({
@@ -1864,29 +1847,55 @@ app.get("/upgrade-subscriptions",async(req,res)=>{
 
 try{
 
-await db.query(`
+await db.query(
+
+`
 
 ALTER TABLE sellers
 
 ADD COLUMN IF NOT EXISTS subscription_plan VARCHAR(20)
-DEFAULT 'free',
+
+DEFAULT 'free'
+
+`
+
+);
+
+await db.query(
+
+`
+
+ALTER TABLE sellers
 
 ADD COLUMN IF NOT EXISTS uploads_used INTEGER
-DEFAULT 0,
+
+DEFAULT 0
+
+`
+
+);
+
+await db.query(
+
+`
+
+ALTER TABLE sellers
 
 ADD COLUMN IF NOT EXISTS subscription_expiry DATE
 
-`);
+`
+
+);
 
 res.send(
+
 "Subscription columns added"
+
 );
 
 }catch(err){
 
-res.send(
-err.message
-);
+res.send(err.message);
 
 }
 
