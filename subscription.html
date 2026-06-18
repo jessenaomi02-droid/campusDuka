@@ -337,14 +337,19 @@ KSh 99
 
 <button
 
-onclick="upgrade('copper')"
+onclick="paySubscription(
+
+'copper',
+
+99
+
+)"
 
 >
 
 Upgrade to Copper
 
 </button>
-
 </div>
 
 <!-- BRONZE -->
@@ -388,6 +393,16 @@ KSh 299
 <button
 
 onclick="upgrade('bronze')"
+
+<button
+
+onclick="paySubscription(
+
+'bronze',
+
+299
+
+)"
 
 >
 
@@ -433,7 +448,13 @@ KSh 699
 
 <button
 
-onclick="upgrade('gold')"
+onclick="paySubscription(
+
+'gold',
+
+699
+
+)"
 
 >
 
@@ -601,19 +622,27 @@ benefits;
 
 loadSellerDetails();
 
-async function upgrade(plan){
+async function paySubscription(plan,amount){
 
 try{
+
+const seller=
+
+JSON.parse(
+
+localStorage.getItem("seller")
+
+);
 
 const response=
 
 await fetch(
 
-`https://campusduka-api.onrender.com/upgrade-plan/${seller.id}`,
+"https://campusduka-api.onrender.com/stkpush-subscription",
 
 {
 
-method:"PUT",
+method:"POST",
 
 headers:{
 
@@ -623,7 +652,13 @@ headers:{
 
 body:JSON.stringify({
 
-plan
+seller_id:seller.id,
+
+phone:seller.phone,
+
+plan,
+
+amount
 
 })
 
@@ -635,52 +670,27 @@ const result=
 
 await response.json();
 
+console.log(result);
+
 alert(
 
-result.message
-
-);
-
-loadSellerDetails();
-
-const sellerResponse=
-
-await fetch(
-
-`https://campusduka-api.onrender.com/seller-details/${seller.id}`
-
-);
-
-const sellerData=
-
-await sellerResponse.json();
-
-localStorage.setItem(
-
-"seller",
-
-JSON.stringify(
-
-sellerData.seller
-
-)
+"STK Push sent to your phone. Complete payment."
 
 );
 
 }catch(err){
 
+console.log(err);
+
 alert(
 
-"Something went wrong"
+"Failed to send payment request"
 
 );
 
-console.log(err);
-
 }
 
 }
-
 </script>
 
 </body>
