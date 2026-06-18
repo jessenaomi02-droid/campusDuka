@@ -2054,156 +2054,36 @@ error:err.message
 }
 
 });
-app.post(
-"/stkpush-subscription",
+const PORT =
+process.env.PORT || 3000;
 
-async(req,res)=>{
+app.post("/stkpush-subscription", async(req,res)=>{
 
 try{
 
 const{
 
 seller_id,
-
 phone,
-
 plan,
-
 amount
 
 }=req.body;
 
-const auth=
+console.log("Subscription payment request:",{
 
-Buffer.from(
-
-`${CONSUMER_KEY}:${CONSUMER_SECRET}`
-
-).toString("base64");
-
-
-const tokenResponse=
-
-await axios.get(
-
-"https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
-
-{
-
-headers:{
-
-Authorization:
-
-`Basic ${auth}`
-
-}
-
-}
-
-);
-
-const token=
-
-tokenResponse.data.access_token;
-
-
-const timestamp=
-
-new Date()
-
-.toISOString()
-
-.replace(/[-:TZ.]/g,"")
-
-.substring(0,14);
-
-
-const password=
-
-Buffer.from(
-
-BUSINESS_SHORTCODE+
-
-PASSKEY+
-
-timestamp
-
-).toString("base64");
-
-
-const response=
-
-await axios.post(
-
-"https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
-
-{
-
-BusinessShortCode:
-
-BUSINESS_SHORTCODE,
-
-Password:
-
-password,
-
-Timestamp:
-
-timestamp,
-
-TransactionType:
-
-"CustomerPayBillOnline",
-
-Amount:
-
-amount,
-
-PartyA:
-
+seller_id,
 phone,
+plan,
+amount
 
-PartyB:
-
-BUSINESS_SHORTCODE,
-
-PhoneNumber:
-
-phone,
-
-CallBackURL:
-
-"https://campusduka-api.onrender.com/subscription-callback",
-
-AccountReference:
-
-`SUB_${seller_id}`,
-
-TransactionDesc:
-
-`${plan} subscription`
-
-},
-
-{
-
-headers:{
-
-Authorization:
-
-`Bearer ${token}`
-
-}
-
-}
-
-);
+});
 
 res.json({
 
 success:true,
 
-...response.data
+message:"STK request received"
 
 });
 
@@ -2224,7 +2104,7 @@ error:err.message
 app.listen(PORT,()=>{
 
 console.log(
-"Server running"
+`Server running on port ${PORT}`
 );
 
 });
