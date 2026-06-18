@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+content="width=device-width,initial-scale=1">
 
 <title>
 
@@ -14,44 +14,41 @@ CampusDuka | Seller Plans
 
 </title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+rel="stylesheet">
+
 <style>
 
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 font-family:Poppins,sans-serif;
-
 }
 
 body{
-
 background:#f5f7fb;
-
 }
 
 header{
 
-background:#0077ff;
+background:linear-gradient(
+135deg,
+#0077ff,
+#005fcc
+);
 
 color:white;
 
-padding:25px;
+padding:35px;
 
 text-align:center;
-
-box-shadow:
-0 4px 10px rgba(0,0,0,.1);
 
 }
 
 header h1{
 
-font-size:35px;
+font-size:38px;
 
 }
 
@@ -63,6 +60,20 @@ opacity:.9;
 
 }
 
+#currentPlan{
+
+color:#ffe600;
+
+}
+
+#planBenefits{
+
+margin-top:10px;
+
+font-size:15px;
+
+}
+
 .container{
 
 max-width:1200px;
@@ -70,30 +81,6 @@ max-width:1200px;
 margin:auto;
 
 padding:40px 20px;
-
-}
-
-.section-title{
-
-text-align:center;
-
-margin-bottom:40px;
-
-}
-
-.section-title h2{
-
-font-size:32px;
-
-color:#222;
-
-}
-
-.section-title p{
-
-color:#666;
-
-margin-top:10px;
 
 }
 
@@ -161,8 +148,6 @@ font-size:14px;
 
 font-size:30px;
 
-color:#222;
-
 }
 
 .price{
@@ -196,8 +181,6 @@ margin-bottom:25px;
 ul li{
 
 margin:15px 0;
-
-color:#444;
 
 }
 
@@ -242,20 +225,6 @@ box-shadow:
 
 }
 
-.footer-box h2{
-
-margin-bottom:20px;
-
-}
-
-.footer-box p{
-
-margin:10px 0;
-
-line-height:1.8;
-
-}
-
 </style>
 
 </head>
@@ -276,33 +245,31 @@ Grow your business with CampusDuka
 
 </p>
 
-</header>
-
-
-<div class="container">
-
-<div class="section-title">
-
-<h2>
-
-Choose Your Plan
-
-</h2>
-
 <p>
 
-From students to businesses,
-CampusDuka has a plan for everyone.
+Current Plan:
+
+<strong id="currentPlan">
+
+Loading...
+
+</strong>
 
 </p>
 
-</div>
+<p id="planBenefits">
 
+Loading benefits...
+
+</p>
+
+</header>
+
+<div class="container">
 
 <div class="plans">
 
-
-<!-- STARTER -->
+<!-- FREE -->
 
 <div class="plan">
 
@@ -320,29 +287,13 @@ FREE
 
 <ul>
 
-<li>
+<li>✓ Upload 2 products</li>
 
-✓ Upload 2 products
+<li>✓ Normal listings</li>
 
-</li>
+<li>✓ Sell to CampusDuka users</li>
 
-<li>
-
-✓ Normal listings
-
-</li>
-
-<li>
-
-✓ Sell to CampusDuka users
-
-</li>
-
-<li>
-
-✓ Great for beginners
-
-</li>
+<li>✓ Great for beginners</li>
 
 </ul>
 
@@ -353,7 +304,6 @@ Current Plan
 </button>
 
 </div>
-
 
 <!-- COPPER -->
 
@@ -369,37 +319,19 @@ Copper
 
 KSh 99
 
-<span>
-
-/month</span>
+<span>/month</span>
 
 </div>
 
 <ul>
 
-<li>
+<li>✓ Upload 20 products</li>
 
-✓ Upload 20 products
+<li>✓ Featured seller badge ⭐</li>
 
-</li>
+<li>✓ Products appear before free sellers</li>
 
-<li>
-
-✓ Featured seller badge ⭐
-
-</li>
-
-<li>
-
-✓ Products appear before free sellers
-
-</li>
-
-<li>
-
-✓ More visibility
-
-</li>
+<li>✓ More visibility</li>
 
 </ul>
 
@@ -414,7 +346,6 @@ Upgrade to Copper
 </button>
 
 </div>
-
 
 <!-- BRONZE -->
 
@@ -436,43 +367,21 @@ Bronze
 
 KSh 299
 
-<span>
-
-/month</span>
+<span>/month</span>
 
 </div>
 
 <ul>
 
-<li>
+<li>✓ Upload 100 products</li>
 
-✓ Upload 100 products
+<li>✓ Featured seller badge ⭐</li>
 
-</li>
+<li>✓ Priority approval</li>
 
-<li>
+<li>✓ Seller analytics</li>
 
-✓ Featured seller badge ⭐
-
-</li>
-
-<li>
-
-✓ Priority approval
-
-</li>
-
-<li>
-
-✓ Seller analytics
-
-</li>
-
-<li>
-
-✓ Higher visibility
-
-</li>
+<li>✓ Higher visibility</li>
 
 </ul>
 
@@ -488,7 +397,6 @@ Upgrade to Bronze
 
 </div>
 
-
 <!-- GOLD -->
 
 <div class="plan">
@@ -503,49 +411,23 @@ Gold
 
 KSh 699
 
-<span>
-
-/month</span>
+<span>/month</span>
 
 </div>
 
 <ul>
 
-<li>
+<li>✓ Unlimited uploads</li>
 
-✓ Unlimited uploads
+<li>✓ Featured seller badge ⭐</li>
 
-</li>
+<li>✓ Homepage promotion</li>
 
-<li>
+<li>✓ Seller analytics</li>
 
-✓ Featured seller badge ⭐
+<li>✓ Priority approval</li>
 
-</li>
-
-<li>
-
-✓ Homepage promotion
-
-</li>
-
-<li>
-
-✓ Seller analytics
-
-</li>
-
-<li>
-
-✓ Priority approval
-
-</li>
-
-<li>
-
-✓ Maximum visibility
-
-</li>
+<li>✓ Maximum visibility</li>
 
 </ul>
 
@@ -564,7 +446,6 @@ Upgrade to Gold
 </div>
 
 
-
 <div class="footer-box">
 
 <h2>
@@ -575,7 +456,7 @@ Business & Institution Sellers
 
 <p>
 
-Large businesses and institutions can choose the
+Large businesses can choose the
 
 <strong>
 
@@ -598,27 +479,13 @@ and send the remaining amount to you.
 
 <p>
 
-This is ideal for:
+🏢 Shops<br>
 
-</p>
+🏫 Institutions<br>
 
-<p>
+📚 Bookstores<br>
 
-🏢 Shops
-
-<br>
-
-🏫 Institutions
-
-<br>
-
-📚 Bookstores
-
-<br>
-
-💻 Electronics stores
-
-<br>
+💻 Electronics stores<br>
 
 👕 Clothing brands
 
@@ -628,11 +495,7 @@ This is ideal for:
 
 </div>
 
-
-
 <script>
-
-async function upgrade(plan){
 
 const seller=
 
@@ -644,15 +507,101 @@ localStorage.getItem("seller")
 
 if(!seller){
 
-alert(
+window.location.href=
 
-"Please login first"
+"seller-login.html";
+
+}
+
+async function loadSellerDetails(){
+
+const response=
+
+await fetch(
+
+`https://campusduka-api.onrender.com/seller-details/${seller.id}`
 
 );
 
-return;
+const data=
+
+await response.json();
+
+const sellerData=
+
+data.seller;
+
+document.getElementById(
+
+"currentPlan"
+
+).innerHTML=
+
+sellerData.subscription_plan.toUpperCase();
+
+let benefits="";
+
+if(
+
+sellerData.subscription_plan==="free"
+
+){
+
+benefits=
+
+"2 uploads • Basic listings";
 
 }
+
+else if(
+
+sellerData.subscription_plan==="copper"
+
+){
+
+benefits=
+
+"20 uploads • Featured badge ⭐";
+
+}
+
+else if(
+
+sellerData.subscription_plan==="bronze"
+
+){
+
+benefits=
+
+"100 uploads • Featured badge ⭐ • Priority approval";
+
+}
+
+else if(
+
+sellerData.subscription_plan==="gold"
+
+){
+
+benefits=
+
+"Unlimited uploads • Homepage promotion • Analytics • Priority approval";
+
+}
+
+document.getElementById(
+
+"planBenefits"
+
+).innerHTML=
+
+benefits;
+
+}
+
+loadSellerDetails();
+
+async function upgrade(plan){
 
 try{
 
@@ -689,6 +638,32 @@ await response.json();
 alert(
 
 result.message
+
+);
+
+loadSellerDetails();
+
+const sellerResponse=
+
+await fetch(
+
+`https://campusduka-api.onrender.com/seller-details/${seller.id}`
+
+);
+
+const sellerData=
+
+await sellerResponse.json();
+
+localStorage.setItem(
+
+"seller",
+
+JSON.stringify(
+
+sellerData.seller
+
+)
 
 );
 
