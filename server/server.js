@@ -521,8 +521,7 @@ err.message
 }
 
 });
-const PORT=
-process.env.PORT || 3000;
+
 
 app.delete("/delete-product/:id", async(req,res)=>{
 
