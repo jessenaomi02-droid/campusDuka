@@ -2055,6 +2055,12 @@ plan,
 amount
 }=req.body;
 
+  let formattedPhone = phone;
+
+if (formattedPhone.startsWith("0")) {
+  formattedPhone = "254" + formattedPhone.substring(1);
+}
+
 const auth = Buffer.from(
 `${CONSUMER_KEY}:${CONSUMER_SECRET}`
 ).toString("base64");
@@ -2104,11 +2110,11 @@ TransactionType:"CustomerPayBillOnline",
 
 Amount:amount,
 
-PartyA:phone,
+PartyA: formattedPhone,
 
-PartyB:BUSINESS_SHORTCODE,
+PartyB: BUSINESS_SHORTCODE,
 
-PhoneNumber:phone,
+PhoneNumber: formattedPhone,
 
 CallBackURL:
 "https://campusduka-api.onrender.com/subscription-callback",
@@ -2128,6 +2134,7 @@ Authorization:`Bearer ${token}`
 }
 
 );
+console.log("STK Response:", response.data);
 
 res.json({
 
