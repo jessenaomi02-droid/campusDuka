@@ -411,51 +411,21 @@ message:
 }
 // 3. Save to database
 await db.query(
-
+`
 INSERT INTO products
-
 (
-
 name,
-
 description,
-
 price,
-
 images,
-
 category,
-
 status,
-
 seller_id,
-
 featured
-
 )
-
 VALUES
-
-(
-
-$1,
-
-$2,
-
-$3,
-
-$4,
-
-$5,
-
-$6,
-
-$7,
-
-$8
-
-)
-
+($1,$2,$3,$4,$5,$6,$7,$8)
+`,
 [
 name,
 description,
@@ -466,7 +436,6 @@ status,
 seller_id,
 featured
 ]
-
 );
 
   await db.query(
@@ -538,11 +507,10 @@ products.featured DESC,
 
 products.id DESC
 
+`
 );
 
-res.json(
-products.rows
-);
+res.json(products.rows);
 
 }catch(err){
 
