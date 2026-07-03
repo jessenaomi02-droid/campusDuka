@@ -2044,33 +2044,104 @@ app.get("/add-featured", async (req, res) => {
 const PORT =
 process.env.PORT || 3000;
 
-app.post("/stkpush-subscription", async(req,res)=>{
+app.post("/stkpush-subscription", async (req, res) => {
 
 try{
 
-const{
-
+const {
 seller_id,
 phone,
 plan,
 amount
-
 }=req.body;
 
-console.log("Subscription payment request:",{
+const auth = Buffer.from(
+`${CONSUMER_KEY}:${CONSUMER_SECRET}`
+).toString("base64");
 
-seller_id,
-phone,
-plan,
-amount
+const tokenResponse = await axios.get(
 
-});
+"https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+
+{
+headers:{
+Authorization:`Basic ${auth}`
+}
+}
+
+);
+
+const token = tokenResponse.data.access_token;
+
+const timestamp =
+
+new Date()
+.toISOString()
+.replace(/[-:TZ.]/g,"")
+.substring(0,14);
+
+const password = Buffer.from(
+
+BUSINESS_SHORTCODE+
+PASSKEY+
+timestamp
+
+).toString("base64");
+
+const response = await axios.post(
+
+"https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+
+{
+
+BusinessShortCode:BUSINESS_SHORTCODE,
+
+Password:password,
+
+Timestamp:timestamp,
+
+TransactionType:"CustomerPayBillOnline",
+
+Amount:amount,
+
+PartyA:phone,
+
+PartyB:BUSINESS_SHORTCODE,
+
+PhoneNumber:phone,
+
+CallBackURL:
+"https://campusduka-api.onrender.com/subscription-callback",
+
+AccountReference:`SELLER_${seller_id}`,
+
+TransactionDesc:`${plan} Subscription`
+
+},
+
+{
+
+headers:{
+Authorization:`Bearer ${token}`
+}
+
+}
+
+);
 
 res.json({
 
 success:true,
 
-message:"STK request received"
+seller_id,
+
+plan,
+
+CheckoutRequestID:
+response.data.CheckoutRequestID,
+
+CustomerMessage:
+response.data.CustomerMessage
 
 });
 
@@ -2085,9 +2156,43 @@ error:err.message
 });
 
 }
- 
-});
 
+});
+app.get("/create-subscription-payments", async(req,res)=>{
+
+try{
+
+await db.query(`
+
+CREATE TABLE IF NOT EXISTS subscription_payments(
+
+id SERIAL PRIMARY KEY,
+
+seller_id INTEGER,
+
+plan VARCHAR(20),
+
+amount INTEGER,
+
+checkout_request_id TEXT,
+
+status VARCHAR(20) DEFAULT 'pending',
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
+
+res.send("Subscription payments table created");
+
+}catch(err){
+
+res.send(err.message);
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
