@@ -2093,6 +2093,29 @@ PASSKEY+
 timestamp
 
 ).toString("base64");
+  await db.query(
+
+`
+INSERT INTO subscription_payments
+(
+seller_id,
+plan,
+amount,
+checkout_request_id
+)
+
+VALUES
+($1,$2,$3,$4)
+`,
+
+[
+seller_id,
+plan,
+amount,
+"pending"
+]
+
+);
 
 const response = await axios.post(
 
