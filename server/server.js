@@ -329,6 +329,7 @@ seller_id
 
 // 2. Force status = pending (VERY IMPORTANT)
 const status = "pending";
+const featured = false;
 
   const seller=
 
@@ -2019,6 +2020,25 @@ error:err.message
 });
 
 }
+
+});
+
+app.get("/add-featured", async (req, res) => {
+
+  try {
+
+    await db.query(`
+      ALTER TABLE products
+      ADD COLUMN IF NOT EXISTS featured BOOLEAN DEFAULT FALSE
+    `);
+
+    res.send("Featured column added");
+
+  } catch (err) {
+
+    res.send(err.message);
+
+  }
 
 });
 const PORT =
