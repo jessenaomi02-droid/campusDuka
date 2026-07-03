@@ -2200,6 +2200,118 @@ res.send(err.message);
 }
 
 });
+
+app.post("/subscription-callback", async (req, res) => {
+
+try{
+
+console.log("SUBSCRIPTION CALLBACK RECEIVED");
+
+console.log(
+JSON.stringify(req.body, null, 2)
+);
+
+const callback =
+req.body.Body.stkCallback;
+
+const checkoutRequestID =
+callback.CheckoutRequestID;
+
+if(callback.ResultCode === 0){
+
+const payment =
+await db.query(
+
+`
+SELECT *
+FROM subscription_payments
+WHERE checkout_request_id=$1
+`,
+
+[checkoutRequestID]
+
+);
+
+if(payment.rows.length > 0){
+
+const seller_id =
+payment.rows[0].seller_id;
+
+const plan =
+payment.rows[0].plan;
+
+let expiry =
+new Date();
+
+expiry.setDate(
+expiry.getDate()+30
+);
+
+await db.query(
+
+`
+UPDATE sellers
+
+SET
+
+subscription_plan=$1,
+
+subscription_expiry=$2,
+
+uploads_used=0
+
+WHERE id=$3
+`,
+
+[
+plan,
+expiry,
+seller_id
+]
+
+);
+
+await db.query(
+
+`
+UPDATE subscription_payments
+
+SET status='paid'
+
+WHERE checkout_request_id=$1
+`,
+
+[checkoutRequestID]
+
+);
+
+console.log("Seller upgraded.");
+
+}
+
+}
+
+res.status(200).json({
+
+ResultCode:0,
+ResultDesc:"Accepted"
+
+});
+
+}catch(err){
+
+console.log(err);
+
+res.status(500).json({
+
+success:false,
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
