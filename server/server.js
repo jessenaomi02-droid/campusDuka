@@ -2359,6 +2359,56 @@ error:err.message
 }
 
 });
+
+app.get("/subscription-status/:checkoutId", async(req,res)=>{
+
+try{
+
+const payment = await db.query(
+
+`
+SELECT status
+FROM subscription_payments
+WHERE checkout_request_id=$1
+`,
+
+[req.params.checkoutId]
+
+);
+
+if(payment.rows.length===0){
+
+return res.json({
+
+success:false,
+
+status:"not_found"
+
+});
+
+}
+
+res.json({
+
+success:true,
+
+status:payment.rows[0].status
+
+});
+
+}catch(err){
+
+res.status(500).json({
+
+success:false,
+
+error:err.message
+
+});
+
+}
+
+});
 app.listen(PORT,()=>{
 
 console.log(
