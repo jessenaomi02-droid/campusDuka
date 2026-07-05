@@ -2093,7 +2093,7 @@ PASSKEY+
 timestamp
 
 ).toString("base64");
-  await db.query(
+  const payment = await db.query(
 
 `
 INSERT INTO subscription_payments
@@ -2101,18 +2101,26 @@ INSERT INTO subscription_payments
 seller_id,
 plan,
 amount,
-checkout_request_id
+checkout_request_id,
+status
 )
 
 VALUES
-($1,$2,$3,$4)
+(
+$1,
+$2,
+$3,
+'pending',
+'pending'
+)
+
+RETURNING id
 `,
 
 [
 seller_id,
 plan,
-amount,
-"pending"
+amount
 ]
 
 );
@@ -2158,6 +2166,22 @@ Authorization:`Bearer ${token}`
 
 );
 console.log("STK Response:", response.data);
+  await db.query(
+
+`
+UPDATE subscription_payments
+
+SET checkout_request_id=$1
+
+WHERE id=$2
+`,
+
+[
+response.data.CheckoutRequestID,
+payment.rows[0].id
+]
+
+);
 
 res.json({
 
