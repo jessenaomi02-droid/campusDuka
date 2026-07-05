@@ -429,58 +429,28 @@ Logout
 </div>
 
 </div>
-<div
-id="subscriptionCard"
-
-style="
-background:white;
-padding:20px;
-border-radius:18px;
-margin-bottom:25px;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-">
-
-<h2>
-
-Current Subscription
-
-</h2>
-
-<p id="planName">
-
-Loading...
-
-</p>
-
-<p id="uploadInfo">
-
-</p>
-
-<a href="subscription.html">
-
-<button class="upload-btn">
-
-Upgrade Subscription
-
-</button>
-
-</a>
-
-</div>
 
   <div class="subscription-card">
 
 <h2>
 
-Current Subscription
+⭐ CampusDuka Premium Membership
 
 </h2>
 
 <p>
 
-Plan:
+🏆 Current Plan
 
-<span id="plan">
+<br><br>
+
+<span
+id="plan"
+style="
+font-size:28px;
+font-weight:bold;
+color:#0077ff;
+">
 
 Loading...
 
@@ -490,7 +460,7 @@ Loading...
 
 <p>
 
-Business Model:
+💼 Business Model:
 
 <span id="businessModel">
 
@@ -502,7 +472,7 @@ Loading...
 
 <p>
 
-Uploads Used:
+📦 Uploads Used:
 
 <span id="uploads">
 
@@ -524,7 +494,7 @@ class="progress-bar">
 
 <p>
 
-Expiry:
+📅 Valid Until:
 
 <span id="expiry">
 
@@ -544,7 +514,7 @@ Loading benefits...
 
 <button class="plan-btn">
 
-Change Plan
+⭐ Manage Subscription
 
 </button>
 
@@ -595,24 +565,28 @@ const sellerData=
 
 data.seller;
 
-let planBadge="🆓 Free";
+let planBadge=
+"<span style='color:#777;'>🆓 FREE</span>";
 
 if(
 sellerData.subscription_plan==="copper"
 ){
-planBadge="🥈 Copper";
+planBadge=
+"<span style='color:#cd7f32;'>🥈 COPPER</span>";
 }
 
 else if(
 sellerData.subscription_plan==="bronze"
 ){
-planBadge="🥉 Bronze";
+planBadge=
+"<span style='color:#b87333;'>🥉 BRONZE</span>";
 }
 
 else if(
 sellerData.subscription_plan==="gold"
 ){
-planBadge="🏆 Gold";
+planBadge=
+"<span style='color:#f4b400;'>🏆 GOLD</span>";
 }
 
 document.getElementById(
@@ -697,6 +671,53 @@ document.getElementById(
 "expiry"
 
 ).innerHTML=
+  let daysRemaining = "";
+
+if(sellerData.subscription_expiry){
+
+const expiryDate =
+new Date(sellerData.subscription_expiry);
+
+const today =
+new Date();
+
+const diff =
+Math.ceil(
+
+(expiryDate - today)
+
+/
+
+(1000*60*60*24)
+
+);
+
+daysRemaining =
+` (${diff} days remaining)`;
+
+}
+
+document.getElementById(
+
+"expiry"
+
+).innerHTML =
+
+sellerData.subscription_expiry
+
+?
+
+new Date(
+
+sellerData.subscription_expiry
+
+).toDateString()
+
++ daysRemaining
+
+:
+
+"No expiry";
 
 sellerData.subscription_expiry
 
@@ -884,62 +905,45 @@ Reason: ${product.rejection_reason || "No reason provided"}`
 });
 
 }
-function goToUpload(){
+  async function goToUpload(){
+
+const response = await fetch(
+`https://campusduka-api.onrender.com/seller-details/${seller.id}`
+);
+
+const data = await response.json();
+
+const sellerData = data.seller;
+
+    localStorage.setItem(
+"seller",
+JSON.stringify(sellerData)
+);
+
+// Update localStorage
+localStorage.setItem(
+"seller",
+JSON.stringify(sellerData)
+);
 
 if(
-
-!seller.subscription_plan ||
-
-seller.subscription_plan==="free"
-
+sellerData.subscription_plan==="free"
 ){
 
 alert(
-
-"You must subscribe before uploading products."
-
+"You need an active subscription before uploading products."
 );
 
-window.location.href=
-
-"subscription.html";
+window.location.href="subscription.html";
 
 return;
 
 }
 
-window.location.href=
-
-"add-product.html";
+window.location.href="add-product.html";
 
 }
-
-  document.getElementById(
-
-"planName"
-
-).innerHTML=
-
-seller.subscription_plan
-
-?
-
-"⭐ "+seller.subscription_plan.toUpperCase()
-
-:
-
-"❌ No Active Subscription";
-
-
-document.getElementById(
-
-"uploadInfo"
-
-).innerHTML=
-
-"Uploads used: "+
-
-(seller.uploads_used||0);
+  
 loadSellerProducts();
 
 </script>
