@@ -528,7 +528,7 @@ Loading benefits...
 
 <script>
 
-const seller=
+let seller =
 JSON.parse(
 localStorage.getItem("seller")
 );
@@ -563,6 +563,12 @@ await response.json();
 const sellerData=
 
 data.seller;
+  seller = sellerData;
+
+localStorage.setItem(
+"seller",
+JSON.stringify(sellerData)
+);
 
 let planBadge=
 "<span style='color:#777;'>🆓 FREE</span>";
@@ -696,28 +702,40 @@ daysRemaining =
 
 }
 
-document.getElementById(
+let daysRemaining = "";
 
-"expiry"
+if(sellerData.subscription_expiry){
 
-).innerHTML =
+const expiryDate =
+new Date(sellerData.subscription_expiry);
+
+const today =
+new Date();
+
+const diff =
+Math.ceil(
+(expiryDate - today) /
+(1000*60*60*24)
+);
+
+daysRemaining =
+` (${diff} days remaining)`;
+
+}
+
+document.getElementById("expiry").innerHTML =
 
 sellerData.subscription_expiry
 
 ?
 
 new Date(
-
 sellerData.subscription_expiry
-
-).toDateString()
-
-+ daysRemaining
+).toDateString() + daysRemaining
 
 :
 
 "No expiry";
-
 sellerData.subscription_expiry
 
 ?
@@ -919,11 +937,7 @@ const sellerData = data.seller;
 JSON.stringify(sellerData)
 );
 
-// Update localStorage
-localStorage.setItem(
-"seller",
-JSON.stringify(sellerData)
-);
+
 
 if(
 sellerData.subscription_plan==="free"
