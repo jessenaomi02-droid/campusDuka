@@ -239,7 +239,7 @@ async function loadOrders() {
         }
 
         orders.forEach(order => {
-            // Null Checking & Clean Value Formatting
+            // Null Checking & Clean Status Formatting
             let rawStatus = order.delivery_status ? order.delivery_status.toLowerCase() : "pending";
             let badgeClass = "pending";
             let readableStatus = "Pending";
@@ -255,9 +255,14 @@ async function loadOrders() {
                 readableStatus = "Delivered";
             }
 
-            // Safe String Null Checks for Information Panel
-            let productName = order.product_name || "Marketplace Product";
-            let productPrice = order.product_price ? Number(order.product_price).toLocaleString() : "0";
+            // Extract data securely from root layer or nested item objects
+            let productData = order.product || {};
+            
+            let productName = order.product_name || productData.name || productData.title || "Marketplace Product";
+            
+            let rawPrice = order.product_price || productData.price || 0;
+            let productPrice = Number(rawPrice).toLocaleString();
+            
             let deliveryLocation = order.delivery_location && order.delivery_location !== "null" ? order.delivery_location : "Not Specified";
             let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Paid";
             let orderId = order.id || "N/A";
@@ -279,7 +284,15 @@ async function loadOrders() {
                 }
             }
 
-            let productImage = order.product_images?.[0] || 'images/default-package.jpg';
+            // Image fallback checks
+            let productImage = 'images/default-package.jpg';
+            if (order.product_images && order.product_images.length > 0) {
+                productImage = order.product_images[0];
+            } else if (productData.images && productData.images.length > 0) {
+                productImage = productData.images[0];
+            } else if (productData.image) {
+                productImage = productData.image;
+            }
 
             compiledHTML += `
             <div class="order-card">
@@ -326,7 +339,7 @@ async function loadOrders() {
     }
 }
 
-// Automatically sync updates from the admin endpoint every 30 seconds
+// Intermittent polling timeline configurations (30-second cycles)
 window.onload = () => {
     loadOrders();
     if(syncInterval) clearInterval(syncInterval);
