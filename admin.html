@@ -36,6 +36,7 @@ aside {
   display: flex;
   flex-direction: column;
   border-right: 3px solid #003366;
+  flex-shrink: 0;
 }
 
 aside h2 {
@@ -88,7 +89,7 @@ main {
   color: #0f172a;
 }
 
-/* ================= FINANCIAL KIP CARDS ================= */
+/* ================= FINANCIAL KPI CARDS ================= */
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -193,6 +194,7 @@ tr:last-child {
 
 .status-success { color: #10b981; font-weight: 600; }
 .status-pending { color: #f59e0b; font-weight: 600; }
+.status-failed { color: #ef4444; font-weight: 600; }
 
 #loadingState {
   padding: 40px;
@@ -264,7 +266,6 @@ tr:last-child {
 </main>
 
 <script>
-// Display context time execution parameters
 document.getElementById("currentDate").innerText = new Date().toLocaleDateString('en-US', {
   weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
 });
@@ -272,7 +273,6 @@ document.getElementById("currentDate").innerText = new Date().toLocaleDateString
 async function runFinancesLedgerPipeline() {
   try {
     const response = await fetch("https://campusduka-api.onrender.com/transactions"); 
-    // Fallback: If you serve all transactions through a global list, catch it safely
     if (!response.ok) throw new Error("Database pipeline unreachable");
     
     const transactions = await response.json();
@@ -284,73 +284,93 @@ async function runFinancesLedgerPipeline() {
     let aggregatedCommissions = 0;
     let tableHtml = "";
 
-    transactions.forEach(tx => {
-      const grossAmount = parseFloat(tx.amount || 0);
-      let calculatedIncomeTake = 0;
-      let modelBadge = "";
+    // Map through array item entries safely 
+    if (Array.isArray(transactions) && transactions.length > 0) {
+      transactions.forEach(tx => {
+        if (!tx) return;
+        
+        const grossAmount = parseFloat(tx.amount || 0);
+        const currentTxStatus = tx.status ? tx.status.toLowerCase() : "pending";
+        let calculatedIncomeTake = 0;
+        let modelBadge = "";
 
-      // DISTRIBUTE MATH ACCORDING TO SPECIFIC SUBSCRIPTION VS COMMISSION RULES
-      if (tx.type === "Subscription Upgrade") {
-        calculatedIncomeTake = grossAmount; // Full payment of subscription tier (e.g. KSh 1)
-        if (tx.status === "success") {
-          aggregatedSubscriptions += grossAmount;
+        // Normalize text checks to handle unexpected capitalization errors
+        const transactionType = tx.type ? tx.type.toLowerCase() : "";
+        const businessModel = tx.business_model ? tx.business_model.toLowerCase() : "";
+
+        // DISTRIBUTE MATH ACCORDING TO SPECIFIC SUBSCRIPTION VS COMMISSION RULES
+        if (transactionType.includes("subscription")) {
+          calculatedIncomeTake = grossAmount; 
+          if (currentTxStatus === "success" || currentTxStatus === "paid") {
+            aggregatedSubscriptions += grossAmount;
+          }
+          modelBadge = `<span class="badge sub">Subscription Plan</span>`;
+        } 
+        else if (transactionType.includes("sale") || transactionType.includes("order") || businessModel === "commission") {
+          // Fixed exact 10% Platform calculation split
+          calculatedIncomeTake = grossAmount * 0.10; 
+          if (currentTxStatus === "success" || currentTxStatus === "paid") {
+            aggregatedCommissions += calculatedIncomeTake;
+          }
+          modelBadge = `<span class="badge comm">10% Commission Split</span>`;
+        } 
+        else if (transactionType.includes("partner") || transactionType.includes("registration")) {
+          calculatedIncomeTake = 0;
+          modelBadge = `<span class="badge partner">Partner Onboarding</span>`;
         }
-        modelBadge = `<span class="badge sub">Subscription Plan</span>`;
-      } 
-      else if (tx.type === "Order Sale" || tx.business_model === "commission") {
-        // Commission rate is explicitly fixed to 10% on gross sale values
-        calculatedIncomeTake = grossAmount * 0.10; 
-        if (tx.status === "success") {
-          aggregatedCommissions += calculatedIncomeTake;
+        else {
+          calculatedIncomeTake = grossAmount;
+          if (currentTxStatus === "success" || currentTxStatus === "paid") {
+            aggregatedSubscriptions += grossAmount;
+          }
+          modelBadge = `<span class="badge sub">General Flow</span>`;
         }
-        modelBadge = `<span class="badge comm">10% Commission Split</span>`;
-      } 
-      else if (tx.type === "Partner Registration") {
-        calculatedIncomeTake = 0;
-        modelBadge = `<span class="badge partner">Partner Onboarding</span>`;
-      }
-      else {
-        // General dynamic fallback safety route
-        calculatedIncomeTake = grossAmount;
-        if (tx.status === "success") aggregatedSubscriptions += grossAmount;
-        modelBadge = `<span class="badge sub">General</span>`;
-      }
 
-      // Formatting dates safely
-      const txDate = tx.date ? new Date(tx.date).toLocaleDateString('en-GB', {
-        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'
-      }) : "Pending Block Trace";
+        const txDate = tx.date ? new Date(tx.date).toLocaleDateString('en-GB', {
+          day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'
+        }) : "Pending Trace Block";
 
-      tableHtml += `
-        <tr>
-          <td><strong>${tx.seller_name || "Merchant Merchant"}</strong><br><small style="color:#64748b">ID: ${tx.seller_id}</small></td>
-          <td>${modelBadge}<br><small style="color:#64748b">${tx.description || 'Processed workflow trace'}</small></td>
-          <td>KSh ${grossAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-          <td style="color:#003366; font-weight:600;">+ KSh ${calculatedIncomeTake.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-          <td><span class="${tx.status === 'success' ? 'status-success' : 'status-pending'}">
-            <i class="fas ${tx.status === 'success' ? 'fa-circle-check' : 'fa-clock'}"></i> ${tx.status ? tx.status.toUpperCase() : 'PENDING'}
-          </span></td>
-          <td><small>${txDate}</small></td>
-        </tr>
-      `;
-    });
+        // Determine icon style matching state indicators
+        let statusClass = "status-pending";
+        let statusIcon = "fa-clock";
+        if (currentTxStatus === "success" || currentTxStatus === "paid") {
+          statusClass = "status-success";
+          statusIcon = "fa-circle-check";
+        } else if (currentTxStatus === "failed") {
+          statusClass = "status-failed";
+          statusIcon = "fa-circle-xmark";
+        }
 
-    // Populate calculated KPI metrics elements to dashboard view natively
-    document.getElementById("totalSubs").innerText = `KSh ${aggregatedSubscriptions.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-    document.getElementById("totalCommissions").innerText = `KSh ${aggregatedCommissions.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        tableHtml += `
+          <tr>
+            <td><strong>${tx.seller_name || "Campus Merchant"}</strong><br><small style="color:#64748b">ID: ${tx.seller_id || 'N/A'}</small></td>
+            <td>${modelBadge}<br><small style="color:#64748b">${tx.description || 'Processed workflow trace'}</small></td>
+            <td>KSh ${grossAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="color:#003366; font-weight:600;">+ KSh ${calculatedIncomeTake.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td><span class="${statusClass}">
+              <i class="fas ${statusIcon}"></i> ${currentTxStatus.toUpperCase()}
+            </span></td>
+            <td><small>${txDate}</small></td>
+          </tr>
+        `;
+      });
+    }
+
+    // Populate dynamic elements inside summary cards
+    document.getElementById("totalSubs").innerText = `KSh ${aggregatedSubscriptions.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById("totalCommissions").innerText = `KSh ${aggregatedCommissions.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     
     const combinedTotal = aggregatedSubscriptions + aggregatedCommissions;
-    document.getElementById("totalPlatformRevenue").innerText = `KSh ${combinedTotal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+    document.getElementById("totalPlatformRevenue").innerText = `KSh ${combinedTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
-    document.getElementById("financialEntries").innerHTML = tableHtml || `<tr><td colspan="6" style="text-align:center; color:#64748b">No financial transaction audits mapped in backend records.</td></tr>`;
+    document.getElementById("financialEntries").innerHTML = tableHtml || `<tr><td colspan="6" style="text-align:center; color:#64748b; padding: 30px;">No financial transaction audits mapped in backend records.</td></tr>`;
 
   } catch (error) {
-    console.error("System pipeline broken down: ", error);
+    console.error("System accounting error: ", error);
     document.getElementById("loadingState").innerHTML = `<span style="color:#ef4444;"><i class="fas fa-exclamation-triangle"></i> Failed to communicate with live accounting API routes.</span>`;
   }
 }
 
-// Initial Boot Execution
 runFinancesLedgerPipeline();
 </script>
 </body>
