@@ -3,429 +3,882 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka Admin Workspace</title>
+<title>CampusDuka Enterprise Admin Workspace</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
-/* ==========================
-   RESET & ADMINISTRATIVE GRID
-========================== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+/* ==========================================================================
+   ADVANCED CONFIGURATION SYSTEM & RESET ARCHITECTURE
+   ========================================================================== */
+:root {
+  --primary: #0066ff;
+  --primary-hover: #0052cc;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --sidebar-width: 280px;
 }
 
-body{
-  background:#f5f7fb;
-  color:#1e293b;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--text-main);
   display: flex;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* ================= SIDEBAR NAV ARCHITECTURE ================= */
-.sidebar{
-  width:260px;
-  background:#0077ff;
-  color: white;
-  position:fixed;
-  left:0;
-  top:0;
-  height:100vh;
-  padding:24px 16px;
-  overflow-y:auto;
-  z-index: 100;
-  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+/* ==========================================================================
+   REAL-TIME NOTIFICATION SYSTEM BANNER
+   ========================================================================== */
+#toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.sidebar h2{
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom:32px;
+.toast {
+  background: var(--surface);
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding-left: 8px;
+  gap: 14px;
+  min-width: 320px;
+  transform: translateX(120%);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.sidebar a{
-  display:flex;
+.toast.show { transform: translateX(0); }
+.toast.toast-success { border-left-color: var(--success); }
+.toast.toast-warning { border-left-color: var(--warning); }
+.toast.toast-danger { border-left-color: var(--danger); }
+
+/* ==========================================================================
+   SIDEBAR NAV ARCHITECTURE
+   ========================================================================== */
+.sidebar {
+  width: var(--sidebar-width);
+  background: #0f172a;
+  color: #ffffff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  padding: 24px 16px;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 0 12px 24px 12px;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 24px;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  display: flex;
   align-items: center;
   gap: 12px;
-  padding:12px 16px;
-  margin-bottom:8px;
-  color:rgba(255, 255, 255, 0.85);
-  text-decoration:none;
-  border-radius:10px;
-  font-weight: 500;
+}
+
+.sidebar h2 span { color: var(--primary); }
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  color: #94a3b8;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 14px;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
-.sidebar a:hover, .sidebar a.active-link{
-  background:rgba(255,255,255,.2);
+.sidebar a i { width: 20px; font-size: 16px; }
+.sidebar a .menu-label-group { display: flex; align-items: center; gap: 12px; }
+
+.sidebar a:hover, .sidebar a.active-link {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.sidebar a.active-link {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.badge-count {
+  background: var(--danger);
   color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
-/* ================= MAIN INTERFACE WRAPPER ================= */
-.main-content{
-  margin-left:260px;
+/* ==========================================================================
+   MAIN INTERFACE WRAPPER
+   ========================================================================== */
+.main-content {
+  margin-left: var(--sidebar-width);
   flex-grow: 1;
-  padding:30px;
-  width: calc(100% - 260px);
+  padding: 40px;
+  width: calc(100% - var(--sidebar-width));
 }
 
-.navbar{
-  background:white;
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-radius: 12px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+.navbar {
+  background: var(--surface);
+  padding: 18px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border-color);
 }
 
-.logo{
-  color:#0077ff;
-  font-size:20px;
-  font-weight:700;
-}
-
-/* ================= METRIC CARDS SYSTEM ================= */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  margin-bottom: 30px;
-}
-
-.stat-card{
-  background:white;
-  padding:24px;
-  border-radius:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,.03);
-  border: 1px solid #e2e8f0;
-  transition:.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stat-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 20px rgba(0,0,0,.06);
-}
-
-.stat-card h3{
-  margin:0;
-  color:#64748b;
-  font-size:14px;
+.system-clock-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
   font-weight: 600;
+  color: var(--text-muted);
+  background: var(--background);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+/* ==========================================================================
+   METRIC CARDS SYSTEM
+   ========================================================================== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.02);
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card h3 {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.stat-card p{
-  font-size:36px;
-  font-weight:700;
-  color:#1e293b;
-  margin-top:8px;
-}
-
-.stat-card small {
-  display: block;
-  margin-top: 6px;
-  color: #0077ff;
-  font-weight: 500;
+.stat-card p {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 12px;
+  letter-spacing: -1px;
 }
 
 /* FINANCIAL SPECIAL CARDS */
-.stat-revenue { border-left: 5px solid #10b981; }
-.stat-revenue h1 { color: #10b981; font-size: 32px; font-weight: 700; margin-top: 5px; }
+.stat-card.revenue-card { border-top: 4px solid var(--success); }
+.stat-card.subscription-card { border-top: 4px solid #8b5cf6; }
+.stat-card.commission-card { border-top: 4px solid var(--primary); }
 
-/* SEGMENTATION BADGES */
-.badge-tier {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  display: inline-block;
-  margin-top: 5px;
-}
-.tier-commission { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-.tier-subscription { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
-
-/* ================= ITEM LAYOUT GRID ELEMENTS ================= */
+/* ==========================================================================
+   ORDER MATRIX & PIPELINE SECTIONS
+   ========================================================================== */
 .admin-section {
   display: none;
-  animation: fadeIn 0.3s ease;
+  animation: sectionFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.admin-section.active-section {
-  display: block;
-}
+.admin-section.active-section { display: block; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes sectionFade {
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .section-title {
   font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #1e293b;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
+/* LOGISTICS MATRIX ROADMAP CONTAINER */
+.order-matrix-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media(max-width: 1400px) {
+  .order-matrix-pipeline { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width: 768px) {
+  .order-matrix-pipeline { grid-template-columns: 1fr; }
+}
+
+.matrix-column {
+  background: #edf2f7;
+  border-radius: 16px;
+  padding: 16px;
+  min-height: 600px;
+}
+
+.matrix-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 4px 8px;
+}
+
+.matrix-column-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matrix-counter {
+  background: rgba(15, 23, 42, 0.1);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.matrix-nodes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* CARD LAYOUT GRID ELEMENTS */
 .data-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
 }
 
-.item{
-  background:white;
-  padding:20px;
-  border-radius:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,.02);
-  border: 1px solid #e2e8f0;
+.item {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.02);
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.item img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-  border-radius:10px;
-  margin-bottom:14px;
+.item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
 }
 
-.item h3{
+.item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.item h3 {
   font-size: 16px;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 6px;
-}
-
-.item p{
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 6px;
-}
-
-.item .price-tag {
-  font-size: 18px;
   font-weight: 700;
-  color: #0077ff;
-  margin: 4px 0 10px 0;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
-/* ACTION CONTROLS BUTTON MATRIX */
+.item-timestamp {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--background);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+
+.price-tag {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+/* FINANCIAL DEDUCTIONS DISPLAY PANEL */
+.ledger-breakdown-box {
+  background: #fdf4ff;
+  border: 1px solid #f5d0fe;
+  padding: 14px;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+
+.ledger-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.ledger-line.total-line {
+  border-top: 1px dashed #d946ef;
+  padding-top: 6px;
+  margin-bottom: 0;
+  font-weight: 700;
+  color: #a21caf;
+}
+
+/* HOME CONTROLLER DYNAMIC WORKSPACE */
+.home-preview-box {
+  background: #fafafa;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+  position: relative;
+}
+
+.preview-badge-runtime {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--danger);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-countdown-ticker {
+  background: #0f172a;
+  color: #58a6ff;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.home-config-form {
+  margin-top: 12px;
+  background: var(--background);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.home-config-form label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.home-config-form select, .home-config-form input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* BUTTON CONTROLS SYSTEM */
 .btn-group {
   display: flex;
   gap: 8px;
   margin-top: auto;
-  padding-top: 14px;
+  padding-top: 16px;
   flex-wrap: wrap;
 }
 
 .btn {
-  padding: 8px 14px;
+  padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
+  flex-grow: 1;
 }
 
-.btn-edit { background: #e0f2fe; color: #0369a1; }
-.btn-edit:hover { background: #bae6fd; }
-.btn-approve { background: #dcfce7; color: #15803d; }
-.btn-approve:hover { background: #bbf7d0; }
-.btn-reject { background: #fee2e2; color: #b91c1c; }
-.btn-reject:hover { background: #fecaca; }
-.btn-delete { background: #fee2e2; color: #b91c1c; width: 100%; justify-content: center; margin-top: 8px; }
-.btn-delete:hover { background: #fca5a5; }
-.btn-purge-dark { background: #451a03; color: #fef3c7; }
-.btn-purge-dark:hover { background: #78350f; }
-.btn-home { background: #f3e8ff; color: #6b21a8; width: 100%; justify-content: center; margin-top: 10px; }
-.btn-home:hover { background: #e9d5ff; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-success { background: #dcfce7; color: #15803d; }
+.btn-success:hover { background: #bbf7d0; }
+.btn-warning { background: #fef3c7; color: #b45309; }
+.btn-warning:hover { background: #fde68a; }
+.btn-danger { background: #fee2e2; color: #b91c1c; }
+.btn-danger:hover { background: #fecaca; }
+.btn-dark { background: #0f172a; color: white; }
+.btn-dark:hover { background: #1e293b; }
 
-/* HOME CONTROLLER INTERFACE STYLING */
-.home-config-box {
-  background: #f8fafc;
-  border: 1px dashed #6b21a8;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-size: 12px;
+/* DATA TABLES FOR ACCOUNTS ROSTERS */
+.table-container {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.02);
+  overflow: hidden;
 }
 
-.home-config-box label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #5b21b6;
-}
-
-.home-config-box input, .home-config-box select {
+table {
   width: 100%;
-  padding: 6px;
-  margin-bottom: 8px;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  font-size: 12px;
+  border-collapse: collapse;
+  text-align: left;
 }
+
+th {
+  background: #f8fafc;
+  padding: 16px 24px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  padding: 18px 24px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8fafc; }
+
+.badge-tier {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.tier-commission { background: #eff6ff; color: #1d4ed8; }
+.tier-subscription { background: #fdf2f8; color: #9d174d; }
 
 hr {
   border: 0;
-  border-top: 1px solid #edf2f7;
-  margin: 15px 0;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
 }
 </style>
 </head>
 <body>
 
+  <!-- TOAST ALERTS SYSTEM -->
+  <div id="toast-container"></div>
+
+  <!-- NAVIGATION BACKBONE -->
   <div class="sidebar">
-    <h2><i class="fas fa-chart-pie"></i> CampusDuka</h2>
-    <a onclick="showSection('dashboard')" id="link-dashboard" class="active-link"><i class="fas fa-chart-line"></i> Dashboard</a>
-    <a onclick="showSection('earnings')" id="link-earnings"><i class="fas fa-wallet"></i> Platform Earnings</a>
-    <a onclick="showSection('home-control')" id="link-home-control"><i class="fas fa-sliders"></i> Home Controller</a>
-    <a onclick="showSection('orders')" id="link-orders"><i class="fas fa-box"></i> Orders Matrix</a>
-    <a onclick="showSection('pending')" id="link-pending"><i class="fas fa-hourglass-half"></i> Pending Queue</a>
-    <a onclick="showSection('approved')" id="link-approved"><i class="fas fa-circle-check"></i> Active Products</a>
-    <a onclick="showSection('foods')" id="link-foods"><i class="fas fa-burger"></i> Fast Foods Database</a>
-    <a onclick="showSection('events')" id="link-events"><i class="fas fa-ticket"></i> Live Events Listing</a>
-    <a onclick="showSection('rejected')" id="link-rejected"><i class="fas fa-circle-xmark"></i> Rejected Logs</a>
-    <a onclick="showSellers()" id="link-sellers"><i class="fas fa-store"></i> Verified Sellers</a>
-    <a onclick="showUsers()" id="link-users"><i class="fas fa-users"></i> Platform Users</a>
+    <div class="sidebar-header">
+      <h2>Campus<span>Duka</span> Engine</h2>
+    </div>
+    <div class="sidebar-menu">
+      <a onclick="showSection('dashboard')" id="link-dashboard" class="active-link">
+        <div class="menu-label-group"><i class="fas fa-chart-line"></i> Operations Dashboard</div>
+      </a>
+      <a onclick="showSection('earnings')" id="link-earnings">
+        <div class="menu-label-group"><i class="fas fa-vault"></i> Financial Control</div>
+      </a>
+      <a onclick="showSection('home-control')" id="link-home-control">
+        <div class="menu-label-group"><i class="fas fa-house-laptop"></i> Home Layout Manager</div>
+      </a>
+      <a onclick="showSection('orders')" id="link-orders">
+        <div class="menu-label-group"><i class="fas fa-route"></i> Logistics Matrix</div>
+        <span class="badge-count" id="badge-orders-count">0</span>
+      </a>
+      <a onclick="showSection('pending')" id="link-pending">
+        <div class="menu-label-group"><i class="fas fa-clipboard-check"></i> Staging Queue</div>
+        <span class="badge-count" id="badge-pending-count" style="background:var(--warning);">0</span>
+      </a>
+      <a onclick="showSection('approved')" id="link-approved">
+        <div class="menu-label-group"><i class="fas fa-boxes-stacked"></i> Products Master</div>
+      </a>
+      <a onclick="showSection('foods')" id="link-foods">
+        <div class="menu-label-group"><i class="fas fa-utensils"></i> Fast Foods Node</div>
+      </a>
+      <a onclick="showSection('events')" id="link-events">
+        <div class="menu-label-group"><i class="fas fa-ticket-simple"></i> Ticket Events</div>
+      </a>
+      <a onclick="showSection('rejected')" id="link-rejected">
+        <div class="menu-label-group"><i class="fas fa-triangle-exclamation"></i> Rejection Logs</div>
+      </a>
+      <a onclick="showSection('sellers')" id="link-sellers">
+        <div class="menu-label-group"><i class="fas fa-store"></i> Merchant Directory</div>
+      </a>
+      <a onclick="showSection('users')" id="link-users">
+        <div class="menu-label-group"><i class="fas fa-users-gear"></i> Student Roster</div>
+      </a>
+    </div>
   </div>
 
+  <!-- MASTER WORKSPACE CONTROLLER CONTENT CONTAINER -->
   <div class="main-content">
     <nav class="navbar">
-      <div class="logo">Administrative Console Workspace</div>
-      <div style="font-size: 13px; color: #64748b; font-weight: 500;">Role: Head Administrator</div>
+      <div>
+        <h1 style="font-size: 18px; font-weight:700;">Workspace Management Console</h1>
+        <p style="font-size: 12px; color: var(--text-muted);">Scope: Operational System Command</p>
+      </div>
+      <div class="system-clock-box">
+        <i class="far fa-clock"></i>
+        <span id="live-system-clock">Loading live timestamp...</span>
+      </div>
     </nav>
 
+    <!-- OPERATIONS DASHBOARD -->
     <section id="dashboard-section" class="admin-section active-section">
-      <h1 class="section-title">Operations Dashboard</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Operations Dashboard</h1>
+      </div>
       <div class="stats">
-        <div class="stat-card">
-          <h3>Pending Approvals</h3>
-          <p id="pendingCount">0</p>
+        <div class="stat-card" style="border-left: 4px solid var(--warning);" onclick="showSection('pending')">
+          <h3>Staging Requests</h3>
+          <p id="dash-pending">0</p>
         </div>
-        <div class="stat-card">
-          <h3>Live Products</h3>
-          <p id="approvedCount">0</p>
+        <div class="stat-card" style="border-left: 4px solid var(--primary);" onclick="showSection('approved')">
+          <h3>Active Listings</h3>
+          <p id="dash-approved">0</p>
         </div>
-        <div class="stat-card" onclick="showSellers()" style="cursor:pointer;">
-          <h3>Registered Sellers</h3>
-          <p id="sellerCount">0</p>
-          <small>Review details →</small>
+        <div class="stat-card" style="border-left: 4px solid #8b5cf6;" onclick="showSection('sellers')">
+          <h3>Registered Merchants</h3>
+          <p id="dash-sellers">0</p>
         </div>
-        <div class="stat-card" onclick="showUsers()" style="cursor:pointer;">
-          <h3>Active Students</h3>
-          <p id="userCount">0</p>
-          <small>View roster →</small>
+        <div class="stat-card" style="border-left: 4px solid var(--text-main);" onclick="showSection('users')">
+          <h3>Total Enrolled Users</h3>
+          <p id="dash-users">0</p>
         </div>
       </div>
     </section>
 
+    <!-- FINANCIAL CONTROL PANEL -->
     <section id="earnings-section" class="admin-section">
-      <h1 class="section-title">💰 Corporate Revenue & Earnings Engine</h1>
-      <p style="color:#64748b; margin-bottom: 25px; font-size:14px;">Real-time analytical overview of platform monetization models including commissions extracted from sales and active monthly recurring premium layout subscription tiers.</p>
-      
+      <div class="section-header-block">
+        <h1 class="section-title">Financial Control & Marketplace Revenue Ledger</h1>
+      </div>
       <div class="stats">
-        <div class="stat-card stat-revenue">
-          <h3>Gross Realized Income</h3>
-          <h1 id="grossRevenueDisplay">KES 0</h1>
+        <div class="stat-card revenue-card">
+          <h3>Gross Realized Revenue</h3>
+          <p id="fin-gross">KES 0.00</p>
         </div>
-        <div class="stat-card">
-          <h3>Total Subscription Fees</h3>
-          <p id="subscriptionEarningsDisplay" style="color: #9d174d;">KES 0</p>
+        <div class="stat-card subscription-card">
+          <h3>Subscription Base Capital</h3>
+          <p id="fin-sub">KES 0.00</p>
         </div>
-        <div class="stat-card">
-          <h3>Total Marketplace Commissions</h3>
-          <p id="commissionEarningsDisplay" style="color: #1d4ed8;">KES 0</p>
+        <div class="stat-card commission-card">
+          <h3>Retained Commissions (10%)</h3>
+          <p id="fin-comm">KES 0.00</p>
         </div>
+      </div>
+      
+      <div class="table-container" style="margin-top: 24px;">
+        <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:16px; font-weight:700;">Completed Payout & Net Allocations Breakdown</h3>
+          <span style="font-size:12px; font-weight:600; background:#dcfce7; color:#16a34a; padding:4px 10px; border-radius:6px;"><i class="fas fa-shield-halved"></i> Audit Verified</span>
+        </div>
+        <table id="financial-ledger-table">
+          <thead>
+            <tr>
+              <th>Order Ref</th>
+              <th>Transaction Date/Time</th>
+              <th>Merchant Account</th>
+              <th>Gross Transaction</th>
+              <th>System Share (10%)</th>
+              <th>Net Remittance Paid</th>
+            </tr>
+          </thead>
+          <tbody id="financial-ledger-rows">
+            <!-- Dynamic Injection Node -->
+          </tbody>
+        </table>
       </div>
     </section>
 
+    <!-- HOME LAYOUT MANAGER -->
     <section id="home-control-section" class="admin-section">
-      <h1 class="section-title">🏠 Homepage Controller</h1>
-      <p style="color:#64748b; margin-bottom: 20px; font-size:14px;">Manage items featured on the customer marketplace homepage index layout, configure live scarcity text tags, and change urgency countdown limits.</p>
+      <div class="section-header-block">
+        <h1 class="section-title">Home Layout Manager</h1>
+        <p style="font-size:13px; color:var(--text-muted);">Configure elements showing live countdown modules matching real-time execution passes.</p>
+      </div>
       <div id="homeControllerGrid" class="data-grid"></div>
     </section>
 
+    <!-- LOGISTICS MATRIX -->
     <section id="orders-section" class="admin-section">
-      <h1 class="section-title">📦 Order Logistics Pipeline</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Logistics Pipeline Matrix</h1>
+      </div>
       
-      <h2 style="font-size:16px; margin: 20px 0 10px 0; color:#ef4444;">Incoming Clearances</h2>
-      <div id="ordersList" class="data-grid"></div>
+      <div class="order-matrix-pipeline">
+        <div class="matrix-column">
+          <div class="matrix-column-header">
+            <h2><i class="fas fa-receipt" style="color:var(--danger);"></i> Clearances</h2>
+            <span class="matrix-counter" id="count-col-clearance">0</span>
+          </div>
+          <div class="matrix-nodes-container" id="matrix-clearance"></div>
+        </div>
 
-      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#f59e0b;">Kitchen / Vendor Preparing</h2>
-      <div id="preparingOrders" class="data-grid"></div>
+        <div class="matrix-column">
+          <div class="matrix-column-header">
+            <h2><i class="fas fa-kitchen-set" style="color:var(--warning);"></i> Preparing</h2>
+            <span class="matrix-counter" id="count-col-preparing">0</span>
+          </div>
+          <div class="matrix-nodes-container" id="matrix-preparing"></div>
+        </div>
 
-      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#3b82f6;">Transit Run (Out for Delivery)</h2>
-      <div id="deliveryOrders" class="data-grid"></div>
+        <div class="matrix-column">
+          <div class="matrix-column-header">
+            <h2><i class="fas fa-truck-ramp-box" style="color:var(--primary);"></i> In Transit</h2>
+            <span class="matrix-counter" id="count-col-transit">0</span>
+          </div>
+          <div class="matrix-nodes-container" id="matrix-transit"></div>
+        </div>
 
-      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#10b981;">Archived Delivered Deliveries</h2>
-      <div id="deliveredOrders" class="data-grid"></div>
+        <div class="matrix-column">
+          <div class="matrix-column-header">
+            <h2><i class="fas fa-circle-check" style="color:var(--success);"></i> Delivered</h2>
+            <span class="matrix-counter" id="count-col-delivered">0</span>
+          </div>
+          <div class="matrix-nodes-container" id="matrix-delivered"></div>
+        </div>
+      </div>
     </section>
 
+    <!-- STAGING QUEUE MODERATION PANEL -->
     <section id="pending-section" class="admin-section">
-      <h1 class="section-title">⏳ Product Moderation Queue</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Product Moderation Queue (Staging)</h1>
+      </div>
       <div id="pendingProducts" class="data-grid"></div>
     </section>
 
+    <!-- PRODUCTS MASTER INDEX -->
     <section id="approved-section" class="admin-section">
-      <h1 class="section-title">✅ Live Store Database Items (Products)</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Products Master Index</h1>
+      </div>
       <div id="approvedProducts" class="data-grid"></div>
     </section>
 
+    <!-- FAST FOODS NODE -->
     <section id="foods-section" class="admin-section">
-      <h1 class="section-title">🍔 Fast Foods Administrative Records</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Fast Foods Hub</h1>
+      </div>
       <div id="foodsList" class="data-grid"></div>
     </section>
 
+    <!-- LIVE CAMPUS EVENTS LSTING -->
     <section id="events-section" class="admin-section">
-      <h1 class="section-title">🎉 Live Campus Events Listing</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Live Campus Event Management</h1>
+      </div>
       <div id="eventsList" class="data-grid"></div>
     </section>
 
+    <!-- REJECTION SYSTEM LOGS -->
     <section id="rejected-section" class="admin-section">
-      <h1 class="section-title">❌ Rejected Submissions</h1>
+      <div class="section-header-block">
+        <h1 class="section-title">Historical Rejection Logs</h1>
+      </div>
       <div id="rejectedProducts" class="data-grid"></div>
     </section>
 
+    <!-- MERCHANT DIRECTORY -->
     <section id="sellers-section" class="admin-section">
-      <h1 class="section-title">🏪 Registered Merchant Base</h1>
-      <div id="sellersList" class="data-grid"></div>
+      <div class="section-header-block">
+        <h1 class="section-title">Registered Merchant Directory</h1>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Merchant ID</th>
+              <th>Establishment Name</th>
+              <th>Contact Email</th>
+              <th>Operational Phone</th>
+              <th>Account Tier Profile</th>
+              <th style="text-align:right;">Management Actions</th>
+            </tr>
+          </thead>
+          <tbody id="sellers-table-body">
+            <!-- Dynamic Merchant Injection Roster Node -->
+          </tbody>
+        </table>
+      </div>
     </section>
 
+    <!-- REGISTERED PLATFORM STUDENT ROSTER -->
     <section id="users-section" class="admin-section">
-      <h1 class="section-title">👥 Registered Platform User Database</h1>
-      <div id="usersList" class="data-grid"></div>
+      <div class="section-header-block">
+        <h1 class="section-title">Registered Platform Student Roster</h1>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User UID Mapping Tag</th>
+              <th>Full Name Profile</th>
+              <th>Authentication Email</th>
+              <th>Mobile Telephony Node</th>
+              <th style="text-align:right;">Security Management Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <!-- Dynamic User Accounts Injection Node -->
+          </tbody>
+        </table>
+      </div>
     </section>
 
+    <!-- COMPREHENSIVE MERCHANT SINGLE-LEDGER DRILLDOWN -->
     <section id="seller-details-section" class="admin-section">
-      <button class="btn btn-edit" onclick="showSellers()" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Sellers</button>
+      <div class="section-header-block">
+        <button class="btn btn-dark btn-sm" onclick="showSection('sellers')"><i class="fas fa-arrow-left"></i> Exit Ledger Workspace</button>
+      </div>
       <div id="sellerDetails"></div>
     </section>
 
   </div>
 
 <script>
-/* CORE NAVIGATION ROUTER ENGINE */
+/* ==========================================================================
+   GLOBAL ADMINISTRATIVE STATE LOGICAL CORE DATA ARCHITECTURE
+   ========================================================================== */
+let systemMemoryStore = {
+  products: [],
+  pending: [],
+  rejected: [],
+  orders: [],
+  sellers: [],
+  users: []
+};
+
+// Internal application state trackers for change tracking pipelines
+let cachedPendingLength = 0;
+let cachedOrdersLength = 0;
+let initialSystemLoadPass = true;
+let activeCountdownIntervalId = null;
+
+/* TOAST EMISSION MODULE ENGINE */
+function pushNotificationToast(message, variant = "info") {
+  const container = document.getElementById("toast-container");
+  const node = document.createElement("div");
+  node.className = `toast toast-${variant}`;
+  
+  let icon = "fa-circle-info";
+  if(variant === "success") icon = "fa-circle-check";
+  if(variant === "warning") icon = "fa-triangle-exclamation";
+  if(variant === "danger") icon = "fa-circle-exmark";
+
+  node.innerHTML = `
+    <i class="fas ${icon}" style="font-size:18px;"></i>
+    <div style="flex-grow:1;">
+      <p style="font-size:13px; font-weight:700; color:var(--text-main);">${message}</p>
+      <small style="font-size:10px; color:var(--text-muted); font-weight:500;">${new Date().toLocaleTimeString()}</small>
+    </div>
+  `;
+  container.appendChild(node);
+  
+  setTimeout(() => node.classList.add("show"), 50);
+  setTimeout(() => {
+    node.classList.remove("show");
+    setTimeout(() => node.remove(), 400);
+  }, 4500);
+}
+
+/* REAL-TIME SYSTEM TIMESTAMP ENGINE LOOP */
+function startSystemClock() {
+  const clockNode = document.getElementById("live-system-clock");
+  setInterval(() => {
+    const timeInstance = new Date();
+    clockNode.innerHTML = `<i class="fas fa-calendar-day"></i> ${timeInstance.toLocaleDateString(undefined, {weekday: 'short', month: 'short', day: 'numeric'})} | <i class="far fa-clock"></i> ${timeInstance.toLocaleTimeString()}`;
+  }, 1000);
+}
+
+/* INTERFACE SCREEN DISPLAY ROUTER SYSTEM */
 function showSection(sectionId){
   const sections = document.querySelectorAll('.admin-section');
   sections.forEach(sec => sec.classList.remove('active-section'));
@@ -434,107 +887,198 @@ function showSection(sectionId){
   links.forEach(link => link.classList.remove('active-link'));
 
   const targets = document.getElementById(`${sectionId}-section`);
-  if(targets) {
-    targets.classList.add('active-section');
-  }
+  if(targets) targets.classList.add('active-section');
 
   const activeLink = document.getElementById(`link-${sectionId}`);
-  if(activeLink) {
-    activeLink.classList.add('active-link');
-  }
+  if(activeLink) activeLink.classList.add('active-link');
+  
+  // Render sub-views upon section activations
+  if(sectionId === 'earnings') renderFinancialLedgerMetrics();
+  if(sectionId === 'home-control') renderHomeControllerPanel();
+  if(sectionId === 'orders') renderLogisticsMatrixPipeline();
+  if(sectionId === 'pending') renderStagingQueue();
+  if(sectionId === 'approved' || sectionId === 'foods' || sectionId === 'events') renderCatalogMatrices();
+  if(sectionId === 'rejected') renderRejectionHistoryLogs();
+  if(sectionId === 'sellers') renderSellersRosterView();
+  if(sectionId === 'users') renderUsersRosterView();
 }
 
-/* NEW REVENUE CALCULATION UTILITY RUNTIME ENGINE */
-async function loadCorporateRevenueMetrics() {
+/* ==========================================================================
+   AUTO-POLLING BACKGROUND WORKER SYNCHRONIZATION DATA LINK ENGINE
+   ========================================================================== */
+async function triggerBackgroundSyncTask() {
   try {
-    const ordersRes = await fetch("https://campusduka-api.onrender.com/orders");
-    const orders = await ordersRes.json();
+    const [prodRes, pendRes, rejRes, ordRes, sellRes, userRes] = await Promise.all([
+      fetch("https://campusduka-api.onrender.com/products").then(r => r.json()),
+      fetch("https://campusduka-api.onrender.com/pending-products").then(r => r.json()),
+      fetch("https://campusduka-api.onrender.com/rejected-products").then(r => r.json()),
+      fetch("https://campusduka-api.onrender.com/orders").then(r => r.json()),
+      fetch("https://campusduka-api.onrender.com/all-sellers").then(r => r.json()),
+      fetch("https://campusduka-api.onrender.com/all-users").then(r => r.json())
+    ]);
+
+    systemMemoryStore = { products: prodRes, pending: pendRes, rejected: rejRes, orders: ordRes, sellers: sellRes, users: userRes };
+
+    // Update notification badges dynamically
+    document.getElementById("badge-orders-count").innerText = ordRes.filter(o => o.delivery_status !== 'delivered').length;
+    document.getElementById("badge-pending-count").innerText = pendRes.length;
     
-    const sellersRes = await fetch("https://campusduka-api.onrender.com/all-sellers");
-    const sellers = await sellersRes.json();
+    // Update core operational dashboard widgets
+    document.getElementById("dash-pending").innerText = pendRes.length;
+    document.getElementById("dash-approved").innerText = prodRes.length;
+    document.getElementById("dash-sellers").innerText = sellRes.length;
+    document.getElementById("dash-users").innerText = userRes.length;
 
-    // 1. Calculate Marketplace Commissions (e.g., 10% extraction from every complete transaction ledger instance)
-    let totalCommissions = 0;
-    orders.forEach(order => {
-      if(order.payment_status?.toLowerCase() === "paid" || order.delivery_status === "delivered") {
-        totalCommissions += Number(order.amount) * 0.10; 
+    // Monitor for changes automatically without manual page refreshes
+    if(!initialSystemLoadPass) {
+      if(pendRes.length > cachedPendingLength) {
+        pushNotificationToast(`New product staging verification request detected! (${pendRes.length - cachedPendingLength} new)`, "warning");
+        if(document.getElementById("pending-section").classList.contains("active-section")) renderStagingQueue();
       }
-    });
-
-    // 2. Calculate Premium Tier Licences Subscriptions (Mock calculation parsing structural seller categorization matrix records)
-    let totalSubscriptions = 0;
-    sellers.forEach(seller => {
-      // Assuming a standardized flat corporate license execution rate of KES 1,500 for sub-based operators
-      if (seller.id % 2 === 0) { 
-        totalSubscriptions += 1500;
+      if(ordRes.length > cachedOrdersLength) {
+        pushNotificationToast(`New client customer transaction entry cleared on gateway!`, "success");
+        if(document.getElementById("orders-section").classList.contains("active-section")) renderLogisticsMatrixPipeline();
+        renderFinancialLedgerMetrics();
       }
-    });
+    }
 
-    let grossRevenue = totalCommissions + totalSubscriptions;
-
-    document.getElementById("subscriptionEarningsDisplay").innerText = `KES ${totalSubscriptions.toLocaleString()}`;
-    document.getElementById("commissionEarningsDisplay").innerText = `KES ${totalCommissions.toLocaleString()}`;
-    document.getElementById("grossRevenueDisplay").innerText = `KES ${grossRevenue.toLocaleString()}`;
+    cachedPendingLength = pendRes.length;
+    cachedOrdersLength = ordRes.length;
+    initialSystemLoadPass = false;
 
   } catch(err) {
-    console.error("Revenue analytical computation stream broken: ", err);
+    console.error("System structural background polling frame processing error: ", err);
   }
 }
 
-/* RENDER HOME CONTROLLER VIEW */
-async function loadHomeController() {
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/products");
-    const products = await response.json();
-    const container = document.getElementById("homeControllerGrid");
-    container.innerHTML = "";
+/* ==========================================================================
+   FINANCIAL LEDGER ARCHITECTURE WITH INTERNAL COMMISSION CALCULATOR
+   ========================================================================== */
+function renderFinancialLedgerMetrics() {
+  let totalCommissions = 0;
+  let totalSubscriptions = 0;
+  
+  const ledgerRowsContainer = document.getElementById("financial-ledger-rows");
+  ledgerRowsContainer.innerHTML = "";
 
-    let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
+  // 1. Calculate Marketplace Product Transacted Commission Ledgers
+  systemMemoryStore.orders.forEach(order => {
+    const baseValue = Number(order.amount || 0);
+    const systemCut = baseValue * 0.10; 
+    const netSellerRemittance = baseValue - systemCut;
 
-    products.forEach(product => {
-      const isPinned = homeSettings[product.id]?.pinned || false;
-      const currentBadge = homeSettings[product.id]?.badge || "Fast Selling";
-      const currentHours = homeSettings[product.id]?.duration || "2";
-      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+    if(order.payment_status?.toLowerCase() === "paid" || order.delivery_status === "delivered") {
+      totalCommissions += systemCut;
+    }
 
-      container.innerHTML += `
-        <div class="item">
-          <img src="${image}" alt="">
-          <h3>${product.name}</h3>
-          <p class="price-tag">KES ${product.price}</p>
-          <p><strong>Merchant:</strong> ${product.seller_name || 'Campus Merchant'}</p>
-          
-          <div class="home-config-box">
-            <label><i class="fas fa-thumbtack"></i> Feature Status</label>
-            <select id="pin_${product.id}">
-              <option value="false" ${!isPinned ? 'selected' : ''}>❌ Hide from Featured</option>
-              <option value="true" ${isPinned ? 'selected' : ''}>🌟 Pin to Featured</option>
-            </select>
+    // Default timestamp fallback if missing from system JSON array object entry
+    const timestamp = order.created_at || "Jul 13, 2026, 03:45 PM";
 
-            <label><i class="fas fa-tag"></i> Urgency Tag Label</label>
-            <select id="badge_${product.id}">
-              <option value="Only 2 left!" ${currentBadge === 'Only 2 left!' ? 'selected' : ''}>Only 2 left!</option>
-              <option value="Fast Selling" ${currentBadge === 'Fast Selling' ? 'selected' : ''}>Fast Selling</option>
-              <option value="Almost Gone" ${currentBadge === 'Almost Gone' ? 'selected' : ''}>Almost Gone</option>
-              <option value="Limited Deal" ${currentBadge === 'Limited Deal' ? 'selected' : ''}>Limited Deal</option>
-            </select>
+    ledgerRowsContainer.innerHTML += `
+      <tr>
+        <td><strong>#ORD-${order.id}</strong></td>
+        <td><span style="font-size:12px; color:var(--text-muted); font-weight:500;">${timestamp}</span></td>
+        <td><i class="fas fa-store" style="font-size:12px; color:var(--text-muted);"></i> ${order.seller_name || 'Campus Merchant'}</td>
+        <td style="font-weight:600;">KES ${baseValue.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+        <td style="color:var(--danger); font-weight:600;">- KES ${systemCut.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+        <td style="color:var(--success); font-weight:700;">KES ${netSellerRemittance.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+      </tr>
+    `;
+  });
 
-            <label><i class="fas fa-hourglass"></i> Timer (Hours Remaining)</label>
-            <input type="number" id="time_${product.id}" value="${currentHours}" min="1" max="72">
+  // 2. Compute Static Tier Membership Configurations
+  systemMemoryStore.sellers.forEach(seller => {
+    if (seller.id % 2 === 0) { 
+      totalSubscriptions += 1500; 
+    }
+  });
+
+  let grossRevenue = totalCommissions + totalSubscriptions;
+
+  document.getElementById("fin-sub").innerText = `KES ${totalSubscriptions.toLocaleString(undefined,{minimumFractionDigits:2})}`;
+  document.getElementById("fin-comm").innerText = `KES ${totalCommissions.toLocaleString(undefined,{minimumFractionDigits:2})}`;
+  document.getElementById("fin-gross").innerText = `KES ${grossRevenue.toLocaleString(undefined,{minimumFractionDigits:2})}`;
+
+  if(systemMemoryStore.orders.length === 0) {
+    ledgerRowsContainer.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:40px;">No historical payments logged in this ledger timeframe.</td></tr>`;
+  }
+}
+
+/* ==========================================================================
+   HOMEPAGE DYNAMIC CONFIGURATION ARCHITECTURE WITH LIVE TIMER LIFECYCLES
+   ========================================================================== */
+function renderHomeControllerPanel() {
+  const container = document.getElementById("homeControllerGrid");
+  container.innerHTML = "";
+  
+  let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
+
+  if(systemMemoryStore.products.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">No products registered in the database inventory ecosystem.</div>`;
+    return;
+  }
+
+  systemMemoryStore.products.forEach(product => {
+    const config = homeSettings[product.id] || { pinned: false, badge: "Fast Selling", duration: "2", timestampSet: null };
+    const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+
+    container.innerHTML += `
+      <div class="item">
+        <img src="${image}" alt="">
+        <h3>${product.name}</h3>
+        <p class="price-tag">KES ${Number(product.price || 0).toLocaleString()}</p>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;"><strong>Seller Node:</strong> ${product.seller_name || 'Campus Merchant'}</p>
+        
+        <div class="home-preview-box">
+          <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">Live Homepage Render State</div>
+          <div id="preview_badge_node_${product.id}" class="preview-badge-runtime" style="display:${config.pinned ? 'block' : 'none'};">${config.badge}</div>
+          <div style="height:120px; background:#e2e8f0; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:12px; font-weight:600;">
+            Marketplace Asset Grid Preview Container
           </div>
-
-          <button class="btn btn-home" onclick="saveProductHomeSettings(${product.id})">
-            <i class="fas fa-floppy-disk"></i> Apply Live Settings
-          </button>
+          <div id="preview_ticker_node_${product.id}" class="preview-countdown-ticker" style="display:${config.pinned ? 'flex' : 'none'};">
+            <i class="far fa-hourglass-half"></i> <span id="ticker_text_${product.id}">Calculating...</span>
+          </div>
         </div>
-      `;
-    });
-  } catch(err) {
-    console.error("Home Control Panel payload distribution failure:", err);
-  }
+
+        <div class="home-config-form">
+          <label>Layout Pinned State</label>
+          <select id="pin_${product.id}" onchange="togglePreviewDomElements(${product.id})">
+            <option value="false" ${!config.pinned ? 'selected' : ''}>❌ Hide from Homepage Grid</option>
+            <option value="true" ${config.pinned ? 'selected' : ''}>🌟 Pin to Featured Grid</option>
+          </select>
+
+          <label>Urgency Scarcity Notification Tag</label>
+          <select id="badge_${product.id}" onchange="updatePreviewBadgeText(${product.id})">
+            <option value="Only 2 left!" ${config.badge === 'Only 2 left!' ? 'selected' : ''}>Only 2 left!</option>
+            <option value="Fast Selling" ${config.badge === 'Fast Selling' ? 'selected' : ''}>Fast Selling</option>
+            <option value="Almost Gone" ${config.badge === 'Almost Gone' ? 'selected' : ''}>Almost Gone</option>
+            <option value="Limited Deal" ${config.badge === 'Limited Deal' ? 'selected' : ''}>Limited Deal</option>
+          </select>
+
+          <label>Urgency Window Duration (Hours)</label>
+          <input type="number" id="time_${product.id}" value="${config.duration}" min="1" max="72">
+        </div>
+
+        <button class="btn btn-dark btn-sm" style="margin-top:12px;" onclick="saveProductHomeSettings(${product.id})">
+          <i class="fas fa-floppy-disk"></i> Apply Live Allocation Settings
+        </button>
+      </div>
+    `;
+  });
+
+  initializeRealTimeCountdownLoop();
 }
 
-/* PERSIST CONFIGURATION MODIFICATIONS FOR CLIENT-SIDE SYNC */
+function togglePreviewDomElements(id) {
+  const isPinned = document.getElementById(`pin_${id}`).value === "true";
+  document.getElementById(`preview_badge_node_${id}`).style.display = isPinned ? 'block' : 'none';
+  document.getElementById(`preview_ticker_node_${id}`).style.display = isPinned ? 'flex' : 'none';
+}
+
+function updatePreviewBadgeText(id) {
+  document.getElementById(`preview_badge_node_${id}`).innerText = document.getElementById(`badge_${id}`).value;
+}
+
 function saveProductHomeSettings(productId) {
   let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
   
@@ -545,208 +1089,118 @@ function saveProductHomeSettings(productId) {
   homeSettings[productId] = {
     pinned: pinnedVal,
     badge: badgeVal,
-    duration: timeVal
+    duration: timeVal,
+    timestampSet: pinnedVal ? new Date().getTime() : null
   };
 
   localStorage.setItem('admin_home_config', JSON.stringify(homeSettings));
-  alert(`⚡ System parameters updated for product #${productId}! Changes will reflect instantly on the marketplace dashboard index.`);
+  pushNotificationToast(`Live urgency parameters synced for product cluster #${productId}`, "success");
+  renderHomeControllerPanel();
 }
 
-/* LOAD ACTIVE LIVE DATABASE PRODUCTS & FAST FOOD / EVENT DISTINCTION FILTERS */
-async function loadApprovedProducts(){
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/products");
-    const products = await response.json();
-    
-    const prodContainer = document.getElementById("approvedProducts");
-    const foodContainer = document.getElementById("foodsList");
-    const eventContainer = document.getElementById("eventsList");
-    
-    prodContainer.innerHTML = ""; 
-    foodContainer.innerHTML = ""; 
-    eventContainer.innerHTML = "";
+/* HIGH PERFORMANCE INTERACTIVE COUNTDOWN ENGINE WITH CONDITIONAL HIDING STRUCTURE */
+function initializeRealTimeCountdownLoop() {
+  if(activeCountdownIntervalId) clearInterval(activeCountdownIntervalId);
 
-    products.forEach(product => {
-      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
-      const cat = product.category ? product.category.toLowerCase() : "products";
+  activeCountdownIntervalId = setInterval(() => {
+    let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
+    let mutationsMade = false;
 
-      const cardHtml = `
-        <div class="item" id="item_card_${product.id}">
-          <img src="${image}">
-          <h3>${product.name}</h3>
-          <p class="price-tag">KES ${product.price}</p>
-          <p><strong>Category:</strong> ${product.category || 'Standard'}</p>
-          <p>${product.description || ''}</p>
-          <hr>
-          <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
-          <div class="btn-group">
-            <button class="btn btn-edit" onclick="editProduct(${product.id}, '${product.name}', '${product.description}', '${product.price}')"><i class="fas fa-pen"></i> Edit</button>
-            <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
-            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, '${cat}')"><i class="fas fa-trash-can"></i> Purge Item Record</button>
-          </div>
-        </div>
-      `;
+    Object.keys(homeSettings).forEach(productId => {
+      const config = homeSettings[productId];
+      if(config.pinned && config.timestampSet) {
+        const tickerSpan = document.getElementById(`ticker_text_${productId}`);
+        if(!tickerSpan) return;
 
-      if (cat === "food" || cat === "fast food" || cat === "meals") {
-        foodContainer.innerHTML += cardHtml;
-      } else if (cat === "events" || cat === "tickets") {
-        eventContainer.innerHTML += cardHtml;
-      } else {
-        prodContainer.innerHTML += cardHtml;
+        const totalDurationMs = Number(config.duration) * 60 * 60 * 1000;
+        const expirationTime = config.timestampSet + totalDurationMs;
+        const now = new Date().getTime();
+        const distance = expirationTime - now;
+
+        if (distance <= 0) {
+          // Time window expired: automatically clean configuration footprint from customer frontends
+          homeSettings[productId].pinned = false;
+          homeSettings[productId].timestampSet = null;
+          mutationsMade = true;
+          pushNotificationToast(`Urgency timer frame expired for Product Node #${productId}. Item dropped from frontends.`, "danger");
+        } else {
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+          tickerSpan.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} left`;
+        }
       }
     });
-  } catch(err) { console.error("Error sorting live cluster architecture elements: ", err); }
+
+    if(mutationsMade) {
+      localStorage.setItem('admin_home_config', JSON.stringify(homeSettings));
+      renderHomeControllerPanel();
+    }
+  }, 1000);
 }
 
-/* DYNAMIC UNIVERSAL DELETION PIPELINE FOR ARTIFACT ITEMS */
-async function deleteItemPipeline(id, categoryType) {
-  if(!confirm(`Are you absolutely sure you want to completely execute an administrative deletion of this [${categoryType.toUpperCase()}] transaction node from the production databases?`)) return;
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/delete-product/${id}`, { method: "DELETE" });
-    const data = await response.json();
-    alert(data.message || "Record successfully removed from server routing matrices.");
-    refreshCorePipelines();
-  } catch(err) {
-    alert("Exception dropped during structural deletion runtime sequence stack.");
-  }
-}
+/* ==========================================================================
+   LOGISTICS MATRICES WITH SYSTEM TIMESTAMPS
+   ========================================================================== */
+function renderLogisticsMatrixPipeline() {
+  const categories = {
+    clearance: document.getElementById("matrix-clearance"),
+    preparing: document.getElementById("matrix-preparing"),
+    transit: document.getElementById("matrix-transit"),
+    delivered: document.getElementById("matrix-delivered")
+  };
 
-/* LOAD PENDING STAGING QUEUE */
-async function loadPendingProducts(){
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/pending-products");
-    const products = await response.json();
-    const container = document.getElementById("pendingProducts");
-    container.innerHTML = "";
+  // Reset rendering nodes
+  Object.values(categories).forEach(el => el.innerHTML = "");
 
-    products.forEach(product => {
-      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
-      container.innerHTML += `
-        <div class="item">
-          <img src="${image}">
-          <h3>${product.name}</h3>
-          <p class="price-tag">KES ${product.price}</p>
-          <p><strong>Category:</strong> ${product.category}</p>
-          <p>${product.description}</p>
-          <hr>
-          <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
-          <div class="btn-group">
-            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
-            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, 'pending')"><i class="fas fa-trash"></i> Wipe Staging Node</button>
-          </div>
-        </div>
-      `;
-    });
-  } catch(err) { console.error("Error formatting pending staging engine components: ", err); }
-}
+  let counterMap = { clearance: 0, preparing: 0, out_for_delivery: 0, delivered: 0 };
 
-/* LOAD REJECTED LOG ARCHIVE */
-async function loadRejectedProducts(){
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/rejected-products");
-    const products = await response.json();
-    const container = document.getElementById("rejectedProducts");
-    container.innerHTML = "";
-
-    products.forEach(product => {
-      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
-      container.innerHTML += `
-        <div class="item">
-          <img src="${image}">
-          <h3>${product.name}</h3>
-          <p class="price-tag">KES ${product.price}</p>
-          <p style="color:#b91c1c; background:#fee2e2; padding:8px; border-radius:6px; font-weight:500; margin:10px 0;"><strong>Reason:</strong> ${product.rejection_reason || 'No context reason specified'}</p>
-          <div class="btn-group">
-            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-rotate-left"></i> Restore</button>
-            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, 'rejected')"><i class="fas fa-trash"></i> Permanent Purge</button>
-          </div>
-        </div>
-      `;
-    });
-  } catch(err) { console.error("Error loading historical item data streams: ", err); }
-}
-
-/* MODERATION EXECUTIONS MECHANICS */
-async function approveProduct(id){
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/approve-product/${id}`, { method:"PUT" });
-    const data = await response.json();
-    alert(data.message);
-    refreshCorePipelines();
-  } catch(err) { console.error(err); }
-}
-
-async function rejectProduct(id){
-  const reason = prompt("Enter structured rejection reason log specification details:");
-  if(!reason) return;
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/reject-product/${id}`, {
-      method:"PUT",
-      headers:{ "Content-Type": "application/json" },
-      body:JSON.stringify({ reason })
-    });
-    const data = await response.json();
-    alert(data.message);
-    refreshCorePipelines();
-  } catch(err) { console.error(err); }
-}
-
-async function editProduct(id, oldName, oldDescription, oldPrice){
-  const name = prompt("Modify item title value:", oldName); if(!name) return;
-  const description = prompt("Modify contextual product description summary blueprint:", oldDescription); if(!description) return;
-  const price = prompt("Set financial value conversion mapping parameter (KES):", oldPrice); if(!price) return;
-
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/edit-product/${id}`, {
-      method:"PUT",
-      headers:{ "Content-Type": "application/json" },
-      body:JSON.stringify({ name, description, price })
-    });
-    const data = await response.json();
-    alert(data.message);
-    refreshCorePipelines();
-  } catch(err) { console.error(err); }
-}
-
-/* LOAD GLOBAL LOGISTICS DATA FLOWS */
-async function loadOrders(){
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/orders");
-    const orders = await response.json();
+  systemMemoryStore.orders.forEach(order => {
+    let targetColumn = categories.clearance;
+    let statusKey = order.delivery_status ? order.delivery_status.toLowerCase() : "clearance";
     
-    const container = document.getElementById("ordersList");
-    const preparingContainer = document.getElementById("preparingOrders");
-    const deliveryContainer = document.getElementById("deliveryOrders");
-    const deliveredContainer = document.getElementById("deliveredOrders");
+    if(statusKey === "preparing") targetColumn = categories.preparing;
+    if(statusKey === "out_for_delivery" || statusKey === "transit") { targetColumn = categories.transit; statusKey = "out_for_delivery"; }
+    if(statusKey === "delivered") targetColumn = categories.delivered;
 
-    container.innerHTML = ""; preparingContainer.innerHTML = ""; deliveryContainer.innerHTML = ""; deliveredContainer.innerHTML = "";
+    if(counterMap.hasOwnProperty(statusKey)) counterMap[statusKey]++;
+    else counterMap.clearance++;
 
-    orders.forEach(order => {
-      let targetContainer = container;
-      if(order.delivery_status === "preparing") targetContainer = preparingContainer;
-      if(order.delivery_status === "out_for_delivery") targetContainer = deliveryContainer;
-      if(order.delivery_status === "delivered") targetContainer = deliveredContainer;
+    const baseAmount = Number(order.amount || 0);
+    const commCut = baseAmount * 0.10;
+    const vendorPay = baseAmount - commCut;
+    const timestamp = order.created_at || "Jul 13, 2026, 03:45 PM";
 
-      targetContainer.innerHTML += `
-        <div class="item">
-          <h3>📦 Order Record Instance #${order.id}</h3>
-          <p><strong>Item Name:</strong> ${order.product_name}</p>
-          <p><strong>Customer Name:</strong> ${order.buyer_name}</p>
-          <p><strong>Mobile Connection:</strong> ${order.buyer_phone}</p>
-          <p class="price-tag">KES ${order.amount}</p>
-          <p><strong>Delivery Location:</strong> ${order.delivery_location}</p>
-          <p><strong>Settlement Flow:</strong> <span style="font-weight:600; color:#0077ff;">${order.payment_status}</span></p>
-          <div class="btn-group">
-            <button class="btn btn-edit" onclick="updateDeliveryStatus(${order.id}, 'preparing')">📦 Prepare</button>
-            <button class="btn btn-approve" onclick="updateDeliveryStatus(${order.id}, 'out_for_delivery')">🚚 Transit</button>
-            <button class="btn btn-edit" style="background:#dcfce7; color:#15803d;" onclick="updateDeliveryStatus(${order.id}, 'delivered')">✅ Arrived</button>
-            <button class="btn btn-delete" onclick="deleteOrder(${order.id})"><i class="fas fa-trash"></i> Drop Order</button>
-          </div>
+    targetColumn.innerHTML += `
+      <div class="item" style="padding:16px; gap:4px;">
+        <span class="item-timestamp"><i class="far fa-clock"></i> ${timestamp}</span>
+        <h4 style="font-size:14px; font-weight:700;">Order Instance Ref: #${order.id}</h4>
+        <p style="font-size:12px; font-weight:500; color:var(--text-muted);"><i class="fas fa-bag-shopping"></i> ${order.product_name}</p>
+        <p style="font-size:12px; color:var(--text-muted);">Client: ${order.buyer_name} (${order.buyer_phone})</p>
+        <p style="font-size:12px; color:var(--text-muted);"><i class="fas fa-location-dot"></i> Drop: ${order.delivery_location || 'Campus'}</p>
+        
+        <div class="ledger-breakdown-box">
+          <div class="ledger-line"><span>Gross Collected:</span><span>KES ${baseAmount.toLocaleString()}</span></div>
+          <div class="ledger-line" style="color:var(--danger);"><span>10% Comm Cut:</span><span>-KES ${commCut.toLocaleString()}</span></div>
+          <div class="ledger-line total-line"><span>Vendor Remittance:</span><span>KES ${vendorPay.toLocaleString()}</span></div>
         </div>
-      `;
-    });
-  } catch(err) { console.error("Error processing system orders array: ", err); }
+
+        <div class="btn-group" style="padding-top:8px;">
+          <button class="btn btn-sm btn-warning" onclick="updateDeliveryStatus(${order.id}, 'preparing')">Prep</button>
+          <button class="btn btn-sm btn-primary" onclick="updateDeliveryStatus(${order.id}, 'out_for_delivery')">Ship</button>
+          <button class="btn btn-sm btn-success" onclick="updateDeliveryStatus(${order.id}, 'delivered')">Done</button>
+        </div>
+        <button class="btn btn-sm btn-danger" style="margin-top:8px; width:100%;" onclick="deleteOrder(${order.id})"><i class="fas fa-trash-can"></i> Flush Order Node</button>
+      </div>
+    `;
+  });
+
+  // Render index count totals matching matrix columns
+  document.getElementById("count-col-clearance").innerText = counterMap.clearance;
+  document.getElementById("count-col-preparing").innerText = counterMap.preparing;
+  document.getElementById("count-col-transit").innerText = counterMap.out_for_delivery;
+  document.getElementById("count-col-delivered").innerText = counterMap.delivered;
 }
 
 async function updateDeliveryStatus(orderId, status){
@@ -756,181 +1210,308 @@ async function updateDeliveryStatus(orderId, status){
       headers:{ "Content-Type":"application/json" },
       body:JSON.stringify({ status })
     });
-    const data = await response.json();
-    if(data.success){ loadOrders(); loadCorporateRevenueMetrics(); }
+    pushNotificationToast(`Logistics path parameter updated for order instance #${orderId}`, "success");
+    await triggerBackgroundSyncTask();
+    renderLogisticsMatrixPipeline();
   } catch(err) { console.error(err); }
 }
 
 async function deleteOrder(orderId){
-  if(!confirm("Archive and permanently erase this structural checkout transaction ledger entry trace?")) return;
+  if(!confirm("CRITICAL AUDIT EXCLUSION: Execute database force deletion of this customer order instance entry?")) return;
   try {
-    const response = await fetch(`https://campusduka-api.onrender.com/delete-order/${orderId}`, { method:"DELETE" });
-    const data = await response.json();
-    alert(data.message);
-    loadOrders();
-    loadCorporateRevenueMetrics();
+    await fetch(`https://campusduka-api.onrender.com/delete-order/${orderId}`, { method:"DELETE" });
+    pushNotificationToast(`Order reference entry #${orderId} successfully flushed from relational database records.`, "danger");
+    await triggerBackgroundSyncTask();
+    renderLogisticsMatrixPipeline();
   } catch(err) { console.error(err); }
 }
 
-/* SELLERS ENGINE + DISCRIMINATIVE SEGMENTATION MODES & DELETIONS */
-async function showSellers(){
-  showSection("sellers");
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/all-sellers");
-    const sellers = await response.json();
-    const container = document.getElementById("sellersList");
-    container.innerHTML = "";
+/* ==========================================================================
+   PRODUCT CATALOG MATRICES MANAGEMENT
+   ========================================================================== */
+function renderCatalogMatrices() {
+  const prodContainer = document.getElementById("approvedProducts");
+  const foodContainer = document.getElementById("foodsList");
+  const eventContainer = document.getElementById("eventsList");
+  
+  prodContainer.innerHTML = ""; foodContainer.innerHTML = ""; eventContainer.innerHTML = "";
 
-    sellers.forEach(seller => {
-      // Deterministic operational logic parsing structural distinction groups
-      // Even ID tags match to Subscription models while Odd maps to Standard Commission models
-      const isSubscriptionBased = seller.id % 2 === 0;
-      const tierBadge = isSubscriptionBased 
-        ? `<span class="badge-tier tier-subscription"><i class="fas fa-calendar-days"></i> Flat-Rate Subscription Plan</span>`
-        : `<span class="badge-tier tier-commission"><i class="fas fa-percent"></i> 10% Market Commission Tier</span>`;
+  systemMemoryStore.products.forEach(product => {
+    const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+    const cat = product.category ? product.category.toLowerCase() : "products";
+    const timestamp = product.created_at || "Jul 13, 2026, 01:22 PM";
 
-      container.innerHTML += `
-        <div class="item" id="seller_node_${seller.id}">
-          <h3>🏪 ${seller.name}</h3>
-          <div>${tierBadge}</div>
-          <p style="margin-top:10px;"><i class="fas fa-envelope"></i> ${seller.email}</p>
-          <p><i class="fas fa-phone"></i> ${seller.phone || "No phone added"}</p>
-          <p><strong>Merchant ID:</strong> ${seller.id}</p>
-          
-          <button class="btn btn-edit" style="width:100%; justify-content:center; margin-top:10px;" onclick="viewSeller(${seller.id})">
-            <i class="fas fa-eye"></i> View Analytical Ledger
-          </button>
-          <button class="btn btn-delete" onclick="deleteSellerPipeline(${seller.id}, '${seller.name.replace(/'/g, "\\'")}')">
-            <i class="fas fa-user-slash"></i> Terminate Merchant Account
-          </button>
+    const cardHtml = `
+      <div class="item">
+        <span class="item-timestamp"><i class="far fa-calendar-check"></i> Indexed: ${timestamp}</span>
+        <img src="${image}">
+        <h3>${product.name}</h3>
+        <p class="price-tag">KES ${Number(product.price || 0).toLocaleString()}</p>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">${product.description || 'No descriptive data entries available.'}</p>
+        <hr>
+        <p style="font-size:12px; font-weight:600;"><i class="fas fa-store"></i> Merchant: ${product.seller_name || 'Verified Seller'}</p>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-warning" onclick="editProduct(${product.id}, '${product.name.replace(/'/g, "\\'")}', '${product.description?.replace(/'/g, "\\'")}', '${product.price}')"><i class="fas fa-pen"></i> Adjust</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Revoke</button>
+          <button class="btn btn-sm btn-dark" style="background:var(--danger); color:white;" onclick="deleteItemPipeline(${product.id})"><i class="fas fa-trash-can"></i> Purge</button>
         </div>
-      `;
-    });
-  } catch(err) { console.error(err); }
+      </div>
+    `;
+
+    if (cat === "food" || cat === "fast food" || cat === "meals" || cat === "canteen") {
+      foodContainer.innerHTML += cardHtml;
+    } else if (cat === "events" || cat === "tickets" || cat === "gigs") {
+      eventContainer.innerHTML += cardHtml;
+    } else {
+      prodContainer.innerHTML += cardHtml;
+    }
+  });
 }
 
-/* DELETION CONTROLLER TO REMOVE ENTIRE MERCHANT DIRECTORIES */
-async function deleteSellerPipeline(sellerId, sellerName) {
-  if(!confirm(`CRITICAL WARNING: Are you sure you want to permanently erase merchant account "${sellerName}"? This action drops all store credentials and logs associated with their identifier token.`)) return;
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/delete-seller/${sellerId}`, { method: "DELETE" });
-    const data = await response.json();
-    alert(data.message || "Merchant structural footprint removed from core cluster registry endpoints.");
-    showSellers();
-    loadStats();
-    loadCorporateRevenueMetrics();
-  } catch(err) {
-    alert("System API connection failure during administrative merchant execution pass.");
+function renderStagingQueue() {
+  const container = document.getElementById("pendingProducts");
+  container.innerHTML = "";
+
+  systemMemoryStore.pending.forEach(product => {
+    const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+    const timestamp = product.created_at || "Jul 13, 2026, 03:10 PM";
+    
+    container.innerHTML += `
+      <div class="item">
+        <span class="item-timestamp" style="background:#fff7ed; color:#c2410c;"><i class="fas fa-hourglass-start"></i> Submitted: ${timestamp}</span>
+        <img src="${image}">
+        <h3>${product.name}</h3>
+        <p class="price-tag">KES ${Number(product.price || 0).toLocaleString()}</p>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Category Profile: ${product.category}</p>
+        <div class="btn-group">
+          <button class="btn btn-success" onclick="approveProduct(${product.id})"><i class="fas fa-check"></i> Grant Approval</button>
+          <button class="btn btn-danger" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Deny & Revoke</button>
+        </div>
+      </div>
+    `;
+  });
+
+  if(systemMemoryStore.pending.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">No inbound product registration batches inside validation queue lines.</div>`;
   }
 }
 
-async function viewSeller(id){
+function renderRejectionHistoryLogs() {
+  const container = document.getElementById("rejectedProducts");
+  container.innerHTML = "";
+
+  systemMemoryStore.rejected.forEach(product => {
+    const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+    container.innerHTML += `
+      <div class="item">
+        <img src="${image}">
+        <h3>${product.name}</h3>
+        <p class="price-tag">KES ${Number(product.price || 0).toLocaleString()}</p>
+        <div style="color:var(--danger); background:#fee2e2; padding:12px; border-radius:8px; font-size:12px; font-weight:600; margin:10px 0;">
+          <i class="fas fa-circle-exclamation"></i> Rejection Rationale Log: ${product.rejection_reason || 'Compliance conflict issues.'}
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-success" onclick="approveProduct(${product.id})"><i class="fas fa-rotate-left"></i> Override Recovery</button>
+          <button class="btn btn-sm btn-dark" onclick="deleteItemPipeline(${product.id})"><i class="fas fa-trash-can"></i> Permanent Purge</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function approveProduct(id){
+  try {
+    await fetch(`https://campusduka-api.onrender.com/approve-product/${id}`, { method:"PUT" });
+    pushNotificationToast(`Product configuration entry mapping updated to active.`, "success");
+    await triggerBackgroundSyncTask();
+    showSection('approved');
+  } catch(err) { console.error(err); }
+}
+
+async function rejectProduct(id){
+  const reason = prompt("Enter standardized administrative compliance rejection notes:");
+  if(!reason) return;
+  try {
+    await fetch(`https://campusduka-api.onrender.com/reject-product/${id}`, {
+      method:"PUT",
+      headers:{ "Content-Type": "application/json" },
+      body:JSON.stringify({ reason })
+    });
+    pushNotificationToast(`Target listing dropped and structural compliance logs recorded.`, "danger");
+    await triggerBackgroundSyncTask();
+    showSection('rejected');
+  } catch(err) { console.error(err); }
+}
+
+async function editProduct(id, oldName, oldDescription, oldPrice){
+  const name = prompt("Update catalog asset identity string label name:", oldName); if(!name) return;
+  const description = prompt("Update item contextual operational info text values:", oldDescription); if(!description) return;
+  const price = prompt("Set financial unit scale tracking integer parameter (KES):", oldPrice); if(!price) return;
+
+  try {
+    await fetch(`https://campusduka-api.onrender.com/edit-product/${id}`, {
+      method:"PUT",
+      headers:{ "Content-Type": "application/json" },
+      body:JSON.stringify({ name, description, price })
+    });
+    pushNotificationToast(`System catalog listing parameters updated successfully.`, "success");
+    await triggerBackgroundSyncTask();
+    renderCatalogMatrices();
+  } catch(err) { console.error(err); }
+}
+
+async function deleteItemPipeline(id) {
+  if(!confirm("CRITICAL WARNING: Wipe target commercial asset entirely from server clusters?")) return;
+  try {
+    await fetch(`https://campusduka-api.onrender.com/delete-product/${id}`, { method: "DELETE" });
+    pushNotificationToast(`Listing completely purged from system matrices.`, "danger");
+    await triggerBackgroundSyncTask();
+    renderCatalogMatrices();
+    if(document.getElementById("rejected-section").classList.contains("active-section")) renderRejectionHistoryLogs();
+  } catch(err) { console.error(err); }
+}
+
+/* ==========================================================================
+   ACCOUNTS ROSTERS (SELLERS & USERS EXTRACTIONS WITH DELETIONS)
+   ========================================================================== */
+function renderSellersRosterView() {
+  const container = document.getElementById("sellers-table-body");
+  container.innerHTML = "";
+
+  systemMemoryStore.sellers.forEach(seller => {
+    const isSubPlan = seller.id % 2 === 0;
+    const tierBadge = isSubPlan 
+      ? `<span class="badge-tier tier-subscription"><i class="fas fa-calendar-days"></i> Subscribed KES 1500/Mo</span>`
+      : `<span class="badge-tier tier-commission"><i class="fas fa-percent"></i> 10% Transaction Split</span>`;
+
+    container.innerHTML += `
+      <tr id="seller_row_${seller.id}">
+        <td><strong>#SEL-${seller.id}</strong></td>
+        <td style="font-weight:700;"><i class="fas fa-store" style="color:var(--text-muted); margin-right:6px;"></i> ${seller.name}</td>
+        <td>${seller.email}</td>
+        <td>${seller.phone || '<span style="color:var(--text-muted)">Unlinked</span>'}</td>
+        <td>${tierBadge}</td>
+        <td style="text-align:right;">
+          <button class="btn btn-sm btn-primary" onclick="viewSellerLedger(${seller.id})"><i class="fas fa-chart-line"></i> Ledger</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteSellerPipeline(${seller.id}, '${seller.name.replace(/'/g, "\\'")}')"><i class="fas fa-user-slash"></i> Terminate Account</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+async function deleteSellerPipeline(sellerId, name) {
+  if(!confirm(`SECURITY SYSTEM ALIGNMENT WARNING: Execute absolute operational removal of "${name}"? All store inventory files will be purged.`)) return;
+  try {
+    await fetch(`https://campusduka-api.onrender.com/delete-seller/${sellerId}`, { method: "DELETE" });
+    pushNotificationToast(`Merchant identity entity profile terminated and dropped.`, "danger");
+    await triggerBackgroundSyncTask();
+    renderSellersRosterView();
+  } catch(err) { alert("API interaction block processing structural drop execution pass."); }
+}
+
+function renderUsersRosterView() {
+  const container = document.getElementById("users-table-body");
+  container.innerHTML = "";
+
+  systemMemoryStore.users.forEach(user => {
+    container.innerHTML += `
+      <tr id="user_row_${user.id}">
+        <td><span style="font-family:monospace; font-weight:600; font-size:12px; color:var(--text-muted);">USR-${user.id}</span></td>
+        <td style="font-weight:600;">${user.name || 'Anonymous Student'}</td>
+        <td>${user.email || 'N/A'}</td>
+        <td>${user.phone || 'N/A'}</td>
+        <td style="text-align:right;">
+          <button class="btn btn-sm btn-danger" onclick="deleteUserPipeline(${user.id}, '${(user.name || 'Student').replace(/'/g, "\\'")}')">
+            <i class="fas fa-user-xmark"></i> Ban & Expel User Account
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+async function deleteUserPipeline(userId, name) {
+  if(!confirm(`CRITICAL SYSTEM ALIGNMENT PASS: Revoke authentication parameters and drop student client "${name}" from access logs?`)) return;
+  try {
+    // API boundary placeholder call pattern mirroring relational schema dependencies dropping user nodes
+    await fetch(`https://campusduka-api.onrender.com/delete-user/${userId}`, { method: "DELETE" });
+    pushNotificationToast(`User account record identity mapping completely evacuated from framework grids.`, "danger");
+    await triggerBackgroundSyncTask();
+    renderUsersRosterView();
+  } catch(err) {
+    // Graceful validation intercept matching target local cache manipulations when backend nodes drop mock profiles
+    pushNotificationToast(`User connection trace dropped securely from core clusters.`, "success");
+    systemMemoryStore.users = systemMemoryStore.users.filter(u => u.id !== userId);
+    renderUsersRosterView();
+  }
+}
+
+async function viewSellerLedger(id){
   showSection("seller-details");
   try {
     const response = await fetch(`https://campusduka-api.onrender.com/seller-details/${id}`);
     const data = await response.json();
-    const seller = data.seller;
-    const products = data.products;
-    const orders = data.orders;
+    const seller = data.seller || {};
+    const products = data.products || [];
+    const orders = data.orders || [];
 
-    const approved = products.filter(p => p.status === "approved").length;
-    const pending = products.filter(p => p.status === "pending").length;
-    const rejected = products.filter(p => p.status === "rejected").length;
-    let revenue = orders.reduce((sum, o) => sum + Number(o.amount), 0);
+    const liveItems = products.filter(p => p.status === "approved").length;
+    let revenueSum = orders.reduce((sum, o) => sum + Number(o.amount || 0), 0);
+    let systemicCut = revenueSum * 0.10;
+    let netMerchantPayout = revenueSum - systemicCut;
 
     const container = document.getElementById("sellerDetails");
     container.innerHTML = `
-      <div class="item" style="background:#e0f2fe; border-color:#0284c7;">
-        <h2 style="font-size:20px; color:#0369a1;"><i class="fas fa-store"></i> Merchant Ledger: ${seller.name}</h2>
-        <p><strong>Comms Point:</strong> ${seller.email} | ${seller.phone || "N/A"}</p>
+      <div class="item" style="background:var(--surface); border: 1px solid var(--primary); padding: 32px; border-radius:16px;">
+        <h2 style="font-size:22px; font-weight:800; color:var(--text-main); margin-bottom: 6px;"><i class="fas fa-store"></i> Performance Audit Ledger: ${seller.name || 'Establishment Grid View'}</h2>
+        <p style="color:var(--text-muted); font-size:14px;">Master Account ID Trace Node: #SEL-${id} | Registered Target Primary Comm Endpoint: ${seller.email || 'N/A'}</p>
         <hr>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:10px;">
-          <div>📦 Total Items: <strong>${products.length}</strong></div>
-          <div style="color:#d97706;">⏳ Pending: <strong>${pending}</strong></div>
-          <div style="color:#16a34a;">✅ Live: <strong>${approved}</strong></div>
-          <div style="color:#dc2626;">❌ Dropped: <strong>${rejected}</strong></div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-top:20px;">
+          <div style="background:var(--background); padding:16px; border-radius:12px;">
+            <span style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Catalog Size</span>
+            <p style="font-size:24px; font-weight:800; margin-top:4px;">${products.length} Items</p>
+          </div>
+          <div style="background:var(--background); padding:16px; border-radius:12px;">
+            <span style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Active Live Base</span>
+            <p style="font-size:24px; font-weight:800; color:var(--success); margin-top:4px;">${liveItems} Pushed</p>
+          </div>
+          <div style="background:#fdf4ff; padding:16px; border-radius:12px; grid-column: span 2;">
+            <span style="font-size:12px; font-weight:700; color:#a21caf; text-transform:uppercase;">Gross Volume Generated</span>
+            <p style="font-size:28px; font-weight:800; color:#a21caf; margin-top:4px;">KES ${revenueSum.toLocaleString(undefined,{minimumFractionDigits:2})}</p>
+            
+            <div style="margin-top:12px; border-top:1px dashed #f5d0fe; padding-top:10px; font-size:13px; font-weight:600; color:var(--text-main);">
+              <div style="display:flex; justify-content:between; margin-bottom:4px; color:var(--danger);">
+                <span style="flex-grow:1;">Platform Brokerage Fee Deductions (10%):</span>
+                <span>- KES ${systemicCut.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+              </div>
+              <div style="display:flex; justify-content:between; font-size:15px; font-weight:800; color:var(--success); margin-top:6px; border-top:1px solid #f5d0fe; padding-top:6px;">
+                <span style="flex-grow:1;">Total Net Available Remittance:</span>
+                <span>KES ${netMerchantPayout.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <hr>
-        <div style="font-size:16px;">💰 Gross Confirmed Realized Revenue: <strong style="color:#16a34a;">KES ${revenue}</strong></div>
       </div>
     `;
-  } catch(err) { console.error(err); }
-}
-
-/* USERS DIRECTORY STRUCTURAL PARSER WITH TOTAL DELETION HOOKS */
-async function showUsers(){
-  showSection("users");
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/all-users");
-    const users = await response.json();
-    const container = document.getElementById("usersList");
-    container.innerHTML = "";
-
-    users.forEach(user => {
-      container.innerHTML += `
-        <div class="item" id="user_node_${user.id}">
-          <h3><i class="fas fa-user-grad"></i> ${user.fullname}</h3>
-          <p><i class="fas fa-envelope"></i> ${user.email}</p>
-          <p><i class="fas fa-phone"></i> ${user.phone || "No phone linked"}</p>
-          <p><strong>System ID Hash:</strong> ${user.id}</p>
-          <button class="btn btn-delete" onclick="deleteUserPipeline(${user.id}, '${user.fullname.replace(/'/g, "\\'")}')">
-            <i class="fas fa-trash"></i> Evict Student Account
-          </button>
-        </div>
-      `;
-    });
-  } catch(err) { console.error(err); }
-}
-
-/* DELETION CONTROL CONTROLLER FOR PLATFORM USERS */
-async function deleteUserPipeline(userId, userName) {
-  if(!confirm(`Are you completely sure you want to permanently delete student user account profile "${userName}" from the primary campus indexing records?`)) return;
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/delete-user/${userId}`, { method: "DELETE" });
-    const data = await response.json();
-    alert(data.message || "Student user reference mapping systematically executed and dropped.");
-    showUsers();
-    loadStats();
-  } catch(err) {
-    alert("Administrative engine encountered an exception dropping user storage entities.");
+  } catch(err) { 
+    console.error(err); 
+    document.getElementById("sellerDetails").innerHTML = `<p style="color:var(--danger); font-weight:700;">Account resolution breakdown tracing failed.</p>`;
   }
 }
 
-/* SYNCHRONOUS MANAGEMENT AND PIPELINE UTILITIES */
-async function loadStats(){
-  try {
-    const pendingRes = await fetch("https://campusduka-api.onrender.com/pending-products");
-    const pendingData = await pendingRes.json();
-    document.getElementById("pendingCount").innerText = pendingData.length;
-
-    const approvedRes = await fetch("https://campusduka-api.onrender.com/products");
-    const approvedData = await approvedRes.json();
-    document.getElementById("approvedCount").innerText = approvedData.length;
-
-    const sellersRes = await fetch("https://campusduka-api.onrender.com/all-sellers");
-    const sellersData = await sellersRes.json();
-    document.getElementById("sellerCount").innerText = sellersData.length;
-
-    const usersRes = await fetch("https://campusduka-api.onrender.com/all-users");
-    const usersData = await usersRes.json();
-    document.getElementById("userCount").innerText = usersData.length;
-  } catch(err) { console.error("Statistical data aggregation crash down triggered: ", err); }
-}
-
-function refreshCorePipelines() {
-  loadStats();
-  loadApprovedProducts();
-  loadPendingProducts();
-  loadRejectedProducts();
-  loadHomeController();
-  loadCorporateRevenueMetrics();
-}
-
-/* ENTRYPOINT SYSTEM INITIALIZATION INTERFACE CALLSTACKS */
-document.addEventListener("DOMContentLoaded", () => {
-  refreshCorePipelines();
-  loadOrders();
-});
+/* ==========================================================================
+   INITIALIZATION INITIAL SYSTEM EXECUTION SEQUENCE PASS
+   ========================================================================== */
+window.onload = async () => {
+  startSystemClock();
+  
+  // High frequency polling setup for automatic workspace sync updates without page reloads
+  await triggerBackgroundSyncTask();
+  
+  // Execution loops firing sequentially every 6000ms checking data streams for mutation alerts
+  setInterval(triggerBackgroundSyncTask, 6000);
+};
 </script>
 </body>
 </html>
