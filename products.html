@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
 :root{
@@ -104,16 +104,22 @@ body{
 /* HERO SEARCH SECTION */
 .search-section{
   text-align: center;
-  padding: 40px 20px 20px;
-  max-width: 600px;
+  padding: 40px 20px 10px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
 .search-section h2{
   font-size: 28px;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
   color: var(--text-dark);
+}
+
+.search-section p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
 .search-box{
@@ -121,35 +127,39 @@ body{
   background: white;
   padding: 6px;
   border-radius: 50px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
   border: 1px solid #e2e8f0;
+  align-items: center;
+}
+
+.search-box i.search-field-icon {
+  margin-left: 18px;
+  color: var(--text-muted);
+  font-size: 16px;
 }
 
 .search-box input{
   flex: 1;
-  padding: 12px 20px;
+  padding: 12px 14px;
   border: none;
   outline: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   background: transparent;
 }
 
-.search-box button{
-  background: var(--primary);
-  border: none;
-  color: white;
-  padding: 0 24px;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.search-box button:hover{
-  background: var(--primary-hover);
-}
-
 /* CATEGORY FILTERS */
+.category-container-title {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 15px;
+  margin-bottom: -10px;
+}
+
 .category-nav{
   display: flex;
   justify-content: center;
@@ -164,18 +174,39 @@ body{
   background: white;
   color: var(--text-dark);
   border: 1px solid #e2e8f0;
-  padding: 8px 18px;
+  padding: 10px 20px;
   border-radius: 30px;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.cat-btn:hover{
+.cat-btn:hover, .cat-btn.active{
   background: var(--primary);
   color: white;
   border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 119, 255, 0.25);
+}
+
+/* SYSTEM CONTROL INFORMATION STRIP */
+.results-info-strip {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.results-info-strip strong {
+  color: var(--text-dark);
 }
 
 /* PRODUCTS GRID */
@@ -196,11 +227,27 @@ body{
   border: 1px solid #edf2f7;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .product-card:hover{
   transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+/* MARKET BADGES */
+.market-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.8);
+  color: white;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  z-index: 10;
 }
 
 .img-wrapper {
@@ -224,7 +271,7 @@ body{
 }
 
 .product-card h3{
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-size: 16px;
   font-weight: 600;
   color: var(--text-dark);
@@ -234,7 +281,7 @@ body{
   overflow: hidden;
 }
 
-.product-card p{
+.product-price{
   color: var(--primary);
   font-weight: 700;
   font-size: 18px;
@@ -290,6 +337,69 @@ body{
 
 .bn-add:hover{
   background: var(--primary-hover);
+}
+
+/* NO RESULTS STATE */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  background: white;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+}
+
+.no-results i {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #cbd5e1;
+}
+
+.no-results h3 {
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.no-results button {
+  margin-top: 15px;
+  background: var(--primary);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* TOAST NOTIFICATION */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0f172a;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3000;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast i {
+  color: #10b981;
 }
 
 /* MODAL */
@@ -383,7 +493,7 @@ body{
     display: flex;
   }
   .search-box {
-    border-radius: 12px;
+    border-radius: 25px;
   }
   .products-container {
     gap: 20px;
@@ -417,20 +527,28 @@ body{
 </nav>
 
 <section class="search-section">
-  <h2>All Products</h2>
+  <h2>Student Marketplace</h2>
+  <p>Find gadgets, clothing, services, and study assets instantly</p>
   <div class="search-box">
-    <input id="searchInput" placeholder="Search products on CampusDuka...">
-    <button onclick="searchProducts()">Search</button>
+    <i class="fa-solid fa-magnifying-glass search-field-icon"></i>
+    <input id="searchInput" placeholder="What are you looking for today?..." oninput="evaluateActiveFilters()">
   </div>
 </section>
 
-<div class="category-nav">
-  <button class="cat-btn" onclick="filterProducts('All')">All</button>
-  <button class="cat-btn" onclick="filterProducts('Electronics')">Electronics</button>
-  <button class="cat-btn" onclick="filterProducts('Clothes')">Clothes</button>
-  <button class="cat-btn" onclick="filterProducts('Household')">Household</button>
-  <button class="cat-btn" onclick="filterProducts('Study Materials')">Study Materials</button>
-  <button class="cat-btn" onclick="filterProducts('Beauty & Care')">Beauty & Care</button>
+<p class="category-container-title">Browse Categories</p>
+<div class="category-nav" id="categoryNav">
+  <button class="cat-btn active" onclick="setCategoryFilter('All', this)"><i class="fa-solid fa-cubes"></i> All</button>
+  <button class="cat-btn" onclick="setCategoryFilter('Electronics', this)"><i class="fa-solid fa-mobile-screen-button"></i> Electronics</button>
+  <button class="cat-btn" onclick="setCategoryFilter('Clothes', this)"><i class="fa-solid fa-shirt"></i> Clothes</button>
+  <button class="cat-btn" onclick="setCategoryFilter('Household', this)"><i class="fa-solid fa-house-laptop"></i> Household</button>
+  <button class="cat-btn" onclick="setCategoryFilter('Study Materials', this)"><i class="fa-solid fa-book-bookmark"></i> Study Materials</button>
+  <button class="cat-btn" onclick="setCategoryFilter('Beauty & Care', this)"><i class="fa-solid fa-wand-magic-sparkles"></i> Beauty & Care</button>
+</div>
+
+<!-- LIVE CONTROL STRIP -->
+<div class="results-info-strip">
+  <span id="itemsCounter">Showing items...</span>
+  <span id="currentFiltersApplied">Category: <strong>All</strong></span>
 </div>
 
 <div class="products-container" id="product-container"></div>
@@ -444,7 +562,16 @@ body{
   </div>
 </div>
 
+<!-- TOAST ALERT -->
+<div class="toast" id="toastNotice">
+  <i class="fa-solid fa-circle-check"></i>
+  <span id="toastMessage">Item added to cart</span>
+</div>
+
 <script>
+const menuIcon = document.getElementById("menuIcon");
+const navLinks = document.getElementById("navLinks");
+
 menuIcon.onclick=()=>{
   navLinks.classList.toggle("active");
 };
@@ -455,15 +582,23 @@ function updateCartCount(){
   document.getElementById("cart-count").innerText=count;
 }
 
+function showToast(message) {
+  const toast = document.getElementById("toastNotice");
+  document.getElementById("toastMessage").innerText = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2800);
+}
+
 function addToCart(id, seller_id, name, price, image){
   let cart = JSON.parse(localStorage.getItem("cart"))||[];
   cart.push({ id, seller_id, name, price, image, quantity:1 });
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
-  alert(name + " added");
+  showToast(`${name} added to cart!`);
 }
 
-/* VIEW EXPANSTION */
 function viewProduct(images){
   const modal = document.getElementById("viewModal");
   const main = document.getElementById("mainImage");
@@ -486,20 +621,40 @@ function closeModal(){
   document.getElementById("viewModal").style.display="none";
 }
 
-/* MARKETS CARDS RENDER TEMPLATE HELPER */
+function clearSearchEngine() {
+  document.getElementById("searchInput").value = "";
+  setCategoryFilter('All', document.querySelector(".cat-btn"));
+}
+
+function getNoResultsHTML() {
+  return `
+    <div class="no-results">
+      <i class="fa-solid fa-basket-shopping"></i>
+      <h3>No matches found</h3>
+      <p>We couldn't find items fitting that specific search configuration.</p>
+      <button onclick="clearSearchEngine()">Clear Filters</button>
+    </div>
+  `;
+}
+
 function renderProductCard(product) {
   const imgs = product.images && product.images.length ? product.images : ["/images/food1.jpg"];
   const first = imgs[0];
   
+  const badges = ["Verified", "Hot Item", "Brand New", "Best Offer"];
+  const selectedBadge = product.id % 5 === 0 ? badges[product.id % 4] : null;
+  const badgeHTML = selectedBadge ? `<div class="market-badge">${selectedBadge}</div>` : '';
+  
   return `
     <div class="product-card">
+      ${badgeHTML}
       <div class="img-wrapper">
         <img src="${first}" alt="${product.name}" loading="lazy">
       </div>
       <div class="card-details">
         <h3>${product.name}</h3>
-        <p>KES ${product.price}</p>
-        <small>${product.description || ''}</small>
+        <div class="product-price">KES ${product.price}</div>
+        <small>${product.description || 'No description available for this campus item.'}</small>
         <div class="card-actions">
           <button class="bn bn-view" onclick='viewProduct(${JSON.stringify(imgs)})'>
             <i class="fa-solid fa-eye"></i> View
@@ -513,49 +668,66 @@ function renderProductCard(product) {
   `;
 }
 
-/* LOAD PRODUCTS */
-let allProducts=[];
+/* CENTRAL DATA CONTROLLERS */
+let allProducts = [];
+let selectedCategory = "All";
 
 async function loadProducts(){
   try {
     const response = await fetch("https://campusduka-api.onrender.com/products");
     allProducts = await response.json();
-    
-    const container = document.getElementById("product-container");
-    container.innerHTML = "";
-    
-    allProducts.forEach(product => {
-      container.innerHTML += renderProductCard(product);
-    });
+    evaluateActiveFilters();
   } catch (error) {
-    console.error("Error loading products:", error);
+    console.error("Error connecting with data API architecture:", error);
+    document.getElementById("product-container").innerHTML = `<div class="no-results"><h3>Server connection error</h3><p>Unable to retrieve live market inventory.</p></div>`;
   }
 }
 
-function searchProducts(){
-  const text = document.getElementById("searchInput").value.toLowerCase();
-  const filtered = allProducts.filter(product=>
-    product.name.toLowerCase().includes(text) ||
-    product.description.toLowerCase().includes(text)
-  );
+/* REAL-TIME FILTER EVALUATION MATRIX */
+function evaluateActiveFilters() {
+  const searchText = document.getElementById("searchInput").value.toLowerCase().trim();
+  
+  // Tier 1: Category Filter Strategy
+  let productsToDisplay = selectedCategory === "All" 
+    ? allProducts 
+    : allProducts.filter(p => p.category === selectedCategory);
+    
+  // Tier 2: Search Query Matrix matching
+  if (searchText !== "") {
+    productsToDisplay = productsToDisplay.filter(p => 
+      p.name.toLowerCase().includes(searchText) || 
+      (p.description && p.description.toLowerCase().includes(searchText))
+    );
+  }
 
+  // Update DOM Grid
   const container = document.getElementById("product-container");
   container.innerHTML = "";
-  filtered.forEach(product => {
+  
+  // Update Information Counters
+  document.getElementById("itemsCounter").innerText = `Found ${productsToDisplay.length} item${productsToDisplay.length === 1 ? '' : 's'}`;
+  document.getElementById("currentFiltersApplied").innerHTML = `Category: <strong>${selectedCategory}</strong> ${searchText ? ` | Search: "${searchText}"` : ''}`;
+
+  if (productsToDisplay.length === 0) {
+    container.innerHTML = getNoResultsHTML();
+    return;
+  }
+  
+  productsToDisplay.forEach(product => {
     container.innerHTML += renderProductCard(product);
   });
 }
 
-function filterProducts(category){
-  const filtered = category === "All" ? allProducts : allProducts.filter(product => product.category === category);
-  const container = document.getElementById("product-container");
-  container.innerHTML = "";
-  filtered.forEach(product => {
-    container.innerHTML += renderProductCard(product);
-  });
+function setCategoryFilter(category, targetElement){
+  // Style navigation updates
+  document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+  if(targetElement) targetElement.classList.add('active');
+
+  selectedCategory = category;
+  evaluateActiveFilters();
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
   loadProducts();
 });
