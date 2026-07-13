@@ -378,6 +378,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .product-info{
   padding:20px;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-meta-row {
@@ -434,6 +436,38 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   color: #dc2626;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 15px;
+  margin-top: auto;
+}
+
+/* Dynamic Card Action CTA Buttons Styling */
+.card-action-btn {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: white;
+}
+
+.card-action-btn.cart-cta {
+  background: #0077ff;
+}
+
+.card-action-btn.cart-cta:hover {
+  background: #005fcc;
+}
+
+.card-action-btn.event-cta {
+  background: #10b981;
+}
+
+.card-action-btn.event-cta:hover {
+  background: #059669;
 }
 
 .view-all{
@@ -1065,6 +1099,34 @@ function updateCartCount(){
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
 
+/* GLOBAL ITEM ADD-TO-CART ENGINE */
+function performItemPurchase(id, name, price, image, category) {
+  if (category === 'Events') {
+    // Event specific flow redirects straight to booking checkout
+    window.location.href = `events.html?book=${id}`;
+    return;
+  }
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let existingItem = cart.find(item => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: name,
+      price: parseFloat(price),
+      image: image,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  alert(`${name} successfully added to your campus cart! 🛒`);
+}
+
 /* INTELLIGENT GLOBAL MARKETPLACE SEARCH ENGINE */
 const searchForm = document.getElementById("globalSearchForm");
 searchForm.addEventListener("submit", (e) => {
@@ -1072,11 +1134,10 @@ searchForm.addEventListener("submit", (e) => {
   const query = document.getElementById("globalSearchInput").value.trim().toLowerCase();
   if(!query) return;
 
-  // Keyword mapping groups
   const foodKeywords = ['food', 'burger', 'pizza', 'fries', 'chips', 'chicken', 'snack', 'drink', 'lunch', 'dinner', 'breakfast', 'smoothie', 'cafe', 'meals'];
   const eventKeywords = ['event', 'party', 'gig', 'concert', 'ticket', 'show', 'campus club', 'bash', 'rave', 'seminar', 'expo', 'gathering', 'festival'];
 
-  let targetPage = "products.html"; // Fallback platform default
+  let targetPage = "products.html";
 
   if (foodKeywords.some(keyword => query.includes(keyword))) {
     targetPage = "food.html";
@@ -1084,7 +1145,6 @@ searchForm.addEventListener("submit", (e) => {
     targetPage = "events.html";
   }
 
-  // Pass query natively as a URL parameters string
   window.location.href = `${targetPage}?search=${encodeURIComponent(query)}`;
 });
 
@@ -1122,16 +1182,24 @@ async function loadFeaturedProducts(){
       return;
     }
 
-    // Dynamic Urgency Tag Arrays
     const labels = ["Only 2 Left", "Almost Gone", "Hot Product", "Fast Selling", "Limited Deal"];
 
     products.slice(0, 8).forEach((product, idx) => {
       const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
       const shortDesc = product.description ? product.description.substring(0, 75) + '...' : '';
       const chosenBadge = labels[idx % labels.length];
-      
-      // Dynamic internal target unique element countdown ID strings
       const dynamicTimerId = `timer_element_${idx}`;
+      
+      // Compute Button context tags dynamically based on configuration categories
+      const isEventItem = product.category === "Events";
+      const buttonClass = isEventItem ? "card-action-btn event-cta" : "card-action-btn cart-cta";
+      const buttonIcon = isEventItem ? "fa-ticket" : "fa-cart-plus";
+      const buttonText = isEventItem ? "Book Ticket" : "Add to Cart";
+
+      // Escape dynamic string parameters to avoid literal code evaluation issues in HTML tag attributes
+      const escapedName = product.name.replace(/'/g, "\\'");
+      const escapedImg = image.replace(/'/g, "\\'");
+      const escapedCat = (product.category || 'Campus').replace(/'/g, "\\'");
 
       container.innerHTML += `
         <div class="product-card">
@@ -1147,11 +1215,13 @@ async function loadFeaturedProducts(){
             <div class="countdown-box">
               <i class="fas fa-clock"></i> Offer ends in: <span id="${dynamicTimerId}">00:00:00</span>
             </div>
+            <button class="${buttonClass}" onclick="performItemPurchase('${product._id || idx}', '${escapName}', ${product.price}, '${escapImg}', '${escapCat}')">
+              <i class="fas ${buttonIcon}"></i> ${buttonText}
+            </button>
           </div>
         </div>
       `;
 
-      // Seed runtime instance timers individually per dynamic card component
       initializeUniqueTimer(dynamicTimerId, (idx + 1) * 35); 
     });
   } catch(err){
