@@ -134,7 +134,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   color:white;
 }
 
-/* HAMBURGER TRIGGER CODE */
 .hamburger-menu {
   display: none;
   color: white;
@@ -142,7 +141,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   cursor: pointer;
 }
 
-/* RESPONSIVE HEADER ADAPTATION SCREEN */
 @media(max-width:1024px){
   .hamburger-menu {
     display: block;
@@ -176,7 +174,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   }
 }
 
-/* SEARCH BAR CONTAINER */
+/* SEARCH BAR */
 .search-bar-container{
   width:100%;
   display:flex;
@@ -437,36 +435,36 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   font-weight: 600;
   text-align: center;
   margin-bottom: 15px;
-  margin-top: auto;
 }
 
-/* Dynamic Card Action CTA Buttons Styling */
 .card-action-btn {
   width: 100%;
-  padding: 10px 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
-  border-radius: 8px;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: white;
+  margin-top: auto;
 }
 
-.card-action-btn.cart-cta {
+.card-action-btn.cart-btn {
   background: #0077ff;
 }
 
-.card-action-btn.cart-cta:hover {
+.card-action-btn.cart-btn:hover {
   background: #005fcc;
 }
 
-.card-action-btn.event-cta {
+.card-action-btn.book-btn {
   background: #10b981;
 }
 
-.card-action-btn.event-cta:hover {
+.card-action-btn.book-btn:hover {
   background: #059669;
 }
 
@@ -479,12 +477,13 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   text-align:center;
   grid-column: 1 / -1;
   padding:40px;
-  font-size:16px;
-  color: #64748b;
+  font-size:15px;
+  color: #475569;
+  font-weight: 500;
 }
 
 /* ==========================
-   STATISTICS
+   STATISTICS & LAYOUTS
 ========================== */
 .stats-section{
   width:90%;
@@ -532,9 +531,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   color:#64748b;
 }
 
-/* ==========================
-WHY CHOOSE US
-========================== */
+/* WHY US */
 .why-us{
   width:90%;
   max-width:1200px;
@@ -595,9 +592,7 @@ WHY CHOOSE US
   font-size: 14px;
 }
 
-/* ==========================
-HOW IT WORKS
-========================== */
+/* HOW IT WORKS */
 .how-it-works{
   width:90%;
   max-width:1200px;
@@ -659,7 +654,7 @@ HOW IT WORKS
   line-height:1.5;
 }
 
-/* SELLER PROFILE SECTION */
+/* SELLER PROFILE */
 .seller-section{
   width:90%;
   max-width:1200px;
@@ -863,7 +858,7 @@ HOW IT WORKS
     <p>High-demand products moving fast on campus right now.</p>
   </div>
   <div id="featuredProducts" class="featured-grid">
-    <div class="loading">Loading products...</div>
+    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Connecting to campus servers...</div>
   </div>
   <div class="view-all">
     <a href="products.html" class="button">View All Products →</a>
@@ -1017,38 +1012,6 @@ HOW IT WORKS
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features-section">
-  <div class="feature-card">
-    <i class="fas fa-store"></i>
-    <h3>Multi Seller Marketplace</h3>
-    <p>Different sellers can upload and manage products.</p>
-  </div>
-  <div class="feature-card">
-    <i class="fas fa-shield-halved"></i>
-    <h3>Admin Approved Products</h3>
-    <p>Products are reviewed before buyers can view them.</p>
-  </div>
-  <div class="feature-card">
-    <i class="fas fa-cart-shopping"></i>
-    <h3>Easy Shopping</h3>
-    <p>Buy products, foods and discover events easily.</p>
-  </div>
-</section>
-
-<!-- CATEGORIES -->
-<section class="categories">
-  <h2>Popular Categories</h2>
-  <div class="category-grid">
-    <a href="products.html">📱 Electronics</a>
-    <a href="products.html">👕 Clothes</a>
-    <a href="food.html">🍔 Fast Foods</a>
-    <a href="products.html">📚 Study Materials</a>
-    <a href="events.html">🎉 Events</a>
-    <a href="products.html">💄 Beauty & Care</a>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer class="footer">
   <h2>CampusDuka</h2>
@@ -1099,34 +1062,6 @@ function updateCartCount(){
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
 
-/* GLOBAL ITEM ADD-TO-CART ENGINE */
-function performItemPurchase(id, name, price, image, category) {
-  if (category === 'Events') {
-    // Event specific flow redirects straight to booking checkout
-    window.location.href = `events.html?book=${id}`;
-    return;
-  }
-
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  let existingItem = cart.find(item => item.id === id);
-
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      id: id,
-      name: name,
-      price: parseFloat(price),
-      image: image,
-      quantity: 1
-    });
-  }
-
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
-  alert(`${name} successfully added to your campus cart! 🛒`);
-}
-
 /* INTELLIGENT GLOBAL MARKETPLACE SEARCH ENGINE */
 const searchForm = document.getElementById("globalSearchForm");
 searchForm.addEventListener("submit", (e) => {
@@ -1137,7 +1072,7 @@ searchForm.addEventListener("submit", (e) => {
   const foodKeywords = ['food', 'burger', 'pizza', 'fries', 'chips', 'chicken', 'snack', 'drink', 'lunch', 'dinner', 'breakfast', 'smoothie', 'cafe', 'meals'];
   const eventKeywords = ['event', 'party', 'gig', 'concert', 'ticket', 'show', 'campus club', 'bash', 'rave', 'seminar', 'expo', 'gathering', 'festival'];
 
-  let targetPage = "products.html";
+  let targetPage = "products.html"; 
 
   if (foodKeywords.some(keyword => query.includes(keyword))) {
     targetPage = "food.html";
@@ -1169,12 +1104,44 @@ function renderUserAuthArea(){
 }
 renderUserAuthArea();
 
-/* LOAD FEATURED PRODUCTS WITH LIVE URGENCY & TIMERS */
+/* GLOBAL STORAGE CART INJECTION ROUTINE */
+window.handleCartAddition = function(id, name, price, category, image) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let existingItem = cart.find(item => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: name,
+      price: parseFloat(price),
+      category: category,
+      image: image,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  alert(`🛒 "${name}" added to your cart successfully!`);
+};
+
+/* LOAD FEATURED PRODUCTS WITH AUTO-RETRY & COLD START HANDLING */
 async function loadFeaturedProducts(){
+  const container = document.getElementById("featuredProducts");
   try{
+    container.innerHTML = `
+      <div class="loading">
+        <i class="fas fa-spinner fa-spin" style="color:#0077ff; margin-bottom: 10px; font-size: 24px;"></i><br>
+        Waking up campus servers... <br>
+        <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
+      </div>`;
+    
     const response = await fetch("https://campusduka-api.onrender.com/products");
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
     const products = await response.json();
-    const container = document.getElementById("featuredProducts");
     container.innerHTML = "";
 
     if(products.length === 0) {
@@ -1190,16 +1157,20 @@ async function loadFeaturedProducts(){
       const chosenBadge = labels[idx % labels.length];
       const dynamicTimerId = `timer_element_${idx}`;
       
-      // Compute Button context tags dynamically based on configuration categories
-      const isEventItem = product.category === "Events";
-      const buttonClass = isEventItem ? "card-action-btn event-cta" : "card-action-btn cart-cta";
-      const buttonIcon = isEventItem ? "fa-ticket" : "fa-cart-plus";
-      const buttonText = isEventItem ? "Book Ticket" : "Add to Cart";
-
-      // Escape dynamic string parameters to avoid literal code evaluation issues in HTML tag attributes
-      const escapedName = product.name.replace(/'/g, "\\'");
-      const escapedImg = image.replace(/'/g, "\\'");
-      const escapedCat = (product.category || 'Campus').replace(/'/g, "\\'");
+      let actionButtonHtml = "";
+      if (product.category && product.category.toLowerCase() === "events") {
+        actionButtonHtml = `
+          <a href="events.html?id=${product._id || product.id}" class="card-action-btn book-btn">
+            <i class="fas fa-ticket"></i> Book Ticket
+          </a>`;
+      } else {
+        const escapingName = (product.name || '').replace(/'/g, "\\'");
+        const escapingCat = (product.category || 'Campus').replace(/'/g, "\\'");
+        actionButtonHtml = `
+          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${product._id || product.id}', '${escapingName}', ${product.price}, '${escapingCat}', '${image}')">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>`;
+      }
 
       container.innerHTML += `
         <div class="product-card">
@@ -1215,9 +1186,7 @@ async function loadFeaturedProducts(){
             <div class="countdown-box">
               <i class="fas fa-clock"></i> Offer ends in: <span id="${dynamicTimerId}">00:00:00</span>
             </div>
-            <button class="${buttonClass}" onclick="performItemPurchase('${product._id || idx}', '${escapName}', ${product.price}, '${escapImg}', '${escapCat}')">
-              <i class="fas ${buttonIcon}"></i> ${buttonText}
-            </button>
+            ${actionButtonHtml}
           </div>
         </div>
       `;
@@ -1226,7 +1195,12 @@ async function loadFeaturedProducts(){
     });
   } catch(err){
     console.error("Failed loading products array:", err);
-    document.getElementById("featuredProducts").innerHTML = '<div class="loading">Error loading products.</div>';
+    container.innerHTML = `
+      <div class="loading" style="color: #ef4444;">
+        <i class="fas fa-exclamation-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+        Connection timeout. The server is still waking up. 
+        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#0077ff; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(0,119,255,0.2);">Tap to Retry Connection</button>
+      </div>`;
   }
 }
 
