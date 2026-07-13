@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +14,7 @@
 
 <style>
 /* ==========================
-   RESET & SYSTEM BASIS
+    RESET & SYSTEM BASIS
 ========================== */
 *{
   margin:0;
@@ -26,8 +25,8 @@
 }
 
 body{
-  background:#f7f9fc;
-  color:#1e293b;
+  background:#f8fafc;
+  color:#0f172a;
   overflow-x:hidden;
   line-height:1.6;
 }
@@ -45,8 +44,9 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   justify-content:space-between;
   align-items:center;
   padding:16px 5%;
-  background:#0077ff;
-  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  background:#0f172a; /* Deep Slate/Black blending base */
+  border-bottom: 2px solid #003366;
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 .logo{
@@ -54,6 +54,10 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   font-weight:700;
   color:white;
   letter-spacing:-0.5px;
+}
+
+.logo span {
+  color: #38bdf8; /* Tech light blue accent */
 }
 
 .nav-links{
@@ -64,7 +68,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .nav-links a{
-  color:rgba(255, 255, 255, 0.9);
+  color:rgba(255, 255, 255, 0.85);
   font-size:14px;
   font-weight:500;
   display:flex;
@@ -76,8 +80,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .nav-links a:hover{
-  color: white;
-  border-bottom:2px solid white;
+  color: #38bdf8;
+  border-bottom:2px solid #38bdf8;
 }
 
 .nav-right{
@@ -93,13 +97,15 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   align-items:center;
   gap:8px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
   padding: 8px 16px;
   border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .login-btn:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.2);
+  border-color: #38bdf8;
 }
 
 .logout-btn {
@@ -116,6 +122,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   font-size:22px;
   display: flex;
   align-items: center;
+  transition: color 0.2s;
+}
+
+.cart-link:hover {
+  color: #38bdf8;
 }
 
 #cart-count{
@@ -157,13 +168,14 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     right: -100%;
     width: 280px;
     height: calc(100vh - 68px);
-    background: #0077ff;
+    background: #0f172a;
     flex-direction: column;
     align-items: flex-start;
     padding: 40px 30px;
     gap: 25px;
-    box-shadow: -4px 10px 15px rgba(0,0,0,0.1);
+    box-shadow: -4px 10px 15px rgba(0,0,0,0.2);
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 1px solid #003366;
   }
   .nav-links.active {
     right: 0;
@@ -180,33 +192,39 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   justify-content:center;
   padding:16px 20px;
-  background:#e6f0ff;
+  background:#0f172a;
 }
 
 .search-box-wrapper {
   width: 100%;
   max-width: 500px;
   display: flex;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .search-bar-container input{
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #1e293b;
   border-radius: 8px 0 0 8px;
   font-size:15px;
   outline: none;
-  background: white;
+  background: #1e293b;
+  color: white;
+}
+
+.search-bar-container input::placeholder {
+  color: #94a3b8;
 }
 
 .search-bar-container button{
   padding:12px 24px;
   border:none;
-  background:#005fcc;
+  background:#003366;
   color:white;
   font-weight:600;
   border-radius:0 8px 8px 0;
+  border: 1px solid #003366;
 }
 
 .search-bar-container button:hover {
@@ -216,8 +234,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 /* ================= HERO ================= */
 .hero{
   position:relative;
-  height:75vh;
-  min-height: 480px;
+  height:65vh;
+  min-height: 450px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -231,7 +249,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .overlay{
   position:absolute;
   inset: 0;
-  background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.55));
+  background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85));
   z-index: 1;
 }
 
@@ -249,13 +267,13 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   font-weight:800;
   margin-bottom:16px;
   line-height:1.2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .hero p{
   font-size:18px;
   margin-bottom:32px;
-  opacity:.95;
+  opacity:.9;
 }
 
 .hero-buttons{
@@ -268,7 +286,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .button{
   padding:14px 28px;
   border-radius:8px;
-  background:#0077ff;
+  background:#003366;
   color:white;
   font-size:15px;
   font-weight:600;
@@ -276,22 +294,22 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow:0 4px 14px rgba(0, 119, 255, 0.3);
+  box-shadow:0 4px 14px rgba(0, 51, 102, 0.4);
 }
 
 .button:hover{
   transform:translateY(-2px);
-  background:#005fcc;
+  background:#004fb0;
 }
 
 .button.secondary{
   background:white;
-  color:#0077ff;
+  color:#0f172a;
   box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 
 .button.secondary:hover{
-  background:#f8fafc;
+  background:#f1f5f9;
 }
 
 @keyframes fadeUp{
@@ -318,7 +336,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .section-header h2{
   font-size:32px;
-  color:#0077ff;
+  color:#0f172a;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -339,16 +357,17 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background:white;
   border-radius:16px;
   overflow:hidden;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .product-card:hover{
   transform:translateY(-5px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
 }
 
 .product-card img{
@@ -395,10 +414,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  color: #0f172a;
 }
 
 .product-price{
-  color:#0077ff;
+  color:#003366;
   font-size:20px;
   font-weight:700;
   margin-bottom:8px;
@@ -406,12 +426,13 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .product-category{
   display:inline-block;
-  background:#eef5ff;
-  color:#0077ff;
+  background:#f1f5f9;
+  color:#0f172a;
   padding:4px 12px;
   border-radius:20px;
   font-size:12px;
-  font-weight: 500;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
 }
 
 .product-info p {
@@ -426,7 +447,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .countdown-box {
-  background: #f8fafc;
+  background: #fff5f5;
   border: 1px dashed #ef4444;
   padding: 8px;
   border-radius: 8px;
@@ -437,27 +458,33 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   margin-bottom: 15px;
 }
 
+/* Button Action Layout Updated */
+.card-actions-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
 .card-action-btn {
-  width: 100%;
+  flex: 1;
   padding: 10px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: auto;
+  gap: 6px;
 }
 
 .card-action-btn.cart-btn {
-  background: #0077ff;
+  background: #003366;
 }
 
 .card-action-btn.cart-btn:hover {
-  background: #005fcc;
+  background: #004fb0;
 }
 
 .card-action-btn.book-btn {
@@ -466,6 +493,17 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .card-action-btn.book-btn:hover {
   background: #059669;
+}
+
+.card-action-btn.view-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  flex: 0 0 45px; /* Box style icon button */
+}
+
+.card-action-btn.view-btn:hover {
+  background: #e2e8f0;
 }
 
 .view-all{
@@ -483,7 +521,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 /* ==========================
-   STATISTICS & LAYOUTS
+    STATISTICS & LAYOUTS
 ========================== */
 .stats-section{
   width:90%;
@@ -494,7 +532,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .stats-section h2{
   font-size:32px;
-  color:#0077ff;
+  color:#0f172a;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -514,13 +552,13 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background:white;
   padding:30px;
   border-radius:16px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
 }
 
 .stat-card h1{
   font-size:42px;
-  color:#0077ff;
+  color:#003366;
   margin-bottom:6px;
   font-weight: 700;
 }
@@ -545,7 +583,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .section-title h2{
   font-size:32px;
-  color:#0077ff;
+  color:#0f172a;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -566,18 +604,18 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   padding:30px 20px;
   border-radius:16px;
   text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
 }
 
 .why-card:hover{
   transform:translateY(-4px);
-  box-shadow:0 12px 24px rgba(0,119,255,0.08);
+  box-shadow:0 12px 24px rgba(15, 23, 42, 0.06);
 }
 
 .why-card i{
   font-size:40px;
-  color:#0077ff;
+  color:#003366;
   margin-bottom:16px;
 }
 
@@ -610,13 +648,13 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background:white;
   padding:35px 25px;
   border-radius:16px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
 }
 
 .steps h3{
   text-align:center;
-  color:#0077ff;
+  color:#003366;
   font-size:24px;
   margin-bottom:30px;
   font-weight: 700;
@@ -633,7 +671,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   min-width:40px;
   height:40px;
   border-radius:50%;
-  background:#0077ff;
+  background:#003366;
   color:white;
   display:flex;
   justify-content:center;
@@ -659,17 +697,18 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   width:90%;
   max-width:1200px;
   margin:70px auto;
-  background:white;
+  background:#0f172a;
   padding:45px 24px;
   border-radius:16px;
   text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
-  border: 1px solid #e2e8f0;
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #003366;
+  color: white;
 }
 
 .seller-section h2{
   font-size:28px;
-  color:#0077ff;
+  color:white;
   margin-bottom:12px;
   font-weight: 700;
 }
@@ -677,7 +716,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .seller-section p{
   font-size:15px;
   margin-bottom:24px;
-  color:#64748b;
+  color:#94a3b8;
 }
 
 .seller-buttons{
@@ -687,54 +726,18 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   flex-wrap:wrap;
 }
 
-.seller-buttons button{
+.seller-buttons a button{
   padding:12px 24px;
   border-radius:8px;
-  background:#0077ff;
+  background:#003366;
   color:white;
   font-size:14px;
   font-weight:600;
 }
 
-.seller-buttons button:hover{
-  background:#005fcc;
+.seller-buttons a button:hover{
+  background:#004fb0;
   transform:translateY(-2px);
-}
-
-/* COMPONENT HIGHLIGHTS */
-.features-section{
-  width:90%;
-  max-width:1200px;
-  margin:50px auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:20px;
-}
-
-.feature-card{
-  background:white;
-  padding:30px 20px;
-  border-radius:16px;
-  text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
-  border: 1px solid #e2e8f0;
-}
-
-.feature-card i{
-  font-size:36px;
-  color:#0077ff;
-  margin-bottom:12px;
-}
-
-.feature-card h3{
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom:8px;
-}
-
-.feature-card p {
-  color: #64748b;
-  font-size: 13px;
 }
 
 /* CATEGORIES */
@@ -747,7 +750,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .categories h2{
   margin-bottom:30px;
-  color:#0077ff;
+  color:#0f172a;
   font-size:28px;
   font-weight: 700;
 }
@@ -762,7 +765,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background:white;
   padding:18px 10px;
   border-radius:12px;
-  color:#1e293b;
+  color:#0f172a;
   font-weight:600;
   font-size: 14px;
   box-shadow:0 4px 12px rgba(0,0,0,0.02);
@@ -771,18 +774,19 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .category-grid a:hover{
   transform:translateY(-3px);
-  background:#0077ff;
+  background:#003366;
   color:white;
-  border-color: #0077ff;
+  border-color: #003366;
 }
 
 /* FOOTER ARCHITECTURE */
 .footer{
-  background:#0077ff;
+  background:#0f172a;
   color:white;
   text-align:center;
   padding:35px 20px;
   margin-top:70px;
+  border-top: 3px solid #003366;
 }
 
 .footer h2 {
@@ -794,7 +798,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .footer p{
   margin:4px 0;
   font-size: 14px;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 </style>
 </head>
@@ -803,7 +807,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <a href="index.html" class="logo">CampusDuka</a>
+  <a href="index.html" class="logo">Campus<span>Duka</span></a>
 
   <div class="hamburger-menu" id="menuToggle">
     <i class="fas fa-bars"></i>
@@ -1127,13 +1131,13 @@ window.handleCartAddition = function(id, name, price, category, image) {
   alert(`🛒 "${name}" added to your cart successfully!`);
 };
 
-/* LOAD FEATURED PRODUCTS WITH AUTO-RETRY & COLD START HANDLING */
+/* LOAD FEATURED PRODUCTS WITH FIXES FOR TIMERS & IMAGE TARGETS */
 async function loadFeaturedProducts(){
   const container = document.getElementById("featuredProducts");
   try{
     container.innerHTML = `
       <div class="loading">
-        <i class="fas fa-spinner fa-spin" style="color:#0077ff; margin-bottom: 10px; font-size: 24px;"></i><br>
+        <i class="fas fa-spinner fa-spin" style="color:#003366; margin-bottom: 10px; font-size: 24px;"></i><br>
         Waking up campus servers... <br>
         <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
       </div>`;
@@ -1150,29 +1154,33 @@ async function loadFeaturedProducts(){
     }
 
     const labels = ["Only 2 Left", "Almost Gone", "Hot Product", "Fast Selling", "Limited Deal"];
+    let htmlOutput = "";
+    let timersToInitialize = [];
 
     products.slice(0, 8).forEach((product, idx) => {
-      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+      // FIX: Changed default image fallback away from food to a generic blue campus placeholder
+      const image = product.images && product.images.length ? product.images[0] : "https://placehold.co/600x400/003366/ffffff?text=CampusDuka";
       const shortDesc = product.description ? product.description.substring(0, 75) + '...' : '';
       const chosenBadge = labels[idx % labels.length];
       const dynamicTimerId = `timer_element_${idx}`;
+      const productTargetId = product._id || product.id;
       
       let actionButtonHtml = "";
       if (product.category && product.category.toLowerCase() === "events") {
         actionButtonHtml = `
-          <a href="events.html?id=${product._id || product.id}" class="card-action-btn book-btn">
+          <a href="events.html?id=${productTargetId}" class="card-action-btn book-btn">
             <i class="fas fa-ticket"></i> Book Ticket
           </a>`;
       } else {
         const escapingName = (product.name || '').replace(/'/g, "\\'");
         const escapingCat = (product.category || 'Campus').replace(/'/g, "\\'");
         actionButtonHtml = `
-          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${product._id || product.id}', '${escapingName}', ${product.price}, '${escapingCat}', '${image}')">
-            <i class="fas fa-cart-plus"></i> Add to Cart
+          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${productTargetId}', '${escapingName}', ${product.price}, '${escapingCat}', '${image}')">
+            <i class="fas fa-cart-plus"></i> Add
           </button>`;
       }
 
-      container.innerHTML += `
+      htmlOutput += `
         <div class="product-card">
           <div class="urgency-badge">${chosenBadge}</div>
           <img src="${image}" alt="${product.name}" loading="lazy">
@@ -1186,20 +1194,35 @@ async function loadFeaturedProducts(){
             <div class="countdown-box">
               <i class="fas fa-clock"></i> Offer ends in: <span id="${dynamicTimerId}">00:00:00</span>
             </div>
-            ${actionButtonHtml}
+            <div class="card-actions-wrapper">
+              <!-- Added Details View Button Layout Element -->
+              <a href="product-details.html?id=${productTargetId}" class="card-action-btn view-btn" title="View Details">
+                <i class="fas fa-eye"></i>
+              </a>
+              ${actionButtonHtml}
+            </div>
           </div>
         </div>
       `;
 
-      initializeUniqueTimer(dynamicTimerId, (idx + 1) * 35); 
+      timersToInitialize.push({ id: dynamicTimerId, duration: (idx + 1) * 35 });
     });
+
+    // Append full block to DOM before binding high performance interval trees
+    container.innerHTML = htmlOutput;
+
+    // FIX: Safely invoke timer seeding routines once elements actually exist inside the DOM layout tree
+    timersToInitialize.forEach(item => {
+      initializeUniqueTimer(item.id, item.duration);
+    });
+
   } catch(err){
     console.error("Failed loading products array:", err);
     container.innerHTML = `
       <div class="loading" style="color: #ef4444;">
         <i class="fas fa-exclamation-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
         Connection timeout. The server is still waking up. 
-        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#0077ff; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(0,119,255,0.2);">Tap to Retry Connection</button>
+        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#003366; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(0,51,102,0.2);">Tap to Retry Connection</button>
       </div>`;
   }
 }
@@ -1208,10 +1231,12 @@ async function loadFeaturedProducts(){
 function initializeUniqueTimer(elementId, baseMinutes) {
   let durationSeconds = baseMinutes * 60;
   const timerDisplay = document.getElementById(elementId);
+  if (!timerDisplay) return;
 
   const countdownInterval = setInterval(() => {
     if (durationSeconds <= 0) {
-      if(timerDisplay) timerDisplay.innerText = "Deal Expired";
+      const el = document.getElementById(elementId);
+      if(el) el.innerText = "Deal Expired";
       clearInterval(countdownInterval);
       return;
     }
@@ -1225,13 +1250,48 @@ function initializeUniqueTimer(elementId, baseMinutes) {
     if(minutes < 10) minutes = "0" + minutes;
     if(seconds < 10) seconds = "0" + seconds;
 
-    if(timerDisplay) {
-      timerDisplay.innerText = `${hours}:${minutes}:${seconds}`;
+    const el = document.getElementById(elementId);
+    if(el) {
+      el.innerText = `${hours}:${minutes}:${seconds}`;
+    } else {
+      clearInterval(countdownInterval); // Auto clear out if element vanishes on update hooks
     }
   }, 1000);
 }
 
+/* AUTOMATIC LIVE DATA UPDATES ENGINE (WebSockets Realtime Sync) */
+function setupRealtimeSync() {
+  // Setup standard web socket stream directly tied to live backend
+  const wsUri = "wss://campusduka-api.onrender.com";
+  let socket = new WebSocket(wsUri);
+
+  socket.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      // Catch admin action modification payload events
+      if (data.type === "PRODUCT_CHANGE" || data.type === "REFRESH_MARKETPLACE") {
+        console.log("⚡ Realtime Admin Mutation Detected: Refreshing UI Ecosystem Elements...");
+        loadFeaturedProducts();
+        loadStatistics();
+      }
+    } catch(e) {
+      // Fallback for non-json simple test string socket alerts
+      if(event.data === "refresh") {
+        loadFeaturedProducts();
+        loadStatistics();
+      }
+    }
+  };
+
+  socket.onclose = () => {
+    // Graceful silent auto-retry hook loop every 5 seconds if connection drops
+    setTimeout(setupRealtimeSync, 5000);
+  };
+}
+
+// Kickoff systems concurrently
 loadFeaturedProducts();
+setupRealtimeSync();
 
 /* LOAD SYSTEM METRIC STATS */
 async function loadStatistics(){
