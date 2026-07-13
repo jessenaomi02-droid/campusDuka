@@ -1,727 +1,453 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head> 
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
-<title>
-
-CampusDuka | Seller Plans
-
-</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusDuka | Seller Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
-
+/* ==========================
+    RESET & SYSTEM BASIS
+========================== */
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
 }
 
 body{
-background:#f5f7fb;
+  background:#f8fafc;
+  color:#0f172a;
+  line-height:1.6;
 }
 
+/* ================= HEADER ================= */
 header{
-
-background:linear-gradient(
-135deg,
-#0077ff,
-#005fcc
-);
-
-color:white;
-
-padding:35px;
-
-text-align:center;
-
+  background:#0f172a; /* Deep Indigo Slate */
+  color:white;
+  padding:50px 20px;
+  text-align:center;
+  border-bottom: 3px solid #003366;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 header h1{
+  font-size:36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
 
-font-size:38px;
-
+header h1 span {
+  color: #38bdf8;
 }
 
 header p{
+  margin-top:10px;
+  font-size: 16px;
+  opacity:.85;
+}
 
-margin-top:10px;
-
-opacity:.9;
-
+.current-plan-banner {
+  display: inline-block;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 14px;
 }
 
 #currentPlan{
-
-color:#ffe600;
-
+  color:#ffe600;
+  font-weight: 700;
 }
 
 #planBenefits{
-
-margin-top:10px;
-
-font-size:15px;
-
+  margin-top:8px;
+  font-size:13px;
+  color: #94a3b8;
+  display: block;
 }
 
+/* ================= CONTAINER & GRID ================= */
 .container{
-
-max-width:1200px;
-
-margin:auto;
-
-padding:40px 20px;
-
+  max-width:1200px;
+  margin:auto;
+  padding:50px 20px;
 }
 
 .plans{
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-
-gap:25px;
-
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap:25px;
+  align-items: stretch;
 }
 
 .plan{
-
-background:white;
-
-padding:30px;
-
-border-radius:20px;
-
-box-shadow:
-0 5px 15px rgba(0,0,0,.08);
-
-transition:.3s;
-
-position:relative;
-
+  background:white;
+  padding:35px 25px;
+  border-radius:16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.02);
+  border: 1px solid #e2e8f0;
+  transition:.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position:relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .plan:hover{
-
-transform:translateY(-10px);
-
+  transform:translateY(-8px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
 
+/* POPULAR / FEATURED BLUE PLAN STYLE */
 .popular{
-
-border:3px solid #0077ff;
-
+  border:2.5px solid #003366;
 }
 
 .badge{
-
-position:absolute;
-
-top:-15px;
-
-right:20px;
-
-background:#0077ff;
-
-color:white;
-
-padding:8px 15px;
-
-border-radius:20px;
-
-font-size:14px;
-
+  position:absolute;
+  top:-14px;
+  right:20px;
+  background:#003366;
+  color:white;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .plan h3{
-
-font-size:30px;
-
+  font-size:24px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 .price{
-
-font-size:35px;
-
-font-weight:bold;
-
-margin:20px 0;
-
-color:#0077ff;
-
+  font-size:36px;
+  font-weight:800;
+  margin:15px 0 20px 0;
+  color:#003366;
 }
 
 .price span{
-
-font-size:16px;
-
-color:#666;
-
+  font-size:15px;
+  font-weight: 500;
+  color:#64748b;
 }
 
 ul{
-
-list-style:none;
-
-margin-bottom:25px;
-
+  list-style:none;
+  margin-bottom:30px;
+  flex-grow: 1;
 }
 
 ul li{
+  margin:12px 0;
+  font-size: 14px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-margin:15px 0;
-
+ul li i {
+  color: #10b981;
+  font-size: 14px;
 }
 
 button{
-
-width:100%;
-
-padding:15px;
-
-background:#0077ff;
-
-color:white;
-
-border:none;
-
-border-radius:10px;
-
-font-size:17px;
-
-cursor:pointer;
-
+  width:100%;
+  padding:14px;
+  background:#003366;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:15px;
+  font-weight: 600;
+  cursor:pointer;
+  transition: background 0.2s;
 }
 
 button:hover{
-
-opacity:.9;
-
+  background: #004fb0;
 }
 
+.plan.active-plan-card {
+  border: 2px dashed #10b981;
+  background: #f0fdf4;
+}
+
+.plan.active-plan-card button {
+  background: #10b981;
+  cursor: default;
+}
+
+/* ================= INSTITUTION SECTION ================= */
 .footer-box{
-
-margin-top:50px;
-
-background:white;
-
-padding:30px;
-
-border-radius:20px;
-
-box-shadow:
-0 4px 10px rgba(0,0,0,.08);
-
+  margin-top:60px;
+  background:#0f172a;
+  color: white;
+  padding:40px;
+  border-radius:16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.05);
+  border: 1px solid #003366;
 }
 
-</style>
+.footer-box h2{
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
 
+.footer-box p{
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.footer-box strong {
+  color: #38bdf8;
+}
+
+.vertical-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.vertical-list-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vertical-list-item i {
+  color: #38bdf8;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-
-<h1>
-
-CampusDuka Seller Plans
-
-</h1>
-
-<p>
-
-Grow your business with CampusDuka
-
-</p>
-
-<p>
-
-Current Plan:
-
-<strong id="currentPlan">
-
-Loading...
-
-</strong>
-
-</p>
-
-<p id="planBenefits">
-
-Loading benefits...
-
-</p>
-
+  <h1>Campus<span>Duka</span> Seller Plans</h1>
+  <p>Grow your campus business operations with priority listings.</p>
+  
+  <div class="current-plan-banner">
+    Current Active Plan: <strong id="currentPlan">Loading...</strong>
+    <span id="planBenefits">Loading benefits metrics...</span>
+  </div>
 </header>
 
 <div class="container">
-
-<div class="plans">
-
-<!-- FREE -->
-
-<div class="plan">
-
-<h3>
-
-Starter
-
-</h3>
-
-<div class="price">
-
-FREE
-
-</div>
-
-<ul>
-
-<li>✓ Upload 2 products</li>
-
-<li>✓ Normal listings</li>
-
-<li>✓ Sell to CampusDuka users</li>
-
-<li>✓ Great for beginners</li>
-
-</ul>
-
-<button>
-
-Current Plan
-
-</button>
-
-</div>
-
-<!-- COPPER -->
-
-<div class="plan">
-
-<h3>
-
-Copper
-
-</h3>
-
-<div class="price">
-
-KSh 1
-
-<span>/month</span>
-
-</div>
-
-<ul>
-
-<li>✓ Upload 20 products</li>
-
-<li>✓ Featured seller badge ⭐</li>
-
-<li>✓ Products appear before free sellers</li>
-
-<li>✓ More visibility</li>
-
-</ul>
-
-<button
-
-onclick="paySubscription(
-
-'copper',
-
-1
-
-)"
-
->
-
-Upgrade to Copper
-
-</button>
-</div>
-
-<!-- BRONZE -->
-
-<div class="plan popular">
-
-<div class="badge">
-
-POPULAR
-
-</div>
-
-<h3>
-
-Bronze
-
-</h3>
-
-<div class="price">
-
-KSh 1
-
-<span>/month</span>
-
-</div>
-
-<ul>
-
-<li>✓ Upload 100 products</li>
-
-<li>✓ Featured seller badge ⭐</li>
-
-<li>✓ Priority approval</li>
-
-<li>✓ Seller analytics</li>
-
-<li>✓ Higher visibility</li>
-
-</ul>
-
-
-
-<button
-
-onclick="paySubscription(
-
-'bronze',
-
-1
-
-)"
-
->
-
-Upgrade to Bronze
-
-</button>
-</div>
-
-<!-- GOLD -->
-
-<div class="plan">
-
-<h3>
-
-Gold
-
-</h3>
-
-<div class="price">
-
-KSh 1
-
-<span>/month</span>
-
-</div>
-
-<ul>
-
-<li>✓ Unlimited uploads</li>
-
-<li>✓ Featured seller badge ⭐</li>
-
-<li>✓ Homepage promotion</li>
-
-<li>✓ Seller analytics</li>
-
-<li>✓ Priority approval</li>
-
-<li>✓ Maximum visibility</li>
-
-</ul>
-
-<button
-
-onclick="paySubscription(
-
-'gold',
-
-1
-
-)"
-
->
-
-Upgrade to Gold
-
-</button>
-
-</div>
-
-</div>
-
-
-<div class="footer-box">
-
-<h2>
-
-Business & Institution Sellers
-
-</h2>
-
-<p>
-
-Large businesses can choose the
-
-<strong>
-
-Commission Model
-
-</strong>
-
-instead of subscriptions.
-
-</p>
-
-<p>
-
-CampusDuka lists your products,
-buyers pay through CampusDuka,
-we keep a commission after a successful sale
-and send the remaining amount to you.
-
-</p>
-
-<p>
-
-🏢 Shops<br>
-
-🏫 Institutions<br>
-
-📚 Bookstores<br>
-
-💻 Electronics stores<br>
-
-👕 Clothing brands
-
-</p>
-
-</div>
-
+  <div class="plans">
+    
+    <!-- FREE STARTER -->
+    <div class="plan" id="plan-free">
+      <h3>Starter</h3>
+      <div class="price">FREE</div>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Upload 2 products</li>
+        <li><i class="fas fa-check-circle"></i> Normal campus listings</li>
+        <li><i class="fas fa-check-circle"></i> Sell to CampusDuka users</li>
+        <li><i class="fas fa-check-circle"></i> Great for beginners</li>
+      </ul>
+      <button disabled style="opacity: 0.6; background: #64748b;">Starter Default</button>
+    </div>
+
+    <!-- COPPER -->
+    <div class="plan" id="plan-copper">
+      <h3>Copper</h3>
+      <div class="price">KSh 1<span>/month</span></div>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Upload 20 products</li>
+        <li><i class="fas fa-check-circle"></i> Featured seller badge ⭐</li>
+        <li><i class="fas fa-check-circle"></i> Appears before free sellers</li>
+        <li><i class="fas fa-check-circle"></i> More campus visibility</li>
+      </ul>
+      <button onclick="paySubscription('copper', 1)">Upgrade to Copper</button>
+    </div>
+
+    <!-- BRONZE -->
+    <div class="plan popular" id="plan-bronze">
+      <div class="badge">POPULAR</div>
+      <h3>Bronze</h3>
+      <div class="price">KSh 1<span>/month</span></div>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Upload 100 products</li>
+        <li><i class="fas fa-check-circle"></i> Featured seller badge ⭐</li>
+        <li><i class="fas fa-check-circle"></i> Priority admin approval</li>
+        <li><i class="fas fa-check-circle"></i> Basic seller analytics</li>
+        <li><i class="fas fa-check-circle"></i> Higher visibility search metrics</li>
+      </ul>
+      <button onclick="paySubscription('bronze', 1)">Upgrade to Bronze</button>
+    </div>
+
+    <!-- GOLD -->
+    <div class="plan" id="plan-gold">
+      <h3>Gold</h3>
+      <div class="price">KSh 1<span>/month</span></div>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Unlimited uploads</li>
+        <li><i class="fas fa-check-circle"></i> Featured seller badge ⭐</li>
+        <li><i class="fas fa-check-circle"></i> Main homepage promotion</li>
+        <li><i class="fas fa-check-circle"></i> Complete seller analytics</li>
+        <li><i class="fas fa-check-circle"></i> Instant priority approval</li>
+      </ul>
+      <button onclick="paySubscription('gold', 1)">Upgrade to Gold</button>
+    </div>
+
+  </div>
+
+  <!-- INSTITUTIONS COMMISSION INFO BOX -->
+  <div class="footer-box">
+    <h2>Business & Institution Partners</h2>
+    <p>Large storefronts and official institutions can opt out of regular subscription billing setups and choose our custom <strong>Commission Model</strong> instead.</p>
+    <p>CampusDuka hosts your automated store catalogs, buyers fulfill checkouts online via secure channels, and we settle payouts directly minus an agreed minimal operating commission per successful item transaction.</p>
+    
+    <div class="vertical-list">
+      <div class="vertical-list-item"><i class="fas fa-store"></i> Physical Walk-in Shops</div>
+      <div class="vertical-list-item"><i class="fas fa-university"></i> Campuses & Institutions</div>
+      <div class="vertical-list-item"><i class="fas fa-book"></i> Student Bookstores</div>
+      <div class="vertical-list-item"><i class="fas fa-laptop"></i> Electronics Vendors</div>
+      <div class="vertical-list-item"><i class="fas fa-shirt"></i> Apparel Brands</div>
+    </div>
+  </div>
 </div>
 
 <script>
-
-const seller=
-
-JSON.parse(
-
-localStorage.getItem("seller")
-
-);
-
+// Authentication Gate
+const seller = JSON.parse(localStorage.getItem("seller"));
 if(!seller){
-
-window.location.href=
-
-"seller-login.html";
-
+  window.location.href = "seller-login.html";
 }
 
 async function loadSellerDetails(){
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/seller-details/${seller.id}`);
+    const data = await response.json();
+    const sellerData = data.seller;
+    
+    const activePlan = sellerData.subscription_plan.toLowerCase();
+    document.getElementById("currentPlan").innerHTML = activePlan.toUpperCase();
+    
+    let benefits = "";
+    if(activePlan === "free"){
+      benefits = "2 uploads • Basic listings";
+    } else if(activePlan === "copper"){
+      benefits = "20 uploads • Featured badge ⭐";
+    } else if(activePlan === "bronze"){
+      benefits = "100 uploads • Featured badge ⭐ • Priority approval";
+    } else if(activePlan === "gold"){
+      benefits = "Unlimited uploads • Homepage promotion • Analytics • Priority approval";
+    }
+    
+    document.getElementById("planBenefits").innerHTML = benefits;
 
-const response=
-
-await fetch(
-
-`https://campusduka-api.onrender.com/seller-details/${seller.id}`
-
-);
-
-const data=
-
-await response.json();
-
-const sellerData=
-
-data.seller;
-
-document.getElementById(
-
-"currentPlan"
-
-).innerHTML=
-
-sellerData.subscription_plan.toUpperCase();
-
-let benefits="";
-
-if(
-
-sellerData.subscription_plan==="free"
-
-){
-
-benefits=
-
-"2 uploads • Basic listings";
-
-}
-
-else if(
-
-sellerData.subscription_plan==="copper"
-
-){
-
-benefits=
-
-"20 uploads • Featured badge ⭐";
-
-}
-
-else if(
-
-sellerData.subscription_plan==="bronze"
-
-){
-
-benefits=
-
-"100 uploads • Featured badge ⭐ • Priority approval";
-
-}
-
-else if(
-
-sellerData.subscription_plan==="gold"
-
-){
-
-benefits=
-
-"Unlimited uploads • Homepage promotion • Analytics • Priority approval";
-
-}
-
-document.getElementById(
-
-"planBenefits"
-
-).innerHTML=
-
-benefits;
-
+    // Dynamically highlight current plan card UI
+    const planCard = document.getElementById(`plan-${activePlan}`);
+    if (planCard) {
+      planCard.classList.add("active-plan-card");
+      const btn = planCard.querySelector("button");
+      if (btn) {
+        btn.innerText = "Current Active Plan";
+        btn.disabled = true;
+        btn.removeAttribute("onclick");
+      }
+    }
+  } catch (err) {
+    console.error("Error loading seller profile specifications:", err);
+  }
 }
 
 loadSellerDetails();
 
-async function paySubscription(plan,amount){
+async function paySubscription(plan, amount){
+  try{
+    const response = await fetch("https://campusduka-api.onrender.com/stkpush-subscription", {
+      method:"POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        seller_id: seller.id,
+        phone: seller.phone,
+        plan: plan,
+        amount: amount
+      })
+    });
 
-try{
+    const result = await response.json();
+    alert("STK Push request initialized. Verify checkout pop-up pin parameters on your device.");
+    
+    const checkoutId = result.CheckoutRequestID;
 
-const seller=
+    // Begin standard checkout query verification loop
+    const statusVerificationLoop = setInterval(async () => {
+      try {
+        const checkStatus = await fetch(`https://campusduka-api.onrender.com/subscription-status/${checkoutId}`);
+        const statusResult = await checkStatus.json();
+        
+        if(statusResult.status === "paid"){
+          clearInterval(statusVerificationLoop);
+          
+          // Log payment record tracking transaction parameters into Admin Finances Panel Database
+          await logTransactionToAdminFinances(plan, amount);
+          
+          alert("Payment verified successfully! Plan updated.");
+          window.location.href = "seller-dashboard.html";
+        }
+        
+        if(statusResult.status === "failed"){
+          clearInterval(statusVerificationLoop);
+          alert("Payment request dropped or rejected.");
+        }
+      } catch(statusErr) {
+        console.error("Polling checking process breakdown: ", statusErr);
+      }
+    }, 3000);
 
-JSON.parse(
-
-localStorage.getItem("seller")
-
-);
-
-const response=
-
-await fetch(
-
-"https://campusduka-api.onrender.com/stkpush-subscription",
-
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-seller_id:seller.id,
-
-phone:seller.phone,
-
-plan,
-
-amount
-
-})
-
+  } catch(err){
+    console.error("M-Pesa Gateway system error: ", err);
+    alert("Failed to deliver subscription transaction trigger.");
+  }
 }
 
-);
-
-const result=
-
-await response.json();
-
-console.log(result);
-
-alert(
-"STK Push sent. Complete payment on your phone."
-);
-
-const checkoutId = result.CheckoutRequestID;
-
-const interval = setInterval(async()=>{
-
-const response = await fetch(
-
-`https://campusduka-api.onrender.com/subscription-status/${checkoutId}`
-
-);
-
-const status = await response.json();
-
-console.log(status);
-
-if(status.status==="paid"){
-
-clearInterval(interval);
-
-alert("Payment successful!");
-
-window.location.href="seller-dashboard.html";
-
-}
-
-if(status.status==="failed"){
-
-clearInterval(interval);
-
-alert("Payment failed or cancelled.");
-
-}
-
-},3000);
-
-}catch(err){
-
-console.log(err);
-
-alert(
-
-"Failed to send payment request"
-
-);
-
-}
-
+// ROUTINE TO INTERFACE WITH THE ADMIN FINANCES LEDGER LOGS
+async function logTransactionToAdminFinances(plan, amount) {
+  try {
+    await fetch("https://campusduka-api.onrender.com/add-transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        seller_id: seller.id,
+        seller_name: seller.fullname || "Campus Merchant",
+        type: "Subscription Upgrade",
+        description: `Upgraded store to ${plan.toUpperCase()} tier package`,
+        amount: parseFloat(amount),
+        status: "success",
+        date: new Date().toISOString()
+      })
+    });
+    console.log("Transaction ledger successfully updated on Admin Finances interface.");
+  } catch (error) {
+    console.error("Failed to append audit trace parameters onto financial logs dashboard backend:", error);
+  }
 }
 </script>
 
 </body>
-
 </html>
