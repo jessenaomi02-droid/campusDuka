@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Track My Orders | CampusDuka</title>
+<title>My Orders | CampusDuka</title>
+<!-- Google Fonts & FontAwesome Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -16,27 +17,23 @@
 }
 
 body {
-  background: #f8fafc;
-  color: #0f172a;
+  background: #f5f7fb;
+  color: #222;
 }
 
-/* ================= CAMPUSDUKA NAVIGATION BAR ================= */
+/* ================= CAMPUSDUKA ORIGINAL NAVBAR ================= */
 .navbar {
   background: #0077ff;
-  padding: 18px 25px;
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0, 119, 255, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 
 .logo {
+  color: white;
   font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-weight: bold;
 }
 
 .logo a {
@@ -44,229 +41,155 @@ body {
   text-decoration: none;
 }
 
-.logo span {
-  color: #ffe5b4; /* Warm student marketplace accent */
-}
-
-/* ================= CORE PORTAL WRAPPER ================= */
+/* ================= STRUCTURED CONTAINER ================= */
 .container {
-  max-width: 750px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 20px;
 }
 
 .page-title {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: bold;
   margin-bottom: 25px;
-  color: #0f172a;
+  color: #222;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-.page-title i {
-  color: #0077ff;
-}
-
-/* ================= PREMIUM BRANDED ORDER CARDS ================= */
+/* ================= ORGANISED ORDER TRACKING CARDS ================= */
 .order-card {
   background: white;
-  padding: 28px;
-  margin-bottom: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.order-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 119, 255, 0.08);
-}
-
-.order-img-wrapper {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  background: #f1f5f9;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+  border: 1px solid #eee;
 }
 
 .order-img {
   width: 100%;
-  max-height: 220px;
+  max-height: 230px;
   object-fit: cover;
-  display: block;
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 12px;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 .order-header h2 {
   font-size: 22px;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: bold;
+  color: #222;
 }
 
 .amount {
   color: #0077ff;
-  font-weight: 700;
-  font-size: 22px;
-  background: rgba(0, 119, 255, 0.06);
-  padding: 4px 14px;
-  border-radius: 10px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
-.order-id-tag {
-  font-size: 13px;
+.order-id {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
   font-weight: 500;
-  color: #64748b;
-  margin-bottom: 20px;
-  display: inline-block;
-  background: #f1f5f9;
-  padding: 2px 10px;
-  border-radius: 6px;
 }
 
-/* ================= METRIC DETAIL CONTAINERS ================= */
+/* ================= ORGANISED METRIC GRID ================= */
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
-  margin-top: 15px;
-  background: #f8fafc;
-  padding: 18px;
-  border-radius: 14px;
-  border: 1px solid #e2e8f0;
+  background: #f9fbfd;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #f0f4f8;
+  margin-bottom: 15px;
 }
 
 .info {
   font-size: 14px;
-  color: #475569;
+  color: #444;
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.info i {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
+  gap: 8px;
 }
 
 .info strong {
-  color: #0f172a;
-  font-weight: 600;
+  color: #222;
 }
 
-/* ================= MODERN STATUS BADGES ================= */
+/* ================= CLEAN REFINED BADGES ================= */
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-block;
   padding: 8px 16px;
   border-radius: 30px;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 13px;
-  margin-top: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  margin-top: 5px;
 }
 
-.pending { background: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
-.preparing { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
-.delivery { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
-.delivered { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; }
+.pending { background: #fff3cd; color: #856404; }
+.preparing { background: #ffe5b4; color: #d97706; }
+.delivery { background: #dbeafe; color: #1d4ed8; }
+.delivered { background: #dcfce7; color: #15803d; }
 
-/* ================= INTERACTIVE PROGRESS TRACK TIMELINE ================= */
+/* ================= STEP TIMELINE SYSTEM ================= */
 .timeline {
-  margin-top: 30px;
-  padding-top: 25px;
-  border-top: 1px solid #e2e8f0;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
 .step {
-  padding: 12px 8px;
-  border-radius: 12px;
-  background: #f1f5f9;
+  padding: 12px 6px;
+  border-radius: 10px;
+  background: #f5f5f5;
   text-align: center;
   font-size: 12px;
+  color: #666;
   font-weight: 500;
-  color: #64748b;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid transparent;
-}
-
-.step i {
-  font-size: 18px;
+  gap: 4px;
 }
 
 .step.active {
   background: #0077ff;
   color: white;
-  font-weight: 600;
-  border-color: #005ecb;
-  box-shadow: 0 8px 20px rgba(0, 119, 255, 0.25);
-  transform: scale(1.03);
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 119, 255, 0.2);
 }
 
-/* ================= EMPTY STATE EMPTY HOVER ================= */
 .no-orders {
   background: white;
-  padding: 70px 30px;
+  padding: 40px;
   text-align: center;
-  border-radius: 24px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+  color: #666;
 }
 
-.no-orders .icon-box {
-  width: 90px;
-  height: 90px;
-  background: rgba(0, 119, 255, 0.06);
-  color: #0077ff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  margin: 0 auto 20px auto;
-}
-
-.no-orders h3 {
-  font-size: 22px;
-  color: #0f172a;
-  font-weight: 600;
-}
-
-@media(max-width: 650px) {
+@media(max-width: 600px) {
   .timeline {
     grid-template-columns: 1fr;
-    gap: 10px;
   }
   .step {
     flex-direction: row;
-    justify-content: flex-start;
-    padding: 14px 20px;
-    gap: 15px;
-  }
-  .step.active {
-    transform: none;
+    justify-content: center;
+    padding: 12px;
   }
 }
 </style>
@@ -275,26 +198,24 @@ body {
 
 <nav class="navbar">
   <div class="logo">
-    <a href="index2.html"><i class="fas fa-graduation-cap" style="color: white; margin-right: 5px;"></i>Campus<span>Duka</span></a>
+    <a href="index2.html">CampusDuka</a>
   </div>
 </nav>
 
 <div class="container">
-  <h1 class="page-title"><i class="fas fa-map-location-dot"></i> Live Order Tracker</h1>
+  <h1 class="page-title">📦 My Orders</h1>
   <div id="ordersList"></div>
 </div>
 
 <script>
 let syncInterval = null;
 
-async function loadBuyerOrders() {
+async function loadOrders() {
     let phone = localStorage.getItem("buyerPhone");
     if (!phone) {
         document.getElementById("ordersList").innerHTML = `
         <div class="no-orders">
-            <div class="icon-box"><i class="fas fa-phone-slash"></i></div>
-            <h3>Authentication Needed</h3>
-            <p style="color:#64748b; margin-top:8px; font-size:15px;">Please sign in or double check your contact details to track current orders.</p>
+            No active buyer session found. Please log in to view your orders.
         </div>`;
         return;
     }
@@ -305,108 +226,111 @@ async function loadBuyerOrders() {
 
     try {
         const response = await fetch(`https://campusduka-api.onrender.com/orders/${phone}`);
-        if (!response.ok) throw new Error("API Connection Interrupted.");
+        if (!response.ok) throw new Error("Could not pull backend records.");
         
         const orders = await response.json();
         const container = document.getElementById("ordersList");
         
-        let activeHTMLOutput = "";
+        let compiledHTML = "";
 
         if (!orders || orders.length === 0) {
-            container.innerHTML = `
-            <div class="no-orders">
-                <div class="icon-box"><i class="fas fa-bag-shopping"></i></div>
-                <h3>No Orders Found</h3>
-                <p style="color:#64748b; margin-top:8px; font-size:15px;">When you purchase goodies around campus, your delivery steps will show up instantly right here.</p>
-            </div>`;
+            container.innerHTML = `<div class="no-orders">No orders found.</div>`;
             return;
         }
 
         orders.forEach(order => {
+            // Null Checking & Clean Value Formatting
             let rawStatus = order.delivery_status ? order.delivery_status.toLowerCase() : "pending";
             let badgeClass = "pending";
-            let statusLabelText = "⏳ Processing Order";
+            let readableStatus = "Pending";
 
             if (rawStatus === "preparing") {
                 badgeClass = "preparing";
-                statusLabelText = "📦 Handed over to Merchant";
+                readableStatus = "Preparing";
             } else if (rawStatus === "out_for_delivery") {
                 badgeClass = "delivery";
-                statusLabelText = "🚚 Out For Campus Delivery";
+                readableStatus = "Out For Delivery";
             } else if (rawStatus === "delivered") {
                 badgeClass = "delivered";
-                statusLabelText = "🎉 Order Collected Successfully";
+                readableStatus = "Delivered";
             }
 
-            // Clean Time & Date layout styling
-            let formattedTimestamp = "Time Stamp Unmapped";
-            if (order.created_at || order.date) {
-                const parsedDate = new Date(order.created_at || order.date);
-                formattedTimestamp = parsedDate.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                }) + " • " + parsedDate.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+            // Safe String Null Checks for Information Panel
+            let productName = order.product_name || "Marketplace Product";
+            let productPrice = order.product_price ? Number(order.product_price).toLocaleString() : "0";
+            let deliveryLocation = order.delivery_location && order.delivery_location !== "null" ? order.delivery_location : "Not Specified";
+            let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Paid";
+            let orderId = order.id || "N/A";
+
+            // Timestamp Parsing Block
+            let formattedDateTime = "Date Unrecorded";
+            let timeSource = order.created_at || order.date;
+            if (timeSource && timeSource !== "null") {
+                const parsedDate = new Date(timeSource);
+                if (!isNaN(parsedDate)) {
+                    formattedDateTime = parsedDate.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) + " at " + parsedDate.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
             }
 
-            let fallbackProductImg = order.product_images?.[0] || 'images/default-package.jpg';
+            let productImage = order.product_images?.[0] || 'images/default-package.jpg';
 
-            activeHTMLOutput += `
-            <div class="order-card" data-order-id="${order.id}">
-                <div class="order-img-wrapper">
-                    <img src="${fallbackProductImg}" class="order-img" alt="${order.product_name}">
-                </div>
+            compiledHTML += `
+            <div class="order-card">
+                <img src="${productImage}" class="order-img" alt="${productName}">
                 
                 <div class="order-header">
-                    <h2>${order.product_name}</h2>
-                    <div class="amount">KES ${Number(order.product_price || 0).toLocaleString()}</div>
+                    <h2>${productName}</h2>
+                    <div class="amount">KES ${productPrice}</div>
                 </div>
                 
-                <div class="order-id-tag">Receipt token: #${order.id}</div>
+                <div class="order-id">Order #${orderId}</div>
                 
                 <div class="info-grid">
-                    <div class="info"><i class="fas fa-clock" style="color:#0077ff;"></i> <span><strong>Placed:</strong> ${formattedTimestamp}</span></div>
-                    <div class="info"><i class="fas fa-location-crosshairs" style="color:#ef4444;"></i> <span><strong>Drop Point:</strong> ${order.delivery_location || 'Campus Center Pick-up'}</span></div>
-                    <div class="info"><i class="fas fa-shield-halved" style="color:#10b981;"></i> <span><strong>Status:</strong> ${order.payment_status || 'Verified Payment'}</span></div>
+                    <div class="info"><i class="far fa-calendar-alt"></i> <span><strong>Placed:</strong> ${formattedDateTime}</span></div>
+                    <div class="info"><i class="fas fa-map-marker-alt"></i> <span><strong>Location:</strong> ${deliveryLocation}</span></div>
+                    <div class="info"><i class="far fa-credit-card"></i> <span><strong>Payment:</strong> ${paymentStatus}</span></div>
                 </div>
 
                 <div>
-                    <span class="status-badge ${badgeClass}">${statusLabelText}</span>
+                    <span class="status-badge ${badgeClass}">${readableStatus}</span>
                 </div>
 
                 <div class="timeline">
                     <div class="step ${rawStatus === "pending" ? "active" : ""}">
-                        <i class="fas fa-wallet"></i> Placed
+                        <i class="fas fa-hourglass-start"></i> Pending
                     </div>
                     <div class="step ${rawStatus === "preparing" ? "active" : ""}">
-                        <i class="fas fa-store"></i> Preparing
+                        <i class="fas fa-box"></i> Preparing
                     </div>
                     <div class="step ${rawStatus === "out_for_delivery" ? "active" : ""}">
-                        <i class="fas fa-bicycle"></i> Transit
+                        <i class="fas fa-truck"></i> Shipping
                     </div>
                     <div class="step ${rawStatus === "delivered" ? "active" : ""}">
-                        <i class="fas fa-circle-check"></i> Arrived
+                        <i class="fas fa-check-double"></i> Delivered
                     </div>
                 </div>
             </div>`;
         });
 
-        container.innerHTML = activeHTMLOutput;
+        container.innerHTML = compiledHTML;
 
     } catch(err) {
-        console.error("CampusDuka Core Error Polling:", err);
+        console.error("Live fetch error sync failure:", err);
     }
 }
 
-// Automatic 30-Second Polling Pipeline
+// Automatically sync updates from the admin endpoint every 30 seconds
 window.onload = () => {
-    loadBuyerOrders();
-    
+    loadOrders();
     if(syncInterval) clearInterval(syncInterval);
-    syncInterval = setInterval(loadBuyerOrders, 30000); 
+    syncInterval = setInterval(loadOrders, 30000); 
 };
 </script>
 </body>
