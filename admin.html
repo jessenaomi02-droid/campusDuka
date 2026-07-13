@@ -1,1709 +1,797 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>CampusDuka Admin</title>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusDuka Admin Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
+/* ==========================
+   RESET & ADMINISTRATIVE GRID
+========================== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
 
 body{
-font-family:Poppins,sans-serif;
-margin:0;
-background:#f5f7fb;
+  background:#f5f7fb;
+  color:#1e293b;
+  display: flex;
+  min-height: 100vh;
 }
 
-.navbar{
-background:#0077ff;
-padding:15px 25px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-color:white;
-font-size:24px;
-font-weight:bold;
-}
-
-.navbar ul{
-display:flex;
-gap:15px;
-list-style:none;
-}
-
-.navbar a{
-color:white;
-text-decoration:none;
-font-weight:600;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.stat-card{
-background:white;
-padding:20px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-  .stat-card{
-
-background:white;
-
-padding:25px;
-
-border-radius:15px;
-
-text-align:center;
-
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-
-transition:.3s;
-
-}
-
-.stat-card:hover{
-
-transform:translateY(-5px);
-
-}
-
-.stat-card h3{
-
-margin:0;
-
-color:#666;
-
-font-size:16px;
-
-}
-
-.stat-card p{
-
-font-size:32px;
-
-font-weight:bold;
-
-color:#0077ff;
-
-margin-top:10px;
-
-}
-  .item{
-
-background:white;
-
-padding:20px;
-
-margin:15px 0;
-
-border-radius:12px;
-
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-
-}
-  #sellersList,
-#usersList{
-
-max-width:1000px;
-
-margin:auto;
-
-}
-body{
-margin:0;
-background:#f5f7fb;
-font-family:Poppins,sans-serif;
-}
-
+/* ================= SIDEBAR NAV ARCHITECTURE ================= */
 .sidebar{
-width:250px;
-height:100vh;
-background:#0077ff;
-position:fixed;
-left:0;
-top:0;
-padding:20px;
-overflow-y:auto;
+  width:260px;
+  background:#0077ff;
+  color: white;
+  position:fixed;
+  left:0;
+  top:0;
+  height:100vh;
+  padding:24px 16px;
+  overflow-y:auto;
+  z-index: 100;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
 }
 
 .sidebar h2{
-color:white;
-margin-bottom:30px;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom:32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 8px;
 }
 
 .sidebar a{
-display:block;
-padding:12px;
-margin-bottom:10px;
-color:white;
-text-decoration:none;
-border-radius:10px;
+  display:flex;
+  align-items: center;
+  gap: 12px;
+  padding:12px 16px;
+  margin-bottom:8px;
+  color:rgba(255, 255, 255, 0.85);
+  text-decoration:none;
+  border-radius:10px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.sidebar a:hover{
-background:rgba(255,255,255,.2);
+.sidebar a:hover, .sidebar a.active-link{
+  background:rgba(255,255,255,.2);
+  color: white;
 }
 
+/* ================= MAIN INTERFACE WRAPPER ================= */
 .main-content{
-margin-left:270px;
-padding:20px;
+  margin-left:260px;
+  flex-grow: 1;
+  padding:30px;
+  width: calc(100% - 260px);
 }
 
-  .item img{
+.navbar{
+  background:white;
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
 
-width:100%;
+.logo{
+  color:#0077ff;
+  font-size:20px;
+  font-weight:700;
+}
 
-max-width:250px;
+/* ================= METRIC CARDS SYSTEM ================= */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  margin-bottom: 30px;
+}
 
-height:200px;
+.stat-card{
+  background:white;
+  padding:24px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.03);
+  border: 1px solid #e2e8f0;
+  transition:.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-object-fit:cover;
+.stat-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
 
-border-radius:10px;
+.stat-card h3{
+  margin:0;
+  color:#64748b;
+  font-size:14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-margin-bottom:10px;
+.stat-card p{
+  font-size:36px;
+  font-weight:700;
+  color:#1e293b;
+  margin-top:8px;
+}
 
+.stat-card small {
+  display: block;
+  margin-top: 6px;
+  color: #0077ff;
+  font-weight: 500;
+}
+
+/* ================= ITEM LAYOUT GRID ELEMENTS ================= */
+.admin-section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-section.active-section {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.item{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.02);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:14px;
+}
+
+.item h3{
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.item p{
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.item .price-tag {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0077ff;
+  margin: 4px 0 10px 0;
+}
+
+/* ACTION CONTROLS BUTTON MATRIX */
+.btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-edit { background: #e0f2fe; color: #0369a1; }
+.btn-edit:hover { background: #bae6fd; }
+.btn-approve { background: #dcfce7; color: #15803d; }
+.btn-approve:hover { background: #bbf7d0; }
+.btn-reject { background: #fee2e2; color: #b91c1c; }
+.btn-reject:hover { background: #fecaca; }
+.btn-delete { background: #7f1d1d; color: white; }
+.btn-delete:hover { background: #991b1b; }
+.btn-home { background: #f3e8ff; color: #6b21a8; width: 100%; justify-content: center; margin-top: 10px; }
+.btn-home:hover { background: #e9d5ff; }
+
+/* HOME CONTROLLER INTERFACE STYLING */
+.home-config-box {
+  background: #f8fafc;
+  border: 1px dashed #6b21a8;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.home-config-box label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #5b21b6;
+}
+
+.home-config-box input, .home-config-box select {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #edf2f7;
+  margin: 15px 0;
 }
 </style>
-
 </head>
-  <body>
-    <div class="sidebar">
-
-<h2>CampusDuka</h2>
-
-<a href="javascript:void(0)" onclick="showSection('dashboard')">
-📊 Dashboard
-</a>
-
-<a href="javascript:void(0)" onclick="showSection('orders')">
-📦 Orders
-</a>
-
-<a onclick="showSection('pending')">
-
-⏳ Pending Products
-
-</a>
-
-<a onclick="showSection('approved')">
-
-✅ Approved Products
-
-</a>
-
-      <a
-
-href="javascript:void(0)"
-
-onclick="showSection('rejected')"
-
->
-
-❌ Rejected Products
-
-</a>
-
-<a href="#" onclick="showSection('sellers')">
-🏪 Sellers
-</a>
-
-<a href="javascript:void(0)" onclick="showSection('users')">
-👥 Users
-</a>
-
-</div>
-
-<div class="main-content">
-<nav class="navbar">
-
-<div class="logo">
-CampusDuka Admin
-</div>
-
-<ul>
-
-<li>
-<a href="#dashboard">
-Dashboard
-</a>
-</li>
-
-<li>
-<a href="#pending">
-⏳ Pending Products
-</a>
-</li>
-
-<li>
-<a href="#approved">
-✅ Approved Products
-</a>
-</li>
-
-<li>
-<a href="#"
-onclick="showSellers()">
-🏪 Sellers
-</a>
-</li>
-
-<li>
-<a href="#"
-onclick="showUsers()">
-👥 Users
-</a>
-</li>
-
-</ul>
-
-</nav>
-
-<section id="dashboard-section">
-
-<h1>
-CampusDuka Dashboard
-</h1>
-
-<div class="stats">
-
-<div class="stat-card">
-<h3>Pending</h3>
-<p id="pendingCount">0</p>
-</div>
-
-<div class="stat-card">
-<h3>Approved</h3>
-<p id="approvedCount">0</p>
-</div>
-
-<div
-class="stat-card"
-onclick="showSellers()"
-style="cursor:pointer;">
-
-<h3>🏪 Sellers</h3>
-
-<p id="sellerCount">0</p>
-
-<small>Click to view</small>
-
-</div>
-
-<div
-class="stat-card"
-onclick="showUsers()"
-style="cursor:pointer;">
-
-<h3>👥 Users</h3>
-
-<p id="userCount">0</p>
-
-<small>Click to view</small>
-
-</div>
-
-
-
-</section>
-
-
-
-<div
-id="sellers-section"
-style="display:none;padding:20px;">
-
-<h2>
-🏪 Registered Sellers
-</h2>
-
-<div id="sellersList">
-
-</div>
-
-</div>
-
-
- <div
-id="users-section"
-style="display:none;padding:20px;">
-
-   
-
-<h2>
-👥 Registered Users
-</h2>
-
-<div id="usersList">
-
-</div>
-
-</div>
-
-  <div
-
-id="seller-details-section"
-
-style="display:none;padding:20px;"
-
->
-
-<div id="sellerDetails">
-
-</div>
-
-</div>
-
-<div id="orders-section" style="display:none;padding:20px;">
-
-<h2>📦 New Orders</h2>
-<div id="ordersList"></div>
-
-<h2>📦 Preparing Orders</h2>
-<div id="preparingOrders"></div>
-
-<h2>🚚 Out For Delivery</h2>
-<div id="deliveryOrders"></div>
-
-<h2>✅ Delivered Orders</h2>
-<div id="deliveredOrders"></div>
-
-</div>
-
-
-<div id="pending-section" style="display:none;">
-
-<h2>⏳ Pending Products</h2>
-
-<div id="pendingProducts"></div>
-
-</div>
-
-<div id="approved-section" style="display:none;">
-
-<h2>✅ Approved Products</h2>
-
-
-
-</div>
-
-  <div
-
-id="rejected-section"
-
-style="display:none;">
-
-<h2>
-
-❌ Rejected Products
-
-</h2>
-
-<div id="rejectedProducts">
-
-</div>
-
-</div>
-
-
-
-
-<div id="products">
-
-</div>
+<body>
+
+  <!-- SIDEBAR NAVIGATION PANEL -->
+  <div class="sidebar">
+    <h2><i class="fas fa-chart-pie"></i> CampusDuka</h2>
+    <a onclick="showSection('dashboard')" id="link-dashboard" class="active-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a onclick="showSection('home-control')" id="link-home-control"><i class="fas fa-sliders"></i> Home Controller</a>
+    <a onclick="showSection('orders')" id="link-orders"><i class="fas fa-box"></i> Orders Matrix</a>
+    <a onclick="showSection('pending')" id="link-pending"><i class="fas fa-hourglass-half"></i> Pending Queue</a>
+    <a onclick="showSection('approved')" id="link-approved"><i class="fas fa-circle-check"></i> Active Products</a>
+    <a onclick="showSection('rejected')" id="link-rejected"><i class="fas fa-circle-xmark"></i> Rejected Logs</a>
+    <a onclick="showSellers()" id="link-sellers"><i class="fas fa-store"></i> Verified Sellers</a>
+    <a onclick="showUsers()" id="link-users"><i class="fas fa-users"></i> Platform Users</a>
   </div>
 
+  <!-- MAIN OPERATIONAL FRAMEWORK -->
+  <div class="main-content">
+    <nav class="navbar">
+      <div class="logo">Administrative Console Workspace</div>
+      <div style="font-size: 13px; color: #64748b; font-weight: 500;">Role: Head Administrator</div>
+    </nav>
+
+    <!-- SECTION: DASHBOARD METRICS Overview -->
+    <section id="dashboard-section" class="admin-section active-section">
+      <h1 class="section-title">Operations Dashboard</h1>
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Pending Approvals</h3>
+          <p id="pendingCount">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Live Products</h3>
+          <p id="approvedCount">0</p>
+        </div>
+        <div class="stat-card" onclick="showSellers()" style="cursor:pointer;">
+          <h3>Registered Sellers</h3>
+          <p id="sellerCount">0</p>
+          <small>Review details →</small>
+        </div>
+        <div class="stat-card" onclick="showUsers()" style="cursor:pointer;">
+          <h3>Active Students</h3>
+          <p id="userCount">0</p>
+          <small>View roster →</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW SECTION FEATURE: HOMEPAGE CONTROLLER MANAGEMENT SYSTEM -->
+    <section id="home-control-section" class="admin-section">
+      <h1 class="section-title">🏠 Homepage Controller</h1>
+      <p style="color:#64748b; margin-bottom: 20px; font-size:14px;">Manage items featured on the customer marketplace homepage index layout, configure live scarcity text tags, and change urgency countdown limits.</p>
+      <div id="homeControllerGrid" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: ORDERS BLOCK -->
+    <section id="orders-section" class="admin-section">
+      <h1 class="section-title">📦 Order Logistics Pipeline</h1>
+      
+      <h2 style="font-size:16px; margin: 20px 0 10px 0; color:#ef4444;">Incoming Clearances</h2>
+      <div id="ordersList" class="data-grid"></div>
+
+      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#f59e0b;">Kitchen / Vendor Preparing</h2>
+      <div id="preparingOrders" class="data-grid"></div>
+
+      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#3b82f6;">Transit Run (Out for Delivery)</h2>
+      <div id="deliveryOrders" class="data-grid"></div>
+
+      <h2 style="font-size:16px; margin: 30px 0 10px 0; color:#10b981;">Archived Delivered Deliveries</h2>
+      <div id="deliveredOrders" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: PENDING ENGINE -->
+    <section id="pending-section" class="admin-section">
+      <h1 class="section-title">⏳ Product Moderation Queue</h1>
+      <div id="pendingProducts" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: APPROVED ENGINE -->
+    <section id="approved-section" class="admin-section">
+      <h1 class="section-title">✅ Live Store Database Items</h1>
+      <div id="approvedProducts" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: REJECTED LOGS -->
+    <section id="rejected-section" class="admin-section">
+      <h1 class="section-title">❌ Rejected Submissions</h1>
+      <div id="rejectedProducts" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: SELLERS ENGINE -->
+    <section id="sellers-section" class="admin-section">
+      <h1 class="section-title">🏪 Registered Merchant Base</h1>
+      <div id="sellersList" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: USERS MANAGEMENT ENGINE -->
+    <section id="users-section" class="admin-section">
+      <h1 class="section-title">👥 Registered Platform User Database</h1>
+      <div id="usersList" class="data-grid"></div>
+    </section>
+
+    <!-- SECTION: SELLER PROFILE LOGISTICS WRAPPER -->
+    <section id="seller-details-section" class="admin-section">
+      <button class="btn btn-edit" onclick="showSection('sellers')" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Sellers</button>
+      <div id="sellerDetails"></div>
+    </section>
+
+  </div>
 
 <script>
- function showSection(section){
+/* CORE NAVIGATION ROUTER ENGINE */
+function showSection(sectionId){
+  // Hide all sections natively
+  const sections = document.querySelectorAll('.admin-section');
+  sections.forEach(sec => sec.classList.remove('active-section'));
 
-document.getElementById(
-"dashboard-section"
-).style.display="none";
+  // Deactivate link visual tracking
+  const links = document.querySelectorAll('.sidebar a');
+  links.forEach(link => link.classList.remove('active-link'));
 
-document.getElementById(
-"orders-section"
-).style.display="none";
+  // Trigger structural adjustments
+  const targets = document.getElementById(`${sectionId}-section`);
+  if(targets) {
+    targets.classList.add('active-section');
+  }
 
-document.getElementById(
-"pending-section"
-).style.display="none";
-
-   document.getElementById(
-"rejected-section"
-).style.display="none";
-   
-document.getElementById(
-"approved-section"
-).style.display="none";
-
-document.getElementById(
-"sellers-section"
-).style.display="none";
-
-document.getElementById(
-"users-section"
-).style.display="none";
-
-   document.getElementById(
-"seller-details-section"
-).style.display="none";
-
-
-document.getElementById(
-
-section + "-section"
-
-).style.display="block";
-
+  const activeLink = document.getElementById(`link-${sectionId}`);
+  if(activeLink) {
+    activeLink.classList.add('active-link');
+  }
 }
-async function loadProducts(){
 
-const response=
-await fetch(
-"https://campusduka-api.onrender.com/products"
-);
+/* RENDER HOME CONTROLLER VIEW */
+async function loadHomeController() {
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await response.json();
+    const container = document.getElementById("homeControllerGrid");
+    container.innerHTML = "";
 
-const products=
-await response.json();
+    // Load configurations from storage to show current state
+    let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
 
-const container=
-document.getElementById(
-"products"
-);
+    products.forEach(product => {
+      const isPinned = homeSettings[product.id]?.pinned || false;
+      const currentBadge = homeSettings[product.id]?.badge || "Fast Selling";
+      const currentHours = homeSettings[product.id]?.duration || "2";
+      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
 
-container.innerHTML="";
+      container.innerHTML += `
+        <div class="item">
+          <img src="${image}" alt="">
+          <h3>${product.name}</h3>
+          <p class="price-tag">KES ${product.price}</p>
+          <p><strong>Merchant:</strong> ${product.seller_name || 'Campus Merchant'}</p>
+          
+          <div class="home-config-box">
+            <label><i class="fas fa-thumbtack"></i> Feature Status</label>
+            <select id="pin_${product.id}">
+              <option value="false" ${!isPinned ? 'selected' : ''}>❌ Hide from Featured</option>
+              <option value="true" ${isPinned ? 'selected' : ''}>🌟 Pin to Featured</option>
+            </select>
 
+            <label><i class="fas fa-tag"></i> Urgency Tag Label</label>
+            <select id="badge_${product.id}">
+              <option value="Only 2 left!" ${currentBadge === 'Only 2 left!' ? 'selected' : ''}>Only 2 left!</option>
+              <option value="Fast Selling" ${currentBadge === 'Fast Selling' ? 'selected' : ''}>Fast Selling</option>
+              <option value="Almost Gone" ${currentBadge === 'Almost Gone' ? 'selected' : ''}>Almost Gone</option>
+              <option value="Limited Deal" ${currentBadge === 'Limited Deal' ? 'selected' : ''}>Limited Deal</option>
+            </select>
 
-products.forEach(product=>{
+            <label><i class="fas fa-hourglass"></i> Timer (Hours Remaining)</label>
+            <input type="number" id="time_${product.id}" value="${currentHours}" min="1" max="72">
+          </div>
 
-const image=
-
-product.images &&
-product.images.length
-
-?
-
-product.images[0]
-
-:
-
-"images/food1.jpg";
-
-
-container.innerHTML+=`
-
-<div class="item">
-
-<img src="${image}">
-
-<h3>
-
-${product.name}
-
-</h3>
-
-<p>
-
-KES ${product.price}
-
-</p>
-
-<p>
-
-${product.category}
-
-</p>
-
-<p>
-
-${product.description}
-
-</p>
-<p>
-
-Seller:
-${product.seller_name}
-
-</p>
-
-<p>
-
-${product.seller_email}
-
-</p>
-
-
-<button
-class="edit"
-
-onclick="
-editProduct(
-${product.id},
-'${product.name}',
-'${product.description}',
-'${product.price}'
-)
-">
-
-Edit
-
-</button>
-
-<button
-class="delete"
-onclick="
-rejectProduct(
-${product.id}
-)
-">
-
-Reject
-
-</button>
-
-
-</div>
-
-`;
-
-});
-
+          <button class="btn btn-home" onclick="saveProductHomeSettings(${product.id})">
+            <i class="fas fa-floppy-disk"></i> Apply Live Settings
+          </button>
+        </div>
+      `;
+    });
+  } catch(err) {
+    console.error("Home Control Panel payload distribution failure:", err);
+  }
 }
+
+/* PERSIST CONFIGURATION MODIFICATIONS FOR CLIENT-SIDE SYNC */
+function saveProductHomeSettings(productId) {
+  let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
   
+  const pinnedVal = document.getElementById(`pin_${productId}`).value === "true";
+  const badgeVal = document.getElementById(`badge_${productId}`).value;
+  const timeVal = document.getElementById(`time_${productId}`).value;
+
+  homeSettings[productId] = {
+    pinned: pinnedVal,
+    badge: badgeVal,
+    duration: timeVal
+  };
+
+  localStorage.setItem('admin_home_config', JSON.stringify(homeSettings));
+  alert(`⚡ System parameters updated for product #${productId}! Changes will reflect instantly on the marketplace dashboard index.`);
+}
+
+/* LOAD ACTIVE LIVE DATABASE PRODUCTS */
+async function loadApprovedProducts(){
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await response.json();
+    const container = document.getElementById("approvedProducts");
+    container.innerHTML = "";
+
+    products.forEach(product => {
+      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+      container.innerHTML += `
+        <div class="item">
+          <img src="${image}">
+          <h3>${product.name}</h3>
+          <p class="price-tag">KES ${product.price}</p>
+          <p><strong>Category:</strong> ${product.category}</p>
+          <p>${product.description}</p>
+          <hr>
+          <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
+          <p><i class="fas fa-envelope"></i> ${product.seller_email || 'N/A'}</p>
+          <div class="btn-group">
+            <button class="btn btn-edit" onclick="editProduct(${product.id}, '${product.name}', '${product.description}', '${product.price}')"><i class="fas fa-pen"></i> Edit</button>
+            <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
+            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'approved')"><i class="fas fa-trash"></i> Wipe</button>
+          </div>
+        </div>
+      `;
+    });
+  } catch(err) { console.error("Error loading live approved database products: ", err); }
+}
+
+/* LOAD PENDING STAGING QUEUE */
 async function loadPendingProducts(){
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/pending-products");
+    const products = await response.json();
+    const container = document.getElementById("pendingProducts");
+    container.innerHTML = "";
 
-const response=
-await fetch(
-
-"https://campusduka-api.onrender.com/pending-products"
-
-);
-
-const products=
-await response.json();
-
-console.log(products);
-
-const container=
-document.getElementById(
-"pendingProducts"
-);
-
-container.innerHTML="";
-
-
-products.forEach(product=>{
-
-const image=
-
-product.images &&
-product.images.length
-
-?
-
-product.images[0]
-
-:
-
-"images/food1.jpg";
-
-
-container.innerHTML+=`
-
-<div class="item">
-
-<img src="${image}">
-
-<h3>
-${product.name}
-</h3>
-
-<p>
-KES ${product.price}
-</p>
-
-<p>
-${product.category}
-</p>
-<p>
-
-<p>
-
-${product.description}
-
-</p>
-
-Seller:
-${product.seller_name}
-
-</p>
-
-<p>
-
-${product.seller_email}
-
-</p>
-
-<button
-class="edit"
-
-onclick="
-editProduct(
-${product.id},
-'${product.name}',
-'${product.description}',
-'${product.price}'
-)
-">
-
-Edit
-
-</button>
-
-<button
-class="edit"
-onclick="
-approveProduct(
-${product.id}
-)
-">
-
-Approve
-
-</button>
-
-<button
-class="delete"
-onclick="
-rejectProduct(
-${product.id}
-)
-">
-
-Reject
-
-</button>
-
-<button
-class="delete"
-
-onclick="
-deleteProduct(
-${product.id}
-)
-">
-
-Delete
-
-</button>
-
-
-</div>
-
-`;
-
-});
-
+    products.forEach(product => {
+      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+      container.innerHTML += `
+        <div class="item">
+          <img src="${image}">
+          <h3>${product.name}</h3>
+          <p class="price-tag">KES ${product.price}</p>
+          <p><strong>Category:</strong> ${product.category}</p>
+          <p>${product.description}</p>
+          <hr>
+          <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
+          <p><i class="fas fa-envelope"></i> ${product.seller_email || 'N/A'}</p>
+          <div class="btn-group">
+            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-check"></i> Approve</button>
+            <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
+            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'pending')"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
+      `;
+    });
+  } catch(err) { console.error("Error formatting pending staging engine components: ", err); }
 }
 
+/* LOAD REJECTED LOG ARCHIVE */
+async function loadRejectedProducts(){
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/rejected-products");
+    const products = await response.json();
+    const container = document.getElementById("rejectedProducts");
+    container.innerHTML = "";
 
-async function deleteProduct(id){
-
-if(
-!confirm(
-"Delete this item?"
-)
-)return;
-
-
-const response=
-await fetch(
-
-`https://campusduka-api.onrender.com/delete-product/${id}`,
-
-{
-method:"DELETE"
+    products.forEach(product => {
+      const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
+      container.innerHTML += `
+        <div class="item">
+          <img src="${image}">
+          <h3>${product.name}</h3>
+          <p class="price-tag">KES ${product.price}</p>
+          <p style="color:#b91c1c; background:#fee2e2; padding:8px; border-radius:6px; font-weight:500; margin:10px 0;"><strong>Reason:</strong> ${product.rejection_reason || 'No context reason specified'}</p>
+          <div class="btn-group">
+            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-rotate-left"></i> Restore & Approve</button>
+            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'rejected')"><i class="fas fa-trash"></i> Permanent Purge</button>
+          </div>
+        </div>
+      `;
+    });
+  } catch(err) { console.error("Error loading historical item data streams: ", err); }
 }
 
-);
-
-const data=
-await response.json();
-
-alert(
-data.message
-);
-
-loadProducts();
-
+/* LOGISTIC RUNTIME ACTIONS Engine */
+async function deleteProduct(id, originSection){
+  if(!confirm("Are you absolutely sure you want to permanently delete this item from the cluster database configuration?")) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/delete-product/${id}`, { method:"DELETE" });
+    const data = await response.json();
+    alert(data.message);
+    refreshCorePipelines();
+  } catch(err) { alert("Execution exception dropped during core purge stack initialization."); }
 }
 
 async function approveProduct(id){
-
-const response=
-await fetch(
-
-`https://campusduka-api.onrender.com/approve-product/${id}`,
-
-{
-method:"PUT"
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/approve-product/${id}`, { method:"PUT" });
+    const data = await response.json();
+    alert(data.message);
+    refreshCorePipelines();
+  } catch(err) { console.error(err); }
 }
 
-);
-  
-
-const data=
-await response.json();
-
-alert(
-data.message
-);
-
-loadPendingProducts();
-
-loadProducts();
-
-}
-  async function rejectProduct(id){
-
-const reason=
-prompt(
-"Enter rejection reason:"
-);
-
-if(!reason)return;
-
-const response=
-await fetch(
-
-`https://campusduka-api.onrender.com/reject-product/${id}`,
-
-{
-
-method:"PUT",
-
-headers:{
-
-"Content-Type":
-"application/json"
-
-},
-
-body:JSON.stringify({
-
-reason
-
-})
-
+async function rejectProduct(id){
+  const reason = prompt("Enter structured rejection reason log specification details:");
+  if(!reason) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/reject-product/${id}`, {
+      method:"PUT",
+      headers:{ "Content-Type": "application/json" },
+      body:JSON.stringify({ reason })
+    });
+    const data = await response.json();
+    alert(data.message);
+    refreshCorePipelines();
+  } catch(err) { console.error(err); }
 }
 
-);
+async function editProduct(id, oldName, oldDescription, oldPrice){
+  const name = prompt("Modify item title value:", oldName); if(!name) return;
+  const description = prompt("Modify contextual product description summary blueprint:", oldDescription); if(!description) return;
+  const price = prompt("Set financial value conversion mapping calculation parameter (KES):", oldPrice); if(!price) return;
 
-const data=
-await response.json();
-
-alert(
-data.message
-);
-
-loadPendingProducts();
-
-loadProducts();
-
-loadStats();
-
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/edit-product/${id}`, {
+      method:"PUT",
+      headers:{ "Content-Type": "application/json" },
+      body:JSON.stringify({ name, description, price })
+    });
+    const data = await response.json();
+    alert(data.message);
+    refreshCorePipelines();
+  } catch(err) { console.error(err); }
 }
 
+/* LOAD GLOBAL LOGISTICS DATA FLOWS */
+async function loadOrders(){
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/orders");
+    const orders = await response.json();
+    
+    const container = document.getElementById("ordersList");
+    const preparingContainer = document.getElementById("preparingOrders");
+    const deliveryContainer = document.getElementById("deliveryOrders");
+    const deliveredContainer = document.getElementById("deliveredOrders");
 
-async function editProduct(
-id,
-oldName,
-oldDescription,
-oldPrice
-){
+    container.innerHTML = ""; preparingContainer.innerHTML = ""; deliveryContainer.innerHTML = ""; deliveredContainer.innerHTML = "";
 
-const name=
-prompt(
-"Edit name",
-oldName
-);
+    orders.forEach(order => {
+      let targetContainer = container;
+      if(order.delivery_status === "preparing") targetContainer = preparingContainer;
+      if(order.delivery_status === "out_for_delivery") targetContainer = deliveryContainer;
+      if(order.delivery_status === "delivered") targetContainer = deliveredContainer;
 
-if(!name)return;
-
-
-const description=
-prompt(
-"Edit description",
-oldDescription
-);
-
-if(!description)return;
-
-
-const price=
-prompt(
-"Edit price",
-oldPrice
-);
-
-if(!price)return;
-
-
-const response=
-await fetch(
-
-`https://campusduka-api.onrender.com/edit-product/${id}`,
-
-{
-
-method:"PUT",
-
-headers:{
-
-"Content-Type":
-"application/json"
-
-},
-
-body:JSON.stringify({
-
-name,
-description,
-price
-
-})
-
+      targetContainer.innerHTML += `
+        <div class="item">
+          <h3>📦 Order Record Instance #${order.id}</h3>
+          <p><strong>Item Name:</strong> ${order.product_name}</p>
+          <p><strong>Customer Name:</strong> ${order.buyer_name}</p>
+          <p><strong>Mobile Connection:</strong> ${order.buyer_phone}</p>
+          <p class="price-tag">KES ${order.amount}</p>
+          <p><strong>Delivery Location:</strong> ${order.delivery_location}</p>
+          <p><strong>Settlement Flow:</strong> <span style="font-weight:600; color:#0077ff;">${order.payment_status}</span></p>
+          <div class="btn-group">
+            <button class="btn btn-edit" onclick="updateDeliveryStatus(${order.id}, 'preparing')">📦 Prepare</button>
+            <button class="btn btn-approve" onclick="updateDeliveryStatus(${order.id}, 'out_for_delivery')">🚚 Transit</button>
+            <button class="btn btn-edit" style="background:#dcfce7; color:#15803d;" onclick="updateDeliveryStatus(${order.id}, 'delivered')">✅ Arrived</button>
+            ${order.delivery_status === "delivered" ? `<button class="btn btn-reject" onclick="deleteOrder(${order.id})"><i class="fas fa-trash"></i> Drop</button>` : ""}
+          </div>
+        </div>
+      `;
+    });
+  } catch(err) { console.error("Error processing system orders array: ", err); }
 }
 
-);
-
-const data=
-await response.json();
-
-alert(
-data.message
-);
-
-loadProducts();
-
+async function updateDeliveryStatus(orderId, status){
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/update-delivery-status/${orderId}`, {
+      method:"PUT",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ status })
+    });
+    const data = await response.json();
+    if(data.success){ loadOrders(); }
+  } catch(err) { console.error(err); }
 }
 
+async function deleteOrder(orderId){
+  if(!confirm("Archive and permanently erase this structural checkout transaction ledger entry trace?")) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/delete-order/${orderId}`, { method:"DELETE" });
+    const data = await response.json();
+    alert(data.message);
+    loadOrders();
+  } catch(err) { console.error(err); }
+}
+
+/* SELLERS DEEP ANALYTICAL COMPONENT METRICS SYSTEM */
+async function showSellers(){
+  showSection("sellers");
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/all-sellers");
+    const sellers = await response.json();
+    const container = document.getElementById("sellersList");
+    container.innerHTML = "";
+
+    sellers.forEach(seller => {
+      container.innerHTML += `
+        <div class="item">
+          <h3>🏪 ${seller.name}</h3>
+          <p><i class="fas fa-envelope"></i> ${seller.email}</p>
+          <p><i class="fas fa-phone"></i> ${seller.phone || "No phone added"}</p>
+          <p><strong>Merchant UUID:</strong> ${seller.id}</p>
+          <button class="btn btn-edit" style="width:100%; justify-content:center; margin-top:10px;" onclick="viewSeller(${seller.id})"><i class="fas fa-eye"></i> View Deep Analytics</button>
+        </div>
+      `;
+    });
+  } catch(err) { console.error(err); }
+}
+
+async function viewSeller(id){
+  showSection("seller-details");
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/seller-details/${id}`);
+    const data = await response.json();
+    const seller = data.seller;
+    const products = data.products;
+    const orders = data.orders;
+
+    const approved = products.filter(p => p.status === "approved").length;
+    const pending = products.filter(p => p.status === "pending").length;
+    const rejected = products.filter(p => p.status === "rejected").length;
+    let revenue = orders.reduce((sum, o) => sum + Number(o.amount), 0);
+
+    const container = document.getElementById("sellerDetails");
+    container.innerHTML = `
+      <div class="item" style="background:#e0f2fe; border-color:#0284c7;">
+        <h2 style="font-size:20px; color:#0369a1;"><i class="fas fa-store"></i> Merchant Ledger: ${seller.name}</h2>
+        <p><strong>Comms Point:</strong> ${seller.email} | ${seller.phone || "N/A"}</p>
+        <hr>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:10px;">
+          <div>📦 Total: <strong>${products.length}</strong></div>
+          <div style="color:#d97706;">⏳ Pending: <strong>${pending}</strong></div>
+          <div style="color:#16a34a;">✅ Live: <strong>${approved}</strong></div>
+          <div style="color:#dc2626;">❌ Dropped: <strong>${rejected}</strong></div>
+        </div>
+        <hr>
+        <div style="font-size:16px;">💰 Gross Confirmed Realized Revenue: <strong style="color:#16a34a;">KES ${revenue}</strong></div>
+      </div>
+    `;
+  } catch(err) { console.error(err); }
+}
+
+/* USERS DIRECTORY STRUCTURAL PARSER */
+async function showUsers(){
+  showSection("users");
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/all-users");
+    const users = await response.json();
+    const container = document.getElementById("usersList");
+    container.innerHTML = "";
+
+    users.forEach(user => {
+      container.innerHTML += `
+        <div class="item">
+          <h3><i class="fas fa-user-grad"></i> ${user.fullname}</h3>
+          <p><i class="fas fa-envelope"></i> ${user.email}</p>
+          <p><i class="fas fa-phone"></i> ${user.phone || "No phone linked"}</p>
+          <p><strong>System Identification Hash:</strong> ${user.id}</p>
+        </div>
+      `;
+    });
+  } catch(err) { console.error(err); }
+}
+
+/* SYNCHRONOUS MANAGEMENT AND PIPELINE UTILITIES */
 async function loadStats(){
+  try {
+    const pendingRes = await fetch("https://campusduka-api.onrender.com/pending-products");
+    const pendingData = await pendingRes.json();
+    document.getElementById("pendingCount").innerText = pendingData.length;
 
-try{
+    const approvedRes = await fetch("https://campusduka-api.onrender.com/products");
+    const approvedData = await approvedRes.json();
+    document.getElementById("approvedCount").innerText = approvedData.length;
 
-const pendingResponse=
-await fetch(
-"https://campusduka-api.onrender.com/pending-products"
-);
+    const sellersRes = await fetch("https://campusduka-api.onrender.com/all-sellers");
+    const sellersData = await sellersRes.json();
+    document.getElementById("sellerCount").innerText = sellersData.length;
 
-const pending=
-await pendingResponse.json();
-
-document.getElementById(
-"pendingCount"
-).innerText=
-pending.length;
-
-
-const approvedResponse=
-await fetch(
-"https://campusduka-api.onrender.com/products"
-);
-
-const approved=
-await approvedResponse.json();
-
-document.getElementById(
-"approvedCount"
-).innerText=
-approved.length;
-
-
-const sellersResponse=
-await fetch(
-"https://campusduka-api.onrender.com/all-sellers"
-);
-
-const sellers=
-await sellersResponse.json();
-
-document.getElementById(
-"sellerCount"
-).innerText=
-sellers.length;
-
-const usersResponse=
-await fetch(
-"https://campusduka-api.onrender.com/all-users"
-);
-
-const users=
-await usersResponse.json();
-
-document.getElementById(
-"userCount"
-).innerText=
-users.length;
-
-}catch(err){
-
-console.log(err);
-
+    const usersRes = await fetch("https://campusduka-api.onrender.com/all-users");
+    const usersData = await usersRes.json();
+    document.getElementById("userCount").innerText = usersData.length;
+  } catch(err) { console.error("Statistical data aggregation crash down triggered: ", err); }
 }
 
-
-}
-  async function loadOrders(){
-
-const response =
-await fetch(
-"https://campusduka-api.onrender.com/orders"
-);
-
-const orders =
-await response.json();
-
-const container =
-document.getElementById(
-"ordersList"
-);
-
-container.innerHTML = "";
-    const preparingContainer =
-document.getElementById(
-"preparingOrders"
-);
-
-const deliveryContainer =
-document.getElementById(
-"deliveryOrders"
-);
-
-const deliveredContainer =
-document.getElementById(
-"deliveredOrders"
-);
-
-preparingContainer.innerHTML = "";
-deliveryContainer.innerHTML = "";
-deliveredContainer.innerHTML = "";
-
-for (const order of orders) {
-  
-  let targetContainer = container;
-
-if(order.delivery_status==="preparing"){
-targetContainer = preparingContainer;
+function refreshCorePipelines() {
+  loadStats();
+  loadApprovedProducts();
+  loadPendingProducts();
+  loadRejectedProducts();
+  loadHomeController();
 }
 
-if(order.delivery_status==="out_for_delivery"){
-targetContainer = deliveryContainer;
-}
-
-if(order.delivery_status==="delivered"){
-targetContainer = deliveredContainer;
-}
-
-targetContainer.innerHTML += `
-
-<div class="item">
-
-<h3>
-📦 Order #${order.id}
-</h3>
-
-<p>
-Buyer:
-${order.buyer_name}
-</p>
-
-<p>
-Phone:
-${order.buyer_phone}
-</p>
-
-<p>
-Amount:
-KES ${order.amount}
-</p>
-
-<p>
-Payment:
-${order.payment_status}
-</p>
-
-<p>
-Delivery:
-${order.delivery_status}
-</p>
-
-<p>
-Product:
-
-${order.product_name}
-</p>
-
-<p>
-Location:
-${order.delivery_location}
-</p>
-
-<button onclick="
-updateDeliveryStatus(
-${order.id},
-'preparing'
-)
-">
-📦 Preparing
-</button>
-
-<button onclick="
-updateDeliveryStatus(
-${order.id},
-'out_for_delivery'
-)
-">
-🚚 Out For Delivery
-</button>
-
-<button onclick="
-updateDeliveryStatus(
-${order.id},
-'delivered'
-)
-">
-✅ Delivered
-</button>
-
-${order.delivery_status==="delivered" ? `
-
-<button
-onclick="
-deleteOrder(${order.id})
-"
-style="
-background:#dc2626;
-color:white;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-">
-
-🗑 Delete Order
-
-</button>
-
-` : ""}
-
-</div>
-
-`;
-}
-
-}
-
-  async function viewSeller(id){
-
-showSection(
-"seller-details"
-);
-
-const response=
-
-await fetch(
-
-`https://campusduka-api.onrender.com/seller-details/${id}`
-
-);
-
-const data=
-
-await response.json();
-
-const seller=
-data.seller;
-
-const products=
-data.products;
-
-const orders=
-data.orders;
-
-
-const approved=
-
-products.filter(
-
-p=>p.status==="approved"
-
-).length;
-
-const pending=
-
-products.filter(
-
-p=>p.status==="pending"
-
-).length;
-
-const rejected=
-
-products.filter(
-
-p=>p.status==="rejected"
-
-).length;
-
-
-let revenue=0;
-
-orders.forEach(order=>{
-
-revenue +=
-
-Number(order.amount);
-
+/* ENTRYPOINT SYSTEM INITIALIZATION INTERFACE CALLSTACKS */
+document.addEventListener("DOMContentLoaded", () => {
+  refreshCorePipelines();
+  loadOrders();
 });
-
-
-const container=
-
-document.getElementById(
-
-"sellerDetails"
-
-);
-
-
-container.innerHTML=`
-
-<div class="item">
-
-<h1>
-
-🏪 ${seller.name}
-
-</h1>
-
-<p>
-
-📧 ${seller.email}
-
-</p>
-
-<p>
-
-📞 ${seller.phone || "No phone"}
-
-</p>
-
-<hr>
-
-<p>
-
-📦 Total Products:
-
-${products.length}
-
-</p>
-
-<p>
-
-⏳ Pending:
-
-${pending}
-
-</p>
-
-<p>
-
-✅ Approved:
-
-${approved}
-
-</p>
-
-<p>
-
-❌ Rejected:
-
-${rejected}
-
-</p>
-
-<hr>
-
-<p>
-
-📦 Orders:
-
-${orders.length}
-
-</p>
-
-<p>
-
-💰 Revenue:
-
-KES ${revenue}
-
-</p>
-
-</div>
-
-<h2>
-
-🛍 Seller Products
-
-</h2>
-
-`;
-
-
-
-products.forEach(product=>{
-
-container.innerHTML+=`
-
-<div class="item">
-
-<h3>
-
-${product.name}
-
-</h3>
-
-<p>
-
-KES ${product.price}
-
-</p>
-
-<p>
-
-Status:
-
-${product.status}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-
-
-container.innerHTML+=`
-
-<h2>
-
-📦 Seller Orders
-
-</h2>
-
-`;
-
-
-
-orders.forEach(order=>{
-
-container.innerHTML+=`
-
-<div class="item">
-
-<h3>
-
-Order #${order.id}
-
-</h3>
-
-<p>
-
-Buyer:
-
-${order.buyer_name}
-
-</p>
-
-<p>
-
-Phone:
-
-${order.buyer_phone}
-
-</p>
-
-<p>
-
-Amount:
-
-KES ${order.amount}
-
-</p>
-
-<p>
-
-Delivery:
-
-${order.delivery_status}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-}
-loadProducts();
-
-loadPendingProducts();
-
-loadRejectedProducts();
-
-loadStats();
-
-loadOrders();
-
-  async function loadRejectedProducts(){
-
-const response=
-
-await fetch(
-
-"https://campusduka-api.onrender.com/rejected-products"
-
-);
-
-const products=
-
-await response.json();
-
-const container=
-
-document.getElementById(
-
-"rejectedProducts"
-
-);
-
-container.innerHTML="";
-
-products.forEach(product=>{
-
-const image=
-
-product.images &&
-product.images.length
-
-?
-
-product.images[0]
-
-:
-
-"images/food1.jpg";
-
-container.innerHTML+=`
-
-<div class="item">
-
-<img src="${image}">
-
-<h3>
-
-${product.name}
-
-</h3>
-
-<p>
-
-KES ${product.price}
-
-</p>
-
-<p>
-
-${product.category}
-
-</p>
-
-<p>
-
-${product.description}
-
-</p>
-
-<p>
-
-Seller:
-
-${product.seller_name}
-
-</p>
-
-<p>
-
-Reason:
-
-${product.rejection_reason}
-
-</p>
-
-<button
-
-onclick="
-
-approveProduct(
-
-${product.id}
-
-)
-
-">
-
-Approve
-
-</button>
-
-<button
-
-onclick="
-
-deleteProduct(
-
-${product.id}
-
-)
-
-">
-
-Delete
-
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-  async function updateDeliveryStatus(
-orderId,
-status
-){
-
-const response =
-await fetch(
-
-`https://campusduka-api.onrender.com/update-delivery-status/${orderId}`,
-
-{
-method:"PUT",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-status
-})
-}
-
-);
-
-const data =
-await response.json();
-
-if(data.success){
-
-alert(
-"Delivery status updated"
-);
-
-loadOrders();
-
-}
-
-}
-
-  async function deleteOrder(orderId){
-
-if(
-!confirm(
-"Delete this order permanently?"
-)
-)return;
-
-const response =
-await fetch(
-
-`https://campusduka-api.onrender.com/delete-order/${orderId}`,
-
-{
-method:"DELETE"
-}
-
-);
-
-const data =
-await response.json();
-
-alert(data.message);
-
-loadOrders();
-
-}
-  async function showSellers(){
-
-showSection(
-"sellers"
-);
-
-const response=
-await fetch(
-"https://campusduka-api.onrender.com/all-sellers"
-);
-
-const sellers=
-await response.json();
-
-const container=
-document.getElementById(
-"sellersList"
-);
-
-container.innerHTML="";
-
-sellers.forEach(seller=>{
-
-container.innerHTML+=`
-
-<div class="item">
-
-<h3>
-${seller.name}
-</h3>
-
-<p>
-📧 ${seller.email}
-</p>
-
-<p>
-📞 ${seller.phone || "No phone"}
-</p>
-
-<p>
-ID: ${seller.id}
-</p>
-
-<button
-onclick="
-viewSeller(
-${seller.id}
-)
-">
-
-View Details
-
-</button>
-
-</div>
-
-`;
-
-});
-    document.getElementById(
-"sellers-section"
-).scrollIntoView({
-behavior:"smooth"
-});
-
-}
-  async function showUsers(){
-
-document.getElementById(
-"users-section"
-).style.display="block";
-
-const response=
-await fetch(
-"https://campusduka-api.onrender.com/all-users"
-);
-
-const users=
-await response.json();
-
-const container=
-document.getElementById(
-"usersList"
-);
-
-container.innerHTML="";
-
-users.forEach(user=>{
-
-container.innerHTML+=`
-
-<div class="item">
-
-<h3>
-${user.fullname}
-</h3>
-
-<p>
-📧 ${user.email}
-</p>
-
-<p>
-📞 ${user.phone || "No phone"}
-</p>
-
-<p>
-User ID: ${user.id}
-</p>
-
-</div>
-
-`;
-
-});
-    document.getElementById(
-"users-section"
-).scrollIntoView({
-behavior:"smooth"
-});
-
-}
-
-  
-  
 </script>
-  </div>
-    </body>
-
+</body>
 </html>
-  
