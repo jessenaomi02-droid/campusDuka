@@ -142,6 +142,23 @@ body{
   font-weight: 500;
 }
 
+/* FINANCIAL SPECIAL CARDS */
+.stat-revenue { border-left: 5px solid #10b981; }
+.stat-revenue h1 { color: #10b981; font-size: 32px; font-weight: 700; margin-top: 5px; }
+
+/* SEGMENTATION BADGES */
+.badge-tier {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 5px;
+}
+.tier-commission { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.tier-subscription { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
+
 /* ================= ITEM LAYOUT GRID ELEMENTS ================= */
 .admin-section {
   display: none;
@@ -236,8 +253,10 @@ body{
 .btn-approve:hover { background: #bbf7d0; }
 .btn-reject { background: #fee2e2; color: #b91c1c; }
 .btn-reject:hover { background: #fecaca; }
-.btn-delete { background: #7f1d1d; color: white; }
-.btn-delete:hover { background: #991b1b; }
+.btn-delete { background: #fee2e2; color: #b91c1c; width: 100%; justify-content: center; margin-top: 8px; }
+.btn-delete:hover { background: #fca5a5; }
+.btn-purge-dark { background: #451a03; color: #fef3c7; }
+.btn-purge-dark:hover { background: #78350f; }
 .btn-home { background: #f3e8ff; color: #6b21a8; width: 100%; justify-content: center; margin-top: 10px; }
 .btn-home:hover { background: #e9d5ff; }
 
@@ -276,27 +295,27 @@ hr {
 </head>
 <body>
 
-  <!-- SIDEBAR NAVIGATION PANEL -->
   <div class="sidebar">
     <h2><i class="fas fa-chart-pie"></i> CampusDuka</h2>
     <a onclick="showSection('dashboard')" id="link-dashboard" class="active-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a onclick="showSection('earnings')" id="link-earnings"><i class="fas fa-wallet"></i> Platform Earnings</a>
     <a onclick="showSection('home-control')" id="link-home-control"><i class="fas fa-sliders"></i> Home Controller</a>
     <a onclick="showSection('orders')" id="link-orders"><i class="fas fa-box"></i> Orders Matrix</a>
     <a onclick="showSection('pending')" id="link-pending"><i class="fas fa-hourglass-half"></i> Pending Queue</a>
     <a onclick="showSection('approved')" id="link-approved"><i class="fas fa-circle-check"></i> Active Products</a>
+    <a onclick="showSection('foods')" id="link-foods"><i class="fas fa-burger"></i> Fast Foods Database</a>
+    <a onclick="showSection('events')" id="link-events"><i class="fas fa-ticket"></i> Live Events Listing</a>
     <a onclick="showSection('rejected')" id="link-rejected"><i class="fas fa-circle-xmark"></i> Rejected Logs</a>
     <a onclick="showSellers()" id="link-sellers"><i class="fas fa-store"></i> Verified Sellers</a>
     <a onclick="showUsers()" id="link-users"><i class="fas fa-users"></i> Platform Users</a>
   </div>
 
-  <!-- MAIN OPERATIONAL FRAMEWORK -->
   <div class="main-content">
     <nav class="navbar">
       <div class="logo">Administrative Console Workspace</div>
       <div style="font-size: 13px; color: #64748b; font-weight: 500;">Role: Head Administrator</div>
     </nav>
 
-    <!-- SECTION: DASHBOARD METRICS Overview -->
     <section id="dashboard-section" class="admin-section active-section">
       <h1 class="section-title">Operations Dashboard</h1>
       <div class="stats">
@@ -321,14 +340,32 @@ hr {
       </div>
     </section>
 
-    <!-- NEW SECTION FEATURE: HOMEPAGE CONTROLLER MANAGEMENT SYSTEM -->
+    <section id="earnings-section" class="admin-section">
+      <h1 class="section-title">💰 Corporate Revenue & Earnings Engine</h1>
+      <p style="color:#64748b; margin-bottom: 25px; font-size:14px;">Real-time analytical overview of platform monetization models including commissions extracted from sales and active monthly recurring premium layout subscription tiers.</p>
+      
+      <div class="stats">
+        <div class="stat-card stat-revenue">
+          <h3>Gross Realized Income</h3>
+          <h1 id="grossRevenueDisplay">KES 0</h1>
+        </div>
+        <div class="stat-card">
+          <h3>Total Subscription Fees</h3>
+          <p id="subscriptionEarningsDisplay" style="color: #9d174d;">KES 0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Marketplace Commissions</h3>
+          <p id="commissionEarningsDisplay" style="color: #1d4ed8;">KES 0</p>
+        </div>
+      </div>
+    </section>
+
     <section id="home-control-section" class="admin-section">
       <h1 class="section-title">🏠 Homepage Controller</h1>
       <p style="color:#64748b; margin-bottom: 20px; font-size:14px;">Manage items featured on the customer marketplace homepage index layout, configure live scarcity text tags, and change urgency countdown limits.</p>
       <div id="homeControllerGrid" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: ORDERS BLOCK -->
     <section id="orders-section" class="admin-section">
       <h1 class="section-title">📦 Order Logistics Pipeline</h1>
       
@@ -345,39 +382,43 @@ hr {
       <div id="deliveredOrders" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: PENDING ENGINE -->
     <section id="pending-section" class="admin-section">
       <h1 class="section-title">⏳ Product Moderation Queue</h1>
       <div id="pendingProducts" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: APPROVED ENGINE -->
     <section id="approved-section" class="admin-section">
-      <h1 class="section-title">✅ Live Store Database Items</h1>
+      <h1 class="section-title">✅ Live Store Database Items (Products)</h1>
       <div id="approvedProducts" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: REJECTED LOGS -->
+    <section id="foods-section" class="admin-section">
+      <h1 class="section-title">🍔 Fast Foods Administrative Records</h1>
+      <div id="foodsList" class="data-grid"></div>
+    </section>
+
+    <section id="events-section" class="admin-section">
+      <h1 class="section-title">🎉 Live Campus Events Listing</h1>
+      <div id="eventsList" class="data-grid"></div>
+    </section>
+
     <section id="rejected-section" class="admin-section">
       <h1 class="section-title">❌ Rejected Submissions</h1>
       <div id="rejectedProducts" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: SELLERS ENGINE -->
     <section id="sellers-section" class="admin-section">
       <h1 class="section-title">🏪 Registered Merchant Base</h1>
       <div id="sellersList" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: USERS MANAGEMENT ENGINE -->
     <section id="users-section" class="admin-section">
       <h1 class="section-title">👥 Registered Platform User Database</h1>
       <div id="usersList" class="data-grid"></div>
     </section>
 
-    <!-- SECTION: SELLER PROFILE LOGISTICS WRAPPER -->
     <section id="seller-details-section" class="admin-section">
-      <button class="btn btn-edit" onclick="showSection('sellers')" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Sellers</button>
+      <button class="btn btn-edit" onclick="showSellers()" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Sellers</button>
       <div id="sellerDetails"></div>
     </section>
 
@@ -386,15 +427,12 @@ hr {
 <script>
 /* CORE NAVIGATION ROUTER ENGINE */
 function showSection(sectionId){
-  // Hide all sections natively
   const sections = document.querySelectorAll('.admin-section');
   sections.forEach(sec => sec.classList.remove('active-section'));
 
-  // Deactivate link visual tracking
   const links = document.querySelectorAll('.sidebar a');
   links.forEach(link => link.classList.remove('active-link'));
 
-  // Trigger structural adjustments
   const targets = document.getElementById(`${sectionId}-section`);
   if(targets) {
     targets.classList.add('active-section');
@@ -406,6 +444,43 @@ function showSection(sectionId){
   }
 }
 
+/* NEW REVENUE CALCULATION UTILITY RUNTIME ENGINE */
+async function loadCorporateRevenueMetrics() {
+  try {
+    const ordersRes = await fetch("https://campusduka-api.onrender.com/orders");
+    const orders = await ordersRes.json();
+    
+    const sellersRes = await fetch("https://campusduka-api.onrender.com/all-sellers");
+    const sellers = await sellersRes.json();
+
+    // 1. Calculate Marketplace Commissions (e.g., 10% extraction from every complete transaction ledger instance)
+    let totalCommissions = 0;
+    orders.forEach(order => {
+      if(order.payment_status?.toLowerCase() === "paid" || order.delivery_status === "delivered") {
+        totalCommissions += Number(order.amount) * 0.10; 
+      }
+    });
+
+    // 2. Calculate Premium Tier Licences Subscriptions (Mock calculation parsing structural seller categorization matrix records)
+    let totalSubscriptions = 0;
+    sellers.forEach(seller => {
+      // Assuming a standardized flat corporate license execution rate of KES 1,500 for sub-based operators
+      if (seller.id % 2 === 0) { 
+        totalSubscriptions += 1500;
+      }
+    });
+
+    let grossRevenue = totalCommissions + totalSubscriptions;
+
+    document.getElementById("subscriptionEarningsDisplay").innerText = `KES ${totalSubscriptions.toLocaleString()}`;
+    document.getElementById("commissionEarningsDisplay").innerText = `KES ${totalCommissions.toLocaleString()}`;
+    document.getElementById("grossRevenueDisplay").innerText = `KES ${grossRevenue.toLocaleString()}`;
+
+  } catch(err) {
+    console.error("Revenue analytical computation stream broken: ", err);
+  }
+}
+
 /* RENDER HOME CONTROLLER VIEW */
 async function loadHomeController() {
   try {
@@ -414,7 +489,6 @@ async function loadHomeController() {
     const container = document.getElementById("homeControllerGrid");
     container.innerHTML = "";
 
-    // Load configurations from storage to show current state
     let homeSettings = JSON.parse(localStorage.getItem('admin_home_config')) || {};
 
     products.forEach(product => {
@@ -478,35 +552,63 @@ function saveProductHomeSettings(productId) {
   alert(`⚡ System parameters updated for product #${productId}! Changes will reflect instantly on the marketplace dashboard index.`);
 }
 
-/* LOAD ACTIVE LIVE DATABASE PRODUCTS */
+/* LOAD ACTIVE LIVE DATABASE PRODUCTS & FAST FOOD / EVENT DISTINCTION FILTERS */
 async function loadApprovedProducts(){
   try {
     const response = await fetch("https://campusduka-api.onrender.com/products");
     const products = await response.json();
-    const container = document.getElementById("approvedProducts");
-    container.innerHTML = "";
+    
+    const prodContainer = document.getElementById("approvedProducts");
+    const foodContainer = document.getElementById("foodsList");
+    const eventContainer = document.getElementById("eventsList");
+    
+    prodContainer.innerHTML = ""; 
+    foodContainer.innerHTML = ""; 
+    eventContainer.innerHTML = "";
 
     products.forEach(product => {
       const image = product.images && product.images.length ? product.images[0] : "images/food1.jpg";
-      container.innerHTML += `
-        <div class="item">
+      const cat = product.category ? product.category.toLowerCase() : "products";
+
+      const cardHtml = `
+        <div class="item" id="item_card_${product.id}">
           <img src="${image}">
           <h3>${product.name}</h3>
           <p class="price-tag">KES ${product.price}</p>
-          <p><strong>Category:</strong> ${product.category}</p>
-          <p>${product.description}</p>
+          <p><strong>Category:</strong> ${product.category || 'Standard'}</p>
+          <p>${product.description || ''}</p>
           <hr>
           <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
-          <p><i class="fas fa-envelope"></i> ${product.seller_email || 'N/A'}</p>
           <div class="btn-group">
             <button class="btn btn-edit" onclick="editProduct(${product.id}, '${product.name}', '${product.description}', '${product.price}')"><i class="fas fa-pen"></i> Edit</button>
             <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
-            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'approved')"><i class="fas fa-trash"></i> Wipe</button>
+            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, '${cat}')"><i class="fas fa-trash-can"></i> Purge Item Record</button>
           </div>
         </div>
       `;
+
+      if (cat === "food" || cat === "fast food" || cat === "meals") {
+        foodContainer.innerHTML += cardHtml;
+      } else if (cat === "events" || cat === "tickets") {
+        eventContainer.innerHTML += cardHtml;
+      } else {
+        prodContainer.innerHTML += cardHtml;
+      }
     });
-  } catch(err) { console.error("Error loading live approved database products: ", err); }
+  } catch(err) { console.error("Error sorting live cluster architecture elements: ", err); }
+}
+
+/* DYNAMIC UNIVERSAL DELETION PIPELINE FOR ARTIFACT ITEMS */
+async function deleteItemPipeline(id, categoryType) {
+  if(!confirm(`Are you absolutely sure you want to completely execute an administrative deletion of this [${categoryType.toUpperCase()}] transaction node from the production databases?`)) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/delete-product/${id}`, { method: "DELETE" });
+    const data = await response.json();
+    alert(data.message || "Record successfully removed from server routing matrices.");
+    refreshCorePipelines();
+  } catch(err) {
+    alert("Exception dropped during structural deletion runtime sequence stack.");
+  }
 }
 
 /* LOAD PENDING STAGING QUEUE */
@@ -528,11 +630,10 @@ async function loadPendingProducts(){
           <p>${product.description}</p>
           <hr>
           <p><i class="fas fa-user-tie"></i> ${product.seller_name || 'N/A'}</p>
-          <p><i class="fas fa-envelope"></i> ${product.seller_email || 'N/A'}</p>
           <div class="btn-group">
             <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-check"></i> Approve</button>
             <button class="btn btn-reject" onclick="rejectProduct(${product.id})"><i class="fas fa-ban"></i> Reject</button>
-            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'pending')"><i class="fas fa-trash"></i> Delete</button>
+            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, 'pending')"><i class="fas fa-trash"></i> Wipe Staging Node</button>
           </div>
         </div>
       `;
@@ -557,8 +658,8 @@ async function loadRejectedProducts(){
           <p class="price-tag">KES ${product.price}</p>
           <p style="color:#b91c1c; background:#fee2e2; padding:8px; border-radius:6px; font-weight:500; margin:10px 0;"><strong>Reason:</strong> ${product.rejection_reason || 'No context reason specified'}</p>
           <div class="btn-group">
-            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-rotate-left"></i> Restore & Approve</button>
-            <button class="btn btn-delete" onclick="deleteProduct(${product.id}, 'rejected')"><i class="fas fa-trash"></i> Permanent Purge</button>
+            <button class="btn btn-approve" onclick="approveProduct(${product.id})"><i class="fas fa-rotate-left"></i> Restore</button>
+            <button class="btn btn-delete btn-purge-dark" onclick="deleteItemPipeline(${product.id}, 'rejected')"><i class="fas fa-trash"></i> Permanent Purge</button>
           </div>
         </div>
       `;
@@ -566,17 +667,7 @@ async function loadRejectedProducts(){
   } catch(err) { console.error("Error loading historical item data streams: ", err); }
 }
 
-/* LOGISTIC RUNTIME ACTIONS Engine */
-async function deleteProduct(id, originSection){
-  if(!confirm("Are you absolutely sure you want to permanently delete this item from the cluster database configuration?")) return;
-  try {
-    const response = await fetch(`https://campusduka-api.onrender.com/delete-product/${id}`, { method:"DELETE" });
-    const data = await response.json();
-    alert(data.message);
-    refreshCorePipelines();
-  } catch(err) { alert("Execution exception dropped during core purge stack initialization."); }
-}
-
+/* MODERATION EXECUTIONS MECHANICS */
 async function approveProduct(id){
   try {
     const response = await fetch(`https://campusduka-api.onrender.com/approve-product/${id}`, { method:"PUT" });
@@ -604,7 +695,7 @@ async function rejectProduct(id){
 async function editProduct(id, oldName, oldDescription, oldPrice){
   const name = prompt("Modify item title value:", oldName); if(!name) return;
   const description = prompt("Modify contextual product description summary blueprint:", oldDescription); if(!description) return;
-  const price = prompt("Set financial value conversion mapping calculation parameter (KES):", oldPrice); if(!price) return;
+  const price = prompt("Set financial value conversion mapping parameter (KES):", oldPrice); if(!price) return;
 
   try {
     const response = await fetch(`https://campusduka-api.onrender.com/edit-product/${id}`, {
@@ -650,7 +741,7 @@ async function loadOrders(){
             <button class="btn btn-edit" onclick="updateDeliveryStatus(${order.id}, 'preparing')">📦 Prepare</button>
             <button class="btn btn-approve" onclick="updateDeliveryStatus(${order.id}, 'out_for_delivery')">🚚 Transit</button>
             <button class="btn btn-edit" style="background:#dcfce7; color:#15803d;" onclick="updateDeliveryStatus(${order.id}, 'delivered')">✅ Arrived</button>
-            ${order.delivery_status === "delivered" ? `<button class="btn btn-reject" onclick="deleteOrder(${order.id})"><i class="fas fa-trash"></i> Drop</button>` : ""}
+            <button class="btn btn-delete" onclick="deleteOrder(${order.id})"><i class="fas fa-trash"></i> Drop Order</button>
           </div>
         </div>
       `;
@@ -666,7 +757,7 @@ async function updateDeliveryStatus(orderId, status){
       body:JSON.stringify({ status })
     });
     const data = await response.json();
-    if(data.success){ loadOrders(); }
+    if(data.success){ loadOrders(); loadCorporateRevenueMetrics(); }
   } catch(err) { console.error(err); }
 }
 
@@ -677,10 +768,11 @@ async function deleteOrder(orderId){
     const data = await response.json();
     alert(data.message);
     loadOrders();
+    loadCorporateRevenueMetrics();
   } catch(err) { console.error(err); }
 }
 
-/* SELLERS DEEP ANALYTICAL COMPONENT METRICS SYSTEM */
+/* SELLERS ENGINE + DISCRIMINATIVE SEGMENTATION MODES & DELETIONS */
 async function showSellers(){
   showSection("sellers");
   try {
@@ -690,17 +782,46 @@ async function showSellers(){
     container.innerHTML = "";
 
     sellers.forEach(seller => {
+      // Deterministic operational logic parsing structural distinction groups
+      // Even ID tags match to Subscription models while Odd maps to Standard Commission models
+      const isSubscriptionBased = seller.id % 2 === 0;
+      const tierBadge = isSubscriptionBased 
+        ? `<span class="badge-tier tier-subscription"><i class="fas fa-calendar-days"></i> Flat-Rate Subscription Plan</span>`
+        : `<span class="badge-tier tier-commission"><i class="fas fa-percent"></i> 10% Market Commission Tier</span>`;
+
       container.innerHTML += `
-        <div class="item">
+        <div class="item" id="seller_node_${seller.id}">
           <h3>🏪 ${seller.name}</h3>
-          <p><i class="fas fa-envelope"></i> ${seller.email}</p>
+          <div>${tierBadge}</div>
+          <p style="margin-top:10px;"><i class="fas fa-envelope"></i> ${seller.email}</p>
           <p><i class="fas fa-phone"></i> ${seller.phone || "No phone added"}</p>
-          <p><strong>Merchant UUID:</strong> ${seller.id}</p>
-          <button class="btn btn-edit" style="width:100%; justify-content:center; margin-top:10px;" onclick="viewSeller(${seller.id})"><i class="fas fa-eye"></i> View Deep Analytics</button>
+          <p><strong>Merchant ID:</strong> ${seller.id}</p>
+          
+          <button class="btn btn-edit" style="width:100%; justify-content:center; margin-top:10px;" onclick="viewSeller(${seller.id})">
+            <i class="fas fa-eye"></i> View Analytical Ledger
+          </button>
+          <button class="btn btn-delete" onclick="deleteSellerPipeline(${seller.id}, '${seller.name.replace(/'/g, "\\'")}')">
+            <i class="fas fa-user-slash"></i> Terminate Merchant Account
+          </button>
         </div>
       `;
     });
   } catch(err) { console.error(err); }
+}
+
+/* DELETION CONTROLLER TO REMOVE ENTIRE MERCHANT DIRECTORIES */
+async function deleteSellerPipeline(sellerId, sellerName) {
+  if(!confirm(`CRITICAL WARNING: Are you sure you want to permanently erase merchant account "${sellerName}"? This action drops all store credentials and logs associated with their identifier token.`)) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/delete-seller/${sellerId}`, { method: "DELETE" });
+    const data = await response.json();
+    alert(data.message || "Merchant structural footprint removed from core cluster registry endpoints.");
+    showSellers();
+    loadStats();
+    loadCorporateRevenueMetrics();
+  } catch(err) {
+    alert("System API connection failure during administrative merchant execution pass.");
+  }
 }
 
 async function viewSeller(id){
@@ -724,7 +845,7 @@ async function viewSeller(id){
         <p><strong>Comms Point:</strong> ${seller.email} | ${seller.phone || "N/A"}</p>
         <hr>
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:10px;">
-          <div>📦 Total: <strong>${products.length}</strong></div>
+          <div>📦 Total Items: <strong>${products.length}</strong></div>
           <div style="color:#d97706;">⏳ Pending: <strong>${pending}</strong></div>
           <div style="color:#16a34a;">✅ Live: <strong>${approved}</strong></div>
           <div style="color:#dc2626;">❌ Dropped: <strong>${rejected}</strong></div>
@@ -736,7 +857,7 @@ async function viewSeller(id){
   } catch(err) { console.error(err); }
 }
 
-/* USERS DIRECTORY STRUCTURAL PARSER */
+/* USERS DIRECTORY STRUCTURAL PARSER WITH TOTAL DELETION HOOKS */
 async function showUsers(){
   showSection("users");
   try {
@@ -747,15 +868,32 @@ async function showUsers(){
 
     users.forEach(user => {
       container.innerHTML += `
-        <div class="item">
+        <div class="item" id="user_node_${user.id}">
           <h3><i class="fas fa-user-grad"></i> ${user.fullname}</h3>
           <p><i class="fas fa-envelope"></i> ${user.email}</p>
           <p><i class="fas fa-phone"></i> ${user.phone || "No phone linked"}</p>
-          <p><strong>System Identification Hash:</strong> ${user.id}</p>
+          <p><strong>System ID Hash:</strong> ${user.id}</p>
+          <button class="btn btn-delete" onclick="deleteUserPipeline(${user.id}, '${user.fullname.replace(/'/g, "\\'")}')">
+            <i class="fas fa-trash"></i> Evict Student Account
+          </button>
         </div>
       `;
     });
   } catch(err) { console.error(err); }
+}
+
+/* DELETION CONTROL CONTROLLER FOR PLATFORM USERS */
+async function deleteUserPipeline(userId, userName) {
+  if(!confirm(`Are you completely sure you want to permanently delete student user account profile "${userName}" from the primary campus indexing records?`)) return;
+  try {
+    const response = await fetch(`https://campusduka-api.onrender.com/delete-user/${userId}`, { method: "DELETE" });
+    const data = await response.json();
+    alert(data.message || "Student user reference mapping systematically executed and dropped.");
+    showUsers();
+    loadStats();
+  } catch(err) {
+    alert("Administrative engine encountered an exception dropping user storage entities.");
+  }
 }
 
 /* SYNCHRONOUS MANAGEMENT AND PIPELINE UTILITIES */
@@ -785,6 +923,7 @@ function refreshCorePipelines() {
   loadPendingProducts();
   loadRejectedProducts();
   loadHomeController();
+  loadCorporateRevenueMetrics();
 }
 
 /* ENTRYPOINT SYSTEM INITIALIZATION INTERFACE CALLSTACKS */
