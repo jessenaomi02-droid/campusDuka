@@ -2,483 +2,393 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CampusDuka | Events</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease-in-out;
 }
 
 body{
-background:#f5f7fb;
+  background:#f5f7fb;
+  color: #1e293b;
 }
 
+/* NAVBAR */
 .navbar{
-background:#0077ff;
-padding:15px 25px;
+  background:#0077ff;
+  padding:15px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .navdiv{
-display:flex;
-justify-content:space-between;
-align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .logo{
-font-size:26px;
-font-weight:bold;
-color:white;
-text-decoration:none;
+  font-size:24px;
+  font-weight:700;
+  color:white;
+  text-decoration:none;
+  letter-spacing: -0.5px;
 }
 
 .navdiv ul{
-display:flex;
-list-style:none;
-gap:15px;
+  display:flex;
+  list-style:none;
+  gap:15px;
+  align-items: center;
 }
 
-.navdiv a{
-color:white;
-text-decoration:none;
+.navdiv ul li a{
+  text-decoration:none;
+  color:white;
+  font-weight:500;
+  font-size: 14px;
+  padding:6px 14px;
+  border:1px solid transparent;
+  border-radius:6px;
 }
 
+.navdiv ul li a:hover {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* HERO BANNER */
 .hero{
-
-height:300px;
-
-background:
-
-linear-gradient(
-rgba(0,0,0,.5),
-rgba(0,0,0,.5)
-),
-
-url("images/event1.jpg");
-
-background-size:cover;
-background-position:center;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-color:white;
-
-text-align:center;
-
+  height:320px;
+  background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("images/event1.jpg");
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  text-align:center;
+  padding: 0 20px;
 }
 
 .hero h1{
-font-size:42px;
+  font-size:40px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+.hero p {
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+/* EVENTS GRID */
 .product-container{
-
-display:grid;
-
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(220px,1fr)
-);
-
-gap:20px;
-
-padding:40px;
-
+  max-width: 1200px;
+  margin: 0 auto;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:25px;
+  padding:40px 20px;
 }
 
 .product-card{
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
 
-background:white;
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+}
 
-border-radius:12px;
-
-overflow:hidden;
-
-box-shadow:
-0 3px 10px rgba(0,0,0,.1);
-
-padding-bottom:15px;
-
-text-align:center;
-
+.img-wrapper {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: #f1f5f9;
 }
 
 .product-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-width:100%;
-height:180px;
-object-fit:cover;
+.card-details {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 
+.product-card h3{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1e293b;
+}
+
+.product-card p{
+  color:#0077ff;
+  font-weight:700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.product-card small{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color:#64748b;
+  font-size: 13px;
+  line-height: 1.5;
+  height: 38px;
+  margin-bottom: 15px;
 }
 
 .bn{
-
-background:#0077ff;
-
-color:white;
-
-border:none;
-
-padding:8px 15px;
-
-border-radius:20px;
-
-margin:5px;
-
-cursor:pointer;
-
+  background:#0077ff;
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor:pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: auto;
 }
 
+.bn:hover {
+  background: #005cc5;
+}
 
 /* MODAL */
-
 .modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-
-justify-content:center;
-align-items:center;
-
-z-index:1000;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  padding: 20px;
 }
 
 .modal-content{
-
-background:white;
-
-padding:20px;
-
-width:90%;
-
-max-width:500px;
-
-border-radius:10px;
-
-position:relative;
-
-text-align:center;
-
+  background:white;
+  padding:25px;
+  width:95%;
+  max-width:500px;
+  border-radius:16px;
+  position:relative;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
 }
 
 .close-btn{
+  position:absolute;
+  right:18px;
+  top:12px;
+  font-size:28px;
+  cursor:pointer;
+  color: #64748b;
+}
 
-position:absolute;
-
-right:15px;
-top:10px;
-
-font-size:25px;
-cursor:pointer;
-
+.close-btn:hover {
+  color: #1e293b;
 }
 
 #mainImage{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  border-radius:12px;
+}
 
-width:100%;
-height:300px;
-
-object-fit:cover;
-
-border-radius:10px;
-
+.thumbnail-container{
+  margin-top:12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .thumbnail-container img{
+  width:65px;
+  height:65px;
+  border-radius:8px;
+  cursor:pointer;
+  object-fit: cover;
+  border: 2px solid transparent;
+}
 
-width:70px;
-height:70px;
-
-margin:4px;
-
-border-radius:8px;
-
-cursor:pointer;
-
+.thumbnail-container img:hover {
+  border-color: #0077ff;
 }
 
 footer{
-
-background:#0077ff;
-color:white;
-
-text-align:center;
-
-padding:15px;
-
+  background:#0077ff;
+  color:white;
+  text-align:center;
+  padding:20px;
+  font-size: 14px;
 }
 
+/* MEDIA QUERY BREAKPOINTS */
+@media (max-width: 768px) {
+  .navdiv ul {
+    gap: 8px;
+  }
+  .navdiv ul li a {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  .hero h1 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navdiv {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .product-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <nav class="navbar">
-
-<div class="navdiv">
-
-<a
-href="index2.html"
-class="logo">
-
-CampusDuka
-
-</a>
-
-<ul>
-
-<li><a href="index2.html">Home</a></li>
-
-<li><a href="products.html">Products</a></li>
-
-<li><a href="food.html">Food</a></li>
-
-<li><a href="events.html">Events</a></li>
-
-</ul>
-
-</div>
-
+  <div class="navdiv">
+    <a href="index2.html" class="logo">CampusDuka</a>
+    <ul>
+      <li><a href="index2.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="food.html">Food</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+  </div>
 </nav>
 
-
 <section class="hero">
-
-<div>
-
-<h1>
-
-Campus Events
-
-</h1>
-
-<p>
-
-Discover parties, meetups & campus life
-
-</p>
-
-</div>
-
+  <div>
+    <h1>Campus Events</h1>
+    <p>Discover parties, meetups & campus life</p>
+  </div>
 </section>
 
+<div class="product-container" id="product-container"></div>
 
-<div
-class="product-container"
-id="product-container">
-
+<div class="modal" id="viewModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img id="mainImage" alt="Main View Image">
+    <div id="thumbnails" class="thumbnail-container"></div>
+  </div>
 </div>
-
-
-<div
-class="modal"
-id="viewModal">
-
-<div class="modal-content">
-
-<span
-class="close-btn"
-onclick="closeModal()">
-
-×
-
-</span>
-
-<img id="mainImage">
-
-<div
-id="thumbnails"
-class="thumbnail-container">
-
-</div>
-
-</div>
-
-</div>
-
 
 <footer>
-
-© CampusDuka 2025
-
+  &copy; CampusDuka 2026
 </footer>
 
-
 <script>
+/* GENERATE TEMPLATE ENGINE */
+function buildEventCardMarkup(product) {
+  const imgs = product.images && product.images.length ? product.images : ["images/event1.jpg"];
+  const first = imgs[0];
+  
+  return `
+    <div class="product-card">
+      <div class="img-wrapper">
+        <img src="${first}" alt="${product.name}" loading="lazy">
+      </div>
+      <div class="card-details">
+        <h3>${product.name}</h3>
+        <p>${product.price == 0 ? 'Free' : 'KES ' + product.price}</p>
+        <small>${product.description || ''}</small>
+        <button class="bn" onclick='viewProduct(${JSON.stringify(imgs)})'>
+          <i class="fa-solid fa-ticket"></i> View Details
+        </button>
+      </div>
+    </div>
+  `;
+}
 
+/* FETCH & ALLOCATE COMPONENT RENDERING */
 async function loadProducts(){
-
-const response=
-await fetch(
-"https://campusduka-api.onrender.com/products"
-);
-
-const products=
-await response.json();
-
-const events=
-
-products.filter(
-product=>
-
-product.category==="Events"
-);
-
-const container=
-document.getElementById(
-"product-container"
-);
-
-container.innerHTML="";
-
-events.forEach(product=>{
-
-const imgs=
-
-product.images&&
-product.images.length
-
-?
-
-product.images
-
-:
-
-["images/event1.jpg"];
-
-
-const first=
-imgs[0];
-
-
-container.innerHTML+=`
-
-<div class="product-card">
-
-<img src="${first}">
-
-<h3>
-
-${product.name}
-
-</h3>
-
-<p>
-
-KES ${product.price}
-
-</p>
-
-<small>
-
-${product.description}
-
-</small>
-
-<br>
-
-<button
-class="bn"
-onclick='viewProduct(${JSON.stringify(imgs)})'>
-
-View
-
-</button>
-
-</div>
-
-`;
-
-});
-
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await response.json();
+    
+    const events = products.filter(product => product.category === "Events");
+    const container = document.getElementById("product-container");
+    container.innerHTML = "";
+    
+    events.forEach(product => {
+      container.innerHTML += buildEventCardMarkup(product);
+    });
+  } catch (error) {
+    console.error("Error reading events from backend api:", error);
+  }
 }
 
-
-
+/* IMAGE DISPLAY INTERACTION */
 function viewProduct(images){
+  const modal = document.getElementById("viewModal");
+  const main = document.getElementById("mainImage");
+  const thumbs = document.getElementById("thumbnails");
+  
+  main.src = images[0];
+  thumbs.innerHTML = "";
 
-const modal=
-document.getElementById(
-"viewModal"
-);
+  images.forEach(img => {
+    let t = document.createElement("img");
+    t.src = img;
+    t.onclick = () => { main.src = img; };
+    thumbs.appendChild(t);
+  });
 
-const main=
-document.getElementById(
-"mainImage"
-);
-
-const thumbs=
-document.getElementById(
-"thumbnails"
-);
-
-main.src=
-images[0];
-
-thumbs.innerHTML="";
-
-images.forEach(img=>{
-
-let t=
-document.createElement(
-"img"
-);
-
-t.src=img;
-
-t.onclick=()=>{
-
-main.src=img;
-
-};
-
-thumbs.appendChild(t);
-
-});
-
-modal.style.display=
-"flex";
-
+  modal.style.display = "flex";
 }
-
 
 function closeModal(){
-
-document
-.getElementById(
-"viewModal"
-)
-.style.display=
-"none";
-
+  document.getElementById("viewModal").style.display = "none";
 }
 
-
-document.addEventListener(
-"DOMContentLoaded",
-
-loadProducts
-
-);
-
+document.addEventListener("DOMContentLoaded", loadProducts);
 </script>
 
 </body>
 </html>
-   
-
