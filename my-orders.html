@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Orders | CampusDuka</title>
-<!-- Google Fonts & FontAwesome Icons -->
+<title>Seller Orders | CampusDuka</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -221,78 +220,68 @@ body {
 
 <nav class="navbar">
   <div class="logo">
-    <a href="index2.html">Campus<span>Duka</span></a>
+    <a href="dashboard.html">Campus<span>Duka Control</span></a>
   </div>
 </nav>
 
 <div class="container">
-  <h1 class="page-title"><i class="fas fa-box" style="color: #0077ff;"></i> My Orders</h1>
+  <h1 class="page-title"><i class="fas fa-boxes-packing" style="color: #0077ff;"></i> Customer Orders For My Items</h1>
   <div id="ordersList"></div>
 </div>
 
 <script>
-// Orchestrate global storage values safely
 let syncInterval = null;
 
-async function loadOrders() {
-    let phone = localStorage.getItem("buyerPhone");
-    if (!phone) {
-        document.getElementById("ordersList").innerHTML = `
-        <div class="no-orders">
-            <i class="fas fa-phone-slash"></i>
-            <h3>No Phone Logged</h3>
-            <p style="color:#64748b; margin-top:5px;">Please authenticate via your consumer login page route context.</p>
-        </div>`;
-        return;
-    }
+// Ensure seller authentication exists
+const sellerSession = JSON.parse(localStorage.getItem("seller"));
+if (!sellerSession || !sellerSession.id) {
+    window.location.href = "seller-login.html";
+}
 
-    // Convert local zero formats to standard default country metrics
-    if (phone.startsWith("0")) {
-        phone = "254" + phone.substring(1);
-    }
-
+async function loadSellerIncomingOrders() {
     try {
-        const response = await fetch(`https://campusduka-api.onrender.com/orders/${phone}`);
-        if (!response.ok) throw new Error("Network latency failed connection.");
+        // Fetch global platform orders
+        const response = await fetch(`https://campusduka-api.onrender.com/orders`);
+        if (!response.ok) throw new Error("Network connectivity block.");
         
-        const orders = await response.json();
+        const allOrders = await response.json();
         const container = document.getElementById("ordersList");
         
-        // Preserve layout structure view positions seamlessly on dynamically loop updating cycles
+        // CRITICAL FILTER: Only pass items matching THIS logged-in seller's identification footprint
+        const myProductsOrders = allOrders.filter(order => order.seller_id == sellerSession.id);
+        
         let activeHTMLOutput = "";
 
-        if (!orders || orders.length === 0) {
+        if (!myProductsOrders || myProductsOrders.length === 0) {
             container.innerHTML = `
             <div class="no-orders">
-                <i class="fas fa-shopping-bag"></i>
-                <h3>No tracking orders recorded</h3>
-                <p style="color:#64748b; margin-top:5px;">Your active purchases logged on CampusDuka will populate right here.</p>
+                <i class="fas fa-inbox"></i>
+                <h3>No sales orders registered yet</h3>
+                <p style="color:#64748b; margin-top:5px;">When clients purchase your listings, requests will dynamically populate here.</p>
             </div>`;
             return;
         }
 
-        orders.forEach(order => {
-            // Fix status variables cleanly
+        myProductsOrders.forEach(order => {
             let rawStatus = order.delivery_status ? order.delivery_status.toLowerCase() : "pending";
             let badgeClass = "pending";
-            let statusLabelText = "⏳ Pending Verification";
+            let statusLabelText = "⏳ Order Placed";
 
             if (rawStatus === "preparing") {
                 badgeClass = "preparing";
-                statusLabelText = "📦 Preparing Item";
+                statusLabelText = "📦 In Production/Packaging";
             } else if (rawStatus === "out_for_delivery") {
                 badgeClass = "delivery";
-                statusLabelText = "🚚 Out For Delivery";
+                statusLabelText = "🚚 En Route / Transit";
             } else if (rawStatus === "delivered") {
                 badgeClass = "delivered";
-                statusLabelText = "✅ Successfully Delivered";
+                statusLabelText = "✅ Order Handed Over";
             }
 
-            // Extract chronological timestamps safely
-            let formattedTimestamp = "Date/Time Unrecorded";
+            // Time and dates formatting block
+            let formattedTimestamp = "Timestamp Missing";
             if (order.created_at || order.date) {
                 const parsedDate = new Date(order.created_at || order.date);
-                // Human-readable layout formats: "July 13, 2026, 2:30 PM"
                 formattedTimestamp = parsedDate.toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -303,24 +292,23 @@ async function loadOrders() {
                 });
             }
 
-            // Fallback product configurations assets
             let fallbackProductImg = order.product_images?.[0] || 'images/default-package.jpg';
 
             activeHTMLOutput += `
             <div class="order-card" data-order-id="${order.id}">
-                <img src="${fallbackProductImg}" class="order-img" alt="${order.product_name || 'Item'}">
+                <img src="${fallbackProductImg}" class="order-img" alt="${order.product_name}">
                 
                 <div class="order-header">
-                    <h2>${order.product_name || 'Marketplace Commodity'}</h2>
+                    <h2>${order.product_name}</h2>
                     <div class="amount">KES ${Number(order.product_price || 0).toLocaleString()}</div>
                 </div>
                 
-                <div class="order-id-tag">Reference Ticket Unique Reference: #${order.id}</div>
+                <div class="order-id-tag">System Reference Key: #${order.id}</div>
                 
                 <div class="info-grid">
-                    <div class="info"><i class="fas fa-calendar-alt" style="color:#64748b;"></i> <span><strong>Placed:</strong> ${formattedTimestamp}</span></div>
-                    <div class="info"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> <span><strong>Destination:</strong> ${order.delivery_location || 'Campus Center Pickup'}</span></div>
-                    <div class="info"><i class="fas fa-credit-card" style="color:#10b981;"></i> <span><strong>Payment:</strong> ${order.payment_status || 'Pending Transaction Clearance'}</span></div>
+                    <div class="info"><i class="fas fa-calendar-alt" style="color:#64748b;"></i> <span><strong>Ordered On:</strong> ${formattedTimestamp}</span></div>
+                    <div class="info"><i class="fas fa-location-dot" style="color:#ef4444;"></i> <span><strong>Drop Location:</strong> ${order.delivery_location || 'Not Specified'}</span></div>
+                    <div class="info"><i class="fas fa-money-check-dollar" style="color:#10b981;"></i> <span><strong>Payment:</strong> ${order.payment_status || 'Pending Verification'}</span></div>
                 </div>
 
                 <div>
@@ -329,7 +317,7 @@ async function loadOrders() {
 
                 <div class="timeline">
                     <div class="step ${rawStatus === "pending" ? "active" : ""}">
-                        <i class="fas fa-clock"></i> Pending
+                        <i class="fas fa-clock"></i> Received
                     </div>
                     <div class="step ${rawStatus === "preparing" ? "active" : ""}">
                         <i class="fas fa-box"></i> Preparing
@@ -338,7 +326,7 @@ async function loadOrders() {
                         <i class="fas fa-truck"></i> Shipping
                     </div>
                     <div class="step ${rawStatus === "delivered" ? "active" : ""}">
-                        <i class="fas fa-check-double"></i> Delivered
+                        <i class="fas fa-check-double"></i> Complete
                     </div>
                 </div>
             </div>`;
@@ -347,17 +335,17 @@ async function loadOrders() {
         container.innerHTML = activeHTMLOutput;
 
     } catch(err) {
-        console.error("Orders compilation query failed:", err);
+        console.error("Error isolating custom merchant orders map:", err);
     }
 }
 
-// Window lifecycle execution controls
+// Background poll initialization scripts
 window.onload = () => {
-    loadOrders();
+    loadSellerIncomingOrders();
     
-    // Automatically poll changes from the admin dashboard every 30 seconds
+    // Automatically poll modifications made via the admin workspace every 30 seconds
     if(syncInterval) clearInterval(syncInterval);
-    syncInterval = setInterval(loadOrders, 30000); 
+    syncInterval = setInterval(loadSellerIncomingOrders, 30000); 
 };
 </script>
 </body>
