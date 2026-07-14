@@ -1158,9 +1158,13 @@ async function loadFeaturedProducts(){
     let timersToInitialize = [];
 
     products.slice(0, 8).forEach((product, idx) => {
-      // FIX: Changed default image fallback away from food to a generic blue campus placeholder
       const image = product.images && product.images.length ? product.images[0] : "https://placehold.co/600x400/003366/ffffff?text=CampusDuka";
-      const shortDesc = product.description ? product.description.substring(0, 75) + '...' : '';
+      
+      // Clean description string to prevent raw HTML breakages
+      let cleanDesc = product.description || '';
+      cleanDesc = cleanDesc.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const shortDesc = cleanDesc.length > 75 ? cleanDesc.substring(0, 75) + '...' : cleanDesc;
+      
       const chosenBadge = labels[idx % labels.length];
       const dynamicTimerId = `timer_element_${idx}`;
       const productTargetId = product._id || product.id;
@@ -1172,10 +1176,13 @@ async function loadFeaturedProducts(){
             <i class="fas fa-ticket"></i> Book Ticket
           </a>`;
       } else {
-        const escapingName = (product.name || '').replace(/'/g, "\\'");
-        const escapingCat = (product.category || 'Campus').replace(/'/g, "\\'");
+        // Escaping strings securely using attribute encoding equivalents to prevent crashing DOM layout strings
+        const escapingName = (product.name || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        const escapingCat = (product.category || 'Campus').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        const escapingImg = image.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        
         actionButtonHtml = `
-          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${productTargetId}', '${escapingName}', ${product.price}, '${escapingCat}', '${image}')">
+          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${productTargetId}', '${escapingName}', ${product.price}, '${escapingCat}', '${escapingImg}')">
             <i class="fas fa-cart-plus"></i> Add
           </button>`;
       }
@@ -1195,7 +1202,6 @@ async function loadFeaturedProducts(){
               <i class="fas fa-clock"></i> Offer ends in: <span id="${dynamicTimerId}">00:00:00</span>
             </div>
             <div class="card-actions-wrapper">
-              <!-- Added Details View Button Layout Element -->
               <a href="product-details.html?id=${productTargetId}" class="card-action-btn view-btn" title="View Details">
                 <i class="fas fa-eye"></i>
               </a>
@@ -1208,10 +1214,8 @@ async function loadFeaturedProducts(){
       timersToInitialize.push({ id: dynamicTimerId, duration: (idx + 1) * 35 });
     });
 
-    // Append full block to DOM before binding high performance interval trees
     container.innerHTML = htmlOutput;
 
-    // FIX: Safely invoke timer seeding routines once elements actually exist inside the DOM layout tree
     timersToInitialize.forEach(item => {
       initializeUniqueTimer(item.id, item.duration);
     });
@@ -1254,28 +1258,25 @@ function initializeUniqueTimer(elementId, baseMinutes) {
     if(el) {
       el.innerText = `${hours}:${minutes}:${seconds}`;
     } else {
-      clearInterval(countdownInterval); // Auto clear out if element vanishes on update hooks
+      clearInterval(countdownInterval);
     }
   }, 1000);
 }
 
 /* AUTOMATIC LIVE DATA UPDATES ENGINE (WebSockets Realtime Sync) */
 function setupRealtimeSync() {
-  // Setup standard web socket stream directly tied to live backend
   const wsUri = "wss://campusduka-api.onrender.com";
   let socket = new WebSocket(wsUri);
 
   socket.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
-      // Catch admin action modification payload events
       if (data.type === "PRODUCT_CHANGE" || data.type === "REFRESH_MARKETPLACE") {
         console.log("⚡ Realtime Admin Mutation Detected: Refreshing UI Ecosystem Elements...");
         loadFeaturedProducts();
         loadStatistics();
       }
     } catch(e) {
-      // Fallback for non-json simple test string socket alerts
       if(event.data === "refresh") {
         loadFeaturedProducts();
         loadStatistics();
@@ -1284,7 +1285,6 @@ function setupRealtimeSync() {
   };
 
   socket.onclose = () => {
-    // Graceful silent auto-retry hook loop every 5 seconds if connection drops
     setTimeout(setupRealtimeSync, 5000);
   };
 }
