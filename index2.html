@@ -26,7 +26,7 @@
 
 body{
   background:#f8fafc;
-  color:#1f2d3d; /* Adjusted body text to Dark Slate Gray */
+  color:#1f2d3d; /* Dark Slate Gray */
   overflow-x:hidden;
   line-height:1.6;
 }
@@ -43,8 +43,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:12px 5%;
-  background:#1f2d3d; /* Brand Charcoal */
+  padding:10px 5%; /* Tightened padding for better alignment */
+  background:#1f2d3d; /* Brand Charcoal Base */
   border-bottom: 2px solid #164e63; /* Brand Slate Teal */
   box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
@@ -52,12 +52,23 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .logo-link {
   display: flex;
   align-items: center;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .logo-img {
-  height: 40px; /* Highly optimized heights for responsive layouts */
+  height: 50px; /* Highly visible height */
   width: auto;
   object-fit: contain;
+  background: transparent;
+  border: none;
+  outline: none;
+  /* Blends light-background image assets seamlessly into dark navbar backgrounds */
+  mix-blend-mode: lighten; 
+  display: block;
 }
 
 .nav-links{
@@ -80,7 +91,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .nav-links a:hover{
-  color: #4589be; /* Brand Medium Blue Accent */
+  color: #4589be; /* Brand Accent Blue */
   border-bottom:2px solid #4589be;
 }
 
@@ -105,7 +116,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .login-btn:hover {
   background: rgba(255,255,255,0.2);
-  border-color: #4589be; /* Accent Blue */
+  border-color: #4589be;
 }
 
 .logout-btn {
@@ -126,7 +137,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .cart-link:hover {
-  color: #4589be; /* Accent Blue */
+  color: #4589be;
 }
 
 #cart-count{
@@ -168,14 +179,14 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     right: -100%;
     width: 280px;
     height: calc(100vh - 68px);
-    background: #1f2d3d; /* Brand Charcoal */
+    background: #1f2d3d;
     flex-direction: column;
     align-items: flex-start;
     padding: 40px 30px;
     gap: 25px;
     box-shadow: -4px 10px 15px rgba(0,0,0,0.2);
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 1px solid #164e63; /* Brand Slate Teal */
+    border-left: 1px solid #164e63;
   }
   .nav-links.active {
     right: 0;
@@ -192,7 +203,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   justify-content:center;
   padding:16px 20px;
-  background:#1f2d3d; /* Brand Charcoal Base */
+  background:#1f2d3d;
 }
 
 .search-box-wrapper {
@@ -228,8 +239,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .search-bar-container button:hover {
-  background: #1f6b88; /* Slightly lighter Brand Teal hover state */
-  border-color: #1f6b88;
+  background: #1f6b88;
 }
 
 /* ================= HERO ================= */
@@ -305,7 +315,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .button.secondary{
   background:white;
-  color:#1f2d3d; /* Brand Charcoal text */
+  color:#1f2d3d;
   box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 
@@ -337,7 +347,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .section-header h2{
   font-size:32px;
-  color:#1f2d3d; /* Brand Charcoal */
+  color:#1f2d3d;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -415,7 +425,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #1f2d3d; /* Brand Charcoal */
+  color: #1f2d3d;
 }
 
 .product-price{
@@ -500,7 +510,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background: #f1f5f9;
   color: #1f2d3d;
   border: 1px solid #cbd5e1;
-  flex: 0 0 45px; /* Box style icon button */
+  flex: 0 0 45px;
 }
 
 .card-action-btn.view-btn:hover {
@@ -808,11 +818,10 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-  <!-- Replaced text logo structure with brand logo image -->
   <a href="index.html" class="logo-link">
-    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <span id="logoFallback" style="display:none; color:white; font-size:22px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
   </a>
 
   <div class="hamburger-menu" id="menuToggle">
@@ -839,7 +848,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </nav>
 
-<!-- SEARCH -->
 <div class="search-bar-container">
   <form id="globalSearchForm" class="search-box-wrapper">
     <input type="text" id="globalSearchInput" placeholder="Search products, foods, or events..." required>
@@ -847,7 +855,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </form>
 </div>
 
-<!-- HERO -->
 <section class="hero" id="hero">
   <div class="overlay"></div>
   <div class="hero-content">
@@ -861,7 +868,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- FEATURED PRODUCTS -->
 <section class="featured-products">
   <div class="section-header">
     <h2>🔥 Featured Deals</h2>
@@ -875,7 +881,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- STATISTICS -->
 <section class="stats-section">
   <h2>CampusDuka Ecosystem</h2>
   <p>Connecting students, businesses and opportunities across campuses.</p>
@@ -899,7 +904,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- WHY US -->
 <section class="why-us">
   <div class="section-title">
     <h2>Why Choose CampusDuka?</h2>
@@ -939,7 +943,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how-it-works">
   <div class="section-title">
     <h2>How CampusDuka Works</h2>
@@ -1011,7 +1014,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- SELLER SECTION -->
 <section class="seller-section">
   <h2>Start Selling on CampusDuka</h2>
   <p>Upload products, reach campus buyers and grow your side hustle.</p>
@@ -1022,7 +1024,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
   <h2>CampusDuka</h2>
   <p>Your Campus Marketplace</p>
