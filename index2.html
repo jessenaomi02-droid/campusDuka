@@ -26,7 +26,7 @@
 
 body{
   background:#f8fafc;
-  color:#0f172a;
+  color:#1f2d3d; /* Adjusted body text to Dark Slate Gray */
   overflow-x:hidden;
   line-height:1.6;
 }
@@ -43,21 +43,21 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:16px 5%;
-  background:#0f172a; /* Deep Slate/Black blending base */
-  border-bottom: 2px solid #003366;
+  padding:12px 5%;
+  background:#1f2d3d; /* Brand Charcoal */
+  border-bottom: 2px solid #164e63; /* Brand Slate Teal */
   box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
-.logo{
-  font-size:26px;
-  font-weight:700;
-  color:white;
-  letter-spacing:-0.5px;
+.logo-link {
+  display: flex;
+  align-items: center;
 }
 
-.logo span {
-  color: #38bdf8; /* Tech light blue accent */
+.logo-img {
+  height: 40px; /* Highly optimized heights for responsive layouts */
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-links{
@@ -80,8 +80,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .nav-links a:hover{
-  color: #38bdf8;
-  border-bottom:2px solid #38bdf8;
+  color: #4589be; /* Brand Medium Blue Accent */
+  border-bottom:2px solid #4589be;
 }
 
 .nav-right{
@@ -105,7 +105,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .login-btn:hover {
   background: rgba(255,255,255,0.2);
-  border-color: #38bdf8;
+  border-color: #4589be; /* Accent Blue */
 }
 
 .logout-btn {
@@ -126,7 +126,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .cart-link:hover {
-  color: #38bdf8;
+  color: #4589be; /* Accent Blue */
 }
 
 #cart-count{
@@ -168,14 +168,14 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     right: -100%;
     width: 280px;
     height: calc(100vh - 68px);
-    background: #0f172a;
+    background: #1f2d3d; /* Brand Charcoal */
     flex-direction: column;
     align-items: flex-start;
     padding: 40px 30px;
     gap: 25px;
     box-shadow: -4px 10px 15px rgba(0,0,0,0.2);
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 1px solid #003366;
+    border-left: 1px solid #164e63; /* Brand Slate Teal */
   }
   .nav-links.active {
     right: 0;
@@ -192,7 +192,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display:flex;
   justify-content:center;
   padding:16px 20px;
-  background:#0f172a;
+  background:#1f2d3d; /* Brand Charcoal Base */
 }
 
 .search-box-wrapper {
@@ -205,11 +205,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .search-bar-container input{
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #1e293b;
+  border: 1px solid #2d3f55;
   border-radius: 8px 0 0 8px;
   font-size:15px;
   outline: none;
-  background: #1e293b;
+  background: #2d3f55;
   color: white;
 }
 
@@ -220,15 +220,16 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .search-bar-container button{
   padding:12px 24px;
   border:none;
-  background:#003366;
+  background:#164e63; /* Brand Slate Teal */
   color:white;
   font-weight:600;
   border-radius:0 8px 8px 0;
-  border: 1px solid #003366;
+  border: 1px solid #164e63;
 }
 
 .search-bar-container button:hover {
-  background: #004fb0;
+  background: #1f6b88; /* Slightly lighter Brand Teal hover state */
+  border-color: #1f6b88;
 }
 
 /* ================= HERO ================= */
@@ -249,7 +250,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .overlay{
   position:absolute;
   inset: 0;
-  background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85));
+  background: linear-gradient(rgba(31, 45, 61, 0.75), rgba(31, 45, 61, 0.9)); /* Brand Charcoal Gradient Overlay */
   z-index: 1;
 }
 
@@ -286,7 +287,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .button{
   padding:14px 28px;
   border-radius:8px;
-  background:#003366;
+  background:#164e63; /* Brand Slate Teal */
   color:white;
   font-size:15px;
   font-weight:600;
@@ -294,17 +295,17 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow:0 4px 14px rgba(0, 51, 102, 0.4);
+  box-shadow:0 4px 14px rgba(22, 78, 99, 0.4);
 }
 
 .button:hover{
   transform:translateY(-2px);
-  background:#004fb0;
+  background:#1f6b88;
 }
 
 .button.secondary{
   background:white;
-  color:#0f172a;
+  color:#1f2d3d; /* Brand Charcoal text */
   box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 
@@ -336,7 +337,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .section-header h2{
   font-size:32px;
-  color:#0f172a;
+  color:#1f2d3d; /* Brand Charcoal */
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -367,7 +368,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .product-card:hover{
   transform:translateY(-5px);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 22px rgba(31, 45, 61, 0.08);
 }
 
 .product-card img{
@@ -414,11 +415,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #0f172a;
+  color: #1f2d3d; /* Brand Charcoal */
 }
 
 .product-price{
-  color:#003366;
+  color:#164e63; /* Brand Slate Teal */
   font-size:20px;
   font-weight:700;
   margin-bottom:8px;
@@ -427,7 +428,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .product-category{
   display:inline-block;
   background:#f1f5f9;
-  color:#0f172a;
+  color:#1f2d3d;
   padding:4px 12px;
   border-radius:20px;
   font-size:12px;
@@ -480,11 +481,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .card-action-btn.cart-btn {
-  background: #003366;
+  background: #164e63; /* Brand Slate Teal */
 }
 
 .card-action-btn.cart-btn:hover {
-  background: #004fb0;
+  background: #1f6b88;
 }
 
 .card-action-btn.book-btn {
@@ -497,7 +498,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .card-action-btn.view-btn {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #1f2d3d;
   border: 1px solid #cbd5e1;
   flex: 0 0 45px; /* Box style icon button */
 }
@@ -532,7 +533,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .stats-section h2{
   font-size:32px;
-  color:#0f172a;
+  color:#1f2d3d;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -558,7 +559,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .stat-card h1{
   font-size:42px;
-  color:#003366;
+  color:#164e63; /* Brand Slate Teal */
   margin-bottom:6px;
   font-weight: 700;
 }
@@ -583,7 +584,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .section-title h2{
   font-size:32px;
-  color:#0f172a;
+  color:#1f2d3d;
   margin-bottom:10px;
   font-weight: 700;
 }
@@ -610,12 +611,12 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .why-card:hover{
   transform:translateY(-4px);
-  box-shadow:0 12px 24px rgba(15, 23, 42, 0.06);
+  box-shadow:0 12px 24px rgba(31, 45, 61, 0.06);
 }
 
 .why-card i{
   font-size:40px;
-  color:#003366;
+  color:#164e63; /* Brand Slate Teal */
   margin-bottom:16px;
 }
 
@@ -623,6 +624,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   margin-bottom:12px;
   font-size:20px;
   font-weight: 600;
+  color: #1f2d3d;
 }
 
 .why-card p{
@@ -654,7 +656,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .steps h3{
   text-align:center;
-  color:#003366;
+  color:#164e63; /* Brand Slate Teal */
   font-size:24px;
   margin-bottom:30px;
   font-weight: 700;
@@ -671,7 +673,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   min-width:40px;
   height:40px;
   border-radius:50%;
-  background:#003366;
+  background:#164e63; /* Brand Slate Teal */
   color:white;
   display:flex;
   justify-content:center;
@@ -684,6 +686,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   margin-bottom:6px;
   font-size:16px;
   font-weight: 600;
+  color: #1f2d3d;
 }
 
 .step p{
@@ -697,12 +700,12 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   width:90%;
   max-width:1200px;
   margin:70px auto;
-  background:#0f172a;
+  background:#1f2d3d; /* Brand Charcoal */
   padding:45px 24px;
   border-radius:16px;
   text-align:center;
   box-shadow:0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid #003366;
+  border: 1px solid #164e63; /* Brand Slate Teal */
   color: white;
 }
 
@@ -729,14 +732,14 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .seller-buttons a button{
   padding:12px 24px;
   border-radius:8px;
-  background:#003366;
+  background:#164e63; /* Brand Slate Teal */
   color:white;
   font-size:14px;
   font-weight:600;
 }
 
 .seller-buttons a button:hover{
-  background:#004fb0;
+  background:#1f6b88;
   transform:translateY(-2px);
 }
 
@@ -750,7 +753,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .categories h2{
   margin-bottom:30px;
-  color:#0f172a;
+  color:#1f2d3d;
   font-size:28px;
   font-weight: 700;
 }
@@ -765,7 +768,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background:white;
   padding:18px 10px;
   border-radius:12px;
-  color:#0f172a;
+  color:#1f2d3d;
   font-weight:600;
   font-size: 14px;
   box-shadow:0 4px 12px rgba(0,0,0,0.02);
@@ -774,19 +777,19 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 .category-grid a:hover{
   transform:translateY(-3px);
-  background:#003366;
+  background:#164e63; /* Brand Slate Teal */
   color:white;
-  border-color: #003366;
+  border-color: #164e63;
 }
 
 /* FOOTER ARCHITECTURE */
 .footer{
-  background:#0f172a;
+  background:#1f2d3d; /* Brand Charcoal */
   color:white;
   text-align:center;
   padding:35px 20px;
   margin-top:70px;
-  border-top: 3px solid #003366;
+  border-top: 3px solid #164e63; /* Brand Slate Teal */
 }
 
 .footer h2 {
@@ -807,7 +810,10 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <a href="index.html" class="logo">Campus<span>Duka</span></a>
+  <!-- Replaced text logo structure with brand logo image -->
+  <a href="index.html" class="logo-link">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img">
+  </a>
 
   <div class="hamburger-menu" id="menuToggle">
     <i class="fas fa-bars"></i>
@@ -1137,7 +1143,7 @@ async function loadFeaturedProducts(){
   try{
     container.innerHTML = `
       <div class="loading">
-        <i class="fas fa-spinner fa-spin" style="color:#003366; margin-bottom: 10px; font-size: 24px;"></i><br>
+        <i class="fas fa-spinner fa-spin" style="color:#164e63; margin-bottom: 10px; font-size: 24px;"></i><br>
         Waking up campus servers... <br>
         <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
       </div>`;
@@ -1158,7 +1164,7 @@ async function loadFeaturedProducts(){
     let timersToInitialize = [];
 
     products.slice(0, 8).forEach((product, idx) => {
-      const image = product.images && product.images.length ? product.images[0] : "https://placehold.co/600x400/003366/ffffff?text=CampusDuka";
+      const image = product.images && product.images.length ? product.images[0] : "https://placehold.co/600x400/164e63/ffffff?text=CampusDuka";
       
       // Clean description string to prevent raw HTML breakages
       let cleanDesc = product.description || '';
@@ -1226,7 +1232,7 @@ async function loadFeaturedProducts(){
       <div class="loading" style="color: #ef4444;">
         <i class="fas fa-exclamation-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
         Connection timeout. The server is still waking up. 
-        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#003366; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(0,51,102,0.2);">Tap to Retry Connection</button>
+        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#164e63; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(22,78,99,0.2);">Tap to Retry Connection</button>
       </div>`;
   }
 }
