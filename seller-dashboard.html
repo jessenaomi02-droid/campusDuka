@@ -858,8 +858,18 @@ async function handleRequestBoost(event) {
     return;
   }
 
+  // --- AUTOMATIC 254 PHONE FORMATTING ---
+  let rawPhone = seller.phone ? String(seller.phone).trim() : "";
+  let formattedPhone = rawPhone;
+
+  if (rawPhone.startsWith("0")) {
+    formattedPhone = "254" + rawPhone.slice(1);
+  } else if (rawPhone.startsWith("+")) {
+    formattedPhone = rawPhone.replace("+", "");
+  }
+
   const totalCost = days * 50;
-  const confirmPayment = confirm(`Boosting this item for ${days} days will cost KES ${totalCost}. Ready to receive your M-Pesa STK Push prompt?`);
+  const confirmPayment = confirm(`Boosting this item for ${days} days will cost KES ${totalCost}.\n\nTarget Phone: ${formattedPhone}\n\nReady to receive your M-Pesa STK Push prompt?`);
   if (!confirmPayment) return;
 
   try {
@@ -867,7 +877,10 @@ async function handleRequestBoost(event) {
     const response = await fetch(`${API_BASE_URL}/feature-product/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ days: days })
+      body: JSON.stringify({ 
+        days: days,
+        phone: formattedPhone // Injecting clean 254 formatted phone payload
+      })
     });
     
     const result = await response.json();
