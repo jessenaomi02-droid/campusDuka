@@ -869,7 +869,7 @@
         }
 
         async function runDbHelper(endpoint) {
-            try {
+            try { 
                 const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'POST' }).then(r => r.json());
                 alert(res.message || "Helper run completed successfully.");
                 refreshAllData();
