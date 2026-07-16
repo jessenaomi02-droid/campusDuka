@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDuka - Ultimate Admin Intelligence Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800">
+<body class="bg-slate-50 text-slate-800">
 
     <div class="flex h-screen overflow-hidden">
         
@@ -17,45 +23,36 @@
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
                     <span>CampusDuka</span>
                 </div>
-                <nav class="p-4 space-y-1 h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
+                <nav class="p-4 space-y-1 h-[calc(100vh-140px)] overflow-y-auto">
                     <a href="#" onclick="showSection('dashboard')" id="nav-dashboard" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white transition"><i class="fa-solid fa-chart-line"></i> Dashboard Overview</a>
                     
                     <a href="#" onclick="showSection('pending-products')" id="nav-pending-products" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
                         <span class="flex items-center gap-3"><i class="fa-solid fa-hourglass-half text-amber-400"></i> Pending Queue</span>
-                        <span id="badge-pending" class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                        <span id="badge-pending" class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full">0</span>
                     </a>
 
                     <a href="#" onclick="showSection('product-catalog')" id="nav-product-catalog" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-boxes-stacked text-sky-400"></i> Modify Products</a>
                     
                     <a href="#" onclick="showSection('featured-manager')" id="nav-featured-manager" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
                         <span class="flex items-center gap-3"><i class="fa-solid fa-star text-yellow-400"></i> Featured Ads</span>
-                        <span id="badge-featured-req" class="bg-yellow-500 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
                     </a>
 
                     <a href="#" onclick="showSection('promotions-manager')" id="nav-promotions-manager" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
                         <span class="flex items-center gap-3"><i class="fa-solid fa-rectangle-ad text-pink-400"></i> Banner Campaigns</span>
-                        <span id="badge-banner-req" class="bg-pink-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                     </a>
                     
                     <a href="#" onclick="showSection('orders')" id="nav-orders" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping text-teal-400"></i> Orders & Delivery</a>
                     
-                    <a href="#" onclick="showSection('finance')" id="nav-finance" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-wallet text-emerald-400"></i> Revenue Insights</a>
-                    
                     <a href="#" onclick="showSection('sellers')" id="nav-sellers" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store text-violet-400"></i> Seller Portals</a>
 
                     <a href="#" onclick="showSection('users')" id="nav-users" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users text-blue-400"></i> User Database</a>
-                    
-                    <a href="#" onclick="showSection('feedback')" id="nav-feedback" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-comments text-cyan-400"></i> User Feedback</span>
-                        <span id="badge-feedback" class="bg-indigo-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
-                    </a>
 
                     <a href="#" onclick="showSection('broadcast-panel')" id="nav-broadcast-panel" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-bullhorn text-rose-400"></i> Broadcast Center</a>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800 text-center">
                 <span class="text-[10px] text-emerald-400 flex items-center justify-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Realtime Feed Active
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Realtime Local DB Link Active
                 </span>
             </div>
         </div>
@@ -68,83 +65,68 @@
                     <p class="text-xs text-slate-400 mt-0.5">System Status: <span class="text-emerald-500 font-semibold">Online & Monitoring Live</span></p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button onclick="refreshAllData()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs px-3 py-2 rounded-lg transition flex items-center gap-1.5">
+                    <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs px-3 py-2 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-rotate"></i> Sync Data
                     </button>
                     <div class="text-right">
-                        <p class="text-xs text-slate-400">Last Synced Time</p>
-                        <p id="system-clock" class="text-sm font-semibold text-slate-700"></p>
+                        <p class="text-xs text-slate-400">Platform Session</p>
+                        <p class="text-sm font-semibold text-slate-700">Admin Mode</p>
                     </div>
                 </div>
             </header>
-
-            <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-3 pointer-events-none"></div>
 
             <main class="p-8 space-y-8">
 
                 <section id="dashboard" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                            <div class="p-4 bg-emerald-50 text-emerald-600 rounded-lg text-2xl"><i class="fa-solid fa-coins"></i></div>
+                            <div class="p-4 bg-emerald-50 text-emerald-600 rounded-lg text-2xl"><i class="fa-solid fa-users"></i></div>
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Gross Transaction Sales</p>
-                                <h3 id="stat-revenue" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Registered Users</p>
+                                <h3 id="stat-total-users" class="text-2xl font-bold text-slate-800">0</h3>
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                            <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-store"></i></div>
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Platform Cut (10%)</p>
-                                <h3 id="stat-commission" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Active Stores</p>
+                                <h3 id="stat-total-sellers" class="text-2xl font-bold text-slate-800">0</h3>
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                            <div class="p-4 bg-violet-50 text-violet-600 rounded-lg text-2xl"><i class="fa-solid fa-receipt"></i></div>
+                            <div class="p-4 bg-violet-50 text-violet-600 rounded-lg text-2xl"><i class="fa-solid fa-cart-shopping"></i></div>
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Recurring Store Subscriptions</p>
-                                <h3 id="stat-subs-income" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Processed Orders</p>
+                                <h3 id="stat-total-orders" class="text-2xl font-bold text-slate-800">0</h3>
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
                             <div class="p-4 bg-pink-50 text-pink-600 rounded-lg text-2xl"><i class="fa-solid fa-rectangle-ad"></i></div>
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Premium Marketing Ads Rev</p>
-                                <h3 id="stat-ads-income" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Custom Advert Campaigns</p>
+                                <h3 id="stat-total-ads" class="text-2xl font-bold text-slate-800">0</h3>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fa-solid fa-circle-nodes text-indigo-500 text-lg"></i>
-                                <h3 class="font-bold text-slate-800">Extended Features Database Schema Reconciler</h3>
-                            </div>
-                            <p class="text-sm text-slate-500">Synchronize remote databases with new tables mapped for advertisement tiers, user-to-merchant push logs, and premium configurations.</p>
-                        </div>
-                        <button onclick="runDbHelper('/setup-extended-features')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-sm whitespace-nowrap">
-                            Run Database Migrations
-                        </button>
                     </div>
                 </section>
 
                 <section id="pending-products" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-                            <h2 class="font-bold text-slate-800">Marketplace Entry Point Approvals Queue</h2>
-                            <span class="text-xs font-semibold text-slate-500 bg-slate-200 px-2.5 py-1 rounded-full"><span id="queue-count">0</span> items waiting</span>
+                            <h2 class="font-bold text-slate-800">Products Waiting Approval</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                        <th class="p-4">Item Asset & Metadata</th>
-                                        <th class="p-4">Vendor & Publisher Identity</th>
-                                        <th class="p-4">Pricing Parameters</th>
-                                        <th class="p-4 text-right">Moderation Controls</th>
+                                        <th class="p-4">Item Name</th>
+                                        <th class="p-4">Seller Username</th>
+                                        <th class="p-4">Price (KES)</th>
+                                        <th class="p-4 text-right">Moderation Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="pending-products-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                                <tbody id="pending-products-list" class="divide-y divide-slate-100 text-sm">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -153,52 +135,43 @@
                 <section id="product-catalog" class="hidden space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:col-span-1 space-y-4">
-                            <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-pen-to-square text-sky-500 mr-2"></i>Edit Active Parameters</h3>
+                            <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-pen-to-square text-sky-500 mr-2"></i>Product Field Editor</h3>
                             <form id="product-update-form" onsubmit="handleProductUpdate(event)" class="space-y-4">
                                 <input type="hidden" id="edit-product-id">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Target Live Product</label>
-                                    <select id="catalog-product-select" onchange="loadProductToForm()" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required>
-                                        <option value="">-- Choose a Product --</option>
-                                    </select>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Live Title</label>
+                                    <input type="text" id="edit-product-title" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Adjusted Title</label>
-                                    <input type="text" id="edit-product-title" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Price Adjust (KES)</label>
+                                    <input type="number" id="edit-product-price" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Price Adjustments (KES)</label>
-                                    <input type="number" id="edit-product-price" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Classification Category</label>
+                                    <input type="text" id="edit-product-category" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" required>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Category Route</label>
-                                    <input type="text" id="edit-product-category" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Description Brief</label>
-                                    <textarea id="edit-product-desc" rows="3" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required></textarea>
-                                </div>
-                                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">
-                                    Commit Marketplace Update
+                                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-lg text-sm transition">
+                                    Save Marketplace Update
                                 </button>
                             </form>
                         </div>
                         
                         <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm md:col-span-2">
                             <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
-                                <h3 class="font-bold text-slate-800">Catalog Registry Lookup</h3>
+                                <h3 class="font-bold text-slate-800">Catalog Database</h3>
                             </div>
-                            <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+                            <div class="overflow-x-auto max-h-[400px]">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
-                                        <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200 sticky top-0">
-                                            <th class="p-4">Product Info</th>
-                                            <th class="p-4">Owner Ref</th>
-                                            <th class="p-4">Price</th>
+                                        <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
+                                            <th class="p-4">Name</th>
+                                            <th class="p-4">Category</th>
+                                            <th class="p-4">Price (KES)</th>
                                             <th class="p-4 text-right">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="catalog-registry-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                                    <tbody id="catalog-registry-list" class="divide-y divide-slate-100 text-sm">
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
@@ -206,15 +179,20 @@
                 </section>
 
                 <section id="featured-manager" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-hourglass-start text-yellow-500"></i> Pending Requests for Featured Slots</h3>
-                            <div id="featured-incoming-requests" class="space-y-3 max-h-80 overflow-y-auto divide-y divide-slate-100">
-                                </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> Active Featured Listings (Live Counters)</h3>
-                            <div id="active-featured-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-star text-yellow-500"></i> Mark Products Featured On Homepage</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
+                                        <th class="p-4">Product Name</th>
+                                        <th class="p-4">Featured Status</th>
+                                        <th class="p-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="featured-table-body" class="divide-y divide-slate-100 text-sm">
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>
@@ -222,33 +200,31 @@
                 <section id="promotions-manager" class="hidden space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:col-span-1">
-                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-square-plus text-pink-500"></i> Deploy New Corporate Ad</h3>
-                            <form id="ad-form" onsubmit="handleCreateAd(event)" class="space-y-4">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-square-plus text-pink-500"></i> Deploy Homepage Banner Ad</h3>
+                            <form id="ad-campaign-form" onsubmit="handleCreateAd(event)" class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Campaign Title Label</label>
-                                    <input type="text" id="ad-title" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. Back to Campus Electronics Deal" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Campaign Header Title</label>
+                                    <input type="text" id="ad-title" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. Joint Burger Special Deal" required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Ad Image URL</label>
-                                    <input type="url" id="ad-image" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Ad Short Body Text</label>
+                                    <input type="text" id="ad-desc" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="Brief details about the offer..." required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Redirection Target Node</label>
-                                    <input type="url" id="ad-target" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Action Button Title (CTA)</label>
+                                    <input type="text" id="ad-cta" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. Order Now" required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Ad Cost Pool Allocation (KES)</label>
-                                    <input type="number" id="ad-cost" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. 2500" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Redirect Relative URL Link</label>
+                                    <input type="text" id="ad-link" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. food.html?search=burger" required>
                                 </div>
-                                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">Deploy Banner Ad</button>
+                                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-lg text-sm transition">Launch Campaign Ad</button>
                             </form>
                         </div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:col-span-2 space-y-4">
-                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-envelope-open-text text-pink-400"></i> Incoming Merchant Banner Campaign Submissions</h3>
-                            <div id="incoming-banner-requests" class="space-y-3 max-h-48 overflow-y-auto divide-y divide-slate-100"></div>
-                            <hr class="border-slate-100">
-                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-satellite-dish text-emerald-500"></i> Active Network Banners</h3>
-                            <div id="active-ads-list" class="space-y-3 max-h-48 overflow-y-auto"></div>
+                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-satellite-dish text-pink-500"></i> Active Homepage Banner Rotations</h3>
+                            <div id="active-ads-list" class="space-y-3">
+                                </div>
                         </div>
                     </div>
                 </section>
@@ -256,102 +232,42 @@
                 <section id="orders" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
-                            <h2 class="font-bold text-slate-800">Fulfillment Pipeline & Buyer-Seller Connect Engine</h2>
+                            <h2 class="font-bold text-slate-800">Fulfillment Pipelines & Logistics</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                        <th class="p-4">Order Metrics</th>
-                                        <th class="p-4">Consumer (Buyer Details)</th>
-                                        <th class="p-4">Vendor (Seller Details)</th>
-                                        <th class="p-4">Asset Details</th>
-                                        <th class="p-4">Payment Node</th>
-                                        <th class="p-4">Fulfillment Status</th>
-                                        <th class="p-4 text-right">Outbound Updates</th>
+                                        <th class="p-4">Order ID</th>
+                                        <th class="p-4">Purchased Product</th>
+                                        <th class="p-4">Total Amount</th>
+                                        <th class="p-4">Logistics Timeline</th>
+                                        <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="orders-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                                <tbody id="orders-list" class="divide-y divide-slate-100 text-sm">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <section id="finance" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:col-span-1 space-y-4">
-                            <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-chart-pie text-emerald-500 mr-2"></i>Revenue Split Summary</h3>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-                                    <span class="text-xs text-slate-500 font-medium">Merchant Subscriptions Pool</span>
-                                    <span id="ledger-sub-rev" class="text-sm font-bold text-slate-800">KES 0.00</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-                                    <span class="text-xs text-slate-500 font-medium">Premium Banner Advertisements</span>
-                                    <span id="ledger-ad-rev" class="text-sm font-bold text-slate-800">KES 0.00</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-                                    <span class="text-xs text-slate-500 font-medium">10% Direct Sales Cut Pool</span>
-                                    <span id="ledger-commission-rev" class="text-sm font-bold text-slate-800">KES 0.00</span>
-                                </div>
-                                <div class="border-t border-dashed border-slate-200 my-2 pt-2 flex justify-between items-center font-bold text-slate-900 text-base">
-                                    <span>Total Consolidated Earnings</span>
-                                    <span id="ledger-total-combined" class="text-emerald-600">KES 0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm md:col-span-2">
-                            <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
-                                <h2 class="font-bold text-slate-800">Calculated Merchant Splits & Escrow Ledger</h2>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                            <th class="p-4">Item Details</th>
-                                            <th class="p-4">Seller Store Info</th>
-                                            <th class="p-4">Gross Sales</th>
-                                            <th class="p-4">Deductions</th>
-                                            <th class="p-4">Disbursement Target</th>
-                                            <th class="p-4 text-right">Escrow Payout</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="finance-ledger-list" class="divide-y divide-slate-100 text-sm"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 <section id="sellers" class="hidden space-y-6">
-                    <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div>
-                            <h3 class="text-lg font-bold">Sync Platform Subscription Revenue</h3>
-                            <p class="text-xs text-indigo-200">Reconciled instantly against the system records</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs text-indigo-300 uppercase tracking-wider">Total Subscriptions Pool</p>
-                            <h1 id="live-subs-revenue-pool" class="text-3xl font-extrabold">KES 0.00</h1>
-                        </div>
-                    </div>
-
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
-                            <h2 class="font-bold text-slate-800">Registered Store Sellers & Plan Audits</h2>
+                            <h2 class="font-bold text-slate-800">Verified Marketplace Stores</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
                                         <th class="p-4">Merchant Store Profile</th>
-                                        <th class="p-4">Contact Phone Line</th>
-                                        <th class="p-4">Subscribed Tier Plan</th>
-                                        <th class="p-4">Payment Verification Token</th>
-                                        <th class="p-4">Onboarding Timestamp</th>
+                                        <th class="p-4">Account Role Mode</th>
+                                        <th class="p-4">Permissions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="sellers-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                                <tbody id="sellers-list" class="divide-y divide-slate-100 text-sm">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -360,40 +276,32 @@
                 <section id="users" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50">
-                            <h2 class="font-bold text-slate-800">CampusDuka Account Registers Node</h2>
+                            <h2 class="font-bold text-slate-800">CampusDuka Registered Accounts</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                        <th class="p-4">Full Legal Name</th>
-                                        <th class="p-4">Primary Email Node</th>
-                                        <th class="p-4">Mobile Identity Number</th>
-                                        <th class="p-4">System Registration Date</th>
+                                        <th class="p-4">Full Name</th>
+                                        <th class="p-4">Email</th>
+                                        <th class="p-4">Role Designation</th>
+                                        <th class="p-4 text-right">Data Sanity</th>
                                     </tr>
                                 </thead>
-                                <tbody id="users-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                                <tbody id="users-list" class="divide-y divide-slate-100 text-sm">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <section id="feedback" class="hidden space-y-6">
-                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
-                            <h2 class="font-bold text-slate-800">User Opinions & Live Feedback Channel</h2>
-                        </div>
-                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6" id="feedback-grid"></div>
-                    </div>
-                </section>
-
                 <section id="broadcast-panel" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm max-w-xl">
-                        <h3 class="font-bold text-slate-800 text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-rose-500"></i> Global Platform News Broadcast</h3>
-                        <p class="text-xs text-slate-400 mb-4">Send instantly updated popups, notices, or campus-wide event schedules out to all connected active client frontends.</p>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-rose-500"></i> Local System Push Center</h3>
+                        <p class="text-xs text-slate-400 mb-4">Send push updates directly to buyers or sellers when they access CampusDuka.</p>
                         <form onsubmit="handleGlobalBroadcast(event)" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-1">Target Viewers</label>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Target Segment Destination</label>
                                 <select id="broadcast-target" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-sm">
                                     <option value="all">Everyone on Platform</option>
                                     <option value="sellers">Sellers & Stores Only</option>
@@ -401,20 +309,10 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-1">Alert Category</label>
-                                <select id="broadcast-type" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-sm">
-                                    <option value="info">System Info Note (Blue)</option>
-                                    <option value="warning">System Maintenance Warning (Amber)</option>
-                                    <option value="success">Marketplace Promo Notice (Green)</option>
-                                </select>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Notification Message</label>
+                                <textarea id="broadcast-message" rows="3" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="Write system notification content here..." required></textarea>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-1">Message Content Strings</label>
-                                <textarea id="broadcast-message" rows="4" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Type maintenance windows or flash sale protocols here..." required></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">
-                                Dispatch Global Banner Alert
-                            </button>
+                            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-lg text-sm transition">Dispatch Broadcast Notice</button>
                         </form>
                     </div>
                 </section>
@@ -423,624 +321,333 @@
         </div>
     </div>
 
-    <div id="rejection-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl border border-slate-100">
-            <h3 class="text-lg font-bold text-slate-800 mb-2">Provide Reason for Rejection</h3>
-            <textarea id="rejection-reason" rows="4" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm mb-4 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter reason (e.g., pricing incorrect, blurred images)..."></textarea>
-            <div class="flex justify-end gap-3 text-sm font-semibold">
-                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 transition">Cancel</button>
-                <button id="confirm-reject-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-sm">Confirm Rejection</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const API_BASE_URL = "https://campusduka-api.onrender.com"; 
-
-        let selectedRejectProductId = null;
-        let lastKnownProductCount = 0;
-        let lastKnownOrderCount = 0;
-
-        // Persist campaign data structures locally
-        let activeBanners = JSON.parse(localStorage.getItem('active_banners')) || [];
-        let incomingFeaturedRequests = JSON.parse(localStorage.getItem('inc_feat_req')) || [
-            { id: 101, title: "iPhone 13 Pro Max", seller: "Alvin Gadgets", hours: 24, cost: 350 },
-            { id: 102, title: "Executive Study Desk", seller: "Campus Woodworks", hours: 12, cost: 200 }
-        ];
-        let incomingBannerRequests = JSON.parse(localStorage.getItem('inc_banner_req')) || [
-            { id: 201, title: "M-Pesa Cashless Bonanza", seller: "Fintech Aggregator Store", image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500", target: "https://google.com", cost: 1500 }
-        ];
-
-        function playNotificationSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
-                setTimeout(() => {
-                    const osc2 = ctx.createOscillator();
-                    osc2.connect(gain);
-                    osc2.type = 'sine';
-                    osc2.frequency.setValueAtTime(880, ctx.currentTime);
-                    osc2.start();
-                    osc2.stop(ctx.currentTime + 0.3);
-                }, 150);
-            } catch(e) { console.log("Audio contexts locked till user active touch mapping."); }
+        // Real-world database seed backup structure (LocalStorage mapping)
+        function initSeedDatabase() {
+            if (!localStorage.getItem('registered_users')) {
+                const userDB = [
+                    { fullname: "Jesse Gichuhi", email: "jesse@sile.co.ke", role: "seller" },
+                    { fullname: "Mercy Wanjiku", email: "mercy@campus.ke", role: "buyer" },
+                    { fullname: "Ken Onyango", email: "ken@gmail.com", role: "buyer" }
+                ];
+                localStorage.setItem('registered_users', JSON.stringify(userDB));
+            }
+            if (!localStorage.getItem('store_products')) {
+                const initialProducts = [
+                    { id: "101", title: "Smart Leather Laptop Bag", price: 1800, category: "Fashion", featured: false, approved: true, seller: "Jesse Gichuhi" },
+                    { id: "102", title: "Wireless Bluetooth Earbuds", price: 1200, category: "Electronics", featured: true, approved: true, seller: "Grace Kemunto" },
+                    { id: "103", title: "Study Table LED Lamp", price: 850, category: "Living", featured: false, approved: false, seller: "Ken Onyango" }
+                ];
+                localStorage.setItem('store_products', JSON.stringify(initialProducts));
+            }
+            if (!localStorage.getItem('orders_database')) {
+                const mockOrders = [
+                    { orderId: "ORD-948", item: "Wireless Bluetooth Earbuds", total: 1200, timeline: "Processing", buyer: "Mercy Wanjiku" }
+                ];
+                localStorage.setItem('orders_database', JSON.stringify(mockOrders));
+            }
         }
+        initSeedDatabase();
 
-        function triggerToastNotification(title, message, iconClass = "fa-cart-shopping") {
-            const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "bg-slate-900 border-l-4 border-indigo-500 text-white p-4 rounded-xl shadow-2xl flex items-start gap-3 w-80 translate-x-12 opacity-0 transition-all duration-300 pointer-events-auto cursor-pointer";
-            toast.innerHTML = `
-                <div class="text-indigo-400 text-lg mt-0.5"><i class="fa-solid ${iconClass}"></i></div>
-                <div>
-                    <h4 class="font-bold text-xs uppercase tracking-wider">${title}</h4>
-                    <p class="text-xs text-slate-300 mt-1">${message}</p>
-                </div>
-            `;
-            container.appendChild(toast);
-            playNotificationSound();
-
-            setTimeout(() => { toast.classList.remove("translate-x-12", "opacity-0"); }, 50);
-            setTimeout(() => {
-                toast.classList.add("translate-x-12", "opacity-0");
-                setTimeout(() => { toast.remove(); }, 300);
-            }, 6000);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            if (Notification.permission !== "granted") { Notification.requestPermission(); }
-            setInterval(() => { document.getElementById('system-clock').innerText = new Date().toLocaleString(); }, 1000);
-
-            refreshAllData();
-            setInterval(pollUpdates, 10000);
-        });
-
+        // Screen Navigation controls
         function showSection(sectionId) {
-            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             
             document.querySelectorAll('.nav-link').forEach(link => {
-                link.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition";
+                link.classList.remove('bg-indigo-600', 'text-white');
+                link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
             });
-            
-            const activeLink = document.getElementById(`nav-${sectionId}`);
-            if(activeLink) {
-                if (sectionId === 'dashboard') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white transition";
-                else if (sectionId === 'pending-products') activeLink.className = "nav-link flex items-center justify-between px-4 py-3 rounded-lg bg-amber-600 text-white transition";
-                else if (sectionId === 'product-catalog') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-sky-600 text-white transition";
-                else if (sectionId === 'featured-manager') activeLink.className = "nav-link flex items-center justify-between px-4 py-3 rounded-lg bg-yellow-600 text-slate-900 font-bold transition";
-                else if (sectionId === 'promotions-manager') activeLink.className = "nav-link flex items-center justify-between px-4 py-3 rounded-lg bg-pink-600 text-white transition";
-                else if (sectionId === 'orders') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-teal-600 text-white transition";
-                else if (sectionId === 'finance') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white transition";
-                else if (sectionId === 'sellers') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-vivid-600 bg-violet-600 text-white transition";
-                else if (sectionId === 'users') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white transition";
-                else if (sectionId === 'feedback') activeLink.className = "nav-link flex items-center justify-between px-4 py-3 rounded-lg bg-cyan-600 text-white transition";
-                else if (sectionId === 'broadcast-panel') activeLink.className = "nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-rose-600 text-white transition";
+
+            const activeNav = document.getElementById(`nav-${sectionId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+                activeNav.classList.add('bg-indigo-600', 'text-white');
             }
+
+            document.getElementById('page-title').innerText = activeNav ? activeNav.innerText.trim() : "Dashboard Overview";
+            refreshAllData();
+        }
+
+        // Live Dynamic State Sync
+        function refreshAllData() {
+            const users = JSON.parse(localStorage.getItem('registered_users')) || [];
+            const products = JSON.parse(localStorage.getItem('store_products')) || [];
+            const orders = JSON.parse(localStorage.getItem('orders_database')) || [];
+            const customAds = JSON.parse(localStorage.getItem('custom_ads')) || [];
+
+            // UI Stat widgets update
+            document.getElementById('stat-total-users').innerText = users.length;
+            document.getElementById('stat-total-sellers').innerText = users.filter(u => u.role === 'seller').length;
+            document.getElementById('stat-total-orders').innerText = orders.length;
+            document.getElementById('stat-total-ads').innerText = customAds.length;
+
+            // Load Pending queue badge
+            const pendingList = products.filter(p => !p.approved);
+            const badgePending = document.getElementById('badge-pending');
+            badgePending.innerText = pendingList.length;
             
-            const titles = {
-                'dashboard': 'Dashboard Overview',
-                'pending-products': 'Marketplace Entry Point Approvals Queue',
-                'product-catalog': 'Modify Dynamic Product Profiles',
-                'featured-manager': 'Featured Ads Slot Routing System',
-                'promotions-manager': 'Homepage Banner Ad Promotions',
-                'orders': 'Fulfillment Pipeline & Connect Engine',
-                'finance': 'Platform Revenue Splits & Financial Ledger',
-                'sellers': 'Registered Sellers & Subscription Plan Audits',
-                'users': 'Registered User Database',
-                'feedback': 'User Opinions & Live Feedback Channel',
-                'broadcast-panel': 'Global Notification Broadcast Hub'
-            };
-            document.getElementById('page-title').innerText = titles[sectionId] || 'CampusDuka Admin Control Center';
+            // Re-render sub components
+            renderPendingQueue(pendingList);
+            renderProductCatalog(products);
+            renderFeaturedTable(products);
+            renderBannersList(customAds);
+            renderOrdersTable(orders);
+            renderSellersTable(users);
+            renderUsersTable(users);
         }
 
-        async function refreshAllData() {
-            await pollUpdates();
-            fetchPendingProducts();
-            fetchOrders();
-            fetchSellers();
-            fetchUsers();
-            fetchFeedback();
-            loadCatalogManagement();
-            renderFeaturedRequests();
-            renderBannerRequests();
-            renderLiveBanners();
-        }
-
-        async function pollUpdates() {
-            try {
-                const pending = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json()).catch(() => []);
-                const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json()).catch(() => []);
-                const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json()).catch(() => []);
-                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json()).catch(() => []);
-                const feedbacks = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json()).catch(() => []);
-
-                document.getElementById('badge-pending').innerText = pending.length;
-                document.getElementById('badge-pending').classList.toggle('hidden', pending.length === 0);
-                document.getElementById('queue-count').innerText = pending.length;
-                
-                document.getElementById('badge-feedback').innerText = feedbacks.length;
-                document.getElementById('badge-feedback').classList.toggle('hidden', feedbacks.length === 0);
-
-                document.getElementById('badge-featured-req').innerText = incomingFeaturedRequests.length;
-                document.getElementById('badge-featured-req').classList.toggle('hidden', incomingFeaturedRequests.length === 0);
-
-                document.getElementById('badge-banner-req').innerText = incomingBannerRequests.length;
-                document.getElementById('badge-banner-req').classList.toggle('hidden', incomingBannerRequests.length === 0);
-
-                if (pending.length > lastKnownProductCount) {
-                    sendSystemNotification("Approval Queue Updated", `There are ${pending.length} products waiting for review.`);
-                }
-                lastKnownProductCount = pending.length;
-
-                if (orders.length > lastKnownOrderCount && lastKnownOrderCount !== 0) {
-                    const newest = orders[orders.length - 1];
-                    triggerToastNotification("Order Dispatch Detected", `${newest.buyer_name || 'Buyer'} bought ${newest.product_name || 'Item'} for KES ${newest.amount}`, "fa-cart-shopping");
-                }
-                lastKnownOrderCount = orders.length;
-
-                // Finance Calculation
-                let directSalesVolume = 0;
-                let commissionPot = 0;
-                orders.forEach(o => {
-                    if (o.payment_status === 'paid' || o.payment_status === 'Paid') {
-                        directSalesVolume += parseFloat(o.amount || 0);
-                        commissionPot += parseFloat(o.commission_amount || (o.amount * 0.10));
-                    }
-                });
-
-                let subscriptionRevenue = 0;
-                sellers.forEach(s => {
-                    if(s.subscription_plan === 'copper') subscriptionRevenue += 500;
-                    else if(s.subscription_plan === 'bronze') subscriptionRevenue += 1500;
-                    else if(s.subscription_plan === 'gold') subscriptionRevenue += 3000;
-                });
-
-                let adsRevenue = 0;
-                activeBanners.forEach(b => adsRevenue += parseFloat(b.cost || 0));
-
-                document.getElementById('stat-revenue').innerText = `KES ${directSalesVolume.toLocaleString()}`;
-                document.getElementById('stat-commission').innerText = `KES ${commissionPot.toLocaleString()}`;
-                document.getElementById('stat-subs-income').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
-                document.getElementById('stat-ads-income').innerText = `KES ${adsRevenue.toLocaleString()}`;
-                document.getElementById('live-subs-revenue-pool').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
-
-                // Populating Summary Ledger Tab
-                document.getElementById('ledger-sub-rev').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
-                document.getElementById('ledger-ad-rev').innerText = `KES ${adsRevenue.toLocaleString()}`;
-                document.getElementById('ledger-commission-rev').innerText = `KES ${commissionPot.toLocaleString()}`;
-                document.getElementById('ledger-total-combined').innerText = `KES ${(subscriptionRevenue + adsRevenue + commissionPot).toLocaleString()}`;
-
-                renderDynamicLedger(orders);
-            } catch(e) { console.warn("Polling system timed out. Syncing on hold.", e); }
-        }
-
-        function sendSystemNotification(title, message) {
-            if (Notification.permission === "granted") { new Notification(title, { body: message }); }
-        }
-
-        // POPULATING QUEUE LISTS
-        async function fetchPendingProducts() {
-            const list = document.getElementById('pending-products-list');
-            list.innerHTML = "";
-            try {
-                const products = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
-                if(products.length === 0){
-                    list.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 font-medium">Clear Queue! No products currently seeking approvals.</td></tr>`;
-                    return;
-                }
-                products.forEach(p => {
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50 transition";
-                    row.innerHTML = `
-                        <td class="p-4 flex items-center gap-3">
-                            <img src="${p.image_url || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=150'}" class="w-12 h-12 rounded-lg object-cover border border-slate-200">
-                            <div>
-                                <p class="font-bold text-slate-800">${p.title || p.name}</p>
-                                <p class="text-xs text-slate-400 line-clamp-1">${p.description || 'No descriptive tags added'}</p>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <p class="font-semibold text-slate-700">${p.seller_name || 'Independent Merchant'}</p>
-                            <p class="text-xs text-slate-400">${p.seller_phone || 'No phone metric'}</p>
-                        </td>
-                        <td class="p-4 font-bold text-slate-900">KES ${(p.price || 0).toLocaleString()}</td>
-                        <td class="p-4 text-right space-x-2">
-                            <button onclick="respondToItem('${p.id}', 'approve')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition"><i class="fa-solid fa-check"></i> Approve</button>
-                            <button onclick="openRejectionModal('${p.id}')" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition"><i class="fa-solid fa-xmark"></i> Deny</button>
-                        </td>
-                    `;
-                    list.appendChild(row);
-                });
-            } catch(e){ list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Failed to establish connection to entry queue base endpoints.</td></tr>`; }
-        }
-
-        // OUTBOUND SYSTEM INTERACTION LOGIC
-        async function respondToItem(productId, action, notes = "") {
-            try {
-                const endpoint = action === 'approve' ? 'approve-product' : 'reject-product';
-                const res = await fetch(`${API_BASE_URL}/${endpoint}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ product_id: productId, explanation: notes })
-                }).then(r => r.json());
-                
-                triggerToastNotification(action === 'approve' ? "Product Authorized" : "Product Rejected", `Dispatched outbound update email configuration directly to vendor asset logs.`, action === 'approve' ? "fa-circle-check" : "fa-circle-xmark");
-                refreshAllData();
-            } catch(e) { triggerToastNotification("Network Action Interrupted", "Server failed to record modification status.", "fa-triangle-exclamation"); }
-        }
-
-        function openRejectionModal(id) {
-            selectedRejectProductId = id;
-            document.getElementById('rejection-modal').classList.remove('hidden');
-        }
-        function closeRejectionModal() {
-            document.getElementById('rejection-modal').classList.add('hidden');
-            document.getElementById('rejection-reason').value = "";
-        }
-        document.getElementById('confirm-reject-btn').addEventListener('click', () => {
-            const reason = document.getElementById('rejection-reason').value.trim();
-            if(!reason) return alert("You must fill in a rejection parameter message for the merchant.");
-            respondToItem(selectedRejectProductId, 'reject', reason);
-            closeRejectionModal();
-        });
-
-        // DYNAMIC DIRECT PRODUCT PARAMETERS EDITOR MODAL/TAB LOADING
-        async function loadCatalogManagement() {
-            const selectBox = document.getElementById('catalog-product-select');
-            const registryList = document.getElementById('catalog-registry-list');
-            selectBox.innerHTML = '<option value="">-- Choose a Product --</option>';
-            registryList.innerHTML = "";
-            try {
-                // Fetch approved/live listings from active endpoints
-                const products = await fetch(`${API_BASE_URL}/all-products`).then(r => r.json()).catch(() => []);
-                if(products.length === 0) {
-                    registryList.innerHTML = `<tr><td colspan="4" class="p-4 text-slate-400 text-center">No active inventory matches catalog registries.</td></tr>`;
-                    return;
-                }
-                products.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p.id;
-                    opt.innerText = `[KES ${p.price}] ${p.title || p.name}`;
-                    selectBox.appendChild(opt);
-
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50 text-xs";
-                    row.innerHTML = `
-                        <td class="p-4 flex items-center gap-2">
-                            <img src="${p.image_url}" class="w-8 h-8 rounded object-cover border">
-                            <span class="font-bold text-slate-800">${p.title || p.name}</span>
-                        </td>
-                        <td class="p-4 text-slate-500">${p.seller_name || 'Independent Vendor'}</td>
-                        <td class="p-4 font-semibold">KES ${p.price}</td>
+        // 1. Pending approval components
+        function renderPendingQueue(pendingList) {
+            const container = document.getElementById('pending-products-list');
+            container.innerHTML = "";
+            if (pendingList.length === 0) {
+                container.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400">Queue is empty. Everything verified!</td></tr>`;
+                return;
+            }
+            pendingList.forEach(p => {
+                container.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-800">${p.title}</td>
+                        <td class="p-4 text-slate-500">${p.seller || "Merchant"}</td>
+                        <td class="p-4 text-emerald-600 font-bold">KES ${p.price}</td>
                         <td class="p-4 text-right">
-                            <button onclick="selectProductForEdit('${p.id}', '${escape(p.title || p.name)}', ${p.price}, '${escape(p.category || '')}', '${escape(p.description || '')}')" class="text-sky-600 hover:underline font-bold">Select</button>
+                            <button onclick="approveProduct('${p.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1 rounded text-xs mr-2 transition">Approve</button>
+                            <button onclick="rejectProduct('${p.id}')" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded text-xs transition">Reject</button>
                         </td>
-                    `;
-                    registryList.appendChild(row);
-                });
-            } catch(e) {}
+                    </tr>
+                `;
+            });
         }
 
-        function selectProductForEdit(id, title, price, cat, desc) {
-            document.getElementById('catalog-product-select').value = id;
-            document.getElementById('edit-product-id').value = id;
-            document.getElementById('edit-product-title').value = unescape(title);
-            document.getElementById('edit-product-price').value = price;
-            document.getElementById('edit-product-category').value = unescape(cat);
-            document.getElementById('edit-product-desc').value = unescape(desc);
+        window.approveProduct = function(productId) {
+            let products = JSON.parse(localStorage.getItem('store_products')) || [];
+            products = products.map(p => p.id === productId ? { ...p, approved: true } : p);
+            localStorage.setItem('store_products', JSON.stringify(products));
+            refreshAllData();
+        };
+
+        window.rejectProduct = function(productId) {
+            let products = JSON.parse(localStorage.getItem('store_products')) || [];
+            products = products.filter(p => p.id !== productId);
+            localStorage.setItem('store_products', JSON.stringify(products));
+            refreshAllData();
+        };
+
+        // 2. Modify product logic
+        function renderProductCatalog(products) {
+            const list = document.getElementById('catalog-registry-list');
+            list.innerHTML = "";
+            products.filter(p => p.approved).forEach(p => {
+                list.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-800">${p.title}</td>
+                        <td class="p-4 text-slate-500">${p.category}</td>
+                        <td class="p-4 text-slate-800">KES ${p.price}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="editProductField('${p.id}')" class="text-indigo-600 hover:underline font-medium text-xs">Edit Parameters</button>
+                        </td>
+                    </tr>
+                `;
+            });
         }
 
-        async function loadProductToForm() {
-            const selectBox = document.getElementById('catalog-product-select');
-            if(!selectBox.value) return;
-            const pId = selectBox.value;
-            try {
-                const p = await fetch(`${API_BASE_URL}/product/${pId}`).then(r => r.json());
-                selectProductForEdit(p.id, escape(p.title || p.name), p.price, escape(p.category || ''), escape(p.description || ''));
-            } catch(e){}
-        }
+        window.editProductField = function(id) {
+            const products = JSON.parse(localStorage.getItem('store_products')) || [];
+            const item = products.find(p => p.id === id);
+            if(item) {
+                document.getElementById('edit-product-id').value = item.id;
+                document.getElementById('edit-product-title').value = item.title;
+                document.getElementById('edit-product-price').value = item.price;
+                document.getElementById('edit-product-category').value = item.category;
+            }
+        };
 
-        async function handleProductUpdate(e) {
+        window.handleProductUpdate = function(e) {
             e.preventDefault();
             const id = document.getElementById('edit-product-id').value;
-            if(!id) return alert("Please select a target product payload first.");
-            
-            const updatedPayload = {
-                id: id,
+            let products = JSON.parse(localStorage.getItem('store_products')) || [];
+            products = products.map(p => p.id === id ? {
+                ...p,
                 title: document.getElementById('edit-product-title').value,
                 price: parseFloat(document.getElementById('edit-product-price').value),
-                category: document.getElementById('edit-product-category').value,
-                description: document.getElementById('edit-product-desc').value
-            };
+                category: document.getElementById('edit-product-category').value
+            } : p);
+            localStorage.setItem('store_products', JSON.stringify(products));
+            alert("Updated live marketplace product details!");
+            refreshAllData();
+        };
 
-            try {
-                await fetch(`${API_BASE_URL}/update-product`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(updatedPayload)
-                });
-                triggerToastNotification("Product Parameter Modification", "Database records overwrote structural fields flawlessly.", "fa-wrench");
-                document.getElementById('product-update-form').reset();
-                refreshAllData();
-            } catch(e){ alert("Failed to pass parameters upstream."); }
-        }
-
-        // REVENUE BREAKDOWNS & ORDERS DISPATCH VISIBILITY
-        async function fetchOrders() {
-            const container = document.getElementById('orders-list');
-            container.innerHTML = "";
-            try {
-                const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
-                orders.forEach(o => {
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50";
-                    row.innerHTML = `
-                        <td class="p-4">
-                            <p class="font-bold text-slate-800">#ORD-${o.id.toString().substring(0,5)}</p>
-                            <p class="text-[10px] text-slate-400">${o.created_at || 'Recent Date'}</p>
-                        </td>
-                        <td class="p-4">
-                            <p class="font-semibold text-slate-800">${o.buyer_name || 'John Doe Student'}</p>
-                            <p class="text-xs text-slate-500">${o.buyer_phone || '0700000000'}</p>
-                        </td>
-                        <td class="p-4">
-                            <p class="font-semibold text-indigo-600">${o.seller_name || 'Vendor Hub'}</p>
-                            <p class="text-xs text-slate-500">${o.seller_phone || '0711111111'}</p>
-                        </td>
-                        <td class="p-4 flex items-center gap-2">
-                            <img src="${o.product_image || 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=100'}" class="w-8 h-8 rounded object-cover">
-                            <span class="font-medium text-slate-700 max-w-[120px] truncate block">${o.product_name || 'Gadget'}</span>
-                        </td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${o.payment_status?.toLowerCase() === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${o.payment_status || 'Pending'}</span></td>
-                        <td class="p-4 font-semibold text-slate-600">${o.fulfillment_status || 'Processing'}</td>
+        // 3. Featured Products Settings
+        function renderFeaturedTable(products) {
+            const tableBody = document.getElementById('featured-table-body');
+            tableBody.innerHTML = "";
+            products.filter(p => p.approved).forEach(p => {
+                const badge = p.featured ? `<span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">Featured On Hero</span>` : `<span class="text-xs text-slate-400">Regular</span>`;
+                const btnLabel = p.featured ? "Unfeature" : "Feature Item";
+                tableBody.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-800">${p.title}</td>
+                        <td class="p-4">${badge}</td>
                         <td class="p-4 text-right">
-                            <button onclick="dispatchOutboundFulfillment('${o.id}')" class="text-xs bg-slate-900 hover:bg-slate-800 text-white px-2.5 py-1 rounded-md transition font-bold"><i class="fa-solid fa-paper-plane mr-1"></i> Send Ping</button>
+                            <button onclick="toggleFeatureStatus('${p.id}')" class="text-xs font-semibold px-3 py-1 rounded border border-slate-300 hover:bg-slate-100">${btnLabel}</button>
                         </td>
-                    `;
-                    container.appendChild(row);
-                });
-            } catch(e){}
-        }
-
-        function dispatchOutboundFulfillment(id) {
-            triggerToastNotification("Outbound Messaging Broadcasted", `Dispatched dispatch status alert texts directly to matching buyer and seller devices.`, "fa-share-nodes");
-        }
-
-        function renderDynamicLedger(orders) {
-            const list = document.getElementById('finance-ledger-list');
-            list.innerHTML = "";
-            orders.forEach(o => {
-                if(o.payment_status?.toLowerCase() === 'paid') {
-                    const gross = parseFloat(o.amount || 0);
-                    const cut = gross * 0.10;
-                    const net = gross - cut;
-
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50 text-xs";
-                    row.innerHTML = `
-                        <td class="p-4 font-medium text-slate-800">${o.product_name}</td>
-                        <td class="p-4 font-bold text-indigo-600">${o.seller_name || 'Merchant Register'}</td>
-                        <td class="p-4 font-semibold">KES ${gross.toLocaleString()}</td>
-                        <td class="p-4 text-red-500">- KES ${cut.toLocaleString()}</td>
-                        <td class="p-4 font-bold text-emerald-600">KES ${net.toLocaleString()}</td>
-                        <td class="p-4 text-right"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[9px]">Escrow Active</span></td>
-                    `;
-                    list.appendChild(row);
-                }
-            });
-        }
-
-        // PREMIUM FEATURED SLOT REQUESTS MANAGER LOGIC
-        function renderFeaturedRequests() {
-            const box = document.getElementById('featured-incoming-requests');
-            box.innerHTML = "";
-            if(incomingFeaturedRequests.length === 0){
-                box.innerHTML = `<p class="text-xs text-slate-400 italic py-4 text-center">No active premium placement queues pending matching funds.</p>`;
-                return;
-            }
-            incomingFeaturedRequests.forEach(r => {
-                const item = document.createElement('div');
-                item.className = "py-3 flex items-center justify-between";
-                item.innerHTML = `
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">${r.title}</p>
-                        <p class="text-xs text-slate-400">By ${r.seller} • Requested ${r.hours} Hours</p>
-                    </div>
-                    <div class="text-right space-y-1">
-                        <p class="text-xs font-bold text-slate-900">KES ${r.cost}</p>
-                        <button onclick="approveFeaturedRequest(${r.id}, '${escape(r.title)}', ${r.hours})" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 text-[10px] font-bold px-2 py-1 rounded transition">Authorize</button>
-                    </div>
+                    </tr>
                 `;
-                box.appendChild(item);
             });
         }
 
-        function approveFeaturedRequest(id, encodedTitle, hours) {
-            const title = unescape(encodedTitle);
-            let activeTimers = JSON.parse(localStorage.getItem('featured_timers')) || {};
-            const expiry = Date.now() + (hours * 60 * 60 * 1000);
-            activeTimers[title] = expiry;
-            localStorage.setItem('featured_timers', JSON.stringify(activeTimers));
-            
-            incomingFeaturedRequests = incomingFeaturedRequests.filter(item => item.id !== id);
-            localStorage.setItem('inc_feat_req', JSON.stringify(incomingFeaturedRequests));
-            
-            triggerToastNotification("Premium Promotion Launched", `"${title}" has been moved to featured slots.`, "fa-star");
+        window.toggleFeatureStatus = function(id) {
+            let products = JSON.parse(localStorage.getItem('store_products')) || [];
+            products = products.map(p => p.id === id ? { ...p, featured: !p.featured } : p);
+            localStorage.setItem('store_products', JSON.stringify(products));
             refreshAllData();
-        }
+        };
 
-        // BANNER AD OPERATIONS SYSTEM HOOKS
-        function renderBannerRequests() {
-            const box = document.getElementById('incoming-banner-requests');
-            box.innerHTML = "";
-            if(incomingBannerRequests.length === 0){
-                box.innerHTML = `<p class="text-xs text-slate-400 italic py-2">No custom merchant banners waiting implementation.</p>`;
-                return;
-            }
-            incomingBannerRequests.forEach(b => {
-                const block = document.createElement('div');
-                block.className = "py-3 flex items-center justify-between";
-                block.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <img src="${b.image}" class="w-16 h-8 rounded object-cover">
-                        <div>
-                            <p class="text-xs font-bold text-slate-800">${b.title}</p>
-                            <p class="text-[10px] text-indigo-500">${b.seller} • Price Pool KES ${b.cost}</p>
-                        </div>
-                    </div>
-                    <button onclick="deployMerchantBanner(${b.id})" class="bg-pink-600 hover:bg-pink-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition">Deploy</button>
-                `;
-                box.appendChild(block);
-            });
-        }
-
-        function deployMerchantBanner(id) {
-            const targetAd = incomingBannerRequests.find(b => b.id === id);
-            if(targetAd) {
-                activeBanners.push(targetAd);
-                localStorage.setItem('active_banners', JSON.stringify(activeBanners));
-                incomingBannerRequests = incomingBannerRequests.filter(b => b.id !== id);
-                localStorage.setItem('inc_banner_req', JSON.stringify(incomingBannerRequests));
-                triggerToastNotification("Corporate Banner Live", `Injected advertisement matrices directly onto user endpoints.`, "fa-rectangle-ad");
-                refreshAllData();
-            }
-        }
-
-        function renderLiveBanners() {
-            const list = document.getElementById('active-ads-list');
-            list.innerHTML = "";
-            if(activeBanners.length === 0){
-                list.innerHTML = `<p class="text-xs text-slate-400 italic py-2">No banners targeted onto active delivery endpoints.</p>`;
-                return;
-            }
-            activeBanners.forEach((b, idx) => {
-                const card = document.createElement('div');
-                card.className = "p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between";
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="text-xs font-bold text-slate-800">${b.title}</div>
-                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded uppercase">Live</span>
-                    </div>
-                    <button onclick="terminateBanner(${idx})" class="text-xs text-red-500 hover:underline font-semibold">Takedown</button>
-                `;
-                list.appendChild(card);
-            });
-        }
-
-        function terminateBanner(index) {
-            activeBanners.splice(index, 1);
-            localStorage.setItem('active_banners', JSON.stringify(activeBanners));
-            triggerToastNotification("Campaign Deflated", "Pulled banner assets off delivery microservices.", "fa-trash");
-            refreshAllData();
-        }
-
-        function handleCreateAd(e) {
+        // 4. Custom Advertisement Campaign Actions
+        window.handleCreateAd = function(e) {
             e.preventDefault();
-            const newAd = {
-                id: Date.now(),
-                title: document.getElementById('ad-title').value,
-                image: document.getElementById('ad-image').value,
-                target: document.getElementById('ad-target').value,
-                cost: parseFloat(document.getElementById('ad-cost').value || 0)
-            };
-            activeBanners.push(newAd);
-            localStorage.setItem('active_banners', JSON.stringify(activeBanners));
-            document.getElementById('ad-form').reset();
-            triggerToastNotification("Ad Implemented", "New homepage ad was injected immediately.", "fa-rectangle-ad");
+            const title = document.getElementById('ad-title').value;
+            const desc = document.getElementById('ad-desc').value;
+            const cta = document.getElementById('ad-cta').value;
+            const link = document.getElementById('ad-link').value;
+
+            const customAds = JSON.parse(localStorage.getItem('custom_ads')) || [];
+            customAds.push({ title, desc, cta, link });
+            localStorage.setItem('custom_ads', JSON.stringify(customAds));
+            
+            document.getElementById('ad-campaign-form').reset();
+            alert("Launched live ad campaign!");
             refreshAllData();
+        };
+
+        function renderBannersList(customAds) {
+            const container = document.getElementById('active-ads-list');
+            container.innerHTML = "";
+            if(customAds.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400">No active custom ad campaigns currently running.</p>`;
+                return;
+            }
+            customAds.forEach((ad, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-slate-100 border rounded-lg flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">${ad.title}</h4>
+                            <p class="text-xs text-slate-500">${ad.desc}</p>
+                            <span class="text-[10px] text-indigo-600 font-semibold mt-1 inline-block">Action: ${ad.cta} | Link: ${ad.link}</span>
+                        </div>
+                        <button onclick="deleteAdCampaign(${index})" class="text-xs text-rose-600 hover:underline"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
         }
 
-        // BACKEND FETCHERS FOR REGISTERS
-        async function fetchSellers() {
+        window.deleteAdCampaign = function(index) {
+            let customAds = JSON.parse(localStorage.getItem('custom_ads')) || [];
+            customAds.splice(index, 1);
+            localStorage.setItem('custom_ads', JSON.stringify(customAds));
+            refreshAllData();
+        };
+
+        // 5. Fulfillment pipelines & Logistics Timelines
+        function renderOrdersTable(orders) {
+            const list = document.getElementById('orders-list');
+            list.innerHTML = "";
+            orders.forEach((ord, index) => {
+                list.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-mono text-xs text-indigo-600">${ord.orderId}</td>
+                        <td class="p-4 text-slate-700">${ord.item}</td>
+                        <td class="p-4 font-bold text-slate-800">KES ${ord.total}</td>
+                        <td class="p-4"><span class="px-2 py-1 text-xs rounded font-semibold bg-slate-200 text-slate-800">${ord.timeline}</span></td>
+                        <td class="p-4 text-right">
+                            <select onchange="updateTimeline('${ord.orderId}', this.value)" class="text-xs border p-1 rounded bg-white">
+                                <option value="Processing" ${ord.timeline === 'Processing' ? 'selected' : ''}>Processing</option>
+                                <option value="In Transit" ${ord.timeline === 'In Transit' ? 'selected' : ''}>In Transit</option>
+                                <option value="Delivered" ${ord.timeline === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.updateTimeline = function(orderId, nextValue) {
+            let orders = JSON.parse(localStorage.getItem('orders_database')) || [];
+            orders = orders.map(o => o.orderId === orderId ? { ...o, timeline: nextValue } : o);
+            localStorage.setItem('orders_database', JSON.stringify(orders));
+            refreshAllData();
+        };
+
+        // 6. Registered Stores Grid
+        function renderSellersTable(users) {
             const list = document.getElementById('sellers-list');
             list.innerHTML = "";
-            try {
-                const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
-                sellers.forEach(s => {
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50";
-                    row.innerHTML = `
-                        <td class="p-4 font-bold text-slate-800">${s.store_name || 'Unnamed Merchant Node'}</td>
-                        <td class="p-4 text-slate-600">${s.phone || 'No Contact Metric'}</td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${s.subscription_plan === 'gold' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}">${s.subscription_plan || 'Free Tier'}</span></td>
-                        <td class="p-4 font-mono text-xs text-slate-400">${s.payment_reference || 'Self-Verified Token'}</td>
-                        <td class="p-4 text-slate-500 text-xs">${s.created_at || 'Pre-existing Record'}</td>
-                    `;
-                    list.appendChild(row);
-                });
-            } catch(e){}
+            const sellersOnly = users.filter(u => u.role === "seller");
+            if(sellersOnly.length === 0){
+                list.innerHTML = `<tr><td colspan="3" class="p-4 text-slate-400 text-center text-xs">No merchants registered.</td></tr>`;
+                return;
+            }
+            sellersOnly.forEach(u => {
+                list.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-800">${u.fullname} <br> <span class="text-xs text-slate-400">${u.email}</span></td>
+                        <td class="p-4 text-xs font-bold text-indigo-600 uppercase">${u.role}</td>
+                        <td class="p-4 text-xs text-slate-500"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Enabled</span></td>
+                    </tr>
+                `;
+            });
         }
 
-        async function fetchUsers() {
+        // 7. Dynamic registered accounts registry logic
+        function renderUsersTable(users) {
             const list = document.getElementById('users-list');
             list.innerHTML = "";
-            try {
-                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
-                users.forEach(u => {
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-50";
-                    row.innerHTML = `
-                        <td class="p-4 font-bold text-slate-700">${u.name || 'Student Account'}</td>
-                        <td class="p-4 text-slate-600">${u.email || 'student@campus.ac.ke'}</td>
-                        <td class="p-4 font-mono text-xs">${u.phone || 'N/A'}</td>
-                        <td class="p-4 text-slate-400 text-xs">${u.created_at || 'Implicit Launch'}</td>
-                    `;
-                    list.appendChild(row);
-                });
-            } catch(e){}
+            users.forEach((user, index) => {
+                list.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-800">${user.fullname}</td>
+                        <td class="p-4 text-slate-500">${user.email}</td>
+                        <td class="p-4"><span class="px-2 py-0.5 text-[10px] uppercase font-bold rounded ${user.role === 'seller' ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-800'}">${user.role}</span></td>
+                        <td class="p-4 text-right">
+                            <button onclick="removeUser(${index})" class="text-rose-600 hover:text-rose-800 font-bold text-xs"><i class="fa-solid fa-trash-can"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
         }
 
-        async function fetchFeedback() {
-            const grid = document.getElementById('feedback-grid');
-            grid.innerHTML = "";
-            try {
-                const feedback = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json());
-                if(feedback.length === 0){
-                    grid.innerHTML = `<p class="text-xs text-slate-400 italic p-4 col-span-2 text-center">No platform complaints or reviews lodged inside public telemetry.</p>`;
-                    return;
-                }
-                feedback.forEach(f => {
-                    const card = document.createElement('div');
-                    card.className = "bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2";
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-bold text-slate-800 text-sm">${f.user_name || 'Anonymous Learner'}</h4>
-                            <span class="text-[10px] text-slate-400 bg-white px-2 py-0.5 rounded border">${f.timestamp || 'Just Now'}</span>
-                        </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">"${f.message || 'Blank content'}"</p>
-                    `;
-                    grid.appendChild(card);
-                });
-            } catch(e){}
-        }
-
-        // COOL REUSABLE HELPER MIGRATION RUNNER
-        async function runDbHelper(route) {
-            try {
-                const res = await fetch(`${API_BASE_URL}${route}`, { method: 'POST' }).then(r => r.json());
-                alert(`Migration Sequence Response: ${res.message || 'Structural updates performed successfully.'}`);
+        window.removeUser = function(index) {
+            if(confirm("Are you sure you want to remove this student account registration?")) {
+                let users = JSON.parse(localStorage.getItem('registered_users')) || [];
+                users.splice(index, 1);
+                localStorage.setItem('registered_users', JSON.stringify(users));
                 refreshAllData();
-            } catch(e){ alert("Database connection refused parameter parsing updates."); }
-        }
+            }
+        };
 
-        // BONUS CORE FEATURE: GLOBAL BROADCAST EXECUTION ENGINE
-        function handleGlobalBroadcast(e) {
+        // 8. Dynamic Custom Targeted Alerts
+        window.handleGlobalBroadcast = function(e) {
             e.preventDefault();
             const target = document.getElementById('broadcast-target').value;
-            const msg = document.getElementById('broadcast-message').value;
-            
-            triggerToastNotification(`Global Alerts Dispatched`, `Pushed critical updates directly onto system indices targeting client webviews.`, "fa-bullhorn");
+            const message = document.getElementById('broadcast-message').value;
+
+            if (target === "all") {
+                localStorage.setItem("global_alert_msg", message);
+            } else if (target === "sellers") {
+                localStorage.setItem("seller_alert_count", "1");
+                localStorage.setItem("seller_alert_msg", message);
+            } else if (target === "buyers") {
+                localStorage.setItem("buyer_alert_count", "1");
+                localStorage.setItem("buyer_alert_msg", message);
+            }
+
+            alert(`🚀 Push alert sent targeted directly towards [${target.toUpperCase()}]`);
             document.getElementById('broadcast-message').value = "";
-        }
+        };
+
+        // Initial launch logic setup
+        refreshAllData();
     </script>
 </body>
 </html>
