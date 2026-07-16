@@ -3,429 +3,513 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout | CampusDuka</title>
-
+  <title>Secure Checkout | CampusDuka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
-    :root{
-      --primary:#0d6efd;
-      --primary-dark:#0b5ed7;
-      --bg:#f4f6fb;
-      --card:#ffffff;
-      --text:#222;
-      --radius:14px;
+    :root {
+      --primary: #4f46e5;         /* Deep Indigo */
+      --primary-hover: #4338ca;   /* Hover Indigo */
+      --secondary: #8b5cf6;       /* Accent Violet */
+      --bg: #f8fafc;              /* Slate Light Background */
+      --card: #ffffff;
+      --text-main: #0f172a;       /* Slate 900 */
+      --text-muted: #64748b;      /* Slate 500 */
+      --border: #e2e8f0;          /* Slate 200 */
+      --radius: 16px;
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:"Poppins", Arial, sans-serif;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
     }
 
-    body{
-      background:var(--bg);
-      color:var(--text);
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
     }
 
     /* NAVBAR */
-    .navbar{
-      background:#fff;
-      padding:14px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      box-shadow:0 2px 8px rgba(0,0,0,0.08);
-      position:sticky;
-      top:0;
-      z-index:100;
+    .navbar {
+      background: #fff;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .logo{
-      font-size:24px;
-      font-weight:700;
-      color:var(--primary);
-      text-decoration:none;
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .nav-links{
-      display:flex;
-      gap:18px;
-      list-style:none;
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
     }
 
-    .nav-links a{
-      text-decoration:none;
-      color:#333;
-      font-weight:500;
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
     }
 
-    .nav-links a:hover{
-      color:var(--primary);
+    .nav-links a:hover {
+      color: var(--primary);
     }
 
-    .menu-icon{
-      display:none;
-      font-size:24px;
-      cursor:pointer;
+    .menu-icon {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-main);
     }
 
-    /* CHECKOUT CARD */
-    .checkout-wrapper{
-      max-width:900px;
-      margin:40px auto;
-      padding:0 16px;
+    /* CHECKOUT LAYOUT */
+    .checkout-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 24px;
     }
 
-    .checkout-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:0 10px 30px rgba(0,0,0,0.08);
-      overflow:hidden;
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+      align-items: start;
     }
 
-    .checkout-header{
-      background:linear-gradient(135deg,var(--primary),#4da3ff);
-      color:#fff;
-      padding:22px;
-      text-align:center;
-      font-size:22px;
-      font-weight:600;
+    /* CARD SYSTEM */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+      padding: 32px;
     }
 
-    .checkout-body{
-      padding:26px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:24px;
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
     }
 
-    /* ORDER SUMMARY */
-    .summary{
-      background:#f8faff;
-      padding:18px;
-      border-radius:var(--radius);
+    /* DYNAMIC ITEMIZATION */
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
     }
 
-    .summary h3{
-      margin-bottom:12px;
-      font-size:18px;
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
     }
 
-    .summary ul{
-      list-style:none;
+    .item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .summary li{
-      padding:10px 0;
-      border-bottom:1px solid #e6e6e6;
-      font-size:15px;
+    .item-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-main);
     }
 
-    .summary li:last-child{
-      border-bottom:none;
+    .item-qty {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
-    .summary .total{
-      margin-top:12px;
-      font-weight:700;
-      text-align:right;
-      font-size:17px;
+    .item-price {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary);
     }
 
-    /* FORM */
-    form{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+    /* PRICING SHEET */
+    .price-sheet {
+      border-top: 2px dashed var(--border);
+      padding-top: 16px;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    input, textarea, select{
-      padding:12px;
-      border-radius:var(--radius);
-      border:1px solid #ccc;
-      font-size:15px;
-      outline:none;
+    .sheet-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-muted);
     }
 
-    input:focus, textarea:focus, select:focus{
-      border-color:var(--primary);
+    .sheet-row.grand-total {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
     }
 
-    textarea{
-      resize:none;
-      height:90px;
+    /* FORM UTILITIES */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
     }
 
-    .pay-btn{
-      background:var(--primary);
-      border:none;
-      color:white;
-      padding:14px;
-      font-size:16px;
-      font-weight:600;
-      border-radius:var(--radius);
-      cursor:pointer;
-      transition:0.25s;
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
     }
 
-    .pay-btn:hover{
-      background:var(--primary-dark);
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-main);
+      outline: none;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    textarea {
+      resize: none;
+      height: 90px;
+      padding-left: 44px;
+    }
+
+    .textarea-icon {
+      top: 22px !important;
+      transform: none !important;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    /* PAYMENT BADGES */
+    .payment-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    /* SUBMIT BUTTON */
+    .pay-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+    }
+
+    .pay-btn:active {
+      transform: translateY(1px);
+    }
+
+    .pay-btn:disabled {
+      background: #cbd5e1;
+      box-shadow: none;
+      cursor: not-allowed;
     }
 
     /* RESPONSIVE */
-    @media(max-width:768px){
-      .checkout-body{
-        grid-template-columns:1fr;
+    @media(max-width: 868px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
       }
 
-      .menu-icon{
-        display:block;
+      .menu-icon {
+        display: block;
       }
 
-      .nav-links{
-        position:absolute;
-        top:64px;
-        left:0;
-        width:100%;
-        background:#fff;
-        flex-direction:column;
-        align-items:center;
-        display:none;
-        padding:15px 0;
+      .nav-links {
+        position: absolute;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        display: none;
+        padding: 24px 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       }
 
-      .nav-links.active{
-        display:flex;
+      .nav-links.active {
+        display: flex;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
-    <a href="index2.html" class="logo">CampusDuka</a>
-
+    <a href="index2.html" class="logo">
+      <i class="fa-solid fa-graduation-cap"></i> CampusDuka
+    </a>
     <i class="fas fa-bars menu-icon" id="menuIcon"></i>
-
     <ul class="nav-links" id="navLinks">
       <li><a href="index2.html">Home</a></li>
       <li><a href="products.html">Products</a></li>
       <li><a href="events.html">Events</a></li>
-      
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- CHECKOUT -->
-  <div class="checkout-wrapper">
-    <div class="checkout-card">
-      <div class="checkout-header">Secure Checkout</div>
-
-      <div class="checkout-body">
-
-        <!-- SUMMARY -->
-        <div class="summary">
-          <h3>Order Summary</h3>
-          <ul id="orderSummary"></ul>
-          <div class="total" id="totalAmount"></div>
-        </div>
-
-        <!-- FORM -->
+  <div class="checkout-container">
+    <div class="checkout-grid">
+      
+      <div class="card">
+        <h2 class="card-title">
+          <i class="fa-solid fa-truck-fast text-indigo-600"></i> Delivery Information
+        </h2>
         <form id="checkoutForm">
-         
-          <input
-id="fullname"
-type="text"
-placeholder="Full Name"
-required>
+          
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <div class="input-wrapper">
+              <i class="fa-regular fa-user"></i>
+              <input id="fullname" type="text" placeholder="e.g. Jesse Gichuhi" required>
+            </div>
+          </div>
 
-<input
-id="phone"
-type="tel"
-placeholder="Mpesa Number"
-required>
+          <div class="form-group">
+            <label for="phone">M-Pesa Mobile Number</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-phone"></i>
+              <input id="phone" type="tel" placeholder="e.g. 0712345678" required>
+            </div>
+          </div>
 
-<textarea
-id="location"
-placeholder="Delivery Location / Hostel / Block"
-required></textarea>
+          <div class="form-group">
+            <label for="location">Hostel Room & Delivery Location</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-map-pin textarea-icon"></i>
+              <textarea id="location" placeholder="e.g. Hostels Block C, Room 4B" required></textarea>
+            </div>
+          </div>
 
-          <input
-type="text"
-value="M-Pesa Payment"
-readonly
-style="
-background:#e8f5e9;
-font-weight:bold;
-text-align:center;
-">
+          <div class="payment-indicator">
+            <i class="fa-solid fa-circle-check"></i> Connected via Secured M-Pesa STK Push
+          </div>
 
-         <button type="submit" class="pay-btn">
-  Complete Order
-</button>
-
+          <button type="submit" class="pay-btn">
+            <i class="fa-solid fa-shield-halved"></i> Complete & Pay Now
+          </button>
+        </form>
       </div>
+
+      <div class="card" style="background: #ffffff;">
+        <h2 class="card-title">
+          <i class="fa-solid fa-basket-shopping text-indigo-600"></i> Cart Summary
+        </h2>
+        
+        <ul id="orderSummary" class="summary-list">
+          </ul>
+
+        <div class="price-sheet">
+          <div class="sheet-row">
+            <span>Items Subtotal</span>
+            <span id="subtotalBox">KES 0.00</span>
+          </div>
+          <div class="sheet-row">
+            <span>Fulfillment Delivery</span>
+            <span class="text-emerald-600 font-bold">FREE</span>
+          </div>
+          <div class="sheet-row grand-total">
+            <span>Total amount</span>
+            <span id="totalAmount">KES 0.00</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script>
-    // MOBILE MENU
-const menuIcon = document.getElementById("menuIcon");
-const navLinks = document.getElementById("navLinks");
+    // MOBILE NAVIGATION DRAWER
+    const menuIcon = document.getElementById("menuIcon");
+    const navLinks = document.getElementById("navLinks");
 
-menuIcon.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
+    menuIcon.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
 
-// LOAD CART
-document.addEventListener("DOMContentLoaded", () => {
+    // RENDER SHOPPING BASKET
+    document.addEventListener("DOMContentLoaded", () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const list = document.getElementById("orderSummary");
+      const subtotalBox = document.getElementById("subtotalBox");
+      const totalBox = document.getElementById("totalAmount");
 
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const list = document.getElementById("orderSummary");
-  const totalBox = document.getElementById("totalAmount");
-
-  if (cart.length === 0) {
-    list.innerHTML = "<li>Your cart is empty 😢</li>";
-    return;
-  }
-
-  let total = 0;
-  list.innerHTML = "";
-
-  cart.forEach(item => {
-
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-
-    const li = document.createElement("li");
-    li.textContent =
-      `${item.name} × ${item.quantity} — KES ${itemTotal.toLocaleString()}`;
-
-    list.appendChild(li);
-
-  });
-
-  totalBox.textContent =
-    `Total: KES ${total.toLocaleString()}`;
-
-});
-
-// SUBMIT
-document.getElementById("checkoutForm")
-.addEventListener("submit", async (e) => {
-
-  e.preventDefault();
-
-  const payBtn =
-    document.querySelector(".pay-btn");
-
-  payBtn.disabled = true;
-
-  payBtn.textContent =
-    "Processing Payment...";
-
-  const phone =
-    document.getElementById("phone").value;
-
-  const cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
-
-  if (cart.length === 0) {
-    alert("Cart is empty");
-    return;
-  }
-
-  const amount =
-    cart.reduce(
-      (sum, item) => sum + (item.price * item.quantity),
-      0
-    );
-
-  try {
-
-    const mpesaResponse = await fetch(
-      "https://campusduka-api.onrender.com/stkpush",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-       body: JSON.stringify({
-
-  fullname:
-    document.getElementById("fullname").value,
-
-  phone: phone.startsWith("0")
-    ? "254" + phone.substring(1)
-    : phone,
-
-  location:
-    document.getElementById("location").value,
-
-  cart,
-
-  amount
-
-})
+      if (cart.length === 0) {
+        list.innerHTML = `
+          <div class="text-center py-8 text-slate-400">
+            <i class="fa-solid fa-basket-shopping text-4xl mb-3 block"></i>
+            <p class="font-medium">Your shopping cart is empty 😢</p>
+          </div>`;
+        return;
       }
-    );
 
-    const mpesaData =
-      await mpesaResponse.json();
+      let total = 0;
+      list.innerHTML = "";
 
-    console.log(mpesaData);
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
 
-   if(mpesaData.ResponseCode==="0"){
-     payBtn.disabled = false;
+        const li = document.createElement("li");
+        li.className = "summary-item";
+        li.innerHTML = `
+          <div class="item-info">
+            <span class="item-name">${item.name}</span>
+            <span class="item-qty">Qty: ${item.quantity} × KES ${item.price.toLocaleString()}</span>
+          </div>
+          <span class="item-price">KES ${itemTotal.toLocaleString()}</span>
+        `;
+        list.appendChild(li);
+      });
 
-payBtn.textContent =
-"Complete Order";
+      subtotalBox.textContent = `KES ${total.toLocaleString()}`;
+      totalBox.textContent = `KES ${total.toLocaleString()}`;
+    });
 
-localStorage.setItem(
-"buyerPhone",
-phone.startsWith("0")
-? "254" + phone.substring(1)
-: phone
-);
+    // SECURED MPESA STK API DISPATCH
+    document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-localStorage.setItem(
-"latestOrderId",
-mpesaData.orderId
-);
+      const payBtn = document.querySelector(".pay-btn");
+      payBtn.disabled = true;
+      payBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Triggering M-Pesa...`;
 
-window.location.href =
-"waiting-payment.html";
+      const phone = document.getElementById("phone").value;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-}else{
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        payBtn.disabled = false;
+        payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
+        return;
+      }
 
-payBtn.disabled = false;
+      const amount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-payBtn.textContent =
-"Complete Order";
+      try {
+        const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            fullname: document.getElementById("fullname").value,
+            phone: phone.startsWith("0") ? "254" + phone.substring(1) : phone,
+            location: document.getElementById("location").value,
+            cart,
+            amount
+          })
+        });
 
-alert(
-"Failed to send M-Pesa prompt."
-);
+        const mpesaData = await mpesaResponse.json();
+        console.log("M-Pesa STK Push Response: ", mpesaData);
 
-}
-  }catch(err){
+        if (mpesaData.ResponseCode === "0") {
+          localStorage.setItem("buyerPhone", phone.startsWith("0") ? "254" + phone.substring(1) : phone);
+          localStorage.setItem("latestOrderId", mpesaData.orderId);
 
-payBtn.disabled = false;
-
-payBtn.textContent =
-"Complete Order";
-
-console.log(err);
-
-alert("Error connecting to M-Pesa");
-
-}
-
-});
-
+          // Route to waiting-payment loader screen
+          window.location.href = "waiting-payment.html";
+        } else {
+          payBtn.disabled = false;
+          payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
+          alert("Failed to send M-Pesa push: " + (mpesaData.CustomerMessage || mpesaData.ResponseDescription || "Invalid parameters"));
+        }
+      } catch (err) {
+        payBtn.disabled = false;
+        payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
+        console.error("Payment connectivity crash:", err);
+        alert("Could not connect to M-Pesa backend gateway. Please try again later.");
+      }
+    });
   </script>
 </body>
 </html>
