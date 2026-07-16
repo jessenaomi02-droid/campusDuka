@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders | CampusDuka</title>
+  <!-- Google Fonts & FontAwesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -122,7 +123,7 @@
       white-space: nowrap;
     }
 
-    .order-id {
+    .seller-id {
       font-size: 13px;
       color: #64748b;
       margin-top: 4px;
@@ -203,14 +204,12 @@
       transition: all 0.3s ease;
     }
 
-    /* Sequential Active States */
     .step.active {
       background: #e0f2fe;
       color: #0369a1;
       font-weight: 600;
     }
 
-    /* Final Target Completed State */
     .step.current {
       background: #0077ff;
       color: white;
@@ -279,11 +278,11 @@
 
 <script>
 let syncInterval = null;
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=300';
 
-// Parse PostgreSQL raw database string representation of arrays e.g. {"url1","url2"}
 function cleanPostgresArray(imgStr) {
   if (!imgStr) return null;
-  if (Array.isArray(imgStr)) return imgStr[0];
+  if (Array.isArray(imgStr)) return imgStr[0] || null;
   
   let cleaned = imgStr.replace(/[{}]/g, '');
   let arr = cleaned.split(',');
@@ -327,9 +326,7 @@ async function loadOrders() {
             let rawStatus = order.delivery_status ? order.delivery_status.toLowerCase() : "pending";
             let badgeClass = "badge-pending";
             let readableStatus = "Pending";
-
-            // Status Map for step highlights
-            let statusIndex = 0; // 0: Pending, 1: Preparing, 2: Shipping, 3: Delivered
+            let statusIndex = 0; 
 
             if (rawStatus === "preparing") {
                 badgeClass = "badge-preparing";
@@ -345,16 +342,16 @@ async function loadOrders() {
                 statusIndex = 3;
             }
 
-            let productName = order.product_name || "Marketplace Product";
-            let productPrice = Number(order.amount || 0).toLocaleString();
+            // Explicitly checks exact order values first to bypass generic fallbacks
+            let productName = order.product_name || (order.product && order.product.name) || "Item Purchased";
+            let productPrice = Number(order.amount || order.product_price || 0).toLocaleString();
             let deliveryLocation = order.delivery_location && order.delivery_location !== "null" ? order.delivery_location : "Not Specified";
             let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Pending";
-            let orderId = order.id || "N/A";
             let sellerId = order.seller_id || "Direct CampusDuka";
 
-            // Timestamp parsing
+            // Timestamp handling
             let formattedDateTime = "Unrecorded";
-            let timeSource = order.created_at;
+            let timeSource = order.created_at || order.date;
             if (timeSource) {
                 const parsedDate = new Date(timeSource);
                 if (!isNaN(parsedDate)) {
@@ -369,23 +366,23 @@ async function loadOrders() {
                 }
             }
 
-            // Clean Image Extract
-            let productImage = 'images/default-package.jpg'; 
-            let databaseImage = cleanPostgresArray(order.product_images || order.image);
-            if (databaseImage) {
+            // Checks root elements, image tags, and nested components for real links
+            let productImage = FALLBACK_IMAGE; 
+            let databaseImage = cleanPostgresArray(order.product_images || order.image || (order.product && order.product.images));
+            if (databaseImage && databaseImage !== "null" && databaseImage.trim() !== "") {
                 productImage = databaseImage;
             }
 
             compiledHTML += `
             <div class="order-card">
                 <div class="order-body">
-                    <img src="${productImage}" class="order-img" alt="${productName}" onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=200'">
+                    <img src="${productImage}" class="order-img" alt="${productName}" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
                     
                     <div class="order-details">
                         <div class="order-header">
                             <div>
                                 <h2>${productName}</h2>
-                                <div class="order-id">Order #${orderId} • Seller ID: ${sellerId}</div>
+                                <div class="seller-id">Seller ID: ${sellerId}</div>
                             </div>
                             <div class="amount">KES ${productPrice}</div>
                         </div>
@@ -404,6 +401,7 @@ async function loadOrders() {
                     <div class="info"><i class="far fa-credit-card"></i> <span><strong>Payment:</strong> ${paymentStatus}</span></div>
                 </div>
 
+                <!-- Live Status Timeline -->
                 <div class="timeline">
                     <div class="step ${statusIndex >= 0 ? (statusIndex === 0 ? 'current' : 'active') : ''}">
                         <i class="fas fa-clock"></i> Pending
@@ -428,7 +426,6 @@ async function loadOrders() {
     }
 }
 
-// Highly responsive instant UI sync (Executes immediately, then polls every 10 seconds)
 window.onload = () => {
     loadOrders();
     if(syncInterval) clearInterval(syncInterval);
