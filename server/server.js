@@ -518,7 +518,7 @@ app.get("/create-orders", async (req, res) => {
   }
 });
 
-/* CREATE ORDER (UPDATED TO AUTOMATICALLY COMPUTE COMMISSIONS / PAYOUT PARTS) */
+/* CREATE ORDER (AUTOMATICALLY COMPUTE COMMISSIONS / PAYOUT PARTS) */
 app.post("/create-order", async (req, res) => {
   try {
     const { buyer_name, buyer_phone, delivery_location, seller_id, product_id, amount } = req.body;
@@ -566,7 +566,7 @@ app.get("/mpesa-token", async (req, res) => {
   }
 });
 
-/* STK PUSH (UPDATED TO ROBUSTLY PARSE INCOMING DATA KEYS AND ENFORCED STRICT TYPING) */
+/* STK PUSH (ROBUSTLY PARSE INCOMING DATA KEYS AND ENFORCED STRICT TYPING) */
 app.post("/stkpush", async (req, res) => {
   try {
     const { fullname, phone, location, cart, amount } = req.body;
@@ -627,7 +627,8 @@ app.post("/stkpush", async (req, res) => {
         PartyA: phone,
         PartyB: BUSINESS_SHORTCODE,
         PhoneNumber: phone,
-        CallBackURL: "https://campusduka-api.onrender.com/mpesa-callback",
+        // Passing the orderId as a query parameter guarantees we update the right record on return
+        CallBackURL: `https://campusduka-api.onrender.com/mpesa-callback?orderId=${orderId}`,
         AccountReference: `ORDER_${orderId}`,
         TransactionDesc: "CampusDuka Order"
       },
@@ -651,20 +652,29 @@ app.post("/stkpush", async (req, res) => {
   }
 });
 
+/* SECURE MPESA CALLBACK */
 app.post("/mpesa-callback", async (req, res) => {
   console.log("CALLBACK RECEIVED");
   const callback = req.body.Body.stkCallback;
+  const { orderId } = req.query; // Capturing from the dynamic query string URL parameter
+
+  if (!orderId) {
+    console.log("Warning: Callback received with no associated orderId URL param!");
+    return res.status(400).json({ error: "Missing orderId" });
+  }
 
   if (callback.ResultCode === 0) {
     await db.query(
-      `UPDATE orders SET payment_status='paid' WHERE id=(SELECT MAX(id) FROM orders)`
+      `UPDATE orders SET payment_status='paid' WHERE id = $1`,
+      [orderId]
     );
-    console.log("Order marked as PAID");
+    console.log(`Order ${orderId} marked as PAID`);
   } else {
     await db.query(
-      `UPDATE orders SET payment_status='failed' WHERE id=(SELECT MAX(id) FROM orders)`
+      `UPDATE orders SET payment_status='failed' WHERE id = $1`,
+      [orderId]
     );
-    console.log("Order marked as FAILED");
+    console.log(`Order ${orderId} marked as FAILED`);
   }
 
   res.status(200).json({
