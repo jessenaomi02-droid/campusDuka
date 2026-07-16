@@ -168,7 +168,7 @@ button {
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
-  border-b: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
   padding-bottom: 12px;
 }
 
@@ -540,7 +540,6 @@ button {
   </div>
 </div>
 
-<!-- Notification Drawer Container -->
 <div id="notif-drawer" class="notification-drawer">
   <div class="notif-header">
     <span>Recent Notifications</span>
@@ -553,9 +552,7 @@ button {
 
 <div class="container">
   
-  <!-- NEW DASHBOARD UTILITIES ROW: EARNINGS & FEEDBACK -->
   <div class="dashboard-grid">
-    <!-- LEFT BOX: Revenue Statistics -->
     <div class="card-box">
       <div class="card-title">
         <i class="fas fa-wallet" style="color:#10b981;"></i> Merchant Ledger & Revenue
@@ -575,13 +572,11 @@ button {
       </p>
     </div>
 
-    <!-- RIGHT BOX: Instant Features & Communication Hub -->
     <div class="card-box">
       <div class="card-title">
         <i class="fas fa-paper-plane" style="color: #0077ff;"></i> CampusDuka Hub Connect
       </div>
       
-      <!-- Interactive Feature Request Select Form -->
       <form onsubmit="handleRequestBoost(event)" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #e2e8f0;">
         <div class="form-group">
           <label>Feature Boost Product Listing</label>
@@ -594,7 +589,6 @@ button {
         </button>
       </form>
 
-      <!-- Message to Support -->
       <form onsubmit="handleSendMessage(event)">
         <div class="form-group">
           <label>Send Message to CampusDuka Admin</label>
@@ -607,7 +601,6 @@ button {
     </div>
   </div>
 
-  <!-- Subscription Plan Core Matrix -->
   <div class="subscription-card">
     <div class="subscription-title">
       <h2><i class="fas fa-award" style="color:#0077ff;"></i> Merchant Membership Matrix</h2>
@@ -847,26 +840,41 @@ async function loadSellerEarnings() {
   }
 }
 
-// FEATURE BOOST REQUEST HANDLER
+// FEATURE BOOST REQUEST HANDLER WITH INTEGRATED STK PUSH
 async function handleRequestBoost(event) {
   event.preventDefault();
   const productId = document.getElementById("boostProductSelect").value;
   if (!productId) return;
 
+  // Ask how many days they want the product boosted (At KES 50 per day)
+  const daysInput = prompt("For how many days do you want to boost this product? (KES 50 per day):", "3");
+  if (daysInput === null) return; // Prompt cancelled
+  
+  const days = parseInt(daysInput);
+  if (isNaN(days) || days <= 0) {
+    alert("Please enter a valid number of days (minimum 1).");
+    return;
+  }
+
+  const totalCost = days * 50;
+  const confirmPayment = confirm(`Boosting this item for ${days} days will cost KES ${totalCost}. Ready to receive your M-Pesa STK Push prompt?`);
+  if (!confirmPayment) return;
+
   try {
-    // Post directly to admin configuration routers
+    // Call the PUT API which handles both starting the STK Push and marking it as featured on approval
     const response = await fetch(`${API_BASE_URL}/feature-product/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ featured: true })
+      body: JSON.stringify({ days: days })
     });
+    
     const result = await response.json();
 
-    if(response.ok) {
-      alert("Success! Your boost promotion is pending verified setup with admin guidelines.");
+    if (response.ok && result.success) {
+      alert(`${result.message || "STK Push triggered!"}\nTotal Amount: KES ${result.total_cost || totalCost}\n\nPlease check your phone, key in your M-Pesa PIN, and once paid, your product boost will be active and visible on the admin & home dashboards.`);
       
-      // Post a localized notification locally to verify
-      appendLocalNotification("Boost Request Dispatched", `Your item boost promotion setup for ID #${productId} is currently live/pending review.`);
+      // Append localization notifications
+      appendLocalNotification("Boost Initiated", `STK Push initiated for ${days} days (KES ${totalCost}). Check your phone to pay.`);
       loadSellerProducts();
     } else {
       alert(result.message || "Unable to queue promotion parameters.");
