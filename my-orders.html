@@ -1,221 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Orders | CampusDuka</title>
-<!-- Google Fonts & FontAwesome Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | CampusDuka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-body {
-  background: #f5f7fb;
-  color: #222;
-}
+    body {
+      background: #f4f6fa;
+      color: #333;
+    }
 
-/* ================= CAMPUSDUKA ORIGINAL NAVBAR ================= */
-.navbar {
-  background: #0077ff;
-  padding: 15px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    /* ================= CAMPUSDUKA NAVBAR ================= */
+    .navbar {
+      background: #0077ff;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
-.logo {
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-}
+    .logo {
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
-.logo a {
-  color: white;
-  text-decoration: none;
-}
+    .logo a {
+      color: white;
+      text-decoration: none;
+    }
 
-/* ================= STRUCTURED CONTAINER ================= */
-.container {
-  max-width: 850px;
-  margin: 30px auto;
-  padding: 20px;
-}
+    /* ================= STRUCTURED CONTAINER ================= */
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
 
-.page-title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 25px;
-  color: #222;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-/* ================= ORGANISED ORDER TRACKING CARDS ================= */
-.order-card {
-  background: white;
-  padding: 25px;
-  margin-bottom: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-  border: 1px solid #eee;
-}
+    /* ================= REFINED ORDER CARDS ================= */
+    .order-card {
+      background: white;
+      padding: 24px;
+      margin-bottom: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-.order-img {
-  width: 100%;
-  max-height: 230px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
+    .order-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+    }
 
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
+    .order-body {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
 
-.order-header h2 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #222;
-}
+    .order-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #f1f5f9;
+      background: #f8fafc;
+      flex-shrink: 0;
+    }
 
-.amount {
-  color: #0077ff;
-  font-weight: bold;
-  font-size: 20px;
-}
+    .order-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-.order-id {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
-  font-weight: 500;
-}
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
 
-/* ================= ORGANISED METRIC GRID ================= */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  background: #f9fbfd;
-  padding: 15px;
-  border-radius: 12px;
-  border: 1px solid #f0f4f8;
-  margin-bottom: 15px;
-}
+    .order-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.4;
+    }
 
-.info {
-  font-size: 14px;
-  color: #444;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+    .amount {
+      color: #0077ff;
+      font-weight: 700;
+      font-size: 18px;
+      white-space: nowrap;
+    }
 
-.info strong {
-  color: #222;
-}
+    .order-id {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+      font-weight: 500;
+    }
 
-/* ================= CLEAN REFINED BADGES ================= */
-.status-badge {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size: 13px;
-  text-transform: capitalize;
-  margin-top: 5px;
-}
+    /* ================= METRIC INFORMATION GRID ================= */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #f1f5f9;
+      margin-bottom: 20px;
+    }
 
-.pending { background: #fff3cd; color: #856404; }
-.preparing { background: #ffe5b4; color: #d97706; }
-.delivery { background: #dbeafe; color: #1d4ed8; }
-.delivered { background: #dcfce7; color: #15803d; }
+    .info {
+      font-size: 13px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-/* ================= STEP TIMELINE SYSTEM ================= */
-.timeline {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
+    .info i {
+      color: #64748b;
+      font-size: 14px;
+      width: 16px;
+      text-align: center;
+    }
 
-.step {
-  padding: 12px 6px;
-  border-radius: 10px;
-  background: #f5f5f5;
-  text-align: center;
-  font-size: 12px;
-  color: #666;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
+    .info strong {
+      color: #1e293b;
+    }
 
-.step.active {
-  background: #0077ff;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 119, 255, 0.2);
-}
+    /* ================= STATUS BADGES ================= */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: capitalize;
+    }
 
-.no-orders {
-  background: white;
-  padding: 40px;
-  text-align: center;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-  color: #666;
-}
+    .badge-pending { background: #fef3c7; color: #d97706; }
+    .badge-preparing { background: #ffe4e6; color: #e11d48; }
+    .badge-delivery { background: #e0f2fe; color: #0284c7; }
+    .badge-delivered { background: #dcfce7; color: #16a34a; }
 
-@media(max-width: 600px) {
-  .timeline {
-    grid-template-columns: 1fr;
-  }
-  .step {
-    flex-direction: row;
-    justify-content: center;
-    padding: 12px;
-  }
-}
-</style>
+    /* ================= TIMELINE SYSTEM ================= */
+    .timeline {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #f1f5f9;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      position: relative;
+    }
+
+    .step {
+      padding: 10px 4px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      text-align: center;
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    /* Sequential Active States */
+    .step.active {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+    }
+
+    /* Final Target Completed State */
+    .step.current {
+      background: #0077ff;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 119, 255, 0.25);
+    }
+
+    .step i {
+      font-size: 14px;
+    }
+
+    .no-orders {
+      background: white;
+      padding: 50px 30px;
+      text-align: center;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+    }
+
+    .no-orders i {
+      font-size: 48px;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .no-orders p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    @media(max-width: 650px) {
+      .order-body {
+        flex-direction: column;
+      }
+      .order-img {
+        width: 100%;
+        height: 180px;
+      }
+      .timeline {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .step {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 12px 16px;
+        gap: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="logo">
-    <a href="index2.html">CampusDuka</a>
+    <a href="index2.html"><i class="fas fa-store"></i> CampusDuka</a>
   </div>
 </nav>
 
 <div class="container">
-  <h1 class="page-title">📦 My Orders</h1>
+  <h1 class="page-title">📦 Track My Orders</h1>
   <div id="ordersList"></div>
 </div>
 
 <script>
 let syncInterval = null;
 
+// Parse PostgreSQL raw database string representation of arrays e.g. {"url1","url2"}
+function cleanPostgresArray(imgStr) {
+  if (!imgStr) return null;
+  if (Array.isArray(imgStr)) return imgStr[0];
+  
+  let cleaned = imgStr.replace(/[{}]/g, '');
+  let arr = cleaned.split(',');
+  return arr[0] ? arr[0].replace(/"/g, '').trim() : null;
+}
+
 async function loadOrders() {
     let phone = localStorage.getItem("buyerPhone");
     if (!phone) {
         document.getElementById("ordersList").innerHTML = `
         <div class="no-orders">
-            No active buyer session found. Please log in to view your orders.
+            <i class="fas fa-user-lock"></i>
+            <p>No active session found. Please check out or register to view your live orders.</p>
         </div>`;
         return;
     }
@@ -226,7 +307,7 @@ async function loadOrders() {
 
     try {
         const response = await fetch(`https://campusduka-api.onrender.com/orders/${phone}`);
-        if (!response.ok) throw new Error("Could not pull backend records.");
+        if (!response.ok) throw new Error("Database fetch error.");
         
         const orders = await response.json();
         const container = document.getElementById("ordersList");
@@ -234,43 +315,47 @@ async function loadOrders() {
         let compiledHTML = "";
 
         if (!orders || orders.length === 0) {
-            container.innerHTML = `<div class="no-orders">No orders found.</div>`;
+            container.innerHTML = `
+            <div class="no-orders">
+                <i class="fas fa-shopping-bag"></i>
+                <p>You haven't placed any orders yet!</p>
+            </div>`;
             return;
         }
 
         orders.forEach(order => {
-            // Null Checking & Clean Status Formatting
             let rawStatus = order.delivery_status ? order.delivery_status.toLowerCase() : "pending";
-            let badgeClass = "pending";
+            let badgeClass = "badge-pending";
             let readableStatus = "Pending";
 
+            // Status Map for step highlights
+            let statusIndex = 0; // 0: Pending, 1: Preparing, 2: Shipping, 3: Delivered
+
             if (rawStatus === "preparing") {
-                badgeClass = "preparing";
+                badgeClass = "badge-preparing";
                 readableStatus = "Preparing";
-            } else if (rawStatus === "out_for_delivery") {
-                badgeClass = "delivery";
+                statusIndex = 1;
+            } else if (rawStatus === "out_for_delivery" || rawStatus === "shipping") {
+                badgeClass = "badge-delivery";
                 readableStatus = "Out For Delivery";
+                statusIndex = 2;
             } else if (rawStatus === "delivered") {
-                badgeClass = "delivered";
+                badgeClass = "badge-delivered";
                 readableStatus = "Delivered";
+                statusIndex = 3;
             }
 
-            // Extract data securely from root layer or nested item objects
-            let productData = order.product || {};
-            
-            let productName = order.product_name || productData.name || productData.title || "Marketplace Product";
-            
-            let rawPrice = order.product_price || productData.price || 0;
-            let productPrice = Number(rawPrice).toLocaleString();
-            
+            let productName = order.product_name || "Marketplace Product";
+            let productPrice = Number(order.amount || 0).toLocaleString();
             let deliveryLocation = order.delivery_location && order.delivery_location !== "null" ? order.delivery_location : "Not Specified";
-            let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Paid";
+            let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Pending";
             let orderId = order.id || "N/A";
+            let sellerId = order.seller_id || "Direct CampusDuka";
 
-            // Timestamp Parsing Block
-            let formattedDateTime = "Date Unrecorded";
-            let timeSource = order.created_at || order.date;
-            if (timeSource && timeSource !== "null") {
+            // Timestamp parsing
+            let formattedDateTime = "Unrecorded";
+            let timeSource = order.created_at;
+            if (timeSource) {
                 const parsedDate = new Date(timeSource);
                 if (!isNaN(parsedDate)) {
                     formattedDateTime = parsedDate.toLocaleDateString('en-US', {
@@ -284,26 +369,34 @@ async function loadOrders() {
                 }
             }
 
-            // Image fallback checks
-            let productImage = 'images/default-package.jpg';
-            if (order.product_images && order.product_images.length > 0) {
-                productImage = order.product_images[0];
-            } else if (productData.images && productData.images.length > 0) {
-                productImage = productData.images[0];
-            } else if (productData.image) {
-                productImage = productData.image;
+            // Clean Image Extract
+            let productImage = 'images/default-package.jpg'; 
+            let databaseImage = cleanPostgresArray(order.product_images || order.image);
+            if (databaseImage) {
+                productImage = databaseImage;
             }
 
             compiledHTML += `
             <div class="order-card">
-                <img src="${productImage}" class="order-img" alt="${productName}">
-                
-                <div class="order-header">
-                    <h2>${productName}</h2>
-                    <div class="amount">KES ${productPrice}</div>
+                <div class="order-body">
+                    <img src="${productImage}" class="order-img" alt="${productName}" onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=200'">
+                    
+                    <div class="order-details">
+                        <div class="order-header">
+                            <div>
+                                <h2>${productName}</h2>
+                                <div class="order-id">Order #${orderId} • Seller ID: ${sellerId}</div>
+                            </div>
+                            <div class="amount">KES ${productPrice}</div>
+                        </div>
+                        
+                        <div>
+                            <span class="status-badge ${badgeClass}">
+                              <i class="fas fa-circle" style="font-size: 8px;"></i> ${readableStatus}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="order-id">Order #${orderId}</div>
                 
                 <div class="info-grid">
                     <div class="info"><i class="far fa-calendar-alt"></i> <span><strong>Placed:</strong> ${formattedDateTime}</span></div>
@@ -311,22 +404,18 @@ async function loadOrders() {
                     <div class="info"><i class="far fa-credit-card"></i> <span><strong>Payment:</strong> ${paymentStatus}</span></div>
                 </div>
 
-                <div>
-                    <span class="status-badge ${badgeClass}">${readableStatus}</span>
-                </div>
-
                 <div class="timeline">
-                    <div class="step ${rawStatus === "pending" ? "active" : ""}">
-                        <i class="fas fa-hourglass-start"></i> Pending
+                    <div class="step ${statusIndex >= 0 ? (statusIndex === 0 ? 'current' : 'active') : ''}">
+                        <i class="fas fa-clock"></i> Pending
                     </div>
-                    <div class="step ${rawStatus === "preparing" ? "active" : ""}">
-                        <i class="fas fa-box"></i> Preparing
+                    <div class="step ${statusIndex >= 1 ? (statusIndex === 1 ? 'current' : 'active') : ''}">
+                        <i class="fas fa-cog"></i> Preparing
                     </div>
-                    <div class="step ${rawStatus === "out_for_delivery" ? "active" : ""}">
-                        <i class="fas fa-truck"></i> Shipping
+                    <div class="step ${statusIndex >= 2 ? (statusIndex === 2 ? 'current' : 'active') : ''}">
+                        <i class="fas fa-shipping-fast"></i> Shipping
                     </div>
-                    <div class="step ${rawStatus === "delivered" ? "active" : ""}">
-                        <i class="fas fa-check-double"></i> Delivered
+                    <div class="step ${statusIndex >= 3 ? (statusIndex === 3 ? 'current' : 'active') : ''}">
+                        <i class="fas fa-check-circle"></i> Delivered
                     </div>
                 </div>
             </div>`;
@@ -339,11 +428,11 @@ async function loadOrders() {
     }
 }
 
-// Intermittent polling timeline configurations (30-second cycles)
+// Highly responsive instant UI sync (Executes immediately, then polls every 10 seconds)
 window.onload = () => {
     loadOrders();
     if(syncInterval) clearInterval(syncInterval);
-    syncInterval = setInterval(loadOrders, 30000); 
+    syncInterval = setInterval(loadOrders, 10000); 
 };
 </script>
 </body>
