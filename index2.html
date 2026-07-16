@@ -101,7 +101,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   gap:20px;
 }
 
-.login-btn, .logout-btn{
+.login-btn, .logout-btn, .dashboard-btn{
   color:white;
   font-weight:600;
   font-size: 14px;
@@ -127,7 +127,15 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background: #dc2626;
 }
 
-.cart-link{
+.dashboard-btn {
+  background: #10b981;
+}
+
+.dashboard-btn:hover {
+  background: #059669;
+}
+
+.cart-link, .nav-orders-link{
   position:relative;
   color:white;
   font-size:22px;
@@ -136,11 +144,11 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   transition: color 0.2s;
 }
 
-.cart-link:hover {
+.cart-link:hover, .nav-orders-link:hover {
   color: #4589be;
 }
 
-#cart-count{
+#cart-count, .nav-badge{
   position:absolute;
   top:-8px;
   right:-10px;
@@ -154,6 +162,10 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   font-size:10px;
   font-weight:bold;
   color:white;
+}
+
+.nav-badge.hidden {
+  display: none;
 }
 
 .hamburger-menu {
@@ -331,6 +343,83 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 @media(max-width:768px){
   .hero h1{ font-size:32px; }
   .hero p{ font-size:15px; }
+}
+
+/* ================= CAMPUSDUKA ADVERTS ================= */
+.campus-ad-banner {
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  background: linear-gradient(135deg, #164e63 0%, #1f2d3d 100%);
+  border: 1px solid #4589be;
+  border-radius: 16px;
+  padding: 30px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.campus-ad-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 60%;
+  height: 200%;
+  background: rgba(69, 137, 190, 0.1);
+  transform: rotate(30deg);
+  pointer-events: none;
+}
+
+.ad-badge {
+  background: #e11d48;
+  color: white;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.ad-text-content {
+  flex: 1;
+  min-width: 280px;
+  z-index: 2;
+}
+
+.ad-text-content h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ad-text-content p {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.ad-cta-btn {
+  background: #10b981;
+  color: white;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.ad-cta-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
 }
 
 /* ================= FEATURED PRODUCTS ================= */
@@ -833,7 +922,12 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     <li><a href="products.html"><i class="fas fa-store"></i>Products</a></li>
     <li><a href="food.html"><i class="fas fa-burger"></i>Fast Foods</a></li>
     <li><a href="events.html"><i class="fas fa-calendar"></i>Events</a></li>
-    <li><a href="my-orders.html"><i class="fas fa-box"></i>My Orders</a></li>
+    <li>
+      <a href="my-orders.html" class="nav-orders-link">
+        <i class="fas fa-box"></i>My Orders
+        <span id="nav-orders-badge" class="nav-badge hidden">0</span>
+      </a>
+    </li>
     <li><a href="contact.html"><i class="fas fa-phone"></i>Contact</a></li>
   </ul>
 
@@ -863,10 +957,12 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     <div class="hero-buttons">
       <a href="products.html" class="button">🛒 Shop Now</a>
       <a href="events.html" class="button secondary">🎉 Events</a>
-      <a href="seller-register.html" class="button">🚀 Become a Seller</a>
+      <a href="seller-register.html" class="button" id="heroSellerBtn">🚀 Become a Seller</a>
     </div>
   </div>
 </section>
+
+<div id="ad-placement-top"></div>
 
 <section class="featured-products">
   <div class="section-header">
@@ -880,6 +976,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     <a href="products.html" class="button">View All Products →</a>
   </div>
 </section>
+
+<div id="ad-placement-mid"></div>
 
 <section class="stats-section">
   <h2>CampusDuka Ecosystem</h2>
@@ -1014,10 +1112,10 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   </div>
 </section>
 
-<section class="seller-section">
+<section class="seller-section" id="bottomSellerSection">
   <h2>Start Selling on CampusDuka</h2>
   <p>Upload products, reach campus buyers and grow your side hustle.</p>
-  <div class="seller-buttons">
+  <div class="seller-buttons" id="bottomSellerButtons">
     <a href="seller-register.html"><button>Become a Seller</button></a>
     <a href="seller-register.html"><button>Seller Login</button></a>
     <a href="seller-register.html"><button>Upload Product</button></a>
@@ -1064,14 +1162,27 @@ function changeBackground(){
 changeBackground();
 setInterval(changeBackground, 4000);
 
-/* CART COUNT SYNCHRONIZATION */
-function updateCartCount(){
+/* CART & ORDERS NOTIFICATION BADGES SYNCHRONIZATION */
+function updateCartAndOrderCounts(){
+  // Update Cart Count
   let cart = JSON.parse(localStorage.getItem('cart'))||[];
   let count = cart.reduce((sum, item)=>sum + item.quantity, 0);
   document.getElementById('cart-count').innerText = count;
+
+  // Update Orders Count dynamically
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
+  let pendingOrders = orders.filter(order => order.status !== 'delivered' && order.status !== 'cancelled');
+  const orderBadge = document.getElementById('nav-orders-badge');
+  
+  if (pendingOrders.length > 0) {
+    orderBadge.innerText = pendingOrders.length;
+    orderBadge.classList.remove('hidden');
+  } else {
+    orderBadge.classList.add('hidden');
+  }
 }
 
-document.addEventListener("DOMContentLoaded", updateCartCount);
+document.addEventListener("DOMContentLoaded", updateCartAndOrderCounts);
 
 /* INTELLIGENT GLOBAL MARKETPLACE SEARCH ENGINE */
 const searchForm = document.getElementById("globalSearchForm");
@@ -1098,14 +1209,52 @@ searchForm.addEventListener("submit", (e) => {
 function renderUserAuthArea(){
   const userArea = document.getElementById("user-area");
   const activeSessionUser = JSON.parse(localStorage.getItem("user"));
+  const heroSellerBtn = document.getElementById("heroSellerBtn");
+  const bottomSellerSection = document.getElementById("bottomSellerSection");
+  const bottomSellerButtons = document.getElementById("bottomSellerButtons");
   
   if(activeSessionUser){
-    userArea.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-        <span style="color:white; font-size:14px; font-weight:600;">👋 Hi, ${activeSessionUser.fullname || 'Student'}</span>
-        <button id="logoutTrigger" class="logout-btn" style="padding: 6px 12px; font-size:12px;"><i class="fas fa-sign-out-alt"></i> Out</button>
-      </div>
-    `;
+    // Determine if the logged-in account is a Seller
+    const isSeller = activeSessionUser.role === 'seller';
+    
+    // Standard User vs Seller UI rendering
+    if (isSeller) {
+      userArea.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <a href="seller-dashboard.html" class="dashboard-btn" style="position: relative;">
+            <i class="fas fa-chart-line"></i> Dashboard
+            <span class="nav-badge" style="top: -6px; right: -8px; background: #3b82f6;">1</span>
+          </a>
+          <button id="logoutTrigger" class="logout-btn" style="padding: 6px 12px; font-size:12px;"><i class="fas fa-sign-out-alt"></i> Out</button>
+        </div>
+      `;
+      
+      // Update Hero Call to Action for Quick Dashboard access
+      if(heroSellerBtn) {
+        heroSellerBtn.href = "seller-dashboard.html";
+        heroSellerBtn.innerHTML = "📊 Seller Dashboard";
+        heroSellerBtn.style.background = "#10b981";
+      }
+
+      // Update bottom registration section to reflect dashboard actions
+      if(bottomSellerSection) {
+        bottomSellerSection.querySelector("h2").innerText = "Manage Your Campus Business";
+        bottomSellerSection.querySelector("p").innerText = "View sales, process incoming student orders, and update products.";
+      }
+      if(bottomSellerButtons) {
+        bottomSellerButtons.innerHTML = `
+          <a href="seller-dashboard.html"><button style="background: #10b981;">Go to Dashboard</button></a>
+          <a href="upload-product.html"><button>Add New Product</button></a>
+        `;
+      }
+    } else {
+      userArea.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span style="color:white; font-size:14px; font-weight:600;">👋 Hi, ${activeSessionUser.fullname || 'Student'}</span>
+          <button id="logoutTrigger" class="logout-btn" style="padding: 6px 12px; font-size:12px;"><i class="fas fa-sign-out-alt"></i> Out</button>
+        </div>
+      `;
+    }
     
     document.getElementById("logoutTrigger").addEventListener("click", () => {
       localStorage.removeItem("user");
@@ -1114,6 +1263,74 @@ function renderUserAuthArea(){
   }
 }
 renderUserAuthArea();
+
+/* RANDOM ADVERT SYSTEM SEED ENGINE */
+const sampleAds = [
+  {
+    title: "🍔 Fast Joint Burger Special!",
+    desc: "Buy 2 Classic Beef Burgers and get a free soda. Deliveries straight to your hostel floor.",
+    cta: "Order Now",
+    link: "food.html?search=burger"
+  },
+  {
+    title: "🎒 Sell Your Unused Campus Items",
+    desc: "Finished your semester? Clean your room and get fast cash. Post an ad instantly!",
+    cta: "Start Selling",
+    link: "seller-register.html"
+  },
+  {
+    title: "🎉 Tech Club Hackathon 2026",
+    desc: "Showcase your innovations, win cash prizes, and network with industry engineers. RSVP today!",
+    cta: "Book Ticket",
+    link: "events.html"
+  },
+  {
+    title: "☀️ Smart Solar Campus Chargers",
+    desc: "Never run out of power during blackouts. Portable lightweight solar power systems available.",
+    cta: "View Solar",
+    link: "products.html?search=solar"
+  }
+];
+
+function injectRandomAdverts() {
+  const topAdPlacement = document.getElementById("ad-placement-top");
+  const midAdPlacement = document.getElementById("ad-placement-mid");
+
+  // Pick two different random ads
+  const randomAd1 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
+  let randomAd2 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
+  
+  while (randomAd2 === randomAd1 && sampleAds.length > 1) {
+    randomAd2 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
+  }
+
+  if (topAdPlacement) {
+    topAdPlacement.innerHTML = `
+      <div class="campus-ad-banner">
+        <div class="ad-text-content">
+          <span class="ad-badge">Sponsored</span>
+          <h3>${randomAd1.title}</h3>
+          <p>${randomAd1.desc}</p>
+        </div>
+        <a href="${randomAd1.link}" class="ad-cta-btn">${randomAd1.cta}</a>
+      </div>
+    `;
+  }
+
+  if (midAdPlacement) {
+    midAdPlacement.innerHTML = `
+      <div class="campus-ad-banner" style="background: linear-gradient(135deg, #111827 0%, #1f2d3d 100%); border-color: #10b981;">
+        <div class="ad-text-content">
+          <span class="ad-badge" style="background: #10b981;">Trending Deal</span>
+          <h3>${randomAd2.title}</h3>
+          <p>${randomAd2.desc}</p>
+        </div>
+        <a href="${randomAd2.link}" class="ad-cta-btn" style="background: #164e63;">${randomAd2.cta}</a>
+      </div>
+    `;
+  }
+}
+injectRandomAdverts();
 
 /* GLOBAL STORAGE CART INJECTION ROUTINE */
 window.handleCartAddition = function(id, name, price, category, image) {
@@ -1134,7 +1351,7 @@ window.handleCartAddition = function(id, name, price, category, image) {
   }
 
   localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
+  updateCartAndOrderCounts();
   alert(`🛒 "${name}" added to your cart successfully!`);
 };
 
@@ -1197,7 +1414,7 @@ async function loadFeaturedProducts(){
       htmlOutput += `
         <div class="product-card">
           <div class="urgency-badge">${chosenBadge}</div>
-          <img src="${image}" alt="${product.name}" loading="lazy">
+          <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/164e63/ffffff?text=CampusDuka';">
           <div class="product-info">
             <div class="product-meta-row">
               <div class="product-category">${product.category || 'Campus'}</div>
