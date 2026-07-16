@@ -45,7 +45,7 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
-/* SETUP EXTENDED DB COLUMNS AND TABLES (NEW ADMIN FEATURES) */
+/* SETUP EXTENDED DB COLUMNS AND TABLES (NEW ADMIN & FEATURE BOOST FEATURES) */
 app.get("/setup-extended-features", async (req, res) => {
   try {
     // 1. Create Feedback Table
@@ -66,6 +66,13 @@ app.get("/setup-extended-features", async (req, res) => {
       ADD COLUMN IF NOT EXISTS commission_amount NUMERIC(10,2) DEFAULT 0.00,
       ADD COLUMN IF NOT EXISTS seller_payout NUMERIC(10,2) DEFAULT 0.00,
       ADD COLUMN IF NOT EXISTS payout_status VARCHAR(20) DEFAULT 'pending'
+    `);
+
+    // 3. Add advertising feature metrics to products table
+    await db.query(`
+      ALTER TABLE products
+      ADD COLUMN IF NOT EXISTS featured_days INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS ad_charge NUMERIC(10,2) DEFAULT 0.00
     `);
 
     res.send("Extended Admin features database columns added successfully!");
@@ -888,7 +895,7 @@ app.get("/add-featured", async (req, res) => {
   }
 });
 
-/* SUBMIT FEEDBACK (NEW) */
+/* SUBMIT FEEDBACK */
 app.post("/feedback", async (req, res) => {
   try {
     const { user_type, name, email, message } = req.body;
@@ -902,7 +909,7 @@ app.post("/feedback", async (req, res) => {
   }
 });
 
-/* GET ALL FEEDBACKS (NEW) */
+/* GET ALL FEEDBACKS */
 app.get("/all-feedback", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM feedback ORDER BY id DESC");
@@ -912,7 +919,7 @@ app.get("/all-feedback", async (req, res) => {
   }
 });
 
-/* SETTLE PAYOUT (NEW) */
+/* SETTLE PAYOUT */
 app.put("/payout-seller/:order_id", async (req, res) => {
   try {
     await db.query(
@@ -922,6 +929,52 @@ app.put("/payout-seller/:order_id", async (req, res) => {
     res.json({ success: true, message: "Payout updated successfully!" });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* REQUEST PRODUCT FEATURE / BOOST (With KES 50 Per Day Rate calculation logic) */
+app.put("/feature-product/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    
+    // Fallback safely to 1 day if 'days' is missing from request body
+    const days = parseInt(req.body.days) || 1; 
+    const DAILY_RATE = 50;
+    const totalCost = days * DAILY_RATE;
+
+    // Persist to PostgreSQL Database
+    const result = await db.query(
+      `UPDATE products 
+       SET featured = true, featured_days = $1, ad_charge = $2 
+       WHERE id = $3 
+       RETURNING id, name, featured, featured_days, ad_charge`,
+      [days, totalCost, productId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Product listing not found"
+      });
+    }
+
+    const updatedProduct = result.rows[0];
+
+    res.json({
+      success: true,
+      message: "Product successfully scheduled for home page promotion!",
+      productId: updatedProduct.id,
+      name: updatedProduct.name,
+      featured: updatedProduct.featured,
+      days_promoted: updatedProduct.featured_days,
+      total_cost: updatedProduct.ad_charge,
+      payment_terms: `Payment of KES ${totalCost} will be deducted from your payout balance.`
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
