@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDuka - Ultimate Admin Intelligence Suite</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-50 font-sans text-slate-800">
 
     <div class="flex h-screen overflow-hidden">
         
-        <!-- SIDEBAR -->
         <div class="w-64 bg-slate-900 text-white flex flex-col justify-between shrink-0">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
@@ -29,6 +26,8 @@
                     </a>
                     
                     <a href="#" onclick="showSection('featured-manager')" id="nav-featured-manager" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Listings</a>
+
+                    <a href="#" onclick="showSection('promotions-manager')" id="nav-promotions-manager" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-rectangle-ad text-pink-400"></i> Active Promotions</a>
                     
                     <a href="#" onclick="showSection('orders')" id="nav-orders" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & Tracking</a>
                     
@@ -44,7 +43,6 @@
                     <a href="#" onclick="showSection('users')" id="nav-users" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Users Database</a>
                 </nav>
             </div>
-            <!-- System Status indicator -->
             <div class="p-4 border-t border-slate-800 text-center">
                 <span class="text-[10px] text-emerald-400 flex items-center justify-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Realtime Feed Active
@@ -52,10 +50,8 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT AREA -->
         <div class="flex-1 flex flex-col overflow-y-auto">
             
-            <!-- TOP BAR HEADER -->
             <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
                 <div>
                     <h1 id="page-title" class="text-2xl font-bold text-slate-800">Dashboard Overview</h1>
@@ -69,11 +65,11 @@
                 </div>
             </header>
 
+            <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-3 pointer-events-none"></div>
+
             <main class="p-8 space-y-8">
 
-                <!-- SECTION: DASHBOARD OVERVIEW -->
                 <section id="dashboard" class="space-y-6">
-                    <!-- Metrics Row -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
                             <div class="p-4 bg-emerald-50 text-emerald-600 rounded-lg text-2xl"><i class="fa-solid fa-coins"></i></div>
@@ -105,7 +101,6 @@
                         </div>
                     </div>
 
-                    <!-- Database Initializer Card -->
                     <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                         <div class="flex items-center gap-2 mb-3">
                             <i class="fa-solid fa-circle-nodes text-indigo-500 text-xl"></i>
@@ -118,7 +113,6 @@
                     </div>
                 </section>
 
-                <!-- SECTION: PENDING PRODUCT APPROVALS -->
                 <section id="pending-products" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
@@ -140,10 +134,8 @@
                     </div>
                 </section>
 
-                <!-- SECTION: FEATURED SPONSORSHIPS WITH EXPIRY COUNTDOWNS -->
                 <section id="featured-manager" class="hidden space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Promotion Launcher Form -->
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                             <h3 class="font-bold text-slate-800 mb-4">Launch Featured Promotion</h3>
                             <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
@@ -152,13 +144,12 @@
                                     <select id="feature-product-select" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-sm" required></select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Featured Duration (Minutes)</label>
-                                    <input type="number" id="feature-duration" min="1" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. 60 for 1 hour" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Featured Duration (Hours)</label>
+                                    <input type="number" id="feature-duration" min="1" step="0.1" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. 24 for 1 day, 1 for 1 hour" required>
                                 </div>
                                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">Feature Listing</button>
                             </form>
                         </div>
-                        <!-- Live Active Timers visual -->
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                             <h3 class="font-bold text-slate-800 mb-4">Active Promotions & Countdown</h3>
                             <div id="active-featured-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
@@ -166,7 +157,33 @@
                     </div>
                 </section>
 
-                <!-- SECTION: ORDERS TRACKING (REAL-TIME STATUS ADJUSTER) -->
+                <section id="promotions-manager" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4">Launch Banner Promotion</h3>
+                            <form id="ad-form" onsubmit="handleCreateAd(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Campaign Title</label>
+                                    <input type="text" id="ad-title" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. Back to School Blowout" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Promo Image URL</label>
+                                    <input type="url" id="ad-image" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Redirect / Target URL</label>
+                                    <input type="url" id="ad-target" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
+                                </div>
+                                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">Deploy Banner Ad</button>
+                            </form>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4">Live Homepage Banners</h3>
+                            <div id="active-ads-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </section>
+
                 <section id="orders" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
@@ -176,11 +193,11 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                        <th class="p-4">Order ID & Date</th>
-                                        <th class="p-4">Buyer Contact</th>
-                                        <th class="p-4">Product Purchased</th>
+                                        <th class="p-4">Order Info</th>
+                                        <th class="p-4">Buyer Details</th>
+                                        <th class="p-4">Product Purchased & Image</th>
                                         <th class="p-4">Payment Status</th>
-                                        <th class="p-4">Fulfillment Status (Live Status updates)</th>
+                                        <th class="p-4">Fulfillment Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orders-list" class="divide-y divide-slate-100 text-sm"></tbody>
@@ -189,7 +206,6 @@
                     </div>
                 </section>
 
-                <!-- SECTION: FINANCIAL LEDGER & COMMISSIONS -->
                 <section id="finance" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
@@ -199,11 +215,12 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
-                                        <th class="p-4">Order Details</th>
+                                        <th class="p-4">Sold Item Details</th>
+                                        <th class="p-4">Seller Information</th>
                                         <th class="p-4">Gross Transaction (KES)</th>
                                         <th class="p-4">Deducted Commission (10%)</th>
                                         <th class="p-4">Due to Store Seller</th>
-                                        <th class="p-4">Payout Resolution</th>
+                                        <th class="p-4">Payout Status</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -213,20 +230,31 @@
                     </div>
                 </section>
 
-                <!-- SECTION: SELLERS SUBSCRIPTION MANAGEMENT -->
                 <section id="sellers" class="hidden space-y-6">
+                    <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold">Sync Platform Subscription Revenue</h3>
+                            <p class="text-xs text-indigo-200">Reconciled instantly against the database records</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-indigo-300 uppercase tracking-wider">Total Subscriptions Pool</p>
+                            <h1 id="live-subs-revenue-pool" class="text-3xl font-extrabold">KES 0.00</h1>
+                        </div>
+                    </div>
+
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div class="px-6 py-4 bg-slate-50">
-                            <h2 class="font-bold text-slate-800">Store Sellers & Tiering Details</h2>
+                        <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
+                            <h2 class="font-bold text-slate-800">Registered Store Sellers & Plan Audits</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
                                         <th class="p-4">Merchant Store</th>
+                                        <th class="p-4">Contact Phone</th>
                                         <th class="p-4">Subscription Plan</th>
-                                        <th class="p-4">Store Usage</th>
-                                        <th class="p-4">Operations</th>
+                                        <th class="p-4">Payment Verification</th>
+                                        <th class="p-4">Created Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sellers-list" class="divide-y divide-slate-100 text-sm"></tbody>
@@ -235,7 +263,6 @@
                     </div>
                 </section>
 
-                <!-- SECTION: FEEDBACK DISPATCH BOARD -->
                 <section id="feedback" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
@@ -245,7 +272,6 @@
                     </div>
                 </section>
 
-                <!-- SECTION: USERS DATABASE -->
                 <section id="users" class="hidden space-y-6">
                     <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                         <div class="px-6 py-4 bg-slate-50">
@@ -258,6 +284,7 @@
                                         <th class="p-4">Full Name</th>
                                         <th class="p-4">Email Address</th>
                                         <th class="p-4">Phone Number</th>
+                                        <th class="p-4">Join Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="users-list" class="divide-y divide-slate-100 text-sm"></tbody>
@@ -270,7 +297,6 @@
         </div>
     </div>
 
-    <!-- REJECTION REASONING MODAL DIALOG -->
     <div id="rejection-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl border border-slate-100">
             <h3 class="text-lg font-bold text-slate-800 mb-2">Provide Reason for Rejection</h3>
@@ -287,25 +313,76 @@
 
         let selectedRejectProductId = null;
         let lastKnownProductCount = 0;
+        let lastKnownOrderCount = 0;
+
+        // Local Storage state management to preserve features on reload
         let featuredTimers = JSON.parse(localStorage.getItem('featured_timers')) || {};
+        let activeBanners = JSON.parse(localStorage.getItem('active_banners')) || [];
+
+        // Simple Audio Tone generator for notification sounds
+        function playNotificationSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator();
+                    osc2.connect(gain);
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(880, ctx.currentTime); // A5
+                    osc2.start();
+                    osc2.stop(ctx.currentTime + 0.3);
+                }, 150);
+            } catch(e) { console.log("Audio play blocked by browser interaction guidelines."); }
+        }
+
+        // Notification Toast Generator
+        function triggerToastNotification(title, message, iconClass = "fa-cart-shopping") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "bg-slate-900 border-l-4 border-indigo-500 text-white p-4 rounded-xl shadow-2xl flex items-start gap-3 w-80 translate-x-12 opacity-0 transition-all duration-300 pointer-events-auto cursor-pointer";
+            toast.innerHTML = `
+                <div class="text-indigo-400 text-lg mt-0.5"><i class="fa-solid ${iconClass}"></i></div>
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider">${title}</h4>
+                    <p class="text-xs text-slate-300 mt-1">${message}</p>
+                </div>
+            `;
+            container.appendChild(toast);
+            playNotificationSound();
+
+            setTimeout(() => {
+                toast.classList.remove("translate-x-12", "opacity-0");
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add("translate-x-12", "opacity-0");
+                setTimeout(() => { toast.remove(); }, 300);
+            }, 6000);
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Request System Push Notification Permissions
             if (Notification.permission !== "granted") {
                 Notification.requestPermission();
             }
 
-            // Sync Clock Time
             setInterval(() => {
                 document.getElementById('system-clock').innerText = new Date().toLocaleString();
             }, 1000);
 
-            // Fetch and set up poll loops (checks for new updates automatically every 10s)
             refreshAllData();
             setInterval(pollUpdates, 10000);
             
-            // Countdown timer refresh rate (1s)
+            // Core countdown loop runs every 1 second
             setInterval(renderFeaturedTimers, 1000);
+            renderBanners();
         });
 
         // SECTION VISIBILITY ROUTER
@@ -313,7 +390,6 @@
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             
-            // Sync Navigation UI Active Classes
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-indigo-600', 'text-white');
                 link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
@@ -325,11 +401,11 @@
                 activeLink.classList.add('bg-indigo-600', 'text-white');
             }
             
-            // Update title
             const titles = {
                 'dashboard': 'Dashboard Overview',
                 'pending-products': 'Review Sandbox Queue',
                 'featured-manager': 'Featured Partnerships & Campaigns',
+                'promotions-manager': 'Homepage Banner Ad Promotions',
                 'orders': 'Fulfillment Tracking Engine',
                 'finance': 'Platform Financial Ledger',
                 'sellers': 'Sellers Subscription Portals',
@@ -371,6 +447,14 @@
                 }
                 lastKnownProductCount = pending.length;
 
+                // Order Placed Real-Time Toast Alerts
+                if (orders.length > lastKnownOrderCount && lastKnownOrderCount !== 0) {
+                    const newestOrder = orders[orders.length - 1];
+                    const cleanProductName = newestOrder.product_name || "Item Purchased";
+                    triggerToastNotification("New Order Placed!", `Buyer ${newestOrder.buyer_name || 'Anonymous'} purchased ${cleanProductName} for KES ${(newestOrder.amount || 0).toLocaleString()}`, "fa-cart-shopping");
+                }
+                lastKnownOrderCount = orders.length;
+
                 // Revenue calculation models
                 let grossProductSales = 0;
                 let calculatedCommissions = 0;
@@ -381,7 +465,7 @@
                     }
                 });
 
-                // Compute subscriptions earnings from plan tiers
+                // Compute subscriptions earnings directly from payments
                 let subscriptionRevenue = 0;
                 sellers.forEach(s => {
                     if(s.subscription_plan === 'copper') subscriptionRevenue += 500;
@@ -389,10 +473,11 @@
                     else if(s.subscription_plan === 'gold') subscriptionRevenue += 3000;
                 });
 
-                // Inject dashboard cards
+                // Inject dashboard metrics
                 document.getElementById('stat-revenue').innerText = `KES ${grossProductSales.toLocaleString()}`;
                 document.getElementById('stat-commission').innerText = `KES ${calculatedCommissions.toLocaleString()}`;
                 document.getElementById('stat-subs-income').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
+                document.getElementById('live-subs-revenue-pool').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
                 document.getElementById('stat-users').innerText = users.length;
 
                 renderDynamicLedger(orders);
@@ -484,11 +569,14 @@
                     return `
                         <tr>
                             <td class="p-4 font-semibold text-slate-800">#${o.id}<br><span class="text-xs text-slate-400 font-normal">${new Date(o.created_at).toLocaleString()}</span></td>
-                            <td class="p-4 font-medium">${o.buyer_name}<br><span class="text-xs text-slate-400">${o.buyer_phone}</span></td>
-                            <td class="p-4">${o.product_name || 'Generic Item'}</td>
+                            <td class="p-4 font-medium">${o.buyer_name || 'N/A'}<br><span class="text-xs text-slate-400">${o.buyer_phone || 'N/A'}</span></td>
+                            <td class="p-4 flex items-center gap-3">
+                                <img src="${o.product_images?.[0] || o.image || 'https://via.placeholder.com/40'}" class="w-10 h-10 object-cover rounded-md border border-slate-200">
+                                <span class="font-bold text-slate-800">${o.product_name || 'Generic Item'}</span>
+                            </td>
                             <td class="p-4">
                                 <span class="px-2 py-0.5 rounded text-xs font-bold ${o.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
-                                    ${o.payment_status.toUpperCase()}
+                                    ${(o.payment_status || 'PENDING').toUpperCase()}
                                 </span>
                             </td>
                             <td class="p-4">${selectMarkup}</td>
@@ -508,13 +596,13 @@
             } catch (e) { alert(e.message); }
         }
 
-        // FINANCIAL COMMISSION SPLITTER SYSTEM
+        // FINANCIAL COMMISSION SPLITTER SYSTEM WITH COMMISSIONS, SELLER DATA & SPECIFIC ITEMS
         function renderDynamicLedger(orders) {
             const list = document.getElementById('finance-ledger-list');
             const paidOrders = orders.filter(o => o.payment_status === 'paid');
 
             if(paidOrders.length === 0) {
-                list.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No active financial settlements calculated.</td></tr>`;
+                list.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No active financial settlements calculated.</td></tr>`;
                 return;
             }
 
@@ -524,196 +612,268 @@
                 const isPayoutSettled = o.payout_status === 'paid_to_seller';
 
                 return `
-                    <tr class="${isPayoutSettled ? 'bg-slate-50' : 'bg-white'}">
-                        <td class="p-4">
-                            <span class="font-bold text-slate-700">Order #${o.id}</span><br>
-                            <span class="text-xs text-slate-400">${new Date(o.created_at).toLocaleString()}</span>
+                    <tr class="${isPayoutSettled ? 'bg-emerald-50/55' : ''}">
+                        <td class="p-4 font-semibold text-slate-800">
+                            ${o.product_name || 'Generic Item'}<br>
+                            <span class="text-xs text-slate-400 font-normal">Order ID: #${o.id}</span>
                         </td>
-                        <td class="p-4 font-medium text-slate-800">KES ${parseFloat(o.amount).toFixed(2)}</td>
-                        <td class="p-4 text-indigo-600 font-bold">KES ${comm}</td>
-                        <td class="p-4 text-emerald-600 font-semibold">KES ${payout}</td>
                         <td class="p-4">
-                            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${isPayoutSettled ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                                ${isPayoutSettled ? 'PAYOUT DISPATCHED' : 'PENDING DISPATCH'}
+                            <span class="font-medium text-slate-700">Seller Phone: ${o.seller_phone || 'Direct'}</span><br>
+                            <span class="text-xs text-slate-400">Seller ID: ${o.seller_id || 'CampusDuka'}</span>
+                        </td>
+                        <td class="p-4 font-bold text-slate-800">KES ${parseFloat(o.amount || 0).toLocaleString()}</td>
+                        <td class="p-4 text-red-600 font-medium">KES ${comm}</td>
+                        <td class="p-4 text-emerald-600 font-bold">KES ${payout}</td>
+                        <td class="p-4">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${isPayoutSettled ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                                ${isPayoutSettled ? 'PAID OUT' : 'HOLDING'}
                             </span>
                         </td>
                         <td class="p-4 text-right">
                             ${!isPayoutSettled ? `
-                                <button onclick="settlePayout(${o.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold shadow-sm transition">
-                                    <i class="fa-solid fa-paper-plane mr-1"></i> Settle
+                                <button onclick="triggerSellerPayout(${o.id})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                    Disburse
                                 </button>
-                            ` : `<span class="text-slate-400 text-xs font-bold"><i class="fa-solid fa-circle-check"></i> Completed</span>`}
+                            ` : `
+                                <span class="text-slate-400 text-xs font-semibold"><i class="fa-solid fa-check"></i> Disbursed</span>
+                            `}
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
-        async function settlePayout(orderId) {
-            if(!confirm(`Mark this balance payout as fully settled with the seller?`)) return;
+        async function triggerSellerPayout(orderId) {
             try {
-                const res = await fetch(`${API_BASE_URL}/payout-seller/${orderId}`, { method: 'PUT' }).then(r => r.json());
+                const res = await fetch(`${API_BASE_URL}/settle-seller-payout/${orderId}`, { method: 'POST' }).then(r => r.json());
                 if(res.success) {
-                    alert("Payout status recorded.");
                     refreshAllData();
+                    triggerToastNotification("Payout Settled", `Merchant disbursement for order #${orderId} complete.`, "fa-wallet");
                 }
             } catch(e) { alert(e.message); }
         }
 
-        // CAMPAIGNS & PROMOTIONAL SPONSORSHIPS WITH COUNTDOWNS
+        // POPULATE APPROVED PRODUCTS dropdown
         async function populateApprovedProducts() {
-            const select = document.getElementById('feature-product-select');
             try {
-                const products = await fetch(`${API_BASE_URL}/products`).then(r => r.json());
-                select.innerHTML = `<option value="">-- Choose Approved Product --</option>` + 
-                    products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
-            } catch(e) {}
+                const all = await fetch(`${API_BASE_URL}/all-products`).then(r => r.json());
+                const select = document.getElementById('feature-product-select');
+                
+                // Select active or pending products that are approved
+                const approved = all.filter(p => p.status === 'active' || p.status === 'approved');
+                select.innerHTML = approved.map(p => `<option value="${p.id}">${p.name} (KES ${p.price})</option>`).join('');
+            } catch(e){}
         }
 
-        function handleFeatureProduct(event) {
-            event.preventDefault();
-            const select = document.getElementById('feature-product-select');
-            const productId = select.value;
-            const name = select.options[select.selectedIndex].getAttribute('data-name');
-            const minutes = parseInt(document.getElementById('feature-duration').value);
+        // FEATURED HOURLY CONTROLS & TIMERS
+        async function handleFeatureProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('feature-product-select').value;
+            const hours = parseFloat(document.getElementById('feature-duration').value);
 
-            featuredTimers[productId] = {
-                id: productId,
-                name: name,
-                expiresAt: Date.now() + (minutes * 60000)
+            if(!id) return;
+
+            const expiryTimestamp = Date.now() + (hours * 60 * 60 * 1000); // Converts hours directly into milliseconds
+
+            featuredTimers[id] = {
+                name: document.getElementById('feature-product-select').options[document.getElementById('feature-product-select').selectedIndex].text,
+                expiry: expiryTimestamp
             };
 
             localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            alert(`${name} featured successfully for ${minutes} minutes.`);
+            
+            // Post flag to active database
+            try {
+                await fetch(`${API_BASE_URL}/feature-product/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ featured: true })
+                });
+            } catch(err){}
+
             document.getElementById('feature-form').reset();
             renderFeaturedTimers();
+            triggerToastNotification("Promotion Live", "Product successfully boosted to Featured Status.", "fa-star");
         }
 
-        function renderFeaturedTimers() {
-            const list = document.getElementById('active-featured-list');
-            const keys = Object.keys(featuredTimers);
+        async function renderFeaturedTimers() {
+            const container = document.getElementById('active-featured-list');
+            const now = Date.now();
+            let htmlMarkup = "";
 
-            if(keys.length === 0) {
-                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No active promotional timers running.</p>`;
-                return;
-            }
+            let hasTimers = false;
 
-            list.innerHTML = keys.map(k => {
-                const item = featuredTimers[k];
-                const difference = item.expiresAt - Date.now();
+            for (const [id, data] of Object.entries(featuredTimers)) {
+                hasTimers = true;
+                const timeLeft = data.expiry - now;
 
-                if (difference <= 0) {
-                    delete featuredTimers[k];
+                if (timeLeft <= 0) {
+                    // Time elapsed: Auto-remove the product's featured status on the remote DB
+                    delete featuredTimers[id];
                     localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-                    return '';
+                    await removeFeaturedOnDb(id);
+                    continue;
                 }
 
-                const mins = Math.floor((difference % 3600000) / 60000);
-                const secs = Math.floor((difference % 60000) / 1000);
+                const totalSecs = Math.floor(timeLeft / 1000);
+                const hrs = Math.floor(totalSecs / 3600);
+                const mins = Math.floor((totalSecs % 3600) / 60);
+                const secs = totalSecs % 60;
 
-                return `
-                    <div class="flex items-center justify-between bg-slate-50 border border-slate-200 p-3 rounded-lg shadow-sm">
+                htmlMarkup += `
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-200">
                         <div>
-                            <p class="font-bold text-xs text-slate-800">${item.name}</p>
-                            <p class="text-[10px] text-indigo-600 font-bold"><i class="fa-solid fa-clock animate-pulse"></i> Expires in: ${mins}m ${secs}s</p>
+                            <span class="font-bold text-xs text-slate-700 block">${data.name}</span>
+                            <span class="text-xs text-emerald-500 font-semibold"><i class="fa-solid fa-hourglass-start animate-spin"></i> Active</span>
                         </div>
-                        <button onclick="removeFeaturedTimer('${item.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold transition">Remove</button>
+                        <div class="text-right">
+                            <span class="font-mono font-bold text-xs bg-slate-900 text-white px-2.5 py-1 rounded">
+                                ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}
+                            </span>
+                        </div>
                     </div>
                 `;
-            }).join('');
+            }
+
+            if(!hasTimers) {
+                container.innerHTML = `<div class="text-center text-xs text-slate-400 py-10">No live featured promotions active.</div>`;
+            } else {
+                container.innerHTML = htmlMarkup;
+            }
         }
 
-        function removeFeaturedTimer(id) {
-            delete featuredTimers[id];
-            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            renderFeaturedTimers();
-        }
-
-        // FEEDBACK PORTLET RENDERING
-        async function fetchFeedback() {
-            const grid = document.getElementById('feedback-grid');
+        async function removeFeaturedOnDb(id) {
             try {
-                const feedbacks = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json());
-                if(feedbacks.length === 0) {
-                    grid.innerHTML = `<p class="text-slate-400 text-center text-xs col-span-2 py-4">No consumer or merchant feedback logs have been submitted.</p>`;
-                    return;
-                }
-                grid.innerHTML = feedbacks.map(f => `
-                    <div class="p-4 border border-slate-200 bg-slate-50 rounded-lg space-y-2 hover:shadow-sm transition">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-bold px-2 py-0.5 rounded uppercase ${f.user_type === 'seller' ? 'bg-indigo-100 text-indigo-700' : 'bg-green-100 text-green-700'}">
-                                ${f.user_type}
-                            </span>
-                            <span class="text-[10px] text-slate-400">${new Date(f.created_at).toLocaleString()}</span>
-                        </div>
-                        <p class="font-bold text-sm text-slate-800">${f.name} <span class="font-normal text-xs text-slate-500">(${f.email})</span></p>
-                        <p class="text-slate-600 text-xs italic">"${f.message}"</p>
-                    </div>
-                `).join('');
-            } catch(e) {}
+                await fetch(`${API_BASE_URL}/feature-product/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ featured: false })
+                });
+                refreshAllData();
+            } catch(e){}
         }
 
-        // GENERAL DATA FETCHERS
+        // ACTIVE BANNER ADS PROMOTIONS SECTION
+        function handleCreateAd(e) {
+            e.preventDefault();
+            const title = document.getElementById('ad-title').value;
+            const image = document.getElementById('ad-image').value;
+            const target = document.getElementById('ad-target').value;
+
+            activeBanners.push({ id: Date.now(), title, image, target });
+            localStorage.setItem('active_banners', JSON.stringify(activeBanners));
+            
+            document.getElementById('ad-form').reset();
+            renderBanners();
+            triggerToastNotification("Ad Banner Active", "Promotion added to website carousel.", "fa-rectangle-ad");
+        }
+
+        function deleteBanner(id) {
+            activeBanners = activeBanners.filter(b => b.id !== id);
+            localStorage.setItem('active_banners', JSON.stringify(activeBanners));
+            renderBanners();
+        }
+
+        function renderBanners() {
+            const container = document.getElementById('active-ads-list');
+            if (activeBanners.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs text-slate-400 py-10">No active homepage banner ads.</div>`;
+                return;
+            }
+            container.innerHTML = activeBanners.map(b => `
+                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 flex justify-between items-center gap-3">
+                    <img src="${b.image}" class="w-16 h-10 object-cover rounded-lg border">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-xs text-slate-700 truncate">${b.title}</h4>
+                        <a href="${b.target}" target="_blank" class="text-[10px] text-indigo-500 hover:underline truncate block">${b.target}</a>
+                    </div>
+                    <button onclick="deleteBanner(${b.id})" class="text-red-500 hover:text-red-700 text-sm p-2"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        // FETCH ALL SELLERS DATABASE
         async function fetchSellers() {
             const list = document.getElementById('sellers-list');
             try {
                 const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
-                if(sellers.length === 0) {
-                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No sellers registered in database.</td></tr>`;
+                if (sellers.length === 0) {
+                    list.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No sellers registered on the platform.</td></tr>`;
                     return;
                 }
                 list.innerHTML = sellers.map(s => `
                     <tr>
-                        <td class="p-4 font-bold text-slate-800">${s.name}<br><span class="text-xs text-slate-400">${s.email}</span></td>
-                        <td class="p-4"><span class="bg-indigo-50 text-indigo-700 text-xs px-2 py-0.5 rounded font-bold">${s.subscription_plan || 'free'}</span></td>
-                        <td class="p-4 font-medium">${s.uploads_used || 0} items uploaded</td>
-                        <td class="p-4"><button onclick="manualUpgrade(${s.id})" class="text-indigo-600 hover:text-indigo-800 text-xs font-bold">Manual Upgrade</button></td>
+                        <td class="p-4 font-bold text-slate-800">${s.store_name || s.username || 'Unnamed Store'}</td>
+                        <td class="p-4 font-medium">${s.phone || 'N/A'}</td>
+                        <td class="p-4">
+                            <span class="px-2 py-0.5 rounded text-xs font-semibold uppercase bg-slate-100 text-slate-700">
+                                ${(s.subscription_plan || 'Free').toUpperCase()}
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-700">
+                                VERIFIED
+                            </span>
+                        </td>
+                        <td class="p-4 text-slate-400 text-xs">${s.created_at ? new Date(s.created_at).toLocaleDateString() : 'N/A'}</td>
                     </tr>
                 `).join('');
-            } catch(e) {}
+            } catch(e){}
         }
 
-        async function manualUpgrade(sellerId) {
-            const plan = prompt("Select manual upgrade plan: 'free', 'copper', 'bronze', or 'gold'");
-            if(!plan || !['free', 'copper', 'bronze', 'gold'].includes(plan.toLowerCase())) return alert("Invalid selection.");
+        // FETCH FEEDBACK PORTAL
+        async function fetchFeedback() {
+            const grid = document.getElementById('feedback-grid');
             try {
-                const res = await fetch(`${API_BASE_URL}/upgrade-plan/${sellerId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ plan: plan.toLowerCase() })
-                }).then(r => r.json());
-                if(res.success) {
-                    alert(res.message);
-                    fetchSellers();
+                const feedbacks = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json()).catch(() => []);
+                if (feedbacks.length === 0) {
+                    grid.innerHTML = `<div class="col-span-2 text-center text-slate-400 py-10 text-sm">No live feedback reports received.</div>`;
+                    return;
                 }
-            } catch(err) { alert(err.message); }
+                grid.innerHTML = feedbacks.map(f => `
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-150 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-slate-800 text-sm">${f.name || 'Anonymous User'}</span>
+                                <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold uppercase">${f.type || 'General'}</span>
+                            </div>
+                            <p class="text-xs text-slate-600 italic">"${f.message || ''}"</p>
+                        </div>
+                        <div class="border-t border-slate-200 mt-3 pt-2 text-[10px] text-slate-400 flex justify-between">
+                            <span>Phone: ${f.phone || 'N/A'}</span>
+                            <span>${new Date(f.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e){}
         }
 
+        // FETCH ALL PLATFORM CUSTOMERS DATABASE
         async function fetchUsers() {
             const list = document.getElementById('users-list');
             try {
                 const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
-                if(users.length === 0) {
-                    list.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400">No registered system users.</td></tr>`;
+                if (users.length === 0) {
+                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No registered customers found.</td></tr>`;
                     return;
                 }
                 list.innerHTML = users.map(u => `
                     <tr>
-                        <td class="p-4 font-bold text-slate-800">${u.fullname}</td>
-                        <td class="p-4">${u.email}</td>
-                        <td class="p-4">${u.phone}</td>
+                        <td class="p-4 font-bold text-slate-800">${u.full_name || u.username || 'Anonymous'}</td>
+                        <td class="p-4 text-slate-500">${u.email || 'N/A'}</td>
+                        <td class="p-4 text-slate-700 font-semibold">${u.phone || 'N/A'}</td>
+                        <td class="p-4 text-slate-400 text-xs">${u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</td>
                     </tr>
                 `).join('');
-            } catch(e) {}
+            } catch(e){}
         }
 
-        // DATABASE ACTIONS HELPER
-        async function runDbHelper(route) {
+        async function runDbHelper(endpoint) {
             try {
-                const text = await fetch(`${API_BASE_URL}${route}`).then(r => r.text());
-                alert(`Migration Response: ${text}`);
+                const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'POST' }).then(r => r.json());
+                alert(res.message || "Helper run completed successfully.");
                 refreshAllData();
-            } catch(err) { alert(`Error: ${err.message}`); }
+            } catch (e) { alert("Error connecting to migration helpers: " + e.message); }
         }
     </script>
 </body>
