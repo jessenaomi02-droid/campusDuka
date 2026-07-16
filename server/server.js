@@ -559,11 +559,27 @@ app.get("/mpesa-token", async (req, res) => {
   }
 });
 
-/* STK PUSH (UPDATED TO LOG SPLITS) */
+/* STK PUSH (UPDATED TO ROBUSTLY PARSE INCOMING DATA KEYS AND ENFORCED STRICT TYPING) */
 app.post("/stkpush", async (req, res) => {
   try {
     const { fullname, phone, location, cart, amount } = req.body;
+    
+    if (!cart || cart.length === 0) {
+      return res.status(400).json({ success: false, error: "Cart cannot be empty" });
+    }
+
     const firstItem = cart[0];
+
+    // Safely check frontend variations of Product ID and Seller ID
+    const resolvedProductId = firstItem.product_id || firstItem.id || null;
+    const resolvedSellerId = firstItem.seller_id || firstItem.sellerId || null;
+
+    if (!resolvedProductId || !resolvedSellerId) {
+      return res.status(400).json({
+        success: false,
+        error: `Could not identify product/seller values. ID: ${resolvedProductId}, Seller: ${resolvedSellerId}`
+      });
+    }
 
     // Compute splits for payment metrics
     const rawAmt = parseFloat(amount);
@@ -577,7 +593,7 @@ app.post("/stkpush", async (req, res) => {
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING id
       `,
-      [fullname, phone, location, firstItem.seller_id, firstItem.id, rawAmt, commSplit, finalPayout, 'pending']
+      [fullname, phone, location, resolvedSellerId, resolvedProductId, rawAmt, commSplit, finalPayout, 'pending']
     );
 
     const orderId = orderResult.rows[0].id;
@@ -600,7 +616,7 @@ app.post("/stkpush", async (req, res) => {
         Password: password,
         Timestamp: timestamp,
         TransactionType: "CustomerPayBillOnline",
-        Amount: amount,
+        Amount: Math.round(rawAmt),
         PartyA: phone,
         PartyB: BUSINESS_SHORTCODE,
         PhoneNumber: phone,
@@ -613,12 +629,17 @@ app.post("/stkpush", async (req, res) => {
 
     res.json({
       orderId,
-      ...response.data
+      ResponseCode: response.data.ResponseCode,
+      CustomerMessage: response.data.CustomerMessage,
+      ResponseDescription: response.data.ResponseDescription,
+      CheckoutRequestID: response.data.CheckoutRequestID
     });
   } catch (err) {
+    console.error("STK Push Failure context:", err.response ? err.response.data : err.message);
     res.status(500).json({
       success: false,
-      error: err.message
+      error: err.message,
+      details: err.response ? err.response.data : null
     });
   }
 });
