@@ -3,225 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusDuka - Admin Panel</title>
+    <title>CampusDuka - Ultimate Admin Intelligence Suite</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-slate-50 font-sans text-slate-800">
 
     <div class="flex h-screen overflow-hidden">
         
-        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between">
+        <!-- SIDEBAR -->
+        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between shrink-0">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
                     <span>CampusDuka</span>
-                    <span class="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full">Admin</span>
                 </div>
                 <nav class="p-4 space-y-1">
-                    <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-                    <a href="#" onclick="showSection('pending-products')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-hourglass-half"></i> Pending Approvals</a>
-                    <a href="#" onclick="showSection('featured-manager')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Products</a>
-                    <a href="#" onclick="showSection('orders')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & M-Pesa</a>
-                    <a href="#" onclick="showSection('sellers')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers List</a>
-                    <a href="#" onclick="showSection('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
+                    <a href="#" onclick="showSection('dashboard')" id="nav-dashboard" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white transition"><i class="fa-solid fa-chart-line"></i> Dashboard Overview</a>
+                    
+                    <a href="#" onclick="showSection('pending-products')" id="nav-pending-products" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-hourglass-half"></i> Approvals</span>
+                        <span id="badge-pending" class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                    </a>
+                    
+                    <a href="#" onclick="showSection('featured-manager')" id="nav-featured-manager" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Listings</a>
+                    
+                    <a href="#" onclick="showSection('orders')" id="nav-orders" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & Tracking</a>
+                    
+                    <a href="#" onclick="showSection('finance')" id="nav-finance" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-wallet text-emerald-400"></i> Ledger & Payouts</a>
+                    
+                    <a href="#" onclick="showSection('sellers')" id="nav-sellers" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers & Plans</a>
+                    
+                    <a href="#" onclick="showSection('feedback')" id="nav-feedback" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-comments"></i> User Feedback</span>
+                        <span id="badge-feedback" class="bg-indigo-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                    </a>
+                    
+                    <a href="#" onclick="showSection('users')" id="nav-users" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Users Database</a>
                 </nav>
             </div>
-            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
-                © 2026 CampusDuka Admin Panel
+            <!-- System Status indicator -->
+            <div class="p-4 border-t border-slate-800 text-center">
+                <span class="text-[10px] text-emerald-400 flex items-center justify-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Realtime Feed Active
+                </span>
             </div>
         </div>
 
+        <!-- MAIN CONTENT AREA -->
         <div class="flex-1 flex flex-col overflow-y-auto">
             
-            <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center sticky top-0 z-10">
-                <h1 id="page-title" class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+            <!-- TOP BAR HEADER -->
+            <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+                <div>
+                    <h1 id="page-title" class="text-2xl font-bold text-slate-800">Dashboard Overview</h1>
+                    <p class="text-xs text-slate-400 mt-0.5">System Status: <span class="text-emerald-500 font-semibold">Online & Monitoring Live</span></p>
+                </div>
                 <div class="flex items-center gap-4">
-                    <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
-                        <i class="fa-solid fa-rotate"></i> Refresh Data
-                    </button>
-                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
-                        A
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400">Last Synced Time</p>
+                        <p id="system-clock" class="text-sm font-semibold text-slate-700"></p>
                     </div>
                 </div>
             </header>
 
-            <main class="p-8">
+            <main class="p-8 space-y-8">
 
+                <!-- SECTION: DASHBOARD OVERVIEW -->
                 <section id="dashboard" class="space-y-6">
+                    <!-- Metrics Row -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                            <div class="p-4 bg-yellow-50 text-yellow-600 rounded-lg text-2xl"><i class="fa-solid fa-clock"></i></div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="p-4 bg-emerald-50 text-emerald-600 rounded-lg text-2xl"><i class="fa-solid fa-coins"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-medium">Pending Approvals</p>
-                                <h3 id="stat-pending" class="text-2xl font-bold text-gray-800">0</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Sales Revenue</p>
+                                <h3 id="stat-revenue" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                            <div class="p-4 bg-green-50 text-green-600 rounded-lg text-2xl"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-building-columns"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-medium">Total Orders</p>
-                                <h3 id="stat-orders" class="text-2xl font-bold text-gray-800">0</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Platform Commissions</p>
+                                <h3 id="stat-commission" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                            <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-store"></i></div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="p-4 bg-violet-50 text-violet-600 rounded-lg text-2xl"><i class="fa-solid fa-receipt"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-medium">Total Sellers</p>
-                                <h3 id="stat-sellers" class="text-2xl font-bold text-gray-800">0</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Subscription Income</p>
+                                <h3 id="stat-subs-income" class="text-2xl font-bold text-slate-800">KES 0.00</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                            <div class="p-4 bg-blue-50 text-blue-600 rounded-lg text-2xl"><i class="fa-solid fa-users"></i></div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="p-4 bg-pink-50 text-pink-600 rounded-lg text-2xl"><i class="fa-solid fa-users"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-medium">Total Buyers</p>
-                                <h3 id="stat-users" class="text-2xl font-bold text-gray-800">0</h3>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Users</p>
+                                <h3 id="stat-users" class="text-2xl font-bold text-slate-800">0</h3>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-screwdriver-wrench text-indigo-500 mr-2"></i>Database Setup Helpers</h2>
-                        <p class="text-sm text-gray-500 mb-4">Click these initialization utilities if you need to quickly add structural columns or create tables in your Database on the fly.</p>
-                        <div class="flex flex-wrap gap-3">
-                            <button onclick="runDbHelper('/create-users')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Users Table</button>
-                            <button onclick="runDbHelper('/create-products')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Products & Sellers Tables</button>
-                            <button onclick="runDbHelper('/create-orders')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Orders Table</button>
-                            <button onclick="runDbHelper('/create-subscription-payments')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Subscription Payments Table</button>
-                            <button onclick="runDbHelper('/update-status')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Status Column</button>
-                            <button onclick="runDbHelper('/add-seller-id')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Seller ID Column</button>
-                            <button onclick="runDbHelper('/upgrade-subscriptions')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Upgrade Subscription Schema</button>
-                            <button onclick="runDbHelper('/add-featured')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Featured Column</button>
+                    <!-- Database Initializer Card -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-circle-nodes text-indigo-500 text-xl"></i>
+                            <h3 class="font-bold text-slate-800">Required Extended Features Database Migration</h3>
                         </div>
+                        <p class="text-sm text-slate-500 mb-4">Run this migrator to ensure your remote database has the correct fields required for the live commissions, payout splits, and feedback forms.</p>
+                        <button onclick="runDbHelper('/setup-extended-features')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-sm">
+                            Run Database Migrations
+                        </button>
                     </div>
                 </section>
 
+                <!-- SECTION: PENDING PRODUCT APPROVALS -->
                 <section id="pending-products" class="hidden space-y-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                            <h2 class="font-bold text-gray-800">Products Awaiting Review</h2>
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                            <h2 class="font-bold text-slate-800">Review Product Queue</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
                                         <th class="p-4">Product Details</th>
-                                        <th class="p-4">Seller Info</th>
-                                        <th class="p-4">Price (KES)</th>
-                                        <th class="p-4">Category</th>
+                                        <th class="p-4">Seller Details</th>
+                                        <th class="p-4">Price</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="pending-products-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                <tbody id="pending-products-list" class="divide-y divide-slate-100 text-sm"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- SECTION: FEATURED SPONSORSHIPS WITH EXPIRY COUNTDOWNS -->
                 <section id="featured-manager" class="hidden space-y-6">
-                    <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
-                        <div>
-                            <h2 class="text-xl font-bold">Featured Listings Timer Portal</h2>
-                            <p class="text-sm text-indigo-200 mt-1">Feature items for a set duration. The item automatically returns to normal listing status after the timer runs down.</p>
-                        </div>
-                        <i class="fa-solid fa-stopwatch text-4xl text-indigo-400"></i>
-                    </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Set/Schedule a Product as Featured</h3>
+                        <!-- Promotion Launcher Form -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4">Launch Featured Promotion</h3>
                             <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product (Approved Only)</label>
-                                    <select id="feature-product-select" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm" required>
-                                        <option value="">-- Choose a Product --</option>
-                                    </select>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Choose Approved Product</label>
+                                    <select id="feature-product-select" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-sm" required></select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Featured Duration (in Minutes)</label>
-                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 60 for 1 hour" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    <label class="block text-xs font-semibold text-slate-500 mb-1">Featured Duration (Minutes)</label>
+                                    <input type="number" id="feature-duration" min="1" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="e.g. 60 for 1 hour" required>
                                 </div>
-                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
-                                    Promote to Featured & Start Timer
-                                </button>
+                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">Feature Listing</button>
                             </form>
                         </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Currently Featured Products (With Live Countdown)</h3>
-                            <div class="overflow-y-auto max-h-80 space-y-3" id="active-featured-list">
-                                </div>
+                        <!-- Live Active Timers visual -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4">Active Promotions & Countdown</h3>
+                            <div id="active-featured-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
                         </div>
                     </div>
                 </section>
 
+                <!-- SECTION: ORDERS TRACKING (REAL-TIME STATUS ADJUSTER) -->
                 <section id="orders" class="hidden space-y-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Orders Log & Payments</h2>
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
+                            <h2 class="font-bold text-slate-800">Live Order Fulfillment & Delivery Status Tracker</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
-                                        <th class="p-4">ID</th>
-                                        <th class="p-4">Buyer Phone</th>
-                                        <th class="p-4">Product Name</th>
-                                        <th class="p-4">Price (KES)</th>
-                                        <th class="p-4">M-Pesa Pay Status</th>
-                                        <th class="p-4">Delivery Status</th>
-                                        <th class="p-4 text-right">Actions</th>
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
+                                        <th class="p-4">Order ID & Date</th>
+                                        <th class="p-4">Buyer Contact</th>
+                                        <th class="p-4">Product Purchased</th>
+                                        <th class="p-4">Payment Status</th>
+                                        <th class="p-4">Fulfillment Status (Live Status updates)</th>
                                     </tr>
                                 </thead>
-                                <tbody id="orders-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                <tbody id="orders-list" class="divide-y divide-slate-100 text-sm"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- SECTION: FINANCIAL LEDGER & COMMISSIONS -->
+                <section id="finance" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
+                            <h2 class="font-bold text-slate-800">Financial Ledger & Calculated Merchant Splits</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
+                                        <th class="p-4">Order Details</th>
+                                        <th class="p-4">Gross Transaction (KES)</th>
+                                        <th class="p-4">Deducted Commission (10%)</th>
+                                        <th class="p-4">Due to Store Seller</th>
+                                        <th class="p-4">Payout Resolution</th>
+                                        <th class="p-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finance-ledger-list" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: SELLERS SUBSCRIPTION MANAGEMENT -->
                 <section id="sellers" class="hidden space-y-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Verified Sellers & Subscription Status</h2>
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 bg-slate-50">
+                            <h2 class="font-bold text-slate-800">Store Sellers & Tiering Details</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
-                                        <th class="p-4">ID</th>
-                                        <th class="p-4">Store / Business Name</th>
-                                        <th class="p-4">Contact</th>
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
+                                        <th class="p-4">Merchant Store</th>
                                         <th class="p-4">Subscription Plan</th>
-                                        <th class="p-4">Limit / Uploads Used</th>
-                                        <th class="p-4 text-right">Actions</th>
+                                        <th class="p-4">Store Usage</th>
+                                        <th class="p-4">Operations</th>
                                     </tr>
                                 </thead>
-                                <tbody id="sellers-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                <tbody id="sellers-list" class="divide-y divide-slate-100 text-sm"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- SECTION: FEEDBACK DISPATCH BOARD -->
+                <section id="feedback" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
+                            <h2 class="font-bold text-slate-800">User Opinions & Live Feedback Channel</h2>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6" id="feedback-grid"></div>
+                    </div>
+                </section>
+
+                <!-- SECTION: USERS DATABASE -->
                 <section id="users" class="hidden space-y-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Buyers Registered Database</h2>
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 bg-slate-50">
+                            <h2 class="font-bold text-slate-800">CampusDuka Registered Customer Base</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
-                                        <th class="p-4">ID</th>
+                                    <tr class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b border-slate-200">
                                         <th class="p-4">Full Name</th>
                                         <th class="p-4">Email Address</th>
                                         <th class="p-4">Phone Number</th>
                                     </tr>
                                 </thead>
-                                <tbody id="users-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                <tbody id="users-list" class="divide-y divide-slate-100 text-sm"></tbody>
                             </table>
                         </div>
                     </div>
@@ -231,324 +270,407 @@
         </div>
     </div>
 
-    <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
-            <h3 class="text-lg font-bold text-slate-800 mb-2">Reject Product</h3>
-            <p class="text-sm text-slate-500 mb-4">Please specify a reason. The seller will be informed why their submission was declined.</p>
-            <textarea id="rejection-reason" rows="4" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mb-4" placeholder="e.g. Low resolution image, prohibited campus listing, incorrect pricing..."></textarea>
+    <!-- REJECTION REASONING MODAL DIALOG -->
+    <div id="rejection-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl border border-slate-100">
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Provide Reason for Rejection</h3>
+            <textarea id="rejection-reason" rows="4" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm mb-4 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter reason (e.g., pricing incorrect, blurred images)..."></textarea>
             <div class="flex justify-end gap-3 text-sm font-semibold">
-                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50">Cancel</button>
-                <button id="confirm-reject-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm Rejection</button>
+                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 transition">Cancel</button>
+                <button id="confirm-reject-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-sm">Confirm Rejection</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION: Replace with your actual deployed Render URL or localhost
         const API_BASE_URL = "https://campusduka-api.onrender.com"; 
 
         let selectedRejectProductId = null;
+        let lastKnownProductCount = 0;
         let featuredTimers = JSON.parse(localStorage.getItem('featured_timers')) || {};
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Request System Push Notification Permissions
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+
+            // Sync Clock Time
+            setInterval(() => {
+                document.getElementById('system-clock').innerText = new Date().toLocaleString();
+            }, 1000);
+
+            // Fetch and set up poll loops (checks for new updates automatically every 10s)
             refreshAllData();
-            startLocalCountdownLoop();
+            setInterval(pollUpdates, 10000);
+            
+            // Countdown timer refresh rate (1s)
+            setInterval(renderFeaturedTimers, 1000);
         });
 
-        // SECTION TOOGLE
+        // SECTION VISIBILITY ROUTER
         function showSection(sectionId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             
-            // Sidebar active class updates
+            // Sync Navigation UI Active Classes
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-indigo-600', 'text-white');
                 link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
             });
-            event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
-            event.currentTarget.classList.add('bg-indigo-600', 'text-white');
-
-            const sectionTitles = {
+            
+            const activeLink = document.getElementById(`nav-${sectionId}`);
+            if(activeLink) {
+                activeLink.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+                activeLink.classList.add('bg-indigo-600', 'text-white');
+            }
+            
+            // Update title
+            const titles = {
                 'dashboard': 'Dashboard Overview',
-                'pending-products': 'Pending Products Approval Queue',
-                'featured-manager': 'Featured Products Timer Portal',
-                'orders': 'Orders Log & Payment Verifications',
-                'sellers': 'Registered Sellers & Subscriptions',
-                'users': 'Buyers Registration Log'
+                'pending-products': 'Review Sandbox Queue',
+                'featured-manager': 'Featured Partnerships & Campaigns',
+                'orders': 'Fulfillment Tracking Engine',
+                'finance': 'Platform Financial Ledger',
+                'sellers': 'Sellers Subscription Portals',
+                'feedback': 'User Engagement Feedbacks',
+                'users': 'Registered Customers'
             };
-            document.getElementById('page-title').innerText = sectionTitles[sectionId] || 'Admin Portal';
+            document.getElementById('page-title').innerText = titles[sectionId] || 'CampusDuka Admin';
         }
 
-        // REFRESH DATA PIPELINE
-        function refreshAllData() {
-            fetchStats();
+        async function refreshAllData() {
+            await pollUpdates();
             fetchPendingProducts();
             fetchOrders();
             fetchSellers();
             fetchUsers();
+            fetchFeedback();
             populateApprovedProducts();
         }
 
-        async function fetchStats() {
+        /* AUTO UPDATE & BROWSER NOTIFICATION POLL FUNCTION */
+        async function pollUpdates() {
             try {
-                const pend = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
-                const ord = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
-                const sel = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
-                const usr = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
+                const pending = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
+                const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
+                const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
+                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
+                const feedbacks = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json()).catch(() => []);
 
-                document.getElementById('stat-pending').innerText = pend.length || 0;
-                document.getElementById('stat-orders').innerText = ord.length || 0;
-                document.getElementById('stat-sellers').innerText = sel.length || 0;
-                document.getElementById('stat-users').innerText = usr.length || 0;
-            } catch (err) {
-                console.error("Failed to load dashboard metrics.", err);
+                // Update badge indicators
+                document.getElementById('badge-pending').innerText = pending.length;
+                document.getElementById('badge-pending').classList.toggle('hidden', pending.length === 0);
+                
+                document.getElementById('badge-feedback').innerText = feedbacks.length;
+                document.getElementById('badge-feedback').classList.toggle('hidden', feedbacks.length === 0);
+
+                // Browser-level Native Push Notification on new Upload events
+                if (pending.length > lastKnownProductCount) {
+                    sendSystemNotification("New Product Listed!", `${pending.length} products currently awaiting review on CampusDuka.`);
+                }
+                lastKnownProductCount = pending.length;
+
+                // Revenue calculation models
+                let grossProductSales = 0;
+                let calculatedCommissions = 0;
+                orders.forEach(o => {
+                    if (o.payment_status === 'paid') {
+                        grossProductSales += parseFloat(o.amount || 0);
+                        calculatedCommissions += parseFloat(o.commission_amount || (o.amount * 0.10));
+                    }
+                });
+
+                // Compute subscriptions earnings from plan tiers
+                let subscriptionRevenue = 0;
+                sellers.forEach(s => {
+                    if(s.subscription_plan === 'copper') subscriptionRevenue += 500;
+                    else if(s.subscription_plan === 'bronze') subscriptionRevenue += 1500;
+                    else if(s.subscription_plan === 'gold') subscriptionRevenue += 3000;
+                });
+
+                // Inject dashboard cards
+                document.getElementById('stat-revenue').innerText = `KES ${grossProductSales.toLocaleString()}`;
+                document.getElementById('stat-commission').innerText = `KES ${calculatedCommissions.toLocaleString()}`;
+                document.getElementById('stat-subs-income').innerText = `KES ${subscriptionRevenue.toLocaleString()}`;
+                document.getElementById('stat-users').innerText = users.length;
+
+                renderDynamicLedger(orders);
+            } catch(e) {
+                console.warn("Poll connection interrupted.", e);
             }
         }
 
-        // PENDING PRODUCTS REVIEW
+        function sendSystemNotification(title, message) {
+            if (Notification.permission === "granted") {
+                new Notification(title, { body: message });
+            }
+        }
+
+        // PRODUCTS APPROVAL RENDERS
         async function fetchPendingProducts() {
             const list = document.getElementById('pending-products-list');
-            list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner animate-spin"></i> Loading...</td></tr>`;
             try {
                 const products = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
-                if(products.length === 0) {
-                    list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No products pending approval.</td></tr>`;
+                if (products.length === 0) {
+                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No products currently awaiting moderation.</td></tr>`;
                     return;
                 }
-                list.innerHTML = products.map(prod => `
+                list.innerHTML = products.map(p => `
                     <tr>
                         <td class="p-4 flex items-center gap-3">
-                            <img src="${prod.images && prod.images[0] ? prod.images[0] : 'https://via.placeholder.com/60'}" class="w-12 h-12 object-cover rounded-lg">
-                            <div>
-                                <h4 class="font-bold text-gray-800">${prod.name}</h4>
-                                <p class="text-xs text-gray-400 line-clamp-1">${prod.description}</p>
-                            </div>
+                            <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" class="w-10 h-10 object-cover rounded-md border border-slate-200">
+                            <div><span class="font-bold text-slate-800 block">${p.name}</span><span class="text-xs text-slate-400">${p.category}</span></div>
                         </td>
-                        <td class="p-4">
-                            <p class="font-medium text-gray-800">${prod.seller_name || 'N/A'}</p>
-                            <p class="text-xs text-gray-400">${prod.seller_phone || 'N/A'}</p>
-                        </td>
-                        <td class="p-4 font-bold text-indigo-600">KES ${prod.price}</td>
-                        <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-full">${prod.category}</span></td>
-                        <td class="p-4 text-right space-x-2">
-                            <button onclick="approveProduct(${prod.id})" class="bg-green-100 text-green-700 hover:bg-green-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-check"></i> Approve</button>
-                            <button onclick="openRejectionModal(${prod.id})" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-xmark"></i> Reject</button>
+                        <td class="p-4">${p.seller_name || 'N/A'}<br><span class="text-xs text-slate-400">${p.seller_phone || ''}</span></td>
+                        <td class="p-4 font-semibold text-indigo-600">KES ${p.price}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="approveProduct(${p.id})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-xs px-2.5 py-1.5 rounded-lg font-bold mr-1">Approve</button>
+                            <button onclick="openRejectionModal(${p.id})" class="bg-red-100 hover:bg-red-200 text-red-700 text-xs px-2.5 py-1.5 rounded-lg font-bold">Reject</button>
                         </td>
                     </tr>
                 `).join('');
-            } catch(err) {
-                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error fetching products: ${err.message}</td></tr>`;
-            }
+            } catch(e) {}
         }
 
         async function approveProduct(id) {
-            if(!confirm("Approve this product for public viewing?")) return;
             try {
                 const res = await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' }).then(r => r.json());
-                if(res.success) {
-                    alert("Product approved!");
-                    refreshAllData();
-                }
-            } catch(err) { alert(err.message); }
+                if(res.success) { refreshAllData(); }
+            } catch (e) { alert(e.message); }
         }
 
         function openRejectionModal(id) {
             selectedRejectProductId = id;
-            document.getElementById('rejection-reason').value = '';
             document.getElementById('rejection-modal').classList.remove('hidden');
         }
 
         function closeRejectionModal() {
             document.getElementById('rejection-modal').classList.add('hidden');
-            selectedRejectProductId = null;
         }
 
         document.getElementById('confirm-reject-btn').onclick = async () => {
-            const reason = document.getElementById('rejection-reason').value.trim();
-            if(!reason) return alert("You must provide a reason for rejecting this product.");
+            const reason = document.getElementById('rejection-reason').value;
             try {
                 const res = await fetch(`${API_BASE_URL}/reject-product/${selectedRejectProductId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ reason })
                 }).then(r => r.json());
-                
                 if(res.success) {
-                    alert("Product rejected.");
                     closeRejectionModal();
                     refreshAllData();
                 }
-            } catch(err) { alert(err.message); }
+            } catch (e) { alert(e.message); }
         };
 
-        // FEATURED EXPIRE MANAGER CODES (COOL EXTENDED CUSTOM FUNCTIONALITY)
-        async function populateApprovedProducts() {
-            const select = document.getElementById('feature-product-select');
-            try {
-                const products = await fetch(`${API_BASE_URL}/products`).then(r => r.json());
-                select.innerHTML = `<option value="">-- Choose a Product --</option>` + 
-                    products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
-            } catch(err) { console.error(err); }
-        }
-
-        async function handleFeatureProduct(event) {
-            event.preventDefault();
-            const select = document.getElementById('feature-product-select');
-            const productId = select.value;
-            const productName = select.options[select.selectedIndex].getAttribute('data-name');
-            const durationMins = parseInt(document.getElementById('feature-duration').value);
-
-            if(!productId) return;
-
-            // Compute expiration timestamp
-            const expiresAt = Date.now() + (durationMins * 60000);
-
-            // Step 1: Perform backend simulation (We will flag 'featured = true' on the backend directly via customized PUT endpoints)
-            // Note: Since you do not have a dedicated `/feature-product/:id` endpoint, we make sure it works out of the box by setting it.
-            // Best Practice: You can execute a quick PUT patch in backend or we handle the client-side state machine timer!
-            
-            featuredTimers[productId] = {
-                id: productId,
-                name: productName,
-                expiresAt: expiresAt
-            };
-
-            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            alert(`${productName} successfully promoted to featured for ${durationMins} minutes.`);
-            document.getElementById('feature-form').reset();
-            renderFeaturedTimers();
-        }
-
-        function renderFeaturedTimers() {
-            const container = document.getElementById('active-featured-list');
-            const keys = Object.keys(featuredTimers);
-
-            if(keys.length === 0) {
-                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">No active timers scheduled.</p>`;
-                return;
-            }
-
-            container.innerHTML = keys.map(k => {
-                const item = featuredTimers[k];
-                const distance = item.expiresAt - Date.now();
-                
-                if(distance < 0) {
-                    // Expired! We drop it from active featured lists automatically
-                    delete featuredTimers[k];
-                    localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-                    return ''; 
-                }
-
-                const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const secs = Math.floor((distance % (1000 * 60)) / 1000);
-
-                return `
-                    <div class="flex justify-between items-center bg-indigo-50 border border-indigo-100 p-3 rounded-lg">
-                        <div>
-                            <p class="font-bold text-slate-800 text-sm">${item.name}</p>
-                            <p class="text-xs text-indigo-600 font-semibold"><i class="fa-solid fa-clock"></i> Expires in: ${mins}m ${secs}s</p>
-                        </div>
-                        <button onclick="removeFeaturedImmediately(${item.id})" class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1"><i class="fa-solid fa-trash-can"></i> Remove</button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function removeFeaturedImmediately(id) {
-            delete featuredTimers[id];
-            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            renderFeaturedTimers();
-        }
-
-        function startLocalCountdownLoop() {
-            setInterval(() => {
-                renderFeaturedTimers();
-            }, 1000);
-        }
-
-        // ORDERS & MPESA
+        // TRACKING SYSTEM (LIVE FULFILLMENT SELECTOR)
         async function fetchOrders() {
             const list = document.getElementById('orders-list');
             try {
                 const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
                 if(orders.length === 0) {
-                    list.innerHTML = `<tr><td colspan="7" class="p-4 text-center">No orders documented.</td></tr>`;
+                    list.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No transactions recorded on CampusDuka.</td></tr>`;
                     return;
                 }
-                list.innerHTML = orders.map(ord => {
-                    const payStatusClass = ord.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700';
-                    const devStatusClass = ord.delivery_status === 'delivered' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-700';
+                list.innerHTML = orders.map(o => {
+                    const statusOptions = ['pending', 'processing', 'shipped', 'delivered'];
+                    const selectMarkup = `
+                        <select onchange="updateDeliveryStatus(${o.id}, this.value)" class="border border-slate-300 rounded p-1 text-xs bg-white font-medium focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                            ${statusOptions.map(opt => `<option value="${opt}" ${o.delivery_status === opt ? 'selected' : ''}>${opt.toUpperCase()}</option>`).join('')}
+                        </select>
+                    `;
+
                     return `
                         <tr>
-                            <td class="p-4 font-semibold text-slate-500">#${ord.id}</td>
-                            <td class="p-4 font-medium">${ord.buyer_phone}</td>
-                            <td class="p-4">${ord.product_name || `Unknown SKU (${ord.product_id})`}</td>
-                            <td class="p-4 font-bold">KES ${ord.amount}</td>
-                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${payStatusClass}">${ord.payment_status}</span></td>
-                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${devStatusClass}">${ord.delivery_status}</span></td>
-                            <td class="p-4 text-right space-x-2">
-                                <button onclick="updateDeliveryStatus(${ord.id}, 'delivered')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded font-bold">Deliver</button>
-                                <button onclick="deleteOrder(${ord.id}, '${ord.delivery_status}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <td class="p-4 font-semibold text-slate-800">#${o.id}<br><span class="text-xs text-slate-400 font-normal">${new Date(o.created_at).toLocaleString()}</span></td>
+                            <td class="p-4 font-medium">${o.buyer_name}<br><span class="text-xs text-slate-400">${o.buyer_phone}</span></td>
+                            <td class="p-4">${o.product_name || 'Generic Item'}</td>
+                            <td class="p-4">
+                                <span class="px-2 py-0.5 rounded text-xs font-bold ${o.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+                                    ${o.payment_status.toUpperCase()}
+                                </span>
                             </td>
+                            <td class="p-4">${selectMarkup}</td>
                         </tr>
                     `;
                 }).join('');
-            } catch(err) { console.error(err); }
+            } catch(e) {}
         }
 
         async function updateDeliveryStatus(id, status) {
             try {
-                const res = await fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
+                await fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type':'application/json' },
                     body: JSON.stringify({ status })
-                }).then(r => r.json());
-                if(res.success) {
-                    alert("Delivery status updated!");
-                    fetchOrders();
-                }
-            } catch (err) { alert(err.message); }
+                });
+            } catch (e) { alert(e.message); }
         }
 
-        async function deleteOrder(id, status) {
-            if(status !== 'delivered') {
-                return alert("Constraint error: Only successfully delivered orders can be deleted from logs.");
+        // FINANCIAL COMMISSION SPLITTER SYSTEM
+        function renderDynamicLedger(orders) {
+            const list = document.getElementById('finance-ledger-list');
+            const paidOrders = orders.filter(o => o.payment_status === 'paid');
+
+            if(paidOrders.length === 0) {
+                list.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No active financial settlements calculated.</td></tr>`;
+                return;
             }
-            if(!confirm("Are you sure you want to permanently delete this order record?")) return;
-            try {
-                const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' }).then(r => r.json());
-                if(res.success) {
-                    alert("Order removed.");
-                    fetchOrders();
-                }
-            } catch(err) { alert(err.message); }
+
+            list.innerHTML = paidOrders.map(o => {
+                const comm = (parseFloat(o.commission_amount) || o.amount * 0.10).toFixed(2);
+                const payout = (parseFloat(o.seller_payout) || o.amount - comm).toFixed(2);
+                const isPayoutSettled = o.payout_status === 'paid_to_seller';
+
+                return `
+                    <tr class="${isPayoutSettled ? 'bg-slate-50' : 'bg-white'}">
+                        <td class="p-4">
+                            <span class="font-bold text-slate-700">Order #${o.id}</span><br>
+                            <span class="text-xs text-slate-400">${new Date(o.created_at).toLocaleString()}</span>
+                        </td>
+                        <td class="p-4 font-medium text-slate-800">KES ${parseFloat(o.amount).toFixed(2)}</td>
+                        <td class="p-4 text-indigo-600 font-bold">KES ${comm}</td>
+                        <td class="p-4 text-emerald-600 font-semibold">KES ${payout}</td>
+                        <td class="p-4">
+                            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${isPayoutSettled ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                ${isPayoutSettled ? 'PAYOUT DISPATCHED' : 'PENDING DISPATCH'}
+                            </span>
+                        </td>
+                        <td class="p-4 text-right">
+                            ${!isPayoutSettled ? `
+                                <button onclick="settlePayout(${o.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold shadow-sm transition">
+                                    <i class="fa-solid fa-paper-plane mr-1"></i> Settle
+                                </button>
+                            ` : `<span class="text-slate-400 text-xs font-bold"><i class="fa-solid fa-circle-check"></i> Completed</span>`}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        // SELLERS LISTING & SUBSCRIPTION MODS
+        async function settlePayout(orderId) {
+            if(!confirm(`Mark this balance payout as fully settled with the seller?`)) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/payout-seller/${orderId}`, { method: 'PUT' }).then(r => r.json());
+                if(res.success) {
+                    alert("Payout status recorded.");
+                    refreshAllData();
+                }
+            } catch(e) { alert(e.message); }
+        }
+
+        // CAMPAIGNS & PROMOTIONAL SPONSORSHIPS WITH COUNTDOWNS
+        async function populateApprovedProducts() {
+            const select = document.getElementById('feature-product-select');
+            try {
+                const products = await fetch(`${API_BASE_URL}/products`).then(r => r.json());
+                select.innerHTML = `<option value="">-- Choose Approved Product --</option>` + 
+                    products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
+            } catch(e) {}
+        }
+
+        function handleFeatureProduct(event) {
+            event.preventDefault();
+            const select = document.getElementById('feature-product-select');
+            const productId = select.value;
+            const name = select.options[select.selectedIndex].getAttribute('data-name');
+            const minutes = parseInt(document.getElementById('feature-duration').value);
+
+            featuredTimers[productId] = {
+                id: productId,
+                name: name,
+                expiresAt: Date.now() + (minutes * 60000)
+            };
+
+            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+            alert(`${name} featured successfully for ${minutes} minutes.`);
+            document.getElementById('feature-form').reset();
+            renderFeaturedTimers();
+        }
+
+        function renderFeaturedTimers() {
+            const list = document.getElementById('active-featured-list');
+            const keys = Object.keys(featuredTimers);
+
+            if(keys.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No active promotional timers running.</p>`;
+                return;
+            }
+
+            list.innerHTML = keys.map(k => {
+                const item = featuredTimers[k];
+                const difference = item.expiresAt - Date.now();
+
+                if (difference <= 0) {
+                    delete featuredTimers[k];
+                    localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+                    return '';
+                }
+
+                const mins = Math.floor((difference % 3600000) / 60000);
+                const secs = Math.floor((difference % 60000) / 1000);
+
+                return `
+                    <div class="flex items-center justify-between bg-slate-50 border border-slate-200 p-3 rounded-lg shadow-sm">
+                        <div>
+                            <p class="font-bold text-xs text-slate-800">${item.name}</p>
+                            <p class="text-[10px] text-indigo-600 font-bold"><i class="fa-solid fa-clock animate-pulse"></i> Expires in: ${mins}m ${secs}s</p>
+                        </div>
+                        <button onclick="removeFeaturedTimer('${item.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold transition">Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeFeaturedTimer(id) {
+            delete featuredTimers[id];
+            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+            renderFeaturedTimers();
+        }
+
+        // FEEDBACK PORTLET RENDERING
+        async function fetchFeedback() {
+            const grid = document.getElementById('feedback-grid');
+            try {
+                const feedbacks = await fetch(`${API_BASE_URL}/all-feedback`).then(r => r.json());
+                if(feedbacks.length === 0) {
+                    grid.innerHTML = `<p class="text-slate-400 text-center text-xs col-span-2 py-4">No consumer or merchant feedback logs have been submitted.</p>`;
+                    return;
+                }
+                grid.innerHTML = feedbacks.map(f => `
+                    <div class="p-4 border border-slate-200 bg-slate-50 rounded-lg space-y-2 hover:shadow-sm transition">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold px-2 py-0.5 rounded uppercase ${f.user_type === 'seller' ? 'bg-indigo-100 text-indigo-700' : 'bg-green-100 text-green-700'}">
+                                ${f.user_type}
+                            </span>
+                            <span class="text-[10px] text-slate-400">${new Date(f.created_at).toLocaleString()}</span>
+                        </div>
+                        <p class="font-bold text-sm text-slate-800">${f.name} <span class="font-normal text-xs text-slate-500">(${f.email})</span></p>
+                        <p class="text-slate-600 text-xs italic">"${f.message}"</p>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
+
+        // GENERAL DATA FETCHERS
         async function fetchSellers() {
             const list = document.getElementById('sellers-list');
             try {
                 const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
-                list.innerHTML = sellers.map(sel => {
-                    const planBadge = sel.subscription_plan === 'gold' ? 'bg-amber-100 text-amber-800' : 
-                                      sel.subscription_plan === 'bronze' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-800';
-                    return `
-                        <tr>
-                            <td class="p-4 font-semibold text-slate-500">#${sel.id}</td>
-                            <td class="p-4 font-bold text-slate-800">${sel.name}</td>
-                            <td class="p-4">
-                                <p>${sel.email}</p>
-                                <p class="text-xs text-gray-400">${sel.phone}</p>
-                            </td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-bold uppercase rounded-full ${planBadge}">${sel.subscription_plan || 'free'}</span></td>
-                            <td class="p-4 font-medium text-slate-700">${sel.uploads_used || 0} uploads</td>
-                            <td class="p-4 text-right">
-                                <button onclick="manualUpgrade(${sel.id})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded transition">Upgrade Plan</button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            } catch (err) { console.error(err); }
+                if(sellers.length === 0) {
+                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No sellers registered in database.</td></tr>`;
+                    return;
+                }
+                list.innerHTML = sellers.map(s => `
+                    <tr>
+                        <td class="p-4 font-bold text-slate-800">${s.name}<br><span class="text-xs text-slate-400">${s.email}</span></td>
+                        <td class="p-4"><span class="bg-indigo-50 text-indigo-700 text-xs px-2 py-0.5 rounded font-bold">${s.subscription_plan || 'free'}</span></td>
+                        <td class="p-4 font-medium">${s.uploads_used || 0} items uploaded</td>
+                        <td class="p-4"><button onclick="manualUpgrade(${s.id})" class="text-indigo-600 hover:text-indigo-800 text-xs font-bold">Manual Upgrade</button></td>
+                    </tr>
+                `).join('');
+            } catch(e) {}
         }
 
         async function manualUpgrade(sellerId) {
@@ -567,27 +689,29 @@
             } catch(err) { alert(err.message); }
         }
 
-        // USERS DATABASE
         async function fetchUsers() {
             const list = document.getElementById('users-list');
             try {
                 const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
-                list.innerHTML = users.map(usr => `
+                if(users.length === 0) {
+                    list.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400">No registered system users.</td></tr>`;
+                    return;
+                }
+                list.innerHTML = users.map(u => `
                     <tr>
-                        <td class="p-4 font-semibold text-slate-500">#${usr.id}</td>
-                        <td class="p-4 font-bold">${usr.fullname}</td>
-                        <td class="p-4">${usr.email}</td>
-                        <td class="p-4">${usr.phone}</td>
+                        <td class="p-4 font-bold text-slate-800">${u.fullname}</td>
+                        <td class="p-4">${u.email}</td>
+                        <td class="p-4">${u.phone}</td>
                     </tr>
                 `).join('');
-            } catch(err) { console.error(err); }
+            } catch(e) {}
         }
 
-        // DB HELPER TRIGGER FUNCTION
+        // DATABASE ACTIONS HELPER
         async function runDbHelper(route) {
             try {
                 const text = await fetch(`${API_BASE_URL}${route}`).then(r => r.text());
-                alert(`Server Response: ${text}`);
+                alert(`Migration Response: ${text}`);
                 refreshAllData();
             } catch(err) { alert(`Error: ${err.message}`); }
         }
