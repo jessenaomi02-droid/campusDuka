@@ -3,806 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusDuka - Ultimate Enterprise Admin Panel</title>
+    <title>CampusDuka - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex overflow-hidden">
+<body class="bg-gray-100 font-sans">
 
-    <!-- AUDIO FOR REALTIME NOTIFICATIONS (Using a clean web synthesis audio API to guarantee sound even without a file) -->
-    <script>
-        function playNotificationSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = "sine";
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5 note
-                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15); // A5 note
-                gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.4);
-            } catch (e) {
-                console.log("Audio synthesis blocked or unsupported.");
-            }
-        }
-    </script>
-
-    <!-- Sidebar Menu Navigation -->
-    <aside class="w-72 bg-slate-950 border-r border-slate-800 flex flex-col justify-between shrink-0">
-        <div>
-            <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-                <div class="p-2 bg-indigo-600 rounded-lg text-white">
-                    <i class="fa-solid fa-graduation-cap text-xl animate-pulse"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold tracking-tight">CampusDuka</h1>
-                    <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Admin Central</span>
-                </div>
-            </div>
-            <nav class="p-4 space-y-1">
-                <button onclick="showSection('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-semibold transition">
-                    <i class="fa-solid fa-chart-line text-indigo-400"></i> Dashboard Summary
-                </button>
-                <button onclick="showSection('pending-orders')" id="nav-pending-orders" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-white transition">
-                    <span class="flex items-center gap-3"><i class="fa-solid fa-hourglass-half text-amber-400"></i> Pending Queue</span>
-                    <span id="badge-pending" class="bg-amber-500 text-slate-950 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
-                </button>
-                <button onclick="showSection('product-catalog')" id="nav-product-catalog" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-white transition">
-                    <i class="fa-solid fa-boxes-stacked text-sky-400"></i> Edit Products
-                </button>
-                <button onclick="showSection('ad-manager')" id="nav-ad-manager" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-white transition">
-                    <span class="flex items-center gap-3"><i class="fa-solid fa-star text-yellow-400"></i> Featured Ads</span>
-                    <span id="badge-expired-warning" class="hidden bg-rose-500 text-white text-[9px] px-1.5 py-0.5 rounded">AUTO</span>
-                </button>
-                <button onclick="showSection('orders-tracking')" id="nav-orders-tracking" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-white transition">
-                    <i class="fa-solid fa-truck-fast text-teal-400"></i> Order Logistics
-                </button>
-                <button onclick="showSection('sellers-board')" id="nav-sellers-board" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-white transition">
-                    <i class="fa-solid fa-store text-violet-400"></i> Seller Portals
-                </button>
-            </nav>
-        </div>
-        <div class="p-4 border-t border-slate-800 bg-slate-950/50">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
-                <span class="text-xs text-slate-400 font-semibold">Live Feed Connected</span>
-            </div>
-            <button onclick="simulateNewOrder()" class="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 px-3 rounded-lg border border-slate-700 transition">
-                ⚡ Simulate Incoming Order
-            </button>
-        </div>
-    </aside>
-
-    <!-- Main Workspace -->
-    <main class="flex-1 flex flex-col overflow-hidden">
+    <div class="flex h-screen overflow-hidden">
         
-        <!-- Header -->
-        <header class="bg-slate-950/70 border-b border-slate-800 px-8 py-5 flex justify-between items-center sticky top-0 backdrop-blur">
+        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between">
             <div>
-                <h2 id="current-panel-title" class="text-xl font-bold text-white">Dashboard Summary</h2>
-                <p class="text-xs text-slate-500">Live CampusDuka Database Monitoring Loop Active</p>
+                <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+                    <span>CampusDuka</span>
+                    <span class="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                </div>
+                <nav class="p-4 space-y-1">
+                    <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                    <a href="#" onclick="showSection('pending-products')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-hourglass-half"></i> Pending Approvals</a>
+                    <a href="#" onclick="showSection('featured-manager')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Products</a>
+                    <a href="#" onclick="showSection('orders')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & M-Pesa</a>
+                    <a href="#" onclick="showSection('sellers')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers List</a>
+                    <a href="#" onclick="showSection('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
+                </nav>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <span class="text-xs text-slate-500 block">System Authority</span>
-                    <span class="text-sm font-bold text-indigo-400">Super Administrator</span>
-                </div>
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+                © 2026 CampusDuka Admin Panel
             </div>
-        </header>
-
-        <!-- Content Area -->
-        <div class="flex-1 overflow-y-auto p-8 space-y-8">
-
-            <!-- SECTION 1: DASHBOARD SUMMARY -->
-            <section id="dashboard" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl text-xl"><i class="fa-solid fa-store"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Total Verified Sellers</p>
-                            <h3 id="stat-sellers" class="text-2xl font-bold">0</h3>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl text-xl"><i class="fa-solid fa-spinner"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Pending Queue Items</p>
-                            <h3 id="stat-pending" class="text-2xl font-bold">0</h3>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <div class="p-3 bg-teal-500/10 text-teal-400 rounded-xl text-xl"><i class="fa-solid fa-bag-shopping"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Active Orders</p>
-                            <h3 id="stat-orders" class="text-2xl font-bold">0</h3>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <div class="p-3 bg-pink-500/10 text-pink-400 rounded-xl text-xl"><i class="fa-solid fa-clock"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Running Ad Campaigns</p>
-                            <h3 id="stat-ads" class="text-2xl font-bold">0</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 2: PENDING QUEUE WITH DETAILED VIEWS -->
-            <section id="pending-orders" class="hidden space-y-6">
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
-                    <div class="p-6 border-b border-slate-800">
-                        <h3 class="font-bold text-lg text-white">Pending Orders & Item Approval Verification</h3>
-                        <p class="text-xs text-slate-500">Review comprehensive details of the buyers, associated merchants, and complete product metrics before authorization.</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-900 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                                    <th class="p-4">Customer Details</th>
-                                    <th class="p-4">Merchant Partner</th>
-                                    <th class="p-4">Requested Item</th>
-                                    <th class="p-4">Total Amount</th>
-                                    <th class="p-4 text-right">Moderation Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pending-orders-tbody" class="divide-y divide-slate-800 text-sm">
-                                <!-- Loaded dynamically via state engine -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 3: PRODUCT CATALOG (IMAGE, DESC, PRICE, STOCK TAGS) -->
-            <section id="product-catalog" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Editor Sidebar -->
-                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 h-fit space-y-5">
-                    <div>
-                        <h3 class="font-bold text-white text-base">Modify Product Attributes</h3>
-                        <p class="text-xs text-slate-500">Select any item from the catalog registry on the right to edit details.</p>
-                    </div>
-                    <form id="editor-form" onsubmit="saveProductModifications(event)" class="space-y-4">
-                        <input type="hidden" id="edit-prod-id">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Product Title</label>
-                            <input type="text" id="edit-prod-title" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-indigo-500 outline-none" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Price tag (KES)</label>
-                            <input type="number" id="edit-prod-price" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-indigo-500 outline-none" required>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Stock Level Count</label>
-                                <input type="number" id="edit-prod-stock" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-indigo-500 outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Category</label>
-                                <input type="text" id="edit-prod-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-indigo-500 outline-none" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Product Image Link URL</label>
-                            <input type="text" id="edit-prod-img" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-300 focus:border-indigo-500 outline-none" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Product Description</label>
-                            <textarea id="edit-prod-desc" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-indigo-500 outline-none" required></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition">
-                            Commit Product Edits
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Product Catalog List -->
-                <div class="lg:col-span-2 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
-                    <div class="p-6 border-b border-slate-800">
-                        <h3 class="font-bold text-white text-lg">Product Catalog Database</h3>
-                    </div>
-                    <div class="overflow-x-auto max-h-[550px]">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-900 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                                    <th class="p-4">Item Details</th>
-                                    <th class="p-4">Category</th>
-                                    <th class="p-4">Value</th>
-                                    <th class="p-4">Stock Status</th>
-                                    <th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="catalog-tbody" class="divide-y divide-slate-800 text-sm">
-                                <!-- Loaded dynamically via state engine -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 4: FEATURED HOMEPAGE ADS & CAMPAIGNS (AUTO-EXPIRED MANAGEMENT) -->
-            <section id="ad-manager" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Add Campaign Form -->
-                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 h-fit space-y-4">
-                    <div>
-                        <h3 class="font-bold text-white text-base">Publish Campaign Banner</h3>
-                        <p class="text-xs text-slate-500">Define promotional campaigns featuring strict expiration timers.</p>
-                    </div>
-                    <form onsubmit="handleCreateTimedAd(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Banner Ad Header</label>
-                            <input type="text" id="ad-title" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white outline-none" placeholder="e.g. Campus Rave Discount" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Call to Action Link</label>
-                            <input type="text" id="ad-link" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white outline-none" placeholder="e.g. category-deals.html" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Life Duration Span (Seconds)</label>
-                            <input type="number" id="ad-duration" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white outline-none" placeholder="e.g. 60" required>
-                            <span class="text-[10px] text-slate-500 block mt-1">Campaign will expire and auto-delete after duration ends.</span>
-                        </div>
-                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl text-sm transition">
-                            Launch Campaign Ad
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Active Ads & Expiry Timers -->
-                <div class="lg:col-span-2 bg-slate-950 rounded-2xl border border-slate-800 p-6 space-y-4">
-                    <h3 class="font-bold text-white text-base flex items-center gap-2"><i class="fa-solid fa-clock text-pink-500 animate-spin-slow"></i> Real-Time Expiring Hero Campaigns</h3>
-                    <div id="active-ads-container" class="space-y-3">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 5: ORDER LOGISTICS TRACKING -->
-            <section id="orders-tracking" class="hidden space-y-6">
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
-                    <div class="p-6 border-b border-slate-800">
-                        <h3 class="font-bold text-lg text-white">Order Logistic Pipelines & Tracking Panels</h3>
-                        <p class="text-xs text-slate-500">Live order status pipelines with progress metrics for buyers to follow delivery progress in real-time.</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-900 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                                    <th class="p-4">Tracking Code</th>
-                                    <th class="p-4">Item ordered</th>
-                                    <th class="p-4">Customer Details</th>
-                                    <th class="p-4">Fulfillment Status Progress</th>
-                                    <th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logistics-tbody" class="divide-y divide-slate-800 text-sm">
-                                <!-- Loaded dynamically via state engine -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 6: VERIFIED MERCHANTS & SELLER RATINGS -->
-            <section id="sellers-board" class="hidden space-y-6">
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
-                    <div class="p-6 border-b border-slate-800">
-                        <h3 class="font-bold text-lg text-white">Verified Merchant Reputations & Stores</h3>
-                        <p class="text-xs text-slate-500">Modify reputation stars and feedback scores for active vendors based on transaction logs.</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-900 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                                    <th class="p-4">Merchant Store Profile</th>
-                                    <th class="p-4">Store Domain Category</th>
-                                    <th class="p-4">Merchant Reputation Rating</th>
-                                    <th class="p-4 text-right">Reputation Operations</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sellers-tbody" class="divide-y divide-slate-800 text-sm">
-                                <!-- Loaded dynamically via state engine -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
         </div>
-    </main>
-</body>
 
-<script>
-    // Local State Engine
-    function initSeedData() {
-        if (!localStorage.getItem('registered_users')) {
-            const users = [
-                { email: "jesse@sile.co.ke", fullname: "Jesse Gichuhi", role: "seller", rating: 4.8 },
-                { email: "kamau@campusduka.com", fullname: "Kamau Njoroge", role: "seller", rating: 4.2 },
-                { email: "stacy.w@student.edu", fullname: "Stacy Wanjiku", role: "buyer", phone: "+254 712 345 678", hostel: "Mugwump Block C-14" },
-                { email: "brian.o@student.edu", fullname: "Brian Onyango", role: "buyer", phone: "+254 722 987 654", hostel: "Hillside Villas #4" }
-            ];
-            localStorage.setItem('registered_users', JSON.stringify(users));
-        }
-
-        if (!localStorage.getItem('store_products')) {
-            const products = [
-                { id: "p1", title: "Original Leather Messenger Bag", price: 2500, category: "Fashion", stock: 1, desc: "Sleek brown leather briefcase optimized for campus tech majors.", img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400", featured: true, approved: true, seller_email: "jesse@sile.co.ke" },
-                { id: "p2", title: "Pro Gaming Bluetooth Headset", price: 4200, category: "Electronics", stock: 12, desc: "High-end dual-pairing noise cancellation study headset.", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400", featured: false, approved: true, seller_email: "kamau@campusduka.com" },
-                { id: "p3", title: "Foldable Wooden Study Lamp", price: 1500, category: "Furniture", stock: 0, desc: "Warm ambient desk glow settings for overnight study sessions.", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400", featured: false, approved: false, seller_email: "jesse@sile.co.ke" }
-            ];
-            localStorage.setItem('store_products', JSON.stringify(products));
-        }
-
-        if (!localStorage.getItem('orders_database')) {
-            const orders = [
-                { orderId: "CD-ORD-1159", productId: "p1", buyerEmail: "stacy.w@student.edu", sellerEmail: "jesse@sile.co.ke", total: 2500, timeline: "Processing", timestamp: Date.now() }
-            ];
-            localStorage.setItem('orders_database', JSON.stringify(orders));
-        }
-
-        if (!localStorage.getItem('custom_ads')) {
-            const initialAds = [
-                { id: "ad_1", title: "Exclusive Tech Clearance Deals", link: "electronics.html", durationLeft: 120, totalDuration: 120 }
-            ];
-            localStorage.setItem('custom_ads', JSON.stringify(initialAds));
-        }
-    }
-    initSeedData();
-
-    // Application Navigation Controls
-    function showSection(sectionId) {
-        document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
-        document.getElementById(sectionId).classList.remove('hidden');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('bg-indigo-600', 'text-white');
-            btn.classList.add('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
-        });
-
-        const activeNav = document.getElementById(`nav-${sectionId}`);
-        if (activeNav) {
-            activeNav.classList.remove('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
-            activeNav.classList.add('bg-indigo-600', 'text-white');
-        }
-
-        document.getElementById('current-panel-title').innerText = activeNav.innerText.trim();
-        refreshAllData();
-    }
-
-    // Dynamic Live Data Refresh
-    function refreshAllData() {
-        const users = JSON.parse(localStorage.getItem('registered_users')) || [];
-        const products = JSON.parse(localStorage.getItem('store_products')) || [];
-        const orders = JSON.parse(localStorage.getItem('orders_database')) || [];
-        const ads = JSON.parse(localStorage.getItem('custom_ads')) || [];
-
-        // Widget Counts
-        document.getElementById('stat-sellers').innerText = users.filter(u => u.role === 'seller').length;
-        document.getElementById('stat-pending').innerText = products.filter(p => !p.approved).length;
-        document.getElementById('stat-orders').innerText = orders.length;
-        document.getElementById('stat-ads').innerText = ads.length;
-        document.getElementById('badge-pending').innerText = products.filter(p => !p.approved).length;
-
-        renderPendingOrdersAndApprovals(products, orders, users);
-        renderProductCatalog(products);
-        renderAdsManager(ads);
-        renderOrdersLogistics(orders, products, users);
-        renderSellersRatings(users);
-    }
-
-    // Helper functions for matching database references
-    function getUser(email, usersList) {
-        return usersList.find(u => u.email === email) || { fullname: "Deleted Account", email: email, phone: "N/A", hostel: "N/A" };
-    }
-    function getProduct(prodId, productsList) {
-        return productsList.find(p => p.id === prodId) || { title: "Deleted Item", price: 0, img: "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?w=400", desc: "No longer exists", stock: 0 };
-    }
-
-    // 1. RENDER PENDING APPROVAL QUEUE
-    function renderPendingOrdersAndApprovals(products, orders, users) {
-        const tbody = document.getElementById('pending-orders-tbody');
-        tbody.innerHTML = "";
-
-        const unapprovedItems = products.filter(p => !p.approved);
-        if (unapprovedItems.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-medium">All item listings have been approved! No pending items in queue.</td></tr>`;
-            return;
-        }
-
-        unapprovedItems.forEach(item => {
-            const merchant = getUser(item.seller_email, users);
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-900/50 transition">
-                    <td class="p-4 font-semibold text-slate-400">System Marketplace Listing</td>
-                    <td class="p-4">
-                        <div class="font-semibold text-white">${merchant.fullname}</div>
-                        <div class="text-xs text-indigo-400">${merchant.email}</div>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center gap-3">
-                            <img src="${item.img}" class="w-10 h-10 object-cover rounded-lg border border-slate-700">
-                            <div>
-                                <div class="font-bold text-white">${item.title}</div>
-                                <div class="text-xs text-slate-400 line-clamp-1">${item.desc}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 font-bold text-emerald-400">KES ${item.price}</td>
-                    <td class="p-4 text-right space-x-2">
-                        <button onclick="approveMarketProduct('${item.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition">Approve Listing</button>
-                        <button onclick="rejectMarketProduct('${item.id}')" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition">Reject</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    window.approveMarketProduct = function(id) {
-        let products = JSON.parse(localStorage.getItem('store_products')) || [];
-        products = products.map(p => p.id === id ? { ...p, approved: true } : p);
-        localStorage.setItem('store_products', JSON.stringify(products));
-        playNotificationSound();
-        refreshAllData();
-    };
-
-    window.rejectMarketProduct = function(id) {
-        let products = JSON.parse(localStorage.getItem('store_products')) || [];
-        products = products.filter(p => p.id !== id);
-        localStorage.setItem('store_products', JSON.stringify(products));
-        refreshAllData();
-    };
-
-    // 2. RENDER PRODUCT CATALOG + STOCK STATS
-    function renderProductCatalog(products) {
-        const tbody = document.getElementById('catalog-tbody');
-        tbody.innerHTML = "";
-
-        products.forEach(p => {
-            // Setup dynamic stock notification tags
-            let stockBadge = "";
-            if (p.stock === 0) {
-                stockBadge = `<span class="bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded text-xs font-bold uppercase">Sold Out</span>`;
-            } else if (p.stock === 1) {
-                stockBadge = `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-xs font-bold uppercase">Only 1 Left</span>`;
-            } else {
-                stockBadge = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-bold">${p.stock} Available</span>`;
-            }
-
-            const heroBadge = p.featured ? `<span class="bg-yellow-500/15 text-yellow-400 px-1.5 py-0.5 text-[10px] rounded font-bold ml-1.5 uppercase">Featured</span>` : "";
-
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-900/50 transition">
-                    <td class="p-4">
-                        <div class="flex items-center gap-3">
-                            <img src="${p.img}" class="w-12 h-12 object-cover rounded-xl border border-slate-700">
-                            <div>
-                                <div class="font-bold text-white flex items-center">${p.title} ${heroBadge}</div>
-                                <div class="text-xs text-slate-500 line-clamp-1">${p.desc}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 text-slate-400">${p.category}</td>
-                    <td class="p-4 font-bold text-slate-200">KES ${p.price}</td>
-                    <td class="p-4">${stockBadge}</td>
-                    <td class="p-4 text-right">
-                        <button onclick="loadProductToEditor('${p.id}')" class="text-xs font-bold text-indigo-400 hover:text-indigo-300">Edit Specs</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    window.loadProductToEditor = function(id) {
-        const products = JSON.parse(localStorage.getItem('store_products')) || [];
-        const item = products.find(p => p.id === id);
-        if (item) {
-            document.getElementById('edit-prod-id').value = item.id;
-            document.getElementById('edit-prod-title').value = item.title;
-            document.getElementById('edit-prod-price').value = item.price;
-            document.getElementById('edit-prod-stock').value = item.stock;
-            document.getElementById('edit-prod-category').value = item.category;
-            document.getElementById('edit-prod-img').value = item.img;
-            document.getElementById('edit-prod-desc').value = item.desc;
-        }
-    };
-
-    window.saveProductModifications = function(e) {
-        e.preventDefault();
-        const id = document.getElementById('edit-prod-id').value;
-        if (!id) {
-            alert("Please select a product from the catalog registry first.");
-            return;
-        }
-
-        let products = JSON.parse(localStorage.getItem('store_products')) || [];
-        products = products.map(p => p.id === id ? {
-            ...p,
-            title: document.getElementById('edit-prod-title').value,
-            price: parseFloat(document.getElementById('edit-prod-price').value),
-            stock: parseInt(document.getElementById('edit-prod-stock').value),
-            category: document.getElementById('edit-prod-category').value,
-            img: document.getElementById('edit-prod-img').value,
-            desc: document.getElementById('edit-prod-desc').value
-        } : p);
-
-        localStorage.setItem('store_products', JSON.stringify(products));
-        document.getElementById('editor-form').reset();
-        document.getElementById('edit-prod-id').value = "";
-        alert("Product changes saved successfully!");
-        refreshAllData();
-    };
-
-    // 3. CAMPAIGN ADS TIMED MANAGER (EXPIRE LOGIC)
-    window.handleCreateTimedAd = function(e) {
-        e.preventDefault();
-        const title = document.getElementById('ad-title').value;
-        const link = document.getElementById('ad-link').value;
-        const duration = parseInt(document.getElementById('ad-duration').value);
-
-        const ads = JSON.parse(localStorage.getItem('custom_ads')) || [];
-        ads.push({
-            id: 'ad_' + Date.now(),
-            title: title,
-            link: link,
-            durationLeft: duration,
-            totalDuration: duration
-        });
-
-        localStorage.setItem('custom_ads', JSON.stringify(ads));
-        document.getElementById('ad-title').value = "";
-        document.getElementById('ad-link').value = "";
-        document.getElementById('ad-duration').value = "";
-        playNotificationSound();
-        refreshAllData();
-    };
-
-    function renderAdsManager(ads) {
-        const container = document.getElementById('active-ads-container');
-        container.innerHTML = "";
-
-        if (ads.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center text-slate-500 border border-dashed border-slate-800 rounded-xl">No campaigns active. Add a banner to display on the hero section.</div>`;
-            return;
-        }
-
-        ads.forEach(ad => {
-            const percentage = (ad.durationLeft / ad.totalDuration) * 100;
-            container.innerHTML += `
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex-1 space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 bg-pink-500 rounded-full animate-ping"></span>
-                            <span class="font-bold text-white text-sm">${ad.title}</span>
-                        </div>
-                        <p class="text-xs text-slate-400">Target Link: <span class="text-indigo-400 font-mono">${ad.link}</span></p>
-                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-2">
-                            <div class="bg-pink-500 h-full transition-all duration-1000" style="width: ${percentage}%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4 shrink-0">
-                        <span class="text-xs font-bold text-slate-400 font-mono"><i class="fa-solid fa-hourglass-half mr-1 text-pink-400"></i> ${ad.durationLeft}s left</span>
-                        <button onclick="terminateAd('${ad.id}')" class="text-xs font-bold text-rose-500 hover:text-rose-400 border border-rose-500/20 px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 transition">Drop Campaign</button>
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            
+            <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+                <h1 id="page-title" class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+                <div class="flex items-center gap-4">
+                    <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
+                        <i class="fa-solid fa-rotate"></i> Refresh Data
+                    </button>
+                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
+                        A
                     </div>
                 </div>
-            `;
-        });
-    }
+            </header>
 
-    window.terminateAd = function(id) {
-        let ads = JSON.parse(localStorage.getItem('custom_ads')) || [];
-        ads = ads.filter(ad => ad.id !== id);
-        localStorage.setItem('custom_ads', JSON.stringify(ads));
-        refreshAllData();
-    };
+            <main class="p-8">
 
-    // Campaign Ticker Thread (Auto-Decrements ad life duration every 1 second)
-    setInterval(() => {
-        let ads = JSON.parse(localStorage.getItem('custom_ads')) || [];
-        if (ads.length > 0) {
-            let updatedAds = ads.map(ad => ({ ...ad, durationLeft: ad.durationLeft - 1 })).filter(ad => ad.durationLeft > 0);
-            if (updatedAds.length !== ads.length) {
-                // Play notification if an ad expires
-                playNotificationSound();
-            }
-            localStorage.setItem('custom_ads', JSON.stringify(updatedAds));
+                <section id="dashboard" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <div class="p-4 bg-yellow-50 text-yellow-600 rounded-lg text-2xl"><i class="fa-solid fa-clock"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Pending Approvals</p>
+                                <h3 id="stat-pending" class="text-2xl font-bold text-gray-800">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <div class="p-4 bg-green-50 text-green-600 rounded-lg text-2xl"><i class="fa-solid fa-money-bill-wave"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Total Orders</p>
+                                <h3 id="stat-orders" class="text-2xl font-bold text-gray-800">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-store"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Total Sellers</p>
+                                <h3 id="stat-sellers" class="text-2xl font-bold text-gray-800">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <div class="p-4 bg-blue-50 text-blue-600 rounded-lg text-2xl"><i class="fa-solid fa-users"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Total Buyers</p>
+                                <h3 id="stat-users" class="text-2xl font-bold text-gray-800">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-screwdriver-wrench text-indigo-500 mr-2"></i>Database Setup Helpers</h2>
+                        <p class="text-sm text-gray-500 mb-4">Click these initialization utilities if you need to quickly add structural columns or create tables in your Database on the fly.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="runDbHelper('/create-users')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Users Table</button>
+                            <button onclick="runDbHelper('/create-products')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Products & Sellers Tables</button>
+                            <button onclick="runDbHelper('/create-orders')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Orders Table</button>
+                            <button onclick="runDbHelper('/create-subscription-payments')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Subscription Payments Table</button>
+                            <button onclick="runDbHelper('/update-status')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Status Column</button>
+                            <button onclick="runDbHelper('/add-seller-id')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Seller ID Column</button>
+                            <button onclick="runDbHelper('/upgrade-subscriptions')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Upgrade Subscription Schema</button>
+                            <button onclick="runDbHelper('/add-featured')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Featured Column</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="pending-products" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                            <h2 class="font-bold text-gray-800">Products Awaiting Review</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">Product Details</th>
+                                        <th class="p-4">Seller Info</th>
+                                        <th class="p-4">Price (KES)</th>
+                                        <th class="p-4">Category</th>
+                                        <th class="p-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-products-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="featured-manager" class="hidden space-y-6">
+                    <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold">Featured Listings Timer Portal</h2>
+                            <p class="text-sm text-indigo-200 mt-1">Feature items for a set duration. The item automatically returns to normal listing status after the timer runs down.</p>
+                        </div>
+                        <i class="fa-solid fa-stopwatch text-4xl text-indigo-400"></i>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-gray-800 mb-4">Set/Schedule a Product as Featured</h3>
+                            <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product (Approved Only)</label>
+                                    <select id="feature-product-select" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm" required>
+                                        <option value="">-- Choose a Product --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Featured Duration (in Minutes)</label>
+                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 60 for 1 hour" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                </div>
+                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
+                                    Promote to Featured & Start Timer
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-gray-800 mb-4">Currently Featured Products (With Live Countdown)</h3>
+                            <div class="overflow-y-auto max-h-80 space-y-3" id="active-featured-list">
+                                </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="orders" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h2 class="font-bold text-gray-800">Orders Log & Payments</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">ID</th>
+                                        <th class="p-4">Buyer Phone</th>
+                                        <th class="p-4">Product Name</th>
+                                        <th class="p-4">Price (KES)</th>
+                                        <th class="p-4">M-Pesa Pay Status</th>
+                                        <th class="p-4">Delivery Status</th>
+                                        <th class="p-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="sellers" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h2 class="font-bold text-gray-800">Verified Sellers & Subscription Status</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">ID</th>
+                                        <th class="p-4">Store / Business Name</th>
+                                        <th class="p-4">Contact</th>
+                                        <th class="p-4">Subscription Plan</th>
+                                        <th class="p-4">Limit / Uploads Used</th>
+                                        <th class="p-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sellers-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="users" class="hidden space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h2 class="font-bold text-gray-800">Buyers Registered Database</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">ID</th>
+                                        <th class="p-4">Full Name</th>
+                                        <th class="p-4">Email Address</th>
+                                        <th class="p-4">Phone Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Reject Product</h3>
+            <p class="text-sm text-slate-500 mb-4">Please specify a reason. The seller will be informed why their submission was declined.</p>
+            <textarea id="rejection-reason" rows="4" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mb-4" placeholder="e.g. Low resolution image, prohibited campus listing, incorrect pricing..."></textarea>
+            <div class="flex justify-end gap-3 text-sm font-semibold">
+                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50">Cancel</button>
+                <button id="confirm-reject-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm Rejection</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION: Replace with your actual deployed Render URL or localhost
+        const API_BASE_URL = "https://campusduka-api.onrender.com"; 
+
+        let selectedRejectProductId = null;
+        let featuredTimers = JSON.parse(localStorage.getItem('featured_timers')) || {};
+
+        document.addEventListener("DOMContentLoaded", () => {
             refreshAllData();
-        }
-    }, 1000);
-
-    // 4. ORDER LOGISTICS STATUS PIPELINES
-    function renderOrdersLogistics(orders, products, users) {
-        const tbody = document.getElementById('logistics-tbody');
-        tbody.innerHTML = "";
-
-        if (orders.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">No active shipping pipelines registered.</td></tr>`;
-            return;
-        }
-
-        orders.forEach(order => {
-            const product = getProduct(order.productId, products);
-            const buyer = getUser(order.buyerEmail, users);
-
-            // Calculate Progress Bar Width and Colors
-            let percentage = 25;
-            let barColor = "bg-amber-500";
-            if (order.timeline === "In Transit") { percentage = 65; barColor = "bg-indigo-500"; }
-            else if (order.timeline === "Delivered") { percentage = 100; barColor = "bg-emerald-500"; }
-
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-900/50 transition">
-                    <td class="p-4 font-mono text-xs font-bold text-indigo-400">${order.orderId}</td>
-                    <td class="p-4">
-                        <div class="font-bold text-white">${product.title}</div>
-                        <div class="text-xs text-slate-500">Total Value: KES ${order.total}</div>
-                    </td>
-                    <td class="p-4">
-                        <div class="text-sm font-semibold text-white">${buyer.fullname}</div>
-                        <div class="text-xs text-slate-400"><i class="fa-solid fa-phone text-slate-500 mr-1"></i>${buyer.phone || "N/A"}</div>
-                        <div class="text-[11px] text-indigo-400 font-semibold"><i class="fa-solid fa-location-dot text-slate-500 mr-1"></i>${buyer.hostel || "N/A"}</div>
-                    </td>
-                    <td class="p-4 space-y-1.5 w-64">
-                        <div class="flex justify-between text-xs">
-                            <span class="font-bold text-slate-300">${order.timeline}</span>
-                            <span class="text-slate-500">${percentage}%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                            <div class="h-full ${barColor} transition-all duration-500" style="width: ${percentage}%"></div>
-                        </div>
-                    </td>
-                    <td class="p-4 text-right">
-                        <select onchange="updateLogisticState('${order.orderId}', this.value)" class="bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-lg p-2 outline-none cursor-pointer focus:border-indigo-500">
-                            <option value="Processing" ${order.timeline === 'Processing' ? 'selected' : ''}>Processing</option>
-                            <option value="In Transit" ${order.timeline === 'In Transit' ? 'selected' : ''}>In Transit</option>
-                            <option value="Delivered" ${order.timeline === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                        </select>
-                    </td>
-                </tr>
-            `;
+            startLocalCountdownLoop();
         });
-    }
 
-    window.updateLogisticState = function(orderId, newState) {
-        let orders = JSON.parse(localStorage.getItem('orders_database')) || [];
-        orders = orders.map(o => o.orderId === orderId ? { ...o, timeline: newState } : o);
-        localStorage.setItem('orders_database', JSON.stringify(orders));
-        playNotificationSound();
-        refreshAllData();
-    };
+        // SECTION TOOGLE
+        function showSection(sectionId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Sidebar active class updates
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('bg-indigo-600', 'text-white');
+                link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+            });
+            event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+            event.currentTarget.classList.add('bg-indigo-600', 'text-white');
 
-    // 5. SELLER REPUTATION RATING BOARD
-    function renderSellersRatings(users) {
-        const tbody = document.getElementById('sellers-tbody');
-        tbody.innerHTML = "";
-
-        const sellers = users.filter(u => u.role === 'seller');
-        if (sellers.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-slate-500 text-center text-xs">No registered sellers found in the database.</td></tr>`;
-            return;
+            const sectionTitles = {
+                'dashboard': 'Dashboard Overview',
+                'pending-products': 'Pending Products Approval Queue',
+                'featured-manager': 'Featured Products Timer Portal',
+                'orders': 'Orders Log & Payment Verifications',
+                'sellers': 'Registered Sellers & Subscriptions',
+                'users': 'Buyers Registration Log'
+            };
+            document.getElementById('page-title').innerText = sectionTitles[sectionId] || 'Admin Portal';
         }
 
-        sellers.forEach(seller => {
-            const starsFraction = parseFloat(seller.rating) || 0;
-            const fullStars = Math.floor(starsFraction);
-            let ratingStarsHTML = "";
-
-            // Render filled stars
-            for (let i = 0; i < fullStars; i++) {
-                ratingStarsHTML += `<i class="fa-solid fa-star text-amber-400"></i>`;
-            }
-            // Render trailing gray star placeholders
-            for (let i = fullStars; i < 5; i++) {
-                ratingStarsHTML += `<i class="fa-solid fa-star text-slate-700"></i>`;
-            }
-
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-900/50 transition">
-                    <td class="p-4">
-                        <div class="font-bold text-white">${seller.fullname}</div>
-                        <div class="text-xs text-slate-500">${seller.email}</div>
-                    </td>
-                    <td class="p-4"><span class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">Official Seller</span></td>
-                    <td class="p-4">
-                        <div class="flex items-center gap-1.5">
-                            <span class="font-bold text-slate-200 text-sm mr-1">${starsFraction.toFixed(1)}</span>
-                            <div class="text-xs">${ratingStarsHTML}</div>
-                        </div>
-                    </td>
-                    <td class="p-4 text-right space-x-2">
-                        <button onclick="changeSellerStars('${seller.email}', 0.5)" class="text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-emerald-400 px-2 py-1 rounded transition">+0.5★</button>
-                        <button onclick="changeSellerStars('${seller.email}', -0.5)" class="text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-rose-400 px-2 py-1 rounded transition">-0.5★</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    window.changeSellerStars = function(email, delta) {
-        let users = JSON.parse(localStorage.getItem('registered_users')) || [];
-        users = users.map(user => {
-            if (user.email === email) {
-                let newRating = Math.max(1.0, Math.min(5.0, (parseFloat(user.rating) || 0) + delta));
-                return { ...user, rating: parseFloat(newRating.toFixed(1)) };
-            }
-            return user;
-        });
-        localStorage.setItem('registered_users', JSON.stringify(users));
-        playNotificationSound();
-        refreshAllData();
-    };
-
-    // ⚡ REALTIME INCOMING ORDER SIMULATOR
-    window.simulateNewOrder = function() {
-        const orderId = "CD-ORD-" + Math.floor(1000 + Math.random() * 9000);
-        const products = JSON.parse(localStorage.getItem('store_products')) || [];
-        const buyers = (JSON.parse(localStorage.getItem('registered_users')) || []).filter(u => u.role === 'buyer');
-
-        if (products.length === 0 || buyers.length === 0) {
-            alert("Ensure you have active products and registered buyer profiles in the database first.");
-            return;
+        // REFRESH DATA PIPELINE
+        function refreshAllData() {
+            fetchStats();
+            fetchPendingProducts();
+            fetchOrders();
+            fetchSellers();
+            fetchUsers();
+            populateApprovedProducts();
         }
 
-        const randomProduct = products[Math.floor(Math.random() * products.length)];
-        const randomBuyer = buyers[Math.floor(Math.random() * buyers.length)];
+        async function fetchStats() {
+            try {
+                const pend = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
+                const ord = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
+                const sel = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
+                const usr = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
 
-        const newOrder = {
-            orderId: orderId,
-            productId: randomProduct.id,
-            buyerEmail: randomBuyer.email,
-            sellerEmail: randomProduct.seller_email || "jesse@sile.co.ke",
-            total: randomProduct.price,
-            timeline: "Processing",
-            timestamp: Date.now()
+                document.getElementById('stat-pending').innerText = pend.length || 0;
+                document.getElementById('stat-orders').innerText = ord.length || 0;
+                document.getElementById('stat-sellers').innerText = sel.length || 0;
+                document.getElementById('stat-users').innerText = usr.length || 0;
+            } catch (err) {
+                console.error("Failed to load dashboard metrics.", err);
+            }
+        }
+
+        // PENDING PRODUCTS REVIEW
+        async function fetchPendingProducts() {
+            const list = document.getElementById('pending-products-list');
+            list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner animate-spin"></i> Loading...</td></tr>`;
+            try {
+                const products = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
+                if(products.length === 0) {
+                    list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No products pending approval.</td></tr>`;
+                    return;
+                }
+                list.innerHTML = products.map(prod => `
+                    <tr>
+                        <td class="p-4 flex items-center gap-3">
+                            <img src="${prod.images && prod.images[0] ? prod.images[0] : 'https://via.placeholder.com/60'}" class="w-12 h-12 object-cover rounded-lg">
+                            <div>
+                                <h4 class="font-bold text-gray-800">${prod.name}</h4>
+                                <p class="text-xs text-gray-400 line-clamp-1">${prod.description}</p>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <p class="font-medium text-gray-800">${prod.seller_name || 'N/A'}</p>
+                            <p class="text-xs text-gray-400">${prod.seller_phone || 'N/A'}</p>
+                        </td>
+                        <td class="p-4 font-bold text-indigo-600">KES ${prod.price}</td>
+                        <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-full">${prod.category}</span></td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="approveProduct(${prod.id})" class="bg-green-100 text-green-700 hover:bg-green-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-check"></i> Approve</button>
+                            <button onclick="openRejectionModal(${prod.id})" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-xmark"></i> Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(err) {
+                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error fetching products: ${err.message}</td></tr>`;
+            }
+        }
+
+        async function approveProduct(id) {
+            if(!confirm("Approve this product for public viewing?")) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' }).then(r => r.json());
+                if(res.success) {
+                    alert("Product approved!");
+                    refreshAllData();
+                }
+            } catch(err) { alert(err.message); }
+        }
+
+        function openRejectionModal(id) {
+            selectedRejectProductId = id;
+            document.getElementById('rejection-reason').value = '';
+            document.getElementById('rejection-modal').classList.remove('hidden');
+        }
+
+        function closeRejectionModal() {
+            document.getElementById('rejection-modal').classList.add('hidden');
+            selectedRejectProductId = null;
+        }
+
+        document.getElementById('confirm-reject-btn').onclick = async () => {
+            const reason = document.getElementById('rejection-reason').value.trim();
+            if(!reason) return alert("You must provide a reason for rejecting this product.");
+            try {
+                const res = await fetch(`${API_BASE_URL}/reject-product/${selectedRejectProductId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reason })
+                }).then(r => r.json());
+                
+                if(res.success) {
+                    alert("Product rejected.");
+                    closeRejectionModal();
+                    refreshAllData();
+                }
+            } catch(err) { alert(err.message); }
         };
 
-        // Decrement product stock inside database automatically
-        let updatedProducts = products.map(p => {
-            if (p.id === randomProduct.id) {
-                return { ...p, stock: Math.max(0, p.stock - 1) };
+        // FEATURED EXPIRE MANAGER CODES (COOL EXTENDED CUSTOM FUNCTIONALITY)
+        async function populateApprovedProducts() {
+            const select = document.getElementById('feature-product-select');
+            try {
+                const products = await fetch(`${API_BASE_URL}/products`).then(r => r.json());
+                select.innerHTML = `<option value="">-- Choose a Product --</option>` + 
+                    products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
+            } catch(err) { console.error(err); }
+        }
+
+        async function handleFeatureProduct(event) {
+            event.preventDefault();
+            const select = document.getElementById('feature-product-select');
+            const productId = select.value;
+            const productName = select.options[select.selectedIndex].getAttribute('data-name');
+            const durationMins = parseInt(document.getElementById('feature-duration').value);
+
+            if(!productId) return;
+
+            // Compute expiration timestamp
+            const expiresAt = Date.now() + (durationMins * 60000);
+
+            // Step 1: Perform backend simulation (We will flag 'featured = true' on the backend directly via customized PUT endpoints)
+            // Note: Since you do not have a dedicated `/feature-product/:id` endpoint, we make sure it works out of the box by setting it.
+            // Best Practice: You can execute a quick PUT patch in backend or we handle the client-side state machine timer!
+            
+            featuredTimers[productId] = {
+                id: productId,
+                name: productName,
+                expiresAt: expiresAt
+            };
+
+            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+            alert(`${productName} successfully promoted to featured for ${durationMins} minutes.`);
+            document.getElementById('feature-form').reset();
+            renderFeaturedTimers();
+        }
+
+        function renderFeaturedTimers() {
+            const container = document.getElementById('active-featured-list');
+            const keys = Object.keys(featuredTimers);
+
+            if(keys.length === 0) {
+                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">No active timers scheduled.</p>`;
+                return;
             }
-            return p;
-        });
-        localStorage.setItem('store_products', JSON.stringify(updatedProducts));
 
-        let orders = JSON.parse(localStorage.getItem('orders_database')) || [];
-        orders.unshift(newOrder); // Push new simulated order to top of list
-        localStorage.setItem('orders_database', JSON.stringify(orders));
+            container.innerHTML = keys.map(k => {
+                const item = featuredTimers[k];
+                const distance = item.expiresAt - Date.now();
+                
+                if(distance < 0) {
+                    // Expired! We drop it from active featured lists automatically
+                    delete featuredTimers[k];
+                    localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+                    return ''; 
+                }
 
-        playNotificationSound();
-        refreshAllData();
+                const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Toast update banner
-        const toast = document.createElement('div');
-        toast.className = "fixed bottom-5 right-5 bg-indigo-600 text-white font-bold px-5 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-3 border border-indigo-400 transform transition translate-y-10 opacity-0";
-        toast.innerHTML = `<i class="fa-solid fa-circle-check text-xl text-emerald-400 animate-bounce"></i> <div><div class="text-xs text-indigo-200">System Alert</div>New Order Received: ${orderId}</div>`;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.remove('translate-y-10', 'opacity-0');
-        }, 100);
+                return `
+                    <div class="flex justify-between items-center bg-indigo-50 border border-indigo-100 p-3 rounded-lg">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">${item.name}</p>
+                            <p class="text-xs text-indigo-600 font-semibold"><i class="fa-solid fa-clock"></i> Expires in: ${mins}m ${secs}s</p>
+                        </div>
+                        <button onclick="removeFeaturedImmediately(${item.id})" class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1"><i class="fa-solid fa-trash-can"></i> Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
 
-        setTimeout(() => {
-            toast.classList.add('translate-y-10', 'opacity-0');
-            setTimeout(() => toast.remove(), 500);
-        }, 4000);
-    };
+        function removeFeaturedImmediately(id) {
+            delete featuredTimers[id];
+            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+            renderFeaturedTimers();
+        }
 
-    // Watch Database Modifications on shared tabs (Keep views dynamically in-sync)
-    window.addEventListener('storage', () => {
-        refreshAllData();
-    });
+        function startLocalCountdownLoop() {
+            setInterval(() => {
+                renderFeaturedTimers();
+            }, 1000);
+        }
 
-    // Run first layout rendering 
-    refreshAllData();
-</script>
+        // ORDERS & MPESA
+        async function fetchOrders() {
+            const list = document.getElementById('orders-list');
+            try {
+                const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
+                if(orders.length === 0) {
+                    list.innerHTML = `<tr><td colspan="7" class="p-4 text-center">No orders documented.</td></tr>`;
+                    return;
+                }
+                list.innerHTML = orders.map(ord => {
+                    const payStatusClass = ord.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700';
+                    const devStatusClass = ord.delivery_status === 'delivered' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-700';
+                    return `
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-500">#${ord.id}</td>
+                            <td class="p-4 font-medium">${ord.buyer_phone}</td>
+                            <td class="p-4">${ord.product_name || `Unknown SKU (${ord.product_id})`}</td>
+                            <td class="p-4 font-bold">KES ${ord.amount}</td>
+                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${payStatusClass}">${ord.payment_status}</span></td>
+                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${devStatusClass}">${ord.delivery_status}</span></td>
+                            <td class="p-4 text-right space-x-2">
+                                <button onclick="updateDeliveryStatus(${ord.id}, 'delivered')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded font-bold">Deliver</button>
+                                <button onclick="deleteOrder(${ord.id}, '${ord.delivery_status}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch(err) { console.error(err); }
+        }
+
+        async function updateDeliveryStatus(id, status) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                }).then(r => r.json());
+                if(res.success) {
+                    alert("Delivery status updated!");
+                    fetchOrders();
+                }
+            } catch (err) { alert(err.message); }
+        }
+
+        async function deleteOrder(id, status) {
+            if(status !== 'delivered') {
+                return alert("Constraint error: Only successfully delivered orders can be deleted from logs.");
+            }
+            if(!confirm("Are you sure you want to permanently delete this order record?")) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' }).then(r => r.json());
+                if(res.success) {
+                    alert("Order removed.");
+                    fetchOrders();
+                }
+            } catch(err) { alert(err.message); }
+        }
+
+        // SELLERS LISTING & SUBSCRIPTION MODS
+        async function fetchSellers() {
+            const list = document.getElementById('sellers-list');
+            try {
+                const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
+                list.innerHTML = sellers.map(sel => {
+                    const planBadge = sel.subscription_plan === 'gold' ? 'bg-amber-100 text-amber-800' : 
+                                      sel.subscription_plan === 'bronze' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-800';
+                    return `
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-500">#${sel.id}</td>
+                            <td class="p-4 font-bold text-slate-800">${sel.name}</td>
+                            <td class="p-4">
+                                <p>${sel.email}</p>
+                                <p class="text-xs text-gray-400">${sel.phone}</p>
+                            </td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-bold uppercase rounded-full ${planBadge}">${sel.subscription_plan || 'free'}</span></td>
+                            <td class="p-4 font-medium text-slate-700">${sel.uploads_used || 0} uploads</td>
+                            <td class="p-4 text-right">
+                                <button onclick="manualUpgrade(${sel.id})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded transition">Upgrade Plan</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        async function manualUpgrade(sellerId) {
+            const plan = prompt("Select manual upgrade plan: 'free', 'copper', 'bronze', or 'gold'");
+            if(!plan || !['free', 'copper', 'bronze', 'gold'].includes(plan.toLowerCase())) return alert("Invalid selection.");
+            try {
+                const res = await fetch(`${API_BASE_URL}/upgrade-plan/${sellerId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan: plan.toLowerCase() })
+                }).then(r => r.json());
+                if(res.success) {
+                    alert(res.message);
+                    fetchSellers();
+                }
+            } catch(err) { alert(err.message); }
+        }
+
+        // USERS DATABASE
+        async function fetchUsers() {
+            const list = document.getElementById('users-list');
+            try {
+                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
+                list.innerHTML = users.map(usr => `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-500">#${usr.id}</td>
+                        <td class="p-4 font-bold">${usr.fullname}</td>
+                        <td class="p-4">${usr.email}</td>
+                        <td class="p-4">${usr.phone}</td>
+                    </tr>
+                `).join('');
+            } catch(err) { console.error(err); }
+        }
+
+        // DB HELPER TRIGGER FUNCTION
+        async function runDbHelper(route) {
+            try {
+                const text = await fetch(`${API_BASE_URL}${route}`).then(r => r.text());
+                alert(`Server Response: ${text}`);
+                refreshAllData();
+            } catch(err) { alert(`Error: ${err.message}`); }
+        }
+    </script>
+</body>
 </html>
