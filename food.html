@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka | Campus Food & Student Marketplace</title>
-<meta name="description" content="CampusDuka is the premier student marketplace for buying, selling, ordering fast foods, and finding campus events.">
+<title>CampusDuka | Fast Foods</title>
 
-<link rel="icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
@@ -17,13 +15,11 @@
    COLOR SYSTEM & VARIABLES (Your Brand Palette)
    ========================================== */
 :root {
-  /* --- Brand Core --- */
   --color-charcoal: #1f2d3d;      /* Base darks, navbars, footers */
   --color-slate-teal: #164e63;    /* Main brand color, borders, primary elements */
   --color-medium-teal: #1f6b88;   /* Primary hover states */
   --color-accent-blue: #4589be;   /* Nav hover active borders, subtle glow */
 
-  /* --- Neutrals & Backgrounds --- */
   --color-bg-main: #f8fafc;       /* Light page background */
   --color-card-white: #ffffff;    /* Cards, clean containers */
   --color-slate-light: #f1f5f9;   /* Secondary buttons, category tags */
@@ -32,49 +28,42 @@
   --color-text-muted: #64748b;    /* Description text, subheaders */
   --color-text-light: #94a3b8;    /* Placeholders, footer text */
 
-  /* --- Functional & Accents --- */
-  --color-success: #10b981;       /* Dashboard, booking, purchase CTAs */
+  --color-success: #10b981;       /* Order / CTA buttons */
   --color-success-hover: #059669; /* Success hover */
-  --color-danger: #ef4444;        /* Logout, alerts, urgency badges, cart count */
+  --color-danger: #ef4444;        /* Alerts, urgency badges, cart count */
   --color-danger-dark: #dc2626;   /* Danger hover, alert text */
   --color-rose-badge: #e11d48;    /* Ad badges */
   --color-pink-bg: #fff5f5;       /* Warning/countdown backgrounds */
 }
 
-/* ==========================
-   RESET & SYSTEM BASIS
-========================== */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
   font-family:'Poppins', sans-serif;
-  scroll-behavior:smooth;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body{
   background: var(--color-bg-main);
   color: var(--color-text-dark);
-  overflow-x:hidden;
-  line-height:1.6;
 }
-
-a{ text-decoration:none; color: inherit; }
-img{ max-width:100%; display:block; }
-button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 /* ================= NAVBAR ================= */
 .navbar{
-  position:sticky;
-  top:0;
-  z-index:1100;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 5%;
   background: var(--color-charcoal);
+  padding: 12px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
   border-bottom: 2px solid var(--color-slate-teal);
-  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.navdiv{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo-link {
@@ -85,9 +74,8 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   background: transparent;
 }
 
-/* SVG CampusDuka Brand Logo */
 .logo-svg {
-  height: 42px;
+  height: 40px;
   width: auto;
 }
 
@@ -102,478 +90,212 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   color: var(--color-accent-blue);
 }
 
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:24px;
-  list-style:none;
+.navdiv ul{
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  align-items: center;
 }
 
-.nav-links a{
+.navdiv ul li a{
+  text-decoration: none;
   color: rgba(255, 255, 255, 0.85);
-  font-size:14px;
-  font-weight:500;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 0;
-  transition:.2s;
-  border-bottom:2px solid transparent;
-}
-
-.nav-links a:hover, .nav-links a.active{
-  color: var(--color-accent-blue);
-  border-bottom:2px solid var(--color-accent-blue);
-}
-
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-
-.login-btn, .logout-btn, .dashboard-btn{
-  color:white;
-  font-weight:600;
+  font-weight: 500;
   font-size: 14px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background: rgba(255,255,255,0.1);
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 12px;
+  border-bottom: 2px solid transparent;
 }
 
-.login-btn:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: var(--color-accent-blue);
+.navdiv ul li a:hover, .navdiv ul li a.active {
+  color: var(--color-accent-blue);
+  border-bottom: 2px solid var(--color-accent-blue);
 }
 
-.logout-btn {
-  background: var(--color-danger);
-}
-
-.logout-btn:hover {
-  background: var(--color-danger-dark);
-}
-
-.dashboard-btn {
-  background: var(--color-success);
-}
-
-.dashboard-btn:hover {
-  background: var(--color-success-hover);
-}
-
-.cart-link, .nav-orders-link{
-  position:relative;
-  color:white;
-  font-size:22px;
+.cart-link{
+  color: white;
+  font-size: 22px;
+  position: relative;
   display: flex;
   align-items: center;
-  transition: color 0.2s;
+  margin-left: 10px;
 }
 
-.cart-link:hover, .nav-orders-link:hover {
+.cart-link:hover {
   color: var(--color-accent-blue);
 }
 
-#cart-count, .nav-badge{
-  position:absolute;
-  top:-8px;
-  right:-10px;
+#cart-count{
   background: var(--color-danger);
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:10px;
-  font-weight:bold;
-  color:white;
-}
-
-.nav-badge.hidden {
-  display: none;
-}
-
-.hamburger-menu {
-  display: none;
   color: white;
-  font-size: 24px;
-  cursor: pointer;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media(max-width:1024px){
-  .hamburger-menu {
-    display: block;
-    order: 3;
-  }
-  .nav-right {
-    order: 2;
-    margin-left: auto;
-    margin-right: 15px;
-  }
-  .nav-links {
-    position: fixed;
-    top: 68px;
-    right: -100%;
-    width: 280px;
-    height: calc(100vh - 68px);
-    background: var(--color-charcoal);
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 40px 30px;
-    gap: 25px;
-    box-shadow: -4px 10px 15px rgba(0,0,0,0.2);
-    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 1px solid var(--color-slate-teal);
-  }
-  .nav-links.active {
-    right: 0;
-  }
-  .nav-links a {
-    font-size: 16px;
-    width: 100%;
-  }
-}
-
-/* ================= SEARCH BAR ================= */
-.search-bar-container{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  padding:16px 20px;
+/* ================= SEARCH ================= */
+.navbar-search{
   background: var(--color-charcoal);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
 }
 
-.search-box-wrapper {
+.navbar-search-box {
   width: 100%;
-  max-width: 550px;
+  max-width: 500px;
   display: flex;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.search-bar-container input{
+.navbar-search input{
   flex: 1;
-  padding: 14px 18px;
+  padding: 12px 16px;
   border: 1px solid #2d3f55;
   border-radius: 8px 0 0 8px;
-  font-size:15px;
   outline: none;
+  font-size: 14px;
   background: #2d3f55;
   color: white;
 }
 
-.search-bar-container input::placeholder {
+.navbar-search input::placeholder {
   color: var(--color-text-light);
 }
 
-.search-bar-container button{
-  padding:12px 24px;
-  border:none;
+.navbar-search button{
   background: var(--color-slate-teal);
-  color:white;
-  font-weight:600;
-  border-radius:0 8px 8px 0;
-  border: 1px solid var(--color-slate-teal);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-.search-bar-container button:hover {
+.navbar-search button:hover {
   background: var(--color-medium-teal);
 }
 
-/* ================= HERO SECTION ================= */
+/* ================= HERO SLIDER ================= */
 .hero{
-  position:relative;
-  height:55vh;
-  min-height: 400px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  overflow:hidden;
-  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80');
-  background-size:cover;
-  background-position:center;
-}
-
-.overlay{
-  position:absolute;
-  inset: 0;
-  background: linear-gradient(rgba(31, 45, 61, 0.8), rgba(31, 45, 61, 0.92));
-  z-index: 1;
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  max-width:800px;
-  padding:0 24px;
-  color:white;
-  animation:fadeUp 1s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero h1{
-  font-size:44px;
-  font-weight:800;
-  margin-bottom:16px;
-  line-height:1.2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-.hero h1 span{
-  color: var(--color-accent-blue);
-}
-
-.hero p{
-  font-size:18px;
-  margin-bottom:32px;
-  opacity:.9;
-  color: #e2e8f0;
-}
-
-.hero-buttons{
-  display:flex;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
-
-.button{
-  padding:14px 28px;
-  border-radius:8px;
-  background: var(--color-slate-teal);
-  color:white;
-  font-size:15px;
-  font-weight:600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow:0 4px 14px rgba(22, 78, 99, 0.4);
-}
-
-.button:hover{
-  transform:translateY(-2px);
-  background: var(--color-medium-teal);
-}
-
-.button.secondary{
-  background: white;
-  color: var(--color-text-dark);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-}
-
-.button.secondary:hover{
-  background: var(--color-slate-light);
-}
-
-/* ================= CATEGORIES SECTION ================= */
-.categories{
-  width:90%;
-  max-width:1200px;
-  margin:50px auto 20px auto;
-  text-align:center;
-}
-
-.categories h2{
-  margin-bottom:24px;
-  color: var(--color-text-dark);
-  font-size:26px;
-  font-weight: 700;
-}
-
-.category-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
-  gap:15px;
-}
-
-.category-grid a{
-  background: var(--color-card-white);
-  padding:20px 10px;
-  border-radius:12px;
-  color: var(--color-text-dark);
-  font-weight:600;
-  font-size: 14px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.02);
-  border: 1px solid var(--color-border-light);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.category-grid a i {
-  font-size: 24px;
-  color: var(--color-slate-teal);
-}
-
-.category-grid a:hover{
-  transform:translateY(-3px);
-  background: var(--color-slate-teal);
-  color: white;
-  border-color: var(--color-slate-teal);
-}
-
-.category-grid a:hover i{
-  color: white;
-}
-
-/* ================= AD BANNER ================= */
-.campus-ad-banner {
-  width: 90%;
-  max-width: 1200px;
-  margin: 40px auto;
-  background: linear-gradient(135deg, var(--color-slate-teal) 0%, var(--color-charcoal) 100%);
-  border: 1px solid var(--color-accent-blue);
-  border-radius: 16px;
-  padding: 30px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
   position: relative;
+  width: 100%;
+  height: 380px;
   overflow: hidden;
 }
 
-.campus-ad-banner::before {
-  content: '';
+.slider{
   position: absolute;
-  top: -50%;
-  left: -20%;
-  width: 60%;
-  height: 200%;
-  background: rgba(69, 137, 190, 0.1);
-  transform: rotate(30deg);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
 
-.ad-badge {
-  background: var(--color-rose-badge);
+.slide{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.slide.active{
+  opacity: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(31, 45, 61, 0.75), rgba(31, 45, 61, 0.9));
+  z-index: 1;
+}
+
+.hero-text{
+  position: relative;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
   color: white;
-  padding: 4px 10px;
-  font-size: 11px;
+  padding: 20px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.hero-text h1 {
+  font-size: 40px;
   font-weight: 800;
-  text-transform: uppercase;
-  border-radius: 4px;
-  letter-spacing: 1px;
-  display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
-.ad-text-content {
-  flex: 1;
-  min-width: 280px;
-  z-index: 2;
+.hero-text h1 span {
+  color: var(--color-accent-blue);
 }
 
-.ad-text-content h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 6px;
+.hero-text p {
+  font-size: 18px;
+  opacity: 0.9;
+  color: #e2e8f0;
 }
 
-.ad-text-content p {
-  color: #cbd5e1;
-  font-size: 14px;
-}
-
-.ad-cta-btn {
-  background: var(--color-success);
-  color: white;
-  font-weight: 700;
-  padding: 12px 24px;
-  border-radius: 8px;
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.ad-cta-btn:hover {
-  background: var(--color-success-hover);
-  transform: translateY(-2px);
-}
-
-/* ================= PRODUCT / FOOD GRID ================= */
-.featured-products{
-  width:90%;
-  max-width:1200px;
-  margin:50px auto 70px auto;
-}
-
-.section-header{
-  text-align:center;
-  margin-bottom:40px;
-}
-
-.section-header h2{
-  font-size:32px;
-  color: var(--color-text-dark);
-  margin-bottom:10px;
-  font-weight: 700;
-}
-
-.section-header p{
-  color: var(--color-text-muted);
-  font-size:16px;
-}
-
-.featured-grid{
-  display:grid;
+/* ================= PRODUCTS GRID ================= */
+.product-container{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap:25px;
+  gap: 25px;
+  padding: 50px 20px;
 }
 
 .product-card{
-  position: relative;
   background: var(--color-card-white);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  overflow: hidden;
   border: 1px solid var(--color-border-light);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.product-card:hover{
-  transform:translateY(-5px);
+.product-card:hover {
+  transform: translateY(-5px);
   box-shadow: 0 10px 22px rgba(31, 45, 61, 0.08);
 }
 
-.product-image-wrapper {
+.img-wrapper {
   position: relative;
   width: 100%;
   height: 200px;
+  overflow: hidden;
 }
 
 .product-card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.urgency-badge {
+.delivery-badge {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: var(--color-danger);
+  background: var(--color-slate-teal);
   color: white;
   padding: 4px 10px;
   font-size: 11px;
   font-weight: 700;
   border-radius: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-  z-index: 10;
 }
 
 .rating-badge {
@@ -591,58 +313,42 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   gap: 4px;
 }
 
-.product-info{
-  padding:20px;
-  flex-grow: 1;
+.card-details {
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
-.product-meta-row {
+.card-details-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
 }
 
-.product-info h3{
-  font-size:16px;
+.product-card h3{
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom:8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   color: var(--color-text-dark);
 }
 
-.product-price{
+.product-card p{
   color: var(--color-slate-teal);
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:8px;
+  font-weight: 700;
+  font-size: 18px;
 }
 
-.product-category{
-  display:inline-block;
-  background: var(--color-slate-light);
-  color: var(--color-text-dark);
-  padding:4px 12px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight: 600;
-  border: 1px solid var(--color-border-light);
-}
-
-.product-info p {
-  color: var(--color-text-muted);
-  font-size: 13px;
+.product-card small{
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 13px;
   line-height: 1.5;
-  margin-bottom: 12px;
+  height: 38px;
+  margin-bottom: 15px;
 }
 
 .countdown-box {
@@ -657,448 +363,364 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   margin-bottom: 15px;
 }
 
-/* Button Action Layout Updated */
-.card-actions-wrapper {
-  display: flex;
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: auto;
 }
 
-.card-action-btn {
-  flex: 1;
-  padding: 11px;
-  border: none;
+.bn{
+  padding: 11px 14px;
   border-radius: 8px;
-  font-size: 13px;
+  border: none;
   font-weight: 600;
-  color: white;
-  display: flex;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
 
-.card-action-btn.cart-btn {
-  background: var(--color-slate-teal);
-}
-
-.card-action-btn.cart-btn:hover {
-  background: var(--color-medium-teal);
-}
-
-.card-action-btn.book-btn {
-  background: var(--color-success);
-}
-
-.card-action-btn.book-btn:hover {
-  background: var(--color-success-hover);
-}
-
-.card-action-btn.view-btn {
+.bn-view {
   background: var(--color-slate-light);
   color: var(--color-text-dark);
   border: 1px solid var(--color-border-light);
-  flex: 0 0 45px;
 }
 
-.card-action-btn.view-btn:hover {
+.bn-view:hover {
   background: var(--color-border-light);
 }
 
-.view-all{
-  margin-top:40px;
-  text-align:center;
-}
-
-/* ================= STATS SECTION ================= */
-.stats-section{
-  width:90%;
-  max-width:1200px;
-  margin:70px auto;
-  text-align:center;
-}
-
-.stats-section h2{
-  font-size:32px;
-  color: var(--color-text-dark);
-  margin-bottom:10px;
-  font-weight: 700;
-}
-
-.stats-section p{
-  color: var(--color-text-muted);
-  margin-bottom:35px;
-}
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-  gap:20px;
-}
-
-.stat-card{
-  background: var(--color-card-white);
-  padding:30px;
-  border-radius:16px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.02);
-  border: 1px solid var(--color-border-light);
-}
-
-.stat-card h1{
-  font-size:42px;
-  color: var(--color-slate-teal);
-  margin-bottom:6px;
-  font-weight: 700;
-}
-
-.stat-card span{
-  font-size:15px;
-  font-weight:600;
-  color: var(--color-text-muted);
-}
-
-/* ================= WHY US ================= */
-.why-us{
-  width:90%;
-  max-width:1200px;
-  margin:70px auto;
-}
-
-.section-title{
-  text-align:center;
-  margin-bottom:45px;
-}
-
-.section-title h2{
-  font-size:32px;
-  color: var(--color-text-dark);
-  margin-bottom:10px;
-  font-weight: 700;
-}
-
-.section-title p{
-  font-size:16px;
-  color: var(--color-text-muted);
-}
-
-.why-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-  gap:25px;
-}
-
-.why-card{
-  background: var(--color-card-white);
-  padding:30px 20px;
-  border-radius:16px;
-  text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.02);
-  border: 1px solid var(--color-border-light);
-}
-
-.why-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 12px 24px rgba(31, 45, 61, 0.06);
-}
-
-.why-card i{
-  font-size:40px;
-  color: var(--color-slate-teal);
-  margin-bottom:16px;
-}
-
-.why-card h3{
-  margin-bottom:12px;
-  font-size:20px;
-  font-weight: 600;
-  color: var(--color-text-dark);
-}
-
-.why-card p{
-  color: var(--color-text-muted);
-  font-size: 14px;
-}
-
-/* ================= SELLER PROFILE ================= */
-.seller-section{
-  width:90%;
-  max-width:1200px;
-  margin:70px auto;
-  background: var(--color-charcoal);
-  padding:45px 24px;
-  border-radius:16px;
-  text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--color-slate-teal);
+.bn-add {
+  background: var(--color-success);
   color: white;
 }
 
-.seller-section h2{
-  font-size:28px;
-  color:white;
-  margin-bottom:12px;
-  font-weight: 700;
+.bn-add:hover {
+  background: var(--color-success-hover);
 }
 
-.seller-section p{
-  font-size:15px;
-  margin-bottom:24px;
+/* ================= MODAL ================= */
+.modal{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+  padding: 20px;
+}
+
+.modal-content{
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  width: 95%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+  border: 1px solid var(--color-border-light);
+}
+
+.close-btn{
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  font-size: 28px;
+  cursor: pointer;
   color: var(--color-text-light);
 }
 
-.seller-buttons{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
+.close-btn:hover {
+  color: var(--color-text-dark);
 }
 
-.seller-buttons a button{
-  padding:12px 24px;
-  border-radius:8px;
-  background: var(--color-slate-teal);
-  color:white;
-  font-size:14px;
-  font-weight:600;
+#mainImage{
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-.seller-buttons a button:hover{
-  background: var(--color-medium-teal);
-  transform:translateY(-2px);
+.thumbnail-container{
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-/* ================= FOOTER ARCHITECTURE ================= */
-.footer{
+.thumbnail-container img{
+  width: 65px;
+  height: 65px;
+  border-radius: 8px;
+  cursor: pointer;
+  object-fit: cover;
+  border: 2px solid transparent;
+}
+
+.thumbnail-container img:hover {
+  border-color: var(--color-slate-teal);
+}
+
+/* ================= FOOTER ================= */
+footer{
   background: var(--color-charcoal);
-  color:white;
-  text-align:center;
-  padding:45px 20px;
-  margin-top:70px;
+  color: white;
+  padding: 35px 20px;
+  text-align: center;
+  font-size: 14px;
   border-top: 3px solid var(--color-slate-teal);
 }
 
-.footer h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 6px;
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .navdiv ul {
+    gap: 8px;
+  }
+  .navdiv ul li a {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  .hero-text h1 {
+    font-size: 32px;
+  }
+  .hero-text p {
+    font-size: 15px;
+  }
 }
 
-.footer p{
-  margin:4px 0;
-  font-size: 14px;
-  opacity: 0.8;
+@media (max-width: 550px) {
+  .navdiv {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  .navbar-search-box {
+    width: 100%;
+  }
+  .product-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
 }
 </style>
 </head>
 <body>
 
 <!-- ================= NAVBAR ================= -->
-<header class="navbar">
-  <a href="#" class="logo-link">
-    <!-- Inline SVG CampusDuka Logo (Guarantees Sharp Contrast & Instant Loading) -->
-    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#164e63" />
-          <stop offset="100%" stop-color="#4589be" />
-        </linearGradient>
-      </defs>
-      <rect x="20" y="25" width="60" height="50" rx="8" fill="url(#logo-grad)" />
-      <polygon points="50,15 20,25 80,25" fill="#ffffff" />
-      <circle cx="50" cy="50" r="10" fill="#ffffff" />
-      <path d="M44,50 L56,50 M50,44 L50,56" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" />
-    </svg>
-    <span class="logo-text">Campus<span>Duka</span></span>
-  </a>
-
-  <ul class="nav-links">
-    <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
-    <li><a href="#"><i class="fa-solid fa-utensils"></i> Fast Foods</a></li>
-    <li><a href="#"><i class="fa-solid fa-bag-shopping"></i> Marketplace</a></li>
-    <li><a href="#"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
-  </ul>
-
-  <div class="nav-right">
-    <a href="#" class="cart-link">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <span id="cart-count">3</span>
+<nav class="navbar">
+  <div class="navdiv">
+    <a href="index2.html" class="logo-link">
+      <!-- Inline SVG CampusDuka Logo -->
+      <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#164e63" />
+            <stop offset="100%" stop-color="#4589be" />
+          </linearGradient>
+        </defs>
+        <rect x="20" y="25" width="60" height="50" rx="8" fill="url(#logo-grad)" />
+        <polygon points="50,15 20,25 80,25" fill="#ffffff" />
+        <circle cx="50" cy="50" r="10" fill="#ffffff" />
+        <path d="M44,50 L56,50 M50,44 L50,56" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <span class="logo-text">Campus<span>Duka</span></span>
     </a>
-    <button class="dashboard-btn"><i class="fa-solid fa-gauge-high"></i> Dashboard</button>
-    <div class="hamburger-menu"><i class="fa-solid fa-bars"></i></div>
+    <ul>
+      <li><a href="index2.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="food.html" class="active">Fast Foods</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
   </div>
-</header>
+</nav>
 
-<!-- SEARCH BAR -->
-<div class="search-bar-container">
-  <div class="search-box-wrapper">
-    <input type="text" placeholder="Search for meals, electronics, apparel...">
-    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+<!-- ================= SEARCH ================= -->
+<div class="navbar-search">
+  <div class="navbar-search-box">
+    <input id="foodSearchInput" placeholder="Search delicious food items..." onkeyup="searchFoodItems()">
+    <button onclick="searchFoodItems()">
+      <i class="fa fa-search"></i> Search
+    </button>
   </div>
 </div>
 
-<!-- ================= HERO ================= -->
+<!-- ================= HERO SLIDER ================= -->
 <section class="hero">
-  <div class="overlay"></div>
-  <div class="hero-content">
-    <h1>Your Ultimate Campus <span>Food & Gear Hub</span></h1>
-    <p>Get fresh, warm meals delivered in minutes or discover essential campus items sold by fellow students.</p>
-    <div class="hero-buttons">
-      <a href="#" class="button"><i class="fa-solid fa-burger"></i> Order Fast Food</a>
-      <a href="#" class="button secondary"><i class="fa-solid fa-shop"></i> Browse Products</a>
-    </div>
+  <div class="slider">
+    <img class="slide active" src="images/food1.jpg" alt="Slide 1">
+    <img class="slide" src="images/food2.jpg" alt="Slide 2">
+    <img class="slide" src="images/food3.jpg" alt="Slide 3">
+    <img class="slide" src="images/food4.jpg" alt="Slide 4">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <h1>Smart Buying, <span>Delicious Eating</span></h1>
+    <p>Warm & fresh campus favorites prepared and delivered instantly</p>
   </div>
 </section>
 
-<!-- ================= CATEGORIES ================= -->
-<section class="categories">
-  <h2>Explore Campus Categories</h2>
-  <div class="category-grid">
-    <a href="#"><i class="fa-solid fa-burger"></i>Fast Food</a>
-    <a href="#"><i class="fa-solid fa-laptop"></i>Electronics</a>
-    <a href="#"><i class="fa-solid fa-shirt"></i>Fashion</a>
-    <a href="#"><i class="fa-solid fa-book-open"></i>Academics</a>
-    <a href="#"><i class="fa-solid fa-bed"></i>Hostels</a>
-    <a href="#"><i class="fa-solid fa-ticket"></i>Events</a>
+<!-- ================= DYNAMIC PRODUCT GRID ================= -->
+<div class="product-container" id="product-container"></div>
+
+<!-- ================= EXPANSION VIEW MODAL ================= -->
+<div class="modal" id="viewModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img id="mainImage" alt="Main View">
+    <div id="thumbnails" class="thumbnail-container"></div>
   </div>
-</section>
-
-<!-- ================= CAMPUSDUKA ADVERTS ================= -->
-<section class="campus-ad-banner">
-  <div class="ad-text-content">
-    <span class="ad-badge">HOT PROMO</span>
-    <h3>Free Delivery on Your First 3 Orders!</h3>
-    <p>Skip the cooking and order from local campus food vendors. Fast delivery right to your hostel door.</p>
-  </div>
-  <button class="ad-cta-btn">Claim Offer <i class="fa-solid fa-chevron-right"></i></button>
-</section>
-
-<!-- ================= FEATURED PRODUCTS & FOODS ================= -->
-<section class="featured-products">
-  <div class="section-header">
-    <h2>Trending Foods & Offers</h2>
-    <p>The most loved meals and items trending in your campus community today</p>
-  </div>
-
-  <div class="featured-grid">
-    <!-- Product 1 (Food Listing) -->
-    <div class="product-card">
-      <div class="product-image-wrapper">
-        <span class="urgency-badge">🔥 Free Delivery</span>
-        <span class="rating-badge"><i class="fa-solid fa-star"></i> 4.8</span>
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Cheeseburger">
-      </div>
-      <div class="product-info">
-        <div class="product-meta-row">
-          <span class="product-category">Fast Foods</span>
-          <span class="product-price">$5.49</span>
-        </div>
-        <h3>Triple Cheese Burger Combo</h3>
-        <p>Juicy beef patty with fresh cheese, lettuce, house sauce and a side of crispy fries.</p>
-        <div class="countdown-box">
-          <i class="fa-solid fa-clock"></i> Delivery in: 15-20 mins
-        </div>
-        <div class="card-actions-wrapper">
-          <button class="card-action-btn book-btn"><i class="fa-solid fa-bag-shopping"></i> Order</button>
-          <button class="card-action-btn view-btn"><i class="fa-solid fa-eye"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Product 2 (Marketplace Item) -->
-    <div class="product-card">
-      <div class="product-image-wrapper">
-        <span class="urgency-badge">Only 1 Left</span>
-        <span class="rating-badge"><i class="fa-solid fa-shield"></i> Mint</span>
-        <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80" alt="iPad">
-      </div>
-      <div class="product-info">
-        <div class="product-meta-row">
-          <span class="product-category">Electronics</span>
-          <span class="product-price">$299.00</span>
-        </div>
-        <h3>iPad Air (4th Generation)</h3>
-        <p>Used for one semester. Comes with screen protector and original Apple charger.</p>
-        <div class="countdown-box">
-          <i class="fa-solid fa-handshake"></i> Direct Handshake Meetup
-        </div>
-        <div class="card-actions-wrapper">
-          <button class="card-action-btn cart-btn"><i class="fa-solid fa-cart-plus"></i> Buy Now</button>
-          <button class="card-action-btn view-btn"><i class="fa-solid fa-eye"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Product 3 (Food Listing) -->
-    <div class="product-card">
-      <div class="product-image-wrapper">
-        <span class="urgency-badge">Hot Seller</span>
-        <span class="rating-badge"><i class="fa-solid fa-star"></i> 4.9</span>
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80" alt="Pizza">
-      </div>
-      <div class="product-info">
-        <div class="product-meta-row">
-          <span class="product-category">Fast Foods</span>
-          <span class="product-price">$8.99</span>
-        </div>
-        <h3>Spicy Pepperoni Classic Pizza</h3>
-        <p>Loaded with fresh mozzarella, premium pepperoni, and an optional kick of chili oil flakes.</p>
-        <div class="countdown-box">
-          <i class="fa-solid fa-clock"></i> Delivery in: 25-30 mins
-        </div>
-        <div class="card-actions-wrapper">
-          <button class="card-action-btn book-btn"><i class="fa-solid fa-bag-shopping"></i> Order</button>
-          <button class="card-action-btn view-btn"><i class="fa-solid fa-eye"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= STATISTICS ================= -->
-<section class="stats-section">
-  <h2>The Student Network</h2>
-  <p>How CampusDuka makes university living easier day-by-day</p>
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h1>10K+</h1>
-      <span>Happy Students</span>
-    </div>
-    <div class="stat-card">
-      <h1>45K+</h1>
-      <span>Meals Delivered</span>
-    </div>
-    <div class="stat-card">
-      <h1>$150K</h1>
-      <span>Student Earnings</span>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SELLER SECTION ================= -->
-<section class="seller-section">
-  <h2>Want to Sell or Cook on CampusDuka?</h2>
-  <p>Turn your culinary passion or old textbooks and gear into immediate cash. Start selling on your own terms.</p>
-  <div class="seller-buttons">
-    <a href="#"><button><i class="fa-solid fa-store"></i> Become a Food Vendor</button></a>
-    <a href="#"><button style="background: var(--color-success);"><i class="fa-solid fa-plus"></i> Post a Free Ad</button></a>
-  </div>
-</section>
+</div>
 
 <!-- ================= FOOTER ================= -->
-<footer class="footer">
-  <h2>CampusDuka</h2>
-  <p>The Ultimate Student Marketplace Platform</p>
-  <p style="margin-top: 15px; font-size: 12px; color: var(--color-text-light);">© 2026 CampusDuka. Created for students, by students.</p>
+<footer>
+  &copy; 2026 CampusDuka • All Rights Reserved
 </footer>
 
+<!-- ================= SYSTEM SCRIPTS ================= -->
 <script>
-  // Simple Navbar Toggle logic for Mobile Responsive layout
-  const hamburger = document.querySelector('.hamburger-menu');
-  const navLinks = document.querySelector('.nav-links');
+/* HERO SLIDER ENGINE */
+let slides = document.querySelectorAll(".slide");
+let current = 0;
 
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
+setInterval(() => {
+  if (slides.length > 0) {
+    slides[current].classList.remove("active");
+    current = (current + 1) % slides.length;
+    slides[current].classList.add("active");
+  }
+}, 6000);
+
+/* CART SYNCHRONIZATION ENGINE */
+function updateCartCount(){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById('cart-count').innerText = count;
+}
+
+function addToCart(name, price, image){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let existing = cart.find(item => item.name === name);
+
+  if(existing){
+    existing.quantity++;
+  } else {
+    cart.push({ name, price, image, quantity: 1 });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  alert(name + " added to your cart!");
+}
+
+/* PRODUCT PREVIEW ENGINE */
+function viewProduct(images){
+  const modal = document.getElementById("viewModal");
+  const main = document.getElementById("mainImage");
+  const thumbs = document.getElementById("thumbnails");
+  
+  main.src = images[0];
+  thumbs.innerHTML = "";
+
+  images.forEach(img => {
+    let t = document.createElement("img");
+    t.src = img;
+    t.onclick = () => { main.src = img; };
+    thumbs.appendChild(t);
   });
+
+  modal.style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("viewModal").style.display = "none";
+}
+
+/* CARDS RENDER TEMPLATE ENGINE (Redesigned for Premium Layout) */
+function buildFoodCardMarkup(product) {
+  const imgs = product.images && product.images.length ? product.images : ["images/food1.jpg"];
+  const first = imgs[0];
+  
+  return `
+    <div class="product-card">
+      <div class="img-wrapper">
+        <span class="delivery-badge">⚡ Fresh Delivery</span>
+        <span class="rating-badge"><i class="fa-solid fa-star"></i> 4.8</span>
+        <img src="${first}" alt="${product.name}" loading="lazy">
+      </div>
+      <div class="card-details">
+        <div class="card-details-header">
+          <h3>${product.name}</h3>
+        </div>
+        <p>KES ${product.price}</p>
+        <small>${product.description || 'Tasty and freshly-made campus favorite.'}</small>
+        <div class="countdown-box">
+          <i class="fa-solid fa-clock"></i> Delivery in: 15-25 mins
+        </div>
+        <div class="card-actions">
+          <button class="bn bn-view" onclick='viewProduct(${JSON.stringify(imgs)})'>
+            <i class="fa-solid fa-eye"></i> View
+          </button>
+          <button class="bn bn-add" onclick="addToCart('${product.name.replace(/'/g, "\\'")}', ${product.price}, '${first}')">
+            <i class="fa-solid fa-cart-plus"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* LIVE FILTER ENGINE */
+let fetchedFoodDataset = [];
+
+function searchFoodItems() {
+  const inputVal = document.getElementById("foodSearchInput").value.toLowerCase();
+  const filtered = fetchedFoodDataset.filter(item => 
+    item.name.toLowerCase().includes(inputVal) || 
+    (item.description && item.description.toLowerCase().includes(inputVal))
+  );
+  
+  const container = document.getElementById("product-container");
+  container.innerHTML = "";
+  filtered.forEach(product => {
+    container.innerHTML += buildFoodCardMarkup(product);
+  });
+}
+
+/* LOAD PRODUCTS FROM API */
+async function loadProducts(){
+  try {
+    const response = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await response.json();
+    
+    // Filtering strictly target category assignment context 
+    fetchedFoodDataset = products.filter(product => product.category === "Food");
+    
+    const container = document.getElementById("product-container");
+    container.innerHTML = "";
+    
+    fetchedFoodDataset.forEach(product => {
+      container.innerHTML += buildFoodCardMarkup(product);
+    });
+  } catch (error) {
+    console.error("Error connecting to data layer:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+  loadProducts();
+});
 </script>
+
 </body>
 </html>
