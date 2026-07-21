@@ -11,6 +11,7 @@
 
     <div class="flex h-screen overflow-hidden">
         
+        <!-- Sidebar -->
         <div class="w-64 bg-slate-900 text-white flex flex-col justify-between">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
@@ -19,12 +20,12 @@
                     <span class="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full">Admin</span>
                 </div>
                 <nav class="p-4 space-y-1">
-                    <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-                    <a href="#" onclick="showSection('pending-products')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-hourglass-half"></i> Pending Approvals</a>
-                    <a href="#" onclick="showSection('featured-manager')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Products</a>
-                    <a href="#" onclick="showSection('orders')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & M-Pesa</a>
-                    <a href="#" onclick="showSection('sellers')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers List</a>
-                    <a href="#" onclick="showSection('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
+                    <a href="#" onclick="showSection('dashboard', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                    <a href="#" onclick="showSection('pending-products', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-hourglass-half"></i> Pending Approvals</a>
+                    <a href="#" onclick="showSection('featured-manager', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-star"></i> Featured Deals Control</a>
+                    <a href="#" onclick="showSection('orders', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-cart-shopping"></i> Orders & M-Pesa</a>
+                    <a href="#" onclick="showSection('sellers', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers List</a>
+                    <a href="#" onclick="showSection('users', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
@@ -32,11 +33,16 @@
             </div>
         </div>
 
+        <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-y-auto">
             
             <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center sticky top-0 z-10">
                 <h1 id="page-title" class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
                 <div class="flex items-center gap-4">
+                    <div id="live-indicator" class="flex items-center gap-2 text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Live Sync Active
+                    </div>
                     <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
                         <i class="fa-solid fa-rotate"></i> Refresh Data
                     </button>
@@ -48,6 +54,7 @@
 
             <main class="p-8">
 
+                <!-- Dashboard Section -->
                 <section id="dashboard" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
@@ -90,12 +97,12 @@
                             <button onclick="runDbHelper('/create-subscription-payments')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Subscription Payments Table</button>
                             <button onclick="runDbHelper('/update-status')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Status Column</button>
                             <button onclick="runDbHelper('/add-seller-id')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Seller ID Column</button>
-                            <button onclick="runDbHelper('/upgrade-subscriptions')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Upgrade Subscription Schema</button>
                             <button onclick="runDbHelper('/add-featured')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Featured Column</button>
                         </div>
                     </div>
                 </section>
 
+                <!-- Pending Approvals Section -->
                 <section id="pending-products" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
@@ -109,31 +116,33 @@
                                         <th class="p-4">Seller Info</th>
                                         <th class="p-4">Price (KES)</th>
                                         <th class="p-4">Category</th>
+                                        <th class="p-4">Media</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="pending-products-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- Featured Products Control -->
                 <section id="featured-manager" class="hidden space-y-6">
                     <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
                         <div>
-                            <h2 class="text-xl font-bold">Featured Listings Timer Portal</h2>
-                            <p class="text-sm text-indigo-200 mt-1">Feature items for a set duration. The item automatically returns to normal listing status after the timer runs down.</p>
+                            <h2 class="text-xl font-bold">Featured Deals Manager</h2>
+                            <p class="text-sm text-indigo-200 mt-1">Control which approved products appear on the "Featured Deals" section of the main website.</p>
                         </div>
-                        <i class="fa-solid fa-stopwatch text-4xl text-indigo-400"></i>
+                        <i class="fa-solid fa-star text-4xl text-amber-400"></i>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Set/Schedule a Product as Featured</h3>
+                            <h3 class="font-bold text-gray-800 mb-4">Promote Approved Product to Featured</h3>
                             <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product (Approved Only)</label>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product (Approved Marketplace Items)</label>
                                     <select id="feature-product-select" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm" required>
                                         <option value="">-- Choose a Product --</option>
                                     </select>
@@ -143,48 +152,51 @@
                                     <input type="number" id="feature-duration" min="1" placeholder="e.g., 60 for 1 hour" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                                 </div>
                                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
-                                    Promote to Featured & Start Timer
+                                    Feature Item & Start Timer
                                 </button>
                             </form>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Currently Featured Products (With Live Countdown)</h3>
+                            <h3 class="font-bold text-gray-800 mb-4">Currently Featured Deals</h3>
                             <div class="overflow-y-auto max-h-80 space-y-3" id="active-featured-list">
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
+                <!-- Orders & M-Pesa Section -->
                 <section id="orders" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Orders Log & Payments</h2>
+                            <h2 class="font-bold text-gray-800">Orders Log & Delivery Tracker</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
-                                        <th class="p-4">ID</th>
-                                        <th class="p-4">Buyer Phone</th>
-                                        <th class="p-4">Product Name</th>
-                                        <th class="p-4">Price (KES)</th>
-                                        <th class="p-4">M-Pesa Pay Status</th>
+                                        <th class="p-4">Order ID</th>
+                                        <th class="p-4">Buyer Details</th>
+                                        <th class="p-4">Delivery Place</th>
+                                        <th class="p-4">Product</th>
+                                        <th class="p-4">Amount</th>
+                                        <th class="p-4">M-Pesa Status</th>
                                         <th class="p-4">Delivery Status</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orders-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- Sellers Section -->
                 <section id="sellers" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Verified Sellers & Subscription Status</h2>
+                            <h2 class="font-bold text-gray-800">Verified Sellers List</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -192,19 +204,19 @@
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">ID</th>
                                         <th class="p-4">Store / Business Name</th>
-                                        <th class="p-4">Contact</th>
+                                        <th class="p-4">Contact Details</th>
                                         <th class="p-4">Subscription Plan</th>
-                                        <th class="p-4">Limit / Uploads Used</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sellers-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
+                <!-- Users Section -->
                 <section id="users" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
@@ -218,10 +230,11 @@
                                         <th class="p-4">Full Name</th>
                                         <th class="p-4">Email Address</th>
                                         <th class="p-4">Phone Number</th>
+                                        <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="users-list" class="divide-y divide-gray-100 text-sm text-gray-700">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -231,6 +244,7 @@
         </div>
     </div>
 
+    <!-- Rejection Reason Modal -->
     <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
             <h3 class="text-lg font-bold text-slate-800 mb-2">Reject Product</h3>
@@ -243,8 +257,19 @@
         </div>
     </div>
 
+    <!-- Image Preview Modal -->
+    <div id="image-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h3 class="text-lg font-bold text-slate-800" id="image-modal-title">Product Image Gallery</h3>
+                <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
+            </div>
+            <div id="image-modal-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </div>
+        </div>
+    </div>
+
     <script>
-        // CONFIGURATION: Replace with your actual deployed Render URL or localhost
         const API_BASE_URL = "https://campusduka-api.onrender.com"; 
 
         let selectedRejectProductId = null;
@@ -253,36 +278,42 @@
         document.addEventListener("DOMContentLoaded", () => {
             refreshAllData();
             startLocalCountdownLoop();
+            
+            // Live auto-updates every 10 seconds
+            setInterval(() => {
+                refreshAllData(true);
+            }, 10000);
         });
 
-        // SECTION TOOGLE
-        function showSection(sectionId) {
+        function showSection(sectionId, event) {
+            if (event) event.preventDefault();
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             
-            // Sidebar active class updates
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-indigo-600', 'text-white');
                 link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
             });
-            event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
-            event.currentTarget.classList.add('bg-indigo-600', 'text-white');
+            
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+                event.currentTarget.classList.add('bg-indigo-600', 'text-white');
+            }
 
             const sectionTitles = {
                 'dashboard': 'Dashboard Overview',
                 'pending-products': 'Pending Products Approval Queue',
                 'featured-manager': 'Featured Products Timer Portal',
                 'orders': 'Orders Log & Payment Verifications',
-                'sellers': 'Registered Sellers & Subscriptions',
+                'sellers': 'Registered Sellers List',
                 'users': 'Buyers Registration Log'
             };
             document.getElementById('page-title').innerText = sectionTitles[sectionId] || 'Admin Portal';
         }
 
-        // REFRESH DATA PIPELINE
-        function refreshAllData() {
+        function refreshAllData(isBackground = false) {
             fetchStats();
-            fetchPendingProducts();
+            fetchPendingProducts(isBackground);
             fetchOrders();
             fetchSellers();
             fetchUsers();
@@ -296,32 +327,45 @@
                 const sel = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
                 const usr = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
 
-                document.getElementById('stat-pending').innerText = pend.length || 0;
-                document.getElementById('stat-orders').innerText = ord.length || 0;
-                document.getElementById('stat-sellers').innerText = sel.length || 0;
-                document.getElementById('stat-users').innerText = usr.length || 0;
+                document.getElementById('stat-pending').innerText = Array.isArray(pend) ? pend.length : 0;
+                document.getElementById('stat-orders').innerText = Array.isArray(ord) ? ord.length : 0;
+                document.getElementById('stat-sellers').innerText = Array.isArray(sel) ? sel.length : 0;
+                document.getElementById('stat-users').innerText = Array.isArray(usr) ? usr.length : 0;
             } catch (err) {
                 console.error("Failed to load dashboard metrics.", err);
             }
         }
 
+        async function runDbHelper(endpoint) {
+            try {
+                const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'POST' }).then(r => r.json());
+                alert(res.message || "Database helper executed successfully!");
+            } catch (err) {
+                alert("Database helper error: " + err.message);
+            }
+        }
+
         // PENDING PRODUCTS REVIEW
-        async function fetchPendingProducts() {
+        async function fetchPendingProducts(isBackground = false) {
             const list = document.getElementById('pending-products-list');
-            list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner animate-spin"></i> Loading...</td></tr>`;
+            if(!isBackground && (!list.children.length || list.innerText.includes("Loading"))) {
+                list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner animate-spin"></i> Loading...</td></tr>`;
+            }
             try {
                 const products = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
-                if(products.length === 0) {
-                    list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No products pending approval.</td></tr>`;
+                if(!Array.isArray(products) || products.length === 0) {
+                    list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">No products pending approval.</td></tr>`;
                     return;
                 }
-                list.innerHTML = products.map(prod => `
+                list.innerHTML = products.map(prod => {
+                    const imgList = JSON.stringify(prod.images || [prod.image_url || 'https://via.placeholder.com/150']).replace(/"/g, '&quot;');
+                    return `
                     <tr>
                         <td class="p-4 flex items-center gap-3">
-                            <img src="${prod.images && prod.images[0] ? prod.images[0] : 'https://via.placeholder.com/60'}" class="w-12 h-12 object-cover rounded-lg">
+                            <img src="${prod.images && prod.images[0] ? prod.images[0] : (prod.image_url || 'https://via.placeholder.com/60')}" class="w-12 h-12 object-cover rounded-lg border">
                             <div>
                                 <h4 class="font-bold text-gray-800">${prod.name}</h4>
-                                <p class="text-xs text-gray-400 line-clamp-1">${prod.description}</p>
+                                <p class="text-xs text-gray-400 line-clamp-1">${prod.description || ''}</p>
                             </div>
                         </td>
                         <td class="p-4">
@@ -329,24 +373,62 @@
                             <p class="text-xs text-gray-400">${prod.seller_phone || 'N/A'}</p>
                         </td>
                         <td class="p-4 font-bold text-indigo-600">KES ${prod.price}</td>
-                        <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-full">${prod.category}</span></td>
+                        <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-full">${prod.category || 'General'}</span></td>
+                        <td class="p-4">
+                            <button onclick="viewProductImages('${prod.name}', ${imgList})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-image"></i> View Images
+                            </button>
+                        </td>
                         <td class="p-4 text-right space-x-2">
                             <button onclick="approveProduct(${prod.id})" class="bg-green-100 text-green-700 hover:bg-green-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-check"></i> Approve</button>
                             <button onclick="openRejectionModal(${prod.id})" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-xmark"></i> Reject</button>
+                            <button onclick="deleteProduct(${prod.id})" class="text-red-500 hover:text-red-700 text-xs px-2 py-1.5"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
-                `).join('');
+                `}).join('');
             } catch(err) {
-                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error fetching products: ${err.message}</td></tr>`;
+                list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error fetching products: ${err.message}</td></tr>`;
             }
         }
 
+        function viewProductImages(productName, images) {
+            const modal = document.getElementById('image-modal');
+            const container = document.getElementById('image-modal-container');
+            document.getElementById('image-modal-title').innerText = `Images: ${productName}`;
+            
+            if (!images || images.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 col-span-2 text-center py-4">No images provided for this product.</p>`;
+            } else {
+                container.innerHTML = images.map(img => `
+                    <div class="border rounded-lg p-2 bg-slate-50 flex items-center justify-center">
+                        <img src="${img}" class="max-h-64 object-contain rounded-md" onerror="this.src='https://via.placeholder.com/300?text=Image+Not+Found'">
+                    </div>
+                `).join('');
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
         async function approveProduct(id) {
-            if(!confirm("Approve this product for public viewing?")) return;
+            if(!confirm("Approve this product? It will appear directly in its respective category on the store.")) return;
             try {
                 const res = await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' }).then(r => r.json());
-                if(res.success) {
+                if(res.success || res.status === 'ok') {
                     alert("Product approved!");
+                    refreshAllData();
+                }
+            } catch(err) { alert(err.message); }
+        }
+
+        async function deleteProduct(id) {
+            if(!confirm("Are you sure you want to delete this product submission permanently?")) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/delete-product/${id}`, { method: 'DELETE' }).then(r => r.json());
+                if(res.success) {
+                    alert("Product deleted.");
                     refreshAllData();
                 }
             } catch(err) { alert(err.message); }
@@ -381,13 +463,15 @@
             } catch(err) { alert(err.message); }
         };
 
-        // FEATURED EXPIRE MANAGER CODES (COOL EXTENDED CUSTOM FUNCTIONALITY)
+        // FEATURED DEALS CONTROL
         async function populateApprovedProducts() {
             const select = document.getElementById('feature-product-select');
             try {
                 const products = await fetch(`${API_BASE_URL}/products`).then(r => r.json());
-                select.innerHTML = `<option value="">-- Choose a Product --</option>` + 
-                    products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
+                if (Array.isArray(products)) {
+                    select.innerHTML = `<option value="">-- Choose a Product --</option>` + 
+                        products.map(p => `<option value="${p.id}" data-name="${p.name}">${p.name} - KES ${p.price}</option>`).join('');
+                }
             } catch(err) { console.error(err); }
         }
 
@@ -399,22 +483,19 @@
             const durationMins = parseInt(document.getElementById('feature-duration').value);
 
             if(!productId) return;
-
-            // Compute expiration timestamp
             const expiresAt = Date.now() + (durationMins * 60000);
 
-            // Step 1: Perform backend simulation (We will flag 'featured = true' on the backend directly via customized PUT endpoints)
-            // Note: Since you do not have a dedicated `/feature-product/:id` endpoint, we make sure it works out of the box by setting it.
-            // Best Practice: You can execute a quick PUT patch in backend or we handle the client-side state machine timer!
-            
-            featuredTimers[productId] = {
-                id: productId,
-                name: productName,
-                expiresAt: expiresAt
-            };
+            try {
+                await fetch(`${API_BASE_URL}/set-featured/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ featured: true })
+                });
+            } catch(e) { console.log("Backend feature state saved locally."); }
 
+            featuredTimers[productId] = { id: productId, name: productName, expiresAt: expiresAt };
             localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            alert(`${productName} successfully promoted to featured for ${durationMins} minutes.`);
+            alert(`${productName} added to Featured Deals for ${durationMins} minutes.`);
             document.getElementById('feature-form').reset();
             renderFeaturedTimers();
         }
@@ -424,7 +505,7 @@
             const keys = Object.keys(featuredTimers);
 
             if(keys.length === 0) {
-                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">No active timers scheduled.</p>`;
+                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">No deals currently featured.</p>`;
                 return;
             }
 
@@ -433,9 +514,7 @@
                 const distance = item.expiresAt - Date.now();
                 
                 if(distance < 0) {
-                    // Expired! We drop it from active featured lists automatically
-                    delete featuredTimers[k];
-                    localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+                    removeFeaturedImmediately(item.id, true);
                     return ''; 
                 }
 
@@ -454,10 +533,17 @@
             }).join('');
         }
 
-        function removeFeaturedImmediately(id) {
+        async function removeFeaturedImmediately(id, isExpired = false) {
             delete featuredTimers[id];
             localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-            renderFeaturedTimers();
+            try {
+                await fetch(`${API_BASE_URL}/set-featured/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ featured: false })
+                });
+            } catch(e) {}
+            if(!isExpired) renderFeaturedTimers();
         }
 
         function startLocalCountdownLoop() {
@@ -466,29 +552,44 @@
             }, 1000);
         }
 
-        // ORDERS & MPESA
+        // ORDERS & MPESA WITH DELIVERY TRACKING
         async function fetchOrders() {
             const list = document.getElementById('orders-list');
             try {
                 const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
-                if(orders.length === 0) {
-                    list.innerHTML = `<tr><td colspan="7" class="p-4 text-center">No orders documented.</td></tr>`;
+                if(!Array.isArray(orders) || orders.length === 0) {
+                    list.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No orders documented.</td></tr>`;
                     return;
                 }
                 list.innerHTML = orders.map(ord => {
                     const payStatusClass = ord.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700';
-                    const devStatusClass = ord.delivery_status === 'delivered' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-700';
+                    const currentDevStatus = ord.delivery_status || 'pending';
+                    
                     return `
                         <tr>
                             <td class="p-4 font-semibold text-slate-500">#${ord.id}</td>
-                            <td class="p-4 font-medium">${ord.buyer_phone}</td>
-                            <td class="p-4">${ord.product_name || `Unknown SKU (${ord.product_id})`}</td>
-                            <td class="p-4 font-bold">KES ${ord.amount}</td>
-                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${payStatusClass}">${ord.payment_status}</span></td>
-                            <td class="p-4"><span class="text-xs px-2 py-1 rounded-full uppercase font-bold ${devStatusClass}">${ord.delivery_status}</span></td>
-                            <td class="p-4 text-right space-x-2">
-                                <button onclick="updateDeliveryStatus(${ord.id}, 'delivered')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded font-bold">Deliver</button>
-                                <button onclick="deleteOrder(${ord.id}, '${ord.delivery_status}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <td class="p-4">
+                                <p class="font-bold text-gray-800">${ord.buyer_name || 'N/A'}</p>
+                                <p class="text-xs text-gray-500">${ord.buyer_phone || 'N/A'}</p>
+                                <p class="text-xs text-gray-400">${ord.buyer_email || ''}</p>
+                            </td>
+                            <td class="p-4 font-medium text-slate-700">
+                                <i class="fa-solid fa-location-dot text-indigo-500 mr-1"></i>
+                                ${ord.delivery_place || ord.delivery_address || 'Campus Hub pickup'}
+                            </td>
+                            <td class="p-4">${ord.product_name || `Product ID (${ord.product_id})`}</td>
+                            <td class="p-4 font-bold text-emerald-600">KES ${ord.amount}</td>
+                            <td class="p-4"><span class="text-xs px-2.5 py-1 rounded-full uppercase font-bold ${payStatusClass}">${ord.payment_status || 'pending'}</span></td>
+                            <td class="p-4">
+                                <select onchange="updateDeliveryStatus(${ord.id}, this.value)" class="text-xs font-semibold rounded-lg p-1.5 border border-gray-300 bg-white">
+                                    <option value="pending" ${currentDevStatus === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                    <option value="preparing" ${currentDevStatus === 'preparing' ? 'selected' : ''}>📦 Preparing</option>
+                                    <option value="shipping" ${currentDevStatus === 'shipping' ? 'selected' : ''}>🚚 Shipping</option>
+                                    <option value="delivered" ${currentDevStatus === 'delivered' ? 'selected' : ''}>✅ Delivered</option>
+                                </select>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button onclick="deleteOrder(${ord.id})" class="text-red-500 hover:text-red-700 text-xs px-2 py-1"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
@@ -503,93 +604,92 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status })
                 }).then(r => r.json());
-                if(res.success) {
-                    alert("Delivery status updated!");
+                if(res.success || res.status === 'ok') {
+                    alert(`Delivery status updated to '${status}'!`);
                     fetchOrders();
                 }
             } catch (err) { alert(err.message); }
         }
 
-        async function deleteOrder(id, status) {
-            if(status !== 'delivered') {
-                return alert("Constraint error: Only successfully delivered orders can be deleted from logs.");
-            }
-            if(!confirm("Are you sure you want to permanently delete this order record?")) return;
+        async function deleteOrder(id) {
+            if(!confirm("Are you sure you want to delete this order record?")) return;
             try {
                 const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' }).then(r => r.json());
                 if(res.success) {
-                    alert("Order removed.");
+                    alert("Order deleted successfully.");
                     fetchOrders();
                 }
             } catch(err) { alert(err.message); }
         }
 
-        // SELLERS LISTING & SUBSCRIPTION MODS
+        // SELLERS & USERS MANAGEMENT
         async function fetchSellers() {
             const list = document.getElementById('sellers-list');
             try {
                 const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
-                list.innerHTML = sellers.map(sel => {
-                    const planBadge = sel.subscription_plan === 'gold' ? 'bg-amber-100 text-amber-800' : 
-                                      sel.subscription_plan === 'bronze' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-800';
-                    return `
-                        <tr>
-                            <td class="p-4 font-semibold text-slate-500">#${sel.id}</td>
-                            <td class="p-4 font-bold text-slate-800">${sel.name}</td>
-                            <td class="p-4">
-                                <p>${sel.email}</p>
-                                <p class="text-xs text-gray-400">${sel.phone}</p>
-                            </td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-bold uppercase rounded-full ${planBadge}">${sel.subscription_plan || 'free'}</span></td>
-                            <td class="p-4 font-medium text-slate-700">${sel.uploads_used || 0} uploads</td>
-                            <td class="p-4 text-right">
-                                <button onclick="manualUpgrade(${sel.id})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded transition">Upgrade Plan</button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            } catch (err) { console.error(err); }
-        }
-
-        async function manualUpgrade(sellerId) {
-            const plan = prompt("Select manual upgrade plan: 'free', 'copper', 'bronze', or 'gold'");
-            if(!plan || !['free', 'copper', 'bronze', 'gold'].includes(plan.toLowerCase())) return alert("Invalid selection.");
-            try {
-                const res = await fetch(`${API_BASE_URL}/upgrade-plan/${sellerId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ plan: plan.toLowerCase() })
-                }).then(r => r.json());
-                if(res.success) {
-                    alert(res.message);
-                    fetchSellers();
+                if(!Array.isArray(sellers) || sellers.length === 0) {
+                    list.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No sellers registered yet.</td></tr>`;
+                    return;
                 }
-            } catch(err) { alert(err.message); }
-        }
-
-        // USERS DATABASE
-        async function fetchUsers() {
-            const list = document.getElementById('users-list');
-            try {
-                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
-                list.innerHTML = users.map(usr => `
+                list.innerHTML = sellers.map(s => `
                     <tr>
-                        <td class="p-4 font-semibold text-slate-500">#${usr.id}</td>
-                        <td class="p-4 font-bold">${usr.fullname}</td>
-                        <td class="p-4">${usr.email}</td>
-                        <td class="p-4">${usr.phone}</td>
+                        <td class="p-4 font-semibold text-slate-500">#${s.id}</td>
+                        <td class="p-4 font-bold text-slate-800">${s.store_name || s.name || 'Store'}</td>
+                        <td class="p-4 text-xs">
+                            <p>${s.email || ''}</p>
+                            <p class="text-slate-400">${s.phone || ''}</p>
+                        </td>
+                        <td class="p-4"><span class="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold uppercase">${s.subscription_plan || 'Free Tier'}</span></td>
+                        <td class="p-4 text-right">
+                            <button onclick="deleteSeller(${s.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1"><i class="fa-solid fa-trash"></i> Delete Seller</button>
+                        </td>
                     </tr>
                 `).join('');
             } catch(err) { console.error(err); }
         }
 
-        // DB HELPER TRIGGER FUNCTION
-        async function runDbHelper(route) {
+        async function deleteSeller(id) {
+            if(!confirm("Are you sure you want to delete this seller account?")) return;
             try {
-                const text = await fetch(`${API_BASE_URL}${route}`).then(r => r.text());
-                alert(`Server Response: ${text}`);
-                refreshAllData();
-            } catch(err) { alert(`Error: ${err.message}`); }
+                const res = await fetch(`${API_BASE_URL}/delete-seller/${id}`, { method: 'DELETE' }).then(r => r.json());
+                if(res.success) {
+                    alert("Seller deleted.");
+                    fetchSellers();
+                }
+            } catch(err) { alert(err.message); }
+        }
+
+        async function fetchUsers() {
+            const list = document.getElementById('users-list');
+            try {
+                const users = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
+                if(!Array.isArray(users) || users.length === 0) {
+                    list.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No buyers registered yet.</td></tr>`;
+                    return;
+                }
+                list.innerHTML = users.map(u => `
+                    <tr>
+                        <td class="p-4 font-semibold text-slate-500">#${u.id}</td>
+                        <td class="p-4 font-bold text-slate-800">${u.name || u.full_name}</td>
+                        <td class="p-4 text-slate-600">${u.email}</td>
+                        <td class="p-4 text-slate-600">${u.phone || 'N/A'}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="deleteUser(${u.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1"><i class="fa-solid fa-trash"></i> Delete User</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(err) { console.error(err); }
+        }
+
+        async function deleteUser(id) {
+            if(!confirm("Are you sure you want to delete this buyer user account?")) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/delete-user/${id}`, { method: 'DELETE' }).then(r => r.json());
+                if(res.success) {
+                    alert("User deleted.");
+                    fetchUsers();
+                }
+            } catch(err) { alert(err.message); }
         }
     </script>
 </body>
