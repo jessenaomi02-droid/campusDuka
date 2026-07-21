@@ -21,7 +21,11 @@ const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 const BUSINESS_SHORTCODE = process.env.BUSINESS_SHORTCODE;
 const PASSKEY = process.env.PASSKEY;
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 /* HOME */
@@ -138,6 +142,40 @@ app.post("/login", async (req, res) => {
       success: true,
       message: "Login successful",
       user: user.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+/* DELETE USER ROUTE */
+app.delete("/delete-user/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await db.query("DELETE FROM users WHERE id=$1", [id]);
+    res.json({
+      success: true,
+      message: "User deleted successfully"
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+/* DELETE SELLER ROUTE */
+app.delete("/delete-seller/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await db.query("DELETE FROM sellers WHERE id=$1", [id]);
+    res.json({
+      success: true,
+      message: "Seller deleted successfully"
     });
   } catch (err) {
     res.status(500).json({
