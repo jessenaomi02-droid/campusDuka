@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDuka - Admin Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Production CSS CDN without Play CDN runtime warning -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 font-sans">
@@ -12,9 +13,9 @@
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar -->
-        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between">
+        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between" style="background-color: #0f172a;">
             <div>
-                <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
+                <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2" style="border-color: #1e293b;">
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
                     <span>CampusDuka</span>
                     <span class="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full">Admin</span>
@@ -28,7 +29,7 @@
                     <a href="#" onclick="showSection('users', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
                 </nav>
             </div>
-            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center" style="border-color: #1e293b;">
                 © 2026 CampusDuka Admin Panel
             </div>
         </div>
@@ -291,7 +292,7 @@
             }, 8000);
         });
 
-        // Audio notification synthesizer (Web Audio API - No external mp3 dependency required)
+        // Audio notification synthesizer
         function playNotificationSound() {
             if(!soundEnabled) return;
             try {
@@ -300,8 +301,8 @@
                 const gain = ctx.createGain();
                 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
                 
                 gain.gain.setValueAtTime(0.2, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
@@ -312,7 +313,7 @@
                 osc.start();
                 osc.stop(ctx.currentTime + 0.3);
             } catch(e) {
-                console.log("Audio notification play blocked by browser interaction rules.");
+                console.log("Audio notification blocked.");
             }
         }
 
@@ -367,7 +368,6 @@
                 const currentPending = Array.isArray(pend) ? pend.length : 0;
                 const currentOrders = Array.isArray(ord) ? ord.length : 0;
 
-                // Sound triggers on new entries
                 if (previousPendingCount !== null && currentPending > previousPendingCount) {
                     playNotificationSound();
                 }
@@ -396,15 +396,8 @@
             }
         }
 
-        // Universal delete helper with multiple endpoint fallbacks
-        async function multiEndpointDelete(entityType, id) {
-            const endpoints = [
-                `${API_BASE_URL}/delete-${entityType}/${id}`,
-                `${API_BASE_URL}/${entityType}s/${id}`,
-                `${API_BASE_URL}/${entityType}/${id}`,
-                `${API_BASE_URL}/api/${entityType}/${id}`
-            ];
-
+        // Deletion helper function with precise backend targets
+        async function performDeleteRequest(endpoints) {
             for (let url of endpoints) {
                 try {
                     const res = await fetch(url, { method: 'DELETE' });
@@ -494,12 +487,16 @@
 
         async function deleteProduct(id) {
             if(!confirm("Are you sure you want to delete this product permanently?")) return;
-            const success = await multiEndpointDelete('product', id);
+            const success = await performDeleteRequest([
+                `${API_BASE_URL}/delete-product/${id}`,
+                `${API_BASE_URL}/products/${id}`,
+                `${API_BASE_URL}/product/${id}`
+            ]);
             if(success) {
                 alert("Product deleted successfully.");
                 refreshAllData();
             } else {
-                alert("Failed to delete product. Please verify server endpoints.");
+                alert("Could not delete product. Please verify server endpoints.");
             }
         }
 
@@ -560,7 +557,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ featured: true })
                 });
-            } catch(e) { console.log("Featured state saved locally."); }
+            } catch(e) {}
 
             featuredTimers[productId] = { id: productId, name: productName, expiresAt: expiresAt };
             localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
@@ -634,7 +631,6 @@
                     const payStatusClass = ord.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700';
                     const currentDevStatus = ord.delivery_status || 'pending';
                     
-                    // Format payment time / order date
                     let timeFormatted = 'N/A';
                     if (ord.created_at || ord.order_date || ord.timestamp) {
                         const rawDate = new Date(ord.created_at || ord.order_date || ord.timestamp);
@@ -692,12 +688,16 @@
 
         async function deleteOrder(id) {
             if(!confirm("Are you sure you want to delete this order record?")) return;
-            const success = await multiEndpointDelete('order', id);
+            const success = await performDeleteRequest([
+                `${API_BASE_URL}/delete-order/${id}`,
+                `${API_BASE_URL}/orders/${id}`,
+                `${API_BASE_URL}/order/${id}`
+            ]);
             if(success) {
                 alert("Order deleted successfully.");
                 fetchOrders();
             } else {
-                alert("Failed to delete order. Please verify server endpoints.");
+                alert("Could not delete order. Please verify server endpoints.");
             }
         }
 
@@ -729,12 +729,21 @@
 
         async function deleteSeller(id) {
             if(!confirm("Are you sure you want to delete this seller account?")) return;
-            const success = await multiEndpointDelete('seller', id);
+            
+            // Checks seller deletion endpoints
+            const success = await performDeleteRequest([
+                `${API_BASE_URL}/delete-seller/${id}`,
+                `${API_BASE_URL}/sellers/${id}`,
+                `${API_BASE_URL}/seller/${id}`,
+                `${API_BASE_URL}/admin/delete-seller/${id}`
+            ]);
+
             if(success) {
                 alert("Seller deleted successfully.");
                 fetchSellers();
+                fetchStats();
             } else {
-                alert("Failed to delete seller account.");
+                alert("Delete endpoint not found on your Render backend server. Please make sure route '/delete-seller/:id' is declared in your Express app.");
             }
         }
 
@@ -764,12 +773,21 @@
 
         async function deleteUser(id) {
             if(!confirm("Are you sure you want to delete this buyer user account?")) return;
-            const success = await multiEndpointDelete('user', id);
+
+            // Checks user deletion endpoints
+            const success = await performDeleteRequest([
+                `${API_BASE_URL}/delete-user/${id}`,
+                `${API_BASE_URL}/users/${id}`,
+                `${API_BASE_URL}/user/${id}`,
+                `${API_BASE_URL}/admin/delete-user/${id}`
+            ]);
+
             if(success) {
                 alert("User deleted successfully.");
                 fetchUsers();
+                fetchStats();
             } else {
-                alert("Failed to delete user account.");
+                alert("Delete endpoint not found on your Render backend server. Please make sure route '/delete-user/:id' is declared in your Express app.");
             }
         }
     </script>
