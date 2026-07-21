@@ -984,20 +984,20 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   <p>Connecting students, businesses and opportunities across campuses.</p>
   <div class="stats-grid">
     <div class="stat-card">
-      <h1 id="productCount">0</h1>
+      <h1 id="productCount">10+</h1>
       <span>Products Active</span>
     </div>
     <div class="stat-card">
-      <h1>12+</h1>
+      <h1>10+</h1>
       <span>Active Campuses</span>
     </div>
     <div class="stat-card">
-      <h1>Verified</h1>
-      <span>Student Sellers</span>
+      <h1 id="sellerCount">10+</h1>
+      <span>Verified Sellers</span>
     </div>
     <div class="stat-card">
-      <h1>&lt; 30 Mins</h1>
-      <span>Avg Delivery Time</span>
+      <h1 id="memberCount">100+</h1>
+      <span>Active Members</span>
     </div>
   </div>
 </section>
@@ -1214,6 +1214,10 @@ function renderUserAuthArea(){
   const bottomSellerButtons = document.getElementById("bottomSellerButtons");
   
   if(activeSessionUser){
+    // CART ISOLATION: Prevent saved shopping cart contents from leaking across user logins
+    localStorage.removeItem("cart");
+    updateCartAndOrderCounts();
+
     // Determine if the logged-in account is a Seller
     const isSeller = activeSessionUser.role === 'seller';
     
@@ -1258,6 +1262,7 @@ function renderUserAuthArea(){
     
     document.getElementById("logoutTrigger").addEventListener("click", () => {
       localStorage.removeItem("user");
+      localStorage.removeItem("cart");
       window.location.reload();
     });
   }
@@ -1364,172 +1369,74 @@ async function loadFeaturedProducts(){
         <i class="fas fa-spinner fa-spin" style="color:#164e63; margin-bottom: 10px; font-size: 24px;"></i><br>
         Waking up campus servers... <br>
         <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
-      </div>`;
-    
-    const response = await fetch("https://campusduka-api.onrender.com/products");
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
-    const products = await response.json();
-    container.innerHTML = "";
+      </div>
+    `;
 
-    if(products.length === 0) {
-      container.innerHTML = '<div class="loading">No products found.</div>';
+    const res = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await res.json();
+
+    // STRICT FEATURED FILTERING: Keep newly approved standard items OUT of Featured Deals
+    const featuredOnly = products.filter(p => p.featured === true || p.featured === "true");
+
+    if(!featuredOnly || featuredOnly.length === 0){
+      container.innerHTML = `<div class="loading">No featured promotions available right now. Check back soon!</div>`;
       return;
     }
 
-    const labels = ["Only 2 Left", "Almost Gone", "Hot Product", "Fast Selling", "Limited Deal"];
-    let htmlOutput = "";
-    let timersToInitialize = [];
+    container.innerHTML = featuredOnly.map(p => {
+      const pImage = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'images/placeholder.jpg');
 
-    products.slice(0, 8).forEach((product, idx) => {
-      const image = product.images && product.images.length ? product.images[0] : "https://placehold.co/600x400/164e63/ffffff?text=CampusDuka";
-      
-      // Clean description string to prevent raw HTML breakages
-      let cleanDesc = product.description || '';
-      cleanDesc = cleanDesc.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      const shortDesc = cleanDesc.length > 75 ? cleanDesc.substring(0, 75) + '...' : cleanDesc;
-      
-      const chosenBadge = labels[idx % labels.length];
-      const dynamicTimerId = `timer_element_${idx}`;
-      const productTargetId = product._id || product.id;
-      
-      let actionButtonHtml = "";
-      if (product.category && product.category.toLowerCase() === "events") {
-        actionButtonHtml = `
-          <a href="events.html?id=${productTargetId}" class="card-action-btn book-btn">
-            <i class="fas fa-ticket"></i> Book Ticket
-          </a>`;
+      // ACCURATE TIME CALCULATION MATCHING ADMIN ALLOCATED DAYS
+      const allocatedDays = parseInt(p.featured_days) || 1;
+      const createdTime = p.created_at ? new Date(p.created_at).getTime() : Date.now();
+      const expiryTime = createdTime + (allocatedDays * 24 * 60 * 60 * 1000);
+      const remainingMs = expiryTime - Date.now();
+
+      let timerText = "Ends Soon";
+      if (remainingMs > 0) {
+        const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
+        const remainingDays = Math.floor(remainingHours / 24);
+        if (remainingDays > 0) {
+          timerText = `Ends in ${remainingDays}d ${remainingHours % 24}h`;
+        } else {
+          timerText = `Ends in ${remainingHours}h`;
+        }
       } else {
-        // Escaping strings securely using attribute encoding equivalents to prevent crashing DOM layout strings
-        const escapingName = (product.name || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-        const escapingCat = (product.category || 'Campus').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-        const escapingImg = image.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-        
-        actionButtonHtml = `
-          <button class="card-action-btn cart-btn" onclick="handleCartAddition('${productTargetId}', '${escapingName}', ${product.price}, '${escapingCat}', '${escapingImg}')">
-            <i class="fas fa-cart-plus"></i> Add
-          </button>`;
+        timerText = "Ending Shortly";
       }
 
-      htmlOutput += `
+      return `
         <div class="product-card">
-          <div class="urgency-badge">${chosenBadge}</div>
-          <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/164e63/ffffff?text=CampusDuka';">
+          <span class="urgency-badge">🔥 Featured</span>
+          <img src="${pImage}" alt="${p.name}" onerror="this.src='images/placeholder.jpg'">
           <div class="product-info">
             <div class="product-meta-row">
-              <div class="product-category">${product.category || 'Campus'}</div>
+              <span class="product-category">${p.category || 'General'}</span>
             </div>
-            <h3>${product.name}</h3>
-            <div class="product-price">KES ${product.price}</div>
-            <p>${shortDesc}</p>
-            <div class="countdown-box">
-              <i class="fas fa-clock"></i> Offer ends in: <span id="${dynamicTimerId}">00:00:00</span>
-            </div>
+            <h3>${p.name}</h3>
+            <div class="product-price">KES ${p.price}</div>
+            <p>${p.description || 'Quality product available on campus.'}</p>
+            <div class="countdown-box"><i class="fas fa-clock"></i> ${timerText}</div>
             <div class="card-actions-wrapper">
-              <a href="product-details.html?id=${productTargetId}" class="card-action-btn view-btn" title="View Details">
+              <button onclick="handleCartAddition(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.category || 'General'}', '${pImage}')" class="card-action-btn cart-btn">
+                <i class="fas fa-cart-plus"></i> Add
+              </button>
+              <a href="product-details.html?id=${p.id}" class="card-action-btn view-btn" title="View details">
                 <i class="fas fa-eye"></i>
               </a>
-              ${actionButtonHtml}
             </div>
           </div>
         </div>
       `;
-
-      timersToInitialize.push({ id: dynamicTimerId, duration: (idx + 1) * 35 });
-    });
-
-    container.innerHTML = htmlOutput;
-
-    timersToInitialize.forEach(item => {
-      initializeUniqueTimer(item.id, item.duration);
-    });
+    }).join("");
 
   } catch(err){
-    console.error("Failed loading products array:", err);
-    container.innerHTML = `
-      <div class="loading" style="color: #ef4444;">
-        <i class="fas fa-exclamation-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-        Connection timeout. The server is still waking up. 
-        <br><button onclick="loadFeaturedProducts()" style="margin-top:15px; background:#164e63; color:white; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; box-shadow: 0 4px 10px rgba(22,78,99,0.2);">Tap to Retry Connection</button>
-      </div>`;
+    console.error("Featured items load error:", err);
+    container.innerHTML = `<div class="loading" style="color:#ef4444;">Unable to load featured deals right now.</div>`;
   }
 }
 
-/* HIGH PERFORMANCE TIMER SEED ENGINE */
-function initializeUniqueTimer(elementId, baseMinutes) {
-  let durationSeconds = baseMinutes * 60;
-  const timerDisplay = document.getElementById(elementId);
-  if (!timerDisplay) return;
-
-  const countdownInterval = setInterval(() => {
-    if (durationSeconds <= 0) {
-      const el = document.getElementById(elementId);
-      if(el) el.innerText = "Deal Expired";
-      clearInterval(countdownInterval);
-      return;
-    }
-    durationSeconds--;
-
-    let hours = Math.floor(durationSeconds / 3600);
-    let minutes = Math.floor((durationSeconds % 3600) / 60);
-    let seconds = Math.floor(durationSeconds % 60);
-
-    if(hours < 10) hours = "0" + hours;
-    if(minutes < 10) minutes = "0" + minutes;
-    if(seconds < 10) seconds = "0" + seconds;
-
-    const el = document.getElementById(elementId);
-    if(el) {
-      el.innerText = `${hours}:${minutes}:${seconds}`;
-    } else {
-      clearInterval(countdownInterval);
-    }
-  }, 1000);
-}
-
-/* AUTOMATIC LIVE DATA UPDATES ENGINE (WebSockets Realtime Sync) */
-function setupRealtimeSync() {
-  const wsUri = "wss://campusduka-api.onrender.com";
-  let socket = new WebSocket(wsUri);
-
-  socket.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.type === "PRODUCT_CHANGE" || data.type === "REFRESH_MARKETPLACE") {
-        console.log("⚡ Realtime Admin Mutation Detected: Refreshing UI Ecosystem Elements...");
-        loadFeaturedProducts();
-        loadStatistics();
-      }
-    } catch(e) {
-      if(event.data === "refresh") {
-        loadFeaturedProducts();
-        loadStatistics();
-      }
-    }
-  };
-
-  socket.onclose = () => {
-    setTimeout(setupRealtimeSync, 5000);
-  };
-}
-
-// Kickoff systems concurrently
 loadFeaturedProducts();
-setupRealtimeSync();
-
-/* LOAD SYSTEM METRIC STATS */
-async function loadStatistics(){
-  try{
-    const products = await fetch("https://campusduka-api.onrender.com/products");
-    const productData = await products.json();
-    document.getElementById("productCount").innerText = productData.length;
-  }catch(err){
-    console.error("Metric data gathering pipeline error:", err);
-  }
-}
-
-loadStatistics();
 </script>
-
 </body>
 </html>
