@@ -286,13 +286,11 @@
             refreshAllData();
             startLocalCountdownLoop();
             
-            // Auto refresh every 8 seconds
             setInterval(() => {
                 refreshAllData(true);
             }, 8000);
         });
 
-        // Audio notification synthesizer
         function playNotificationSound() {
             if(!soundEnabled) return;
             try {
@@ -396,11 +394,14 @@
             }
         }
 
-        // Deletion helper function with precise backend targets
+        // Generic fallback delete loop
         async function performDeleteRequest(endpoints) {
             for (let url of endpoints) {
                 try {
-                    const res = await fetch(url, { method: 'DELETE' });
+                    const res = await fetch(url, { 
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
                     if (res.ok) return true;
                 } catch (e) {}
             }
@@ -496,7 +497,7 @@
                 alert("Product deleted successfully.");
                 refreshAllData();
             } else {
-                alert("Could not delete product. Please verify server endpoints.");
+                alert("Could not delete product. Ensure endpoints are configured on your Render server.");
             }
         }
 
@@ -730,7 +731,6 @@
         async function deleteSeller(id) {
             if(!confirm("Are you sure you want to delete this seller account?")) return;
             
-            // Checks seller deletion endpoints
             const success = await performDeleteRequest([
                 `${API_BASE_URL}/delete-seller/${id}`,
                 `${API_BASE_URL}/sellers/${id}`,
@@ -743,7 +743,7 @@
                 fetchSellers();
                 fetchStats();
             } else {
-                alert("Delete endpoint not found on your Render backend server. Please make sure route '/delete-seller/:id' is declared in your Express app.");
+                alert("Delete route not found on Render server. Check Express routes for /delete-seller/:id.");
             }
         }
 
@@ -774,7 +774,6 @@
         async function deleteUser(id) {
             if(!confirm("Are you sure you want to delete this buyer user account?")) return;
 
-            // Checks user deletion endpoints
             const success = await performDeleteRequest([
                 `${API_BASE_URL}/delete-user/${id}`,
                 `${API_BASE_URL}/users/${id}`,
@@ -787,7 +786,7 @@
                 fetchUsers();
                 fetchStats();
             } else {
-                alert("Delete endpoint not found on your Render backend server. Please make sure route '/delete-user/:id' is declared in your Express app.");
+                alert("Delete route not found on Render server. Check Express routes for /delete-user/:id.");
             }
         }
     </script>
