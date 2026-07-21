@@ -138,6 +138,28 @@ button {
   padding: 40px 20px;
 }
 
+/* ================= PAYOUT NOTICE BANNER ================= */
+.payout-notice-banner {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-left: 5px solid #0077ff;
+  color: #1e3a8a;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.payout-notice-banner i {
+  font-size: 20px;
+  color: #0077ff;
+}
+
 /* ================= GRID PATTERNS ================= */
 .dashboard-grid {
   display: grid;
@@ -370,6 +392,53 @@ button {
   transition: width 0.5s ease;
 }
 
+/* ================= PURCHASED ITEMS TABLE SECTION ================= */
+.purchased-section {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 35px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.orders-table th {
+  background: #f8fafc;
+  padding: 12px 16px;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.orders-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-paid { background: #dcfce7; color: #15803d; }
+.status-pending { background: #fef3c7; color: #b45309; }
+
 /* ================= PRODUCT DISPLAY SHOWCASE ================= */
 .section-heading {
   font-size: 22px;
@@ -553,6 +622,12 @@ button {
 </div>
 
 <div class="container">
+
+  <!-- PAYOUT NOTIFICATION BANNER -->
+  <div class="payout-notice-banner">
+    <i class="fas fa-clock"></i>
+    <span><b>Payout Notice:</b> Payment will be processed and transferred to your account within <b>24 hours</b> from the time a customer purchases your item.</span>
+  </div>
   
   <div class="dashboard-grid">
     <div class="card-box">
@@ -633,6 +708,32 @@ button {
     </div>
   </div>
 
+  <!-- PURCHASED ITEMS SECTION -->
+  <div class="purchased-section">
+    <div class="card-title" style="margin-bottom: 15px;">
+      <i class="fas fa-shopping-bag" style="color:#0077ff;"></i> Purchased Items & Sales
+    </div>
+    <div class="table-responsive">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Customer Phone</th>
+            <th>Amount</th>
+            <th>Seller Payout (90%)</th>
+            <th>Payment Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="purchasedItemsBody">
+          <tr>
+            <td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">Loading purchased items...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <h2 class="section-heading">Your Active Listings</h2>
   <div id="products"></div>
 </div>
@@ -655,13 +756,17 @@ let localNotifications = JSON.parse(localStorage.getItem(`notifs_${seller.id}`))
 loadSellerDetails();
 loadSellerProducts();
 loadSellerEarnings();
+loadPurchasedItems();
 syncSystemNotifications();
 
-// Keep monitoring updates every 15 seconds
+// AUTOMATIC REALTIME POLLING SYSTEM (Auto Updates when changed on Admin page)
 setInterval(() => {
+  loadSellerDetails();
+  loadSellerProducts();
   loadSellerEarnings();
+  loadPurchasedItems();
   syncSystemNotifications();
-}, 15000);
+}, 10000); // Polls every 10 seconds for real-time status updates
 
 async function loadSellerDetails() {
     try {
@@ -839,6 +944,45 @@ async function loadSellerEarnings() {
     document.getElementById("payoutEarnings").innerText = `KES ${computedDisbursed.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
   } catch(err) {
     console.error("Ledger calculation tracking offline:", err);
+  }
+}
+
+// FETCH AND DISPLAY PURCHASED ITEMS TABLE
+async function loadPurchasedItems() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/orders`);
+    if (!response.ok) return;
+    const orders = await response.json();
+    const tbody = document.getElementById("purchasedItemsBody");
+    tbody.innerHTML = "";
+
+    const sellerOrders = orders.filter(o => o.seller_phone === seller.phone || String(o.seller_id) === String(seller.id));
+
+    if (sellerOrders.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">No purchased items logged yet.</td></tr>`;
+      return;
+    }
+
+    sellerOrders.forEach(o => {
+      const amount = parseFloat(o.amount || 0);
+      const commission = parseFloat(o.commission_amount || (amount * 0.10));
+      const payout = amount - commission;
+      const statusClass = o.payment_status === 'paid' ? 'status-paid' : 'status-pending';
+      const orderDate = o.created_at ? new Date(o.created_at).toLocaleDateString() : 'N/A';
+
+      tbody.innerHTML += `
+        <tr>
+          <td><b>${o.product_name || o.item_name || 'Item'}</b></td>
+          <td>${o.customer_phone || o.buyer_phone || 'N/A'}</td>
+          <td>KES ${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+          <td style="color:#16a34a; font-weight:600;">KES ${payout.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+          <td><span class="status-badge ${statusClass}">${o.payment_status || 'pending'}</span></td>
+          <td>${orderDate}</td>
+        </tr>
+      `;
+    });
+  } catch(err) {
+    console.error("Failed loading purchased items:", err);
   }
 }
 
