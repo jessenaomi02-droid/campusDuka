@@ -113,7 +113,7 @@ body {
     margin-bottom: 14px;
 }
 
-.input-wrapper i {
+.input-wrapper .left-icon {
     position: absolute;
     left: 14px;
     top: 50%;
@@ -121,9 +121,24 @@ body {
     color: #a0aec0;
 }
 
+/* Toggle eye button styling */
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    color: #0a74da;
+}
+
 input {
     width: 100%;
-    padding: 12px 12px 12px 42px;
+    padding: 12px 42px 12px 42px; /* Right padding ensures text doesn't overlap eye icon */
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     font-size: 14px;
@@ -138,7 +153,7 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(10, 116, 218, 0.15);
 }
 
-button {
+button.submit-btn {
     width: 100%;
     padding: 13px;
     background: #0a74da;
@@ -152,12 +167,12 @@ button {
     box-shadow: 0 4px 12px rgba(10, 116, 218, 0.3);
 }
 
-button:hover {
+button.submit-btn:hover {
     background: #085cb4;
     transform: translateY(-1px);
 }
 
-button:active {
+button.submit-btn:active {
     transform: translateY(0);
 }
 
@@ -224,26 +239,27 @@ footer {
         <h2>Create Account</h2>
 
         <div class="input-wrapper">
-            <i class="fa-solid fa-user"></i>
+            <i class="fa-solid fa-user left-icon"></i>
             <input type="text" id="fullname" placeholder="Full Name">
         </div>
 
         <div class="input-wrapper">
-            <i class="fa-solid fa-envelope"></i>
+            <i class="fa-solid fa-envelope left-icon"></i>
             <input type="email" id="email" placeholder="Email">
         </div>
 
         <div class="input-wrapper">
-            <i class="fa-solid fa-phone"></i>
+            <i class="fa-solid fa-phone left-icon"></i>
             <input type="text" id="phone" placeholder="Phone Number">
         </div>
 
         <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
+            <i class="fa-solid fa-lock left-icon"></i>
             <input type="password" id="password" placeholder="Password">
+            <i class="fa-solid fa-eye toggle-password" id="toggleEye" onclick="togglePasswordVisibility()"></i>
         </div>
 
-        <button onclick="signup()">Create Account</button>
+        <button class="submit-btn" onclick="signup()">Create Account</button>
 
         <div class="login">
             Already have an account? <a href="login.html">Login</a>
@@ -256,6 +272,23 @@ footer {
 </footer>
 
 <script>
+
+// Function to toggle password visibility
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.getElementById("toggleEye");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+    }
+}
+
 async function signup(){
 
     const userData = {
