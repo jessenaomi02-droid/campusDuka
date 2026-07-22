@@ -63,10 +63,6 @@
       gap: 10px;
     }
 
-    .logo span {
-      color: var(--color-accent-blue);
-    }
-
     /* CHECKOUT LAYOUT */
     .checkout-container {
       max-width: 1100px;
@@ -301,7 +297,7 @@
         <polygon points="50,15 20,25 80,25" fill="#ffffff"/>
         <circle cx="50" cy="50" r="10" fill="#ffffff"/>
       </svg>
-      Campus<span>Duka</span>
+      CampusDuka
     </a>
   </nav>
 
@@ -365,7 +361,7 @@
           </div>
           <div class="sheet-row">
             <span>Campus Delivery (Maseno Area)</span>
-            <span style="font-weight: 700; color: var(--color-slate-teal);">KES 50.00</span>
+            <span id="deliveryBox" style="font-weight: 700; color: var(--color-slate-teal);">KES 50.00</span>
           </div>
           <div class="sheet-row grand-total">
             <span>Total amount</span>
@@ -378,7 +374,15 @@
   </div>
 
   <script>
-    const DELIVERY_FEE = 50;
+    // HELPER: CALCULATE APPLICABLE DELIVERY FEE
+    function calculateDeliveryFee(regularCart, eventCart) {
+      // If order contains physical products from regularCart, charge 50 delivery fee
+      if (regularCart.length > 0) {
+        return 50;
+      }
+      // If order contains ONLY event tickets, delivery fee is 0
+      return 0;
+    }
 
     // RENDER SHOPPING BASKET (PRODUCTS + EVENT TICKETS)
     document.addEventListener("DOMContentLoaded", () => {
@@ -388,6 +392,7 @@
 
       const list = document.getElementById("orderSummary");
       const subtotalBox = document.getElementById("subtotalBox");
+      const deliveryBox = document.getElementById("deliveryBox");
       const totalBox = document.getElementById("totalAmount");
 
       if (combinedCart.length === 0) {
@@ -397,6 +402,7 @@
             <p style="font-weight: 500;">Your shopping cart is empty 😢</p>
           </div>`;
         subtotalBox.textContent = "KES 0.00";
+        deliveryBox.textContent = "KES 0.00";
         totalBox.textContent = "KES 0.00";
         return;
       }
@@ -422,9 +428,11 @@
         list.appendChild(li);
       });
 
-      const grandTotal = subtotal + DELIVERY_FEE;
+      const activeDeliveryFee = calculateDeliveryFee(regularCart, eventCart);
+      const grandTotal = subtotal + activeDeliveryFee;
 
       subtotalBox.textContent = `KES ${subtotal.toLocaleString()}`;
+      deliveryBox.textContent = activeDeliveryFee === 0 ? "Free (Ticket Only)" : `KES ${activeDeliveryFee.toLocaleString()}.00`;
       totalBox.textContent = `KES ${grandTotal.toLocaleString()}`;
     });
 
@@ -448,8 +456,9 @@
         return;
       }
 
+      const activeDeliveryFee = calculateDeliveryFee(regularCart, eventCart);
       const subtotal = combinedCart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
-      const grandTotal = subtotal + DELIVERY_FEE;
+      const grandTotal = subtotal + activeDeliveryFee;
 
       try {
         const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
