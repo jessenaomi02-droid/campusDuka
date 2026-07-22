@@ -9,14 +9,19 @@
 
   <style>
     :root {
-      --primary: #4f46e5;         /* Deep Indigo */
-      --primary-hover: #4338ca;   /* Hover Indigo */
-      --secondary: #8b5cf6;       /* Accent Violet */
-      --bg: #f8fafc;              /* Slate Light Background */
+      --color-charcoal: #1f2d3d;      
+      --color-slate-teal: #164e63;    
+      --color-medium-teal: #1f6b88;   
+      --color-accent-blue: #4589be;   
+      
+      --primary: #164e63;          /* Teal Primary */
+      --primary-hover: #1f6b88;    /* Teal Hover */
+      --secondary: #4589be;        /* Accent Blue */
+      --bg: #f8fafc;               /* Slate Light Background */
       --card: #ffffff;
-      --text-main: #0f172a;       /* Slate 900 */
-      --text-muted: #64748b;      /* Slate 500 */
-      --border: #e2e8f0;          /* Slate 200 */
+      --text-main: #1f2d3d;        /* Charcoal Text */
+      --text-muted: #64748b;       /* Slate 500 */
+      --border: #e2e8f0;           /* Slate 200 */
       --radius: 16px;
     }
 
@@ -35,51 +40,31 @@
 
     /* NAVBAR */
     .navbar {
-      background: #fff;
-      padding: 16px 32px;
+      background: var(--color-charcoal);
+      padding: 14px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--color-slate-teal);
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
     .logo {
       font-size: 22px;
       font-weight: 800;
-      color: var(--primary);
+      color: #ffffff;
       text-decoration: none;
       letter-spacing: -0.5px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--primary);
-    }
-
-    .menu-icon {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--text-main);
+    .logo span {
+      color: var(--color-accent-blue);
     }
 
     /* CHECKOUT LAYOUT */
@@ -101,7 +86,7 @@
       background: var(--card);
       border-radius: var(--radius);
       border: 1px solid var(--border);
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 4px 20px -2px rgba(31, 45, 61, 0.06);
       padding: 32px;
     }
 
@@ -112,7 +97,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--text-main);
+      color: var(--color-slate-teal);
     }
 
     /* DYNAMIC ITEMIZATION */
@@ -131,7 +116,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
+      padding: 12px 16px;
       background: #f1f5f9;
       border-radius: 12px;
       border: 1px solid #e2e8f0;
@@ -144,7 +129,7 @@
     }
 
     .item-name {
-      font-weight: 600;
+      font-weight: 700;
       font-size: 14px;
       color: var(--text-main);
     }
@@ -157,7 +142,7 @@
     .item-price {
       font-weight: 700;
       font-size: 14px;
-      color: var(--primary);
+      color: var(--color-slate-teal);
     }
 
     /* PRICING SHEET */
@@ -180,10 +165,14 @@
     .sheet-row.grand-total {
       font-size: 18px;
       font-weight: 800;
-      color: var(--text-main);
+      color: var(--color-charcoal);
       border-top: 1px solid var(--border);
       padding-top: 12px;
       margin-top: 4px;
+    }
+
+    .sheet-row.grand-total span:last-child {
+      color: var(--color-slate-teal);
     }
 
     /* FORM UTILITIES */
@@ -197,7 +186,7 @@
     .form-group label {
       font-size: 13px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--color-charcoal);
     }
 
     .input-wrapper {
@@ -209,7 +198,7 @@
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-muted);
+      color: var(--color-slate-teal);
       font-size: 16px;
     }
 
@@ -238,9 +227,9 @@
     }
 
     input:focus, textarea:focus, select:focus {
-      border-color: var(--primary);
+      border-color: var(--color-slate-teal);
       background: #fff;
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+      box-shadow: 0 0 0 4px rgba(22, 78, 99, 0.12);
     }
 
     /* PAYMENT BADGES */
@@ -261,7 +250,8 @@
 
     /* SUBMIT BUTTON */
     .pay-btn {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      width: 100%;
+      background: var(--color-slate-teal);
       border: none;
       color: white;
       padding: 16px;
@@ -274,12 +264,13 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      box-shadow: 0 4px 12px rgba(22, 78, 99, 0.25);
     }
 
     .pay-btn:hover {
+      background: var(--color-medium-teal);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+      box-shadow: 0 6px 20px rgba(22, 78, 99, 0.35);
     }
 
     .pay-btn:active {
@@ -297,51 +288,30 @@
       .checkout-grid {
         grid-template-columns: 1fr;
       }
-
-      .menu-icon {
-        display: block;
-      }
-
-      .nav-links {
-        position: absolute;
-        top: 64px;
-        left: 0;
-        width: 100%;
-        background: #fff;
-        flex-direction: column;
-        align-items: center;
-        display: none;
-        padding: 24px 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <nav class="navbar">
     <a href="index2.html" class="logo">
-      <i class="fa-solid fa-graduation-cap"></i> CampusDuka
+      <svg height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="25" width="60" height="50" rx="8" fill="#164e63"/>
+        <polygon points="50,15 20,25 80,25" fill="#ffffff"/>
+        <circle cx="50" cy="50" r="10" fill="#ffffff"/>
+      </svg>
+      Campus<span>Duka</span>
     </a>
-    <i class="fas fa-bars menu-icon" id="menuIcon"></i>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index2.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
   </nav>
 
   <div class="checkout-container">
     <div class="checkout-grid">
       
+      <!-- LEFT: DELIVERY FORM -->
       <div class="card">
         <h2 class="card-title">
-          <i class="fa-solid fa-truck-fast text-indigo-600"></i> Delivery Information
+          <i class="fa-solid fa-truck-fast"></i> Delivery Information
         </h2>
         <form id="checkoutForm">
           
@@ -349,7 +319,7 @@
             <label for="fullname">Full Name</label>
             <div class="input-wrapper">
               <i class="fa-regular fa-user"></i>
-              <input id="fullname" type="text" placeholder="e.g. Jesse Gichuhi" required>
+              <input id="fullname" type="text" placeholder="e.g. Full Name" required>
             </div>
           </div>
 
@@ -365,7 +335,7 @@
             <label for="location">Hostel Room & Delivery Location</label>
             <div class="input-wrapper">
               <i class="fa-solid fa-map-pin textarea-icon"></i>
-              <textarea id="location" placeholder="e.g. Hostels Block C, Room 4B" required></textarea>
+              <textarea id="location" placeholder="e.g. Maseno Main Campus, Hostels Block C, Room 4B" required></textarea>
             </div>
           </div>
 
@@ -379,13 +349,14 @@
         </form>
       </div>
 
-      <div class="card" style="background: #ffffff;">
+      <!-- RIGHT: CART SUMMARY -->
+      <div class="card">
         <h2 class="card-title">
-          <i class="fa-solid fa-basket-shopping text-indigo-600"></i> Cart Summary
+          <i class="fa-solid fa-basket-shopping"></i> Cart Summary
         </h2>
         
         <ul id="orderSummary" class="summary-list">
-          </ul>
+        </ul>
 
         <div class="price-sheet">
           <div class="sheet-row">
@@ -393,8 +364,8 @@
             <span id="subtotalBox">KES 0.00</span>
           </div>
           <div class="sheet-row">
-            <span>Fulfillment Delivery</span>
-            <span class="text-emerald-600 font-bold">FREE</span>
+            <span>Campus Delivery (Maseno Area)</span>
+            <span style="font-weight: 700; color: var(--color-slate-teal);">KES 50.00</span>
           </div>
           <div class="sheet-row grand-total">
             <span>Total amount</span>
@@ -407,51 +378,54 @@
   </div>
 
   <script>
-    // MOBILE NAVIGATION DRAWER
-    const menuIcon = document.getElementById("menuIcon");
-    const navLinks = document.getElementById("navLinks");
+    const DELIVERY_FEE = 50;
 
-    menuIcon.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-    });
-
-    // RENDER SHOPPING BASKET
+    // RENDER SHOPPING BASKET (PRODUCTS + EVENT TICKETS)
     document.addEventListener("DOMContentLoaded", () => {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+      const combinedCart = [...regularCart, ...eventCart];
+
       const list = document.getElementById("orderSummary");
       const subtotalBox = document.getElementById("subtotalBox");
       const totalBox = document.getElementById("totalAmount");
 
-      if (cart.length === 0) {
+      if (combinedCart.length === 0) {
         list.innerHTML = `
-          <div class="text-center py-8 text-slate-400">
-            <i class="fa-solid fa-basket-shopping text-4xl mb-3 block"></i>
-            <p class="font-medium">Your shopping cart is empty 😢</p>
+          <div style="text-align: center; padding: 32px 0; color: var(--text-muted);">
+            <i class="fa-solid fa-basket-shopping" style="font-size: 36px; margin-bottom: 12px; display: block; color: var(--color-slate-teal);"></i>
+            <p style="font-weight: 500;">Your shopping cart is empty 😢</p>
           </div>`;
+        subtotalBox.textContent = "KES 0.00";
+        totalBox.textContent = "KES 0.00";
         return;
       }
 
-      let total = 0;
+      let subtotal = 0;
       list.innerHTML = "";
 
-      cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
+      combinedCart.forEach(item => {
+        const itemQty = item.quantity || 1;
+        const itemPrice = item.price || 0;
+        const itemTotal = itemPrice * itemQty;
+        subtotal += itemTotal;
 
         const li = document.createElement("li");
         li.className = "summary-item";
         li.innerHTML = `
           <div class="item-info">
             <span class="item-name">${item.name}</span>
-            <span class="item-qty">Qty: ${item.quantity} × KES ${item.price.toLocaleString()}</span>
+            <span class="item-qty">Qty: ${itemQty} × ${itemPrice === 0 ? 'Free' : 'KES ' + itemPrice.toLocaleString()}</span>
           </div>
-          <span class="item-price">KES ${itemTotal.toLocaleString()}</span>
+          <span class="item-price">${itemTotal === 0 ? 'Free' : 'KES ' + itemTotal.toLocaleString()}</span>
         `;
         list.appendChild(li);
       });
 
-      subtotalBox.textContent = `KES ${total.toLocaleString()}`;
-      totalBox.textContent = `KES ${total.toLocaleString()}`;
+      const grandTotal = subtotal + DELIVERY_FEE;
+
+      subtotalBox.textContent = `KES ${subtotal.toLocaleString()}`;
+      totalBox.textContent = `KES ${grandTotal.toLocaleString()}`;
     });
 
     // SECURED MPESA STK API DISPATCH
@@ -460,19 +434,22 @@
 
       const payBtn = document.querySelector(".pay-btn");
       payBtn.disabled = true;
-      payBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Triggering M-Pesa...`;
+      payBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Triggering M-Pesa...`;
 
       const phone = document.getElementById("phone").value;
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+      const combinedCart = [...regularCart, ...eventCart];
 
-      if (cart.length === 0) {
+      if (combinedCart.length === 0) {
         alert("Your cart is empty!");
         payBtn.disabled = false;
         payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
         return;
       }
 
-      const amount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const subtotal = combinedCart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
+      const grandTotal = subtotal + DELIVERY_FEE;
 
       try {
         const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
@@ -484,8 +461,8 @@
             fullname: document.getElementById("fullname").value,
             phone: phone.startsWith("0") ? "254" + phone.substring(1) : phone,
             location: document.getElementById("location").value,
-            cart,
-            amount
+            cart: combinedCart,
+            amount: grandTotal
           })
         });
 
@@ -496,7 +473,6 @@
           localStorage.setItem("buyerPhone", phone.startsWith("0") ? "254" + phone.substring(1) : phone);
           localStorage.setItem("latestOrderId", mpesaData.orderId);
 
-          // Route to waiting-payment loader screen
           window.location.href = "waiting-payment.html";
         } else {
           payBtn.disabled = false;
