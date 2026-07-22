@@ -1,162 +1,607 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Event Bookings - UniBazaar</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f6fa;
-      margin: 0;
-      padding: 20px;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    img {
-      width: 80px;
-      border-radius: 6px;
-    }
-    .delete-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .add-btn {
-      background: orange;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .checkout-btn {
-      display: inline-block;
-      background: green;
-      color: white;
-      padding: 12px 25px;
-      text-decoration: none;
-      font-size: 16px;
-      border-radius: 5px;
-      margin-top: 20px;
-    }
-    .total {
-      text-align: right;
-      font-size: 20px;
-      margin-top: 20px;
-      font-weight: bold;
-      color: #333;
-    }
-    .empty {
-      text-align: center;
-      color: gray;
-      font-size: 18px;
-      margin-top: 40px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusDuka | Your Event Bookings</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+/* ==========================================
+   COLOR SYSTEM & VARIABLES
+   ========================================== */
+:root{
+  --color-charcoal: #1f2d3d;      
+  --color-slate-teal: #164e63;    
+  --color-medium-teal: #1f6b88;   
+  --color-accent-blue: #4589be;   
+  
+  --bg-main: #f8fafc;             
+  --text-dark: #1f2d3d;           
+  --text-muted: #64748b;          
+  --card-bg: #ffffff;
+  --border-light: #e2e8f0;        
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(31, 45, 61, 0.08), 0 2px 4px -1px rgba(31, 45, 61, 0.04);
+  --shadow-lg: 0 10px 20px -3px rgba(31, 45, 61, 0.12), 0 4px 6px -4px rgba(31, 45, 61, 0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+body{
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+*{
+  box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  background: var(--color-charcoal);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid var(--color-slate-teal);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  background: transparent;
+}
+
+.logo-svg {
+  height: 40px;
+  width: auto;
+}
+
+.logo-text {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.logo-text span {
+  color: var(--color-accent-blue);
+}
+
+.nav-links{
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a{
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover, .nav-links a.active{
+  color: var(--color-accent-blue);
+  border-bottom: 2px solid var(--color-accent-blue);
+}
+
+.menu-icon{
+  display: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ================= PAGE CONTAINER ================= */
+.main-wrapper {
+  max-width: 1100px;
+  width: 90%;
+  margin: 40px auto;
+  flex-grow: 1;
+}
+
+.page-header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.page-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-charcoal);
+  margin: 0;
+}
+
+.page-header h2 span {
+  color: var(--color-slate-teal);
+}
+
+.back-link {
+  color: var(--color-slate-teal);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link:hover {
+  color: var(--color-accent-blue);
+}
+
+/* ================= BOOKING TABLE CARD ================= */
+.cart-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  background-color: #f1f5f9;
+  color: var(--color-slate-teal);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.event-thumbnail {
+  width: 70px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: #f1f5f9;
+}
+
+.event-title {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* QUANTITY BUTTONS */
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  background: #f1f5f9;
+  border: 1px solid var(--border-light);
+  color: var(--text-dark);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.qty-btn:hover {
+  background: var(--color-slate-teal);
+  color: white;
+  border-color: var(--color-slate-teal);
+}
+
+.qty-val {
+  font-weight: 600;
+  width: 20px;
+  text-align: center;
+}
+
+/* ACTION BUTTONS */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* ================= SUMMARY SECTION ================= */
+.summary-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--shadow-md);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.summary-row.total {
+  border-top: 2px dashed var(--border-light);
+  padding-top: 14px;
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-charcoal);
+}
+
+.summary-row.total span:last-child {
+  color: var(--color-slate-teal);
+}
+
+.checkout-btn {
+  display: block;
+  width: 100%;
+  background: var(--color-slate-teal);
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  margin-top: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.checkout-btn:hover {
+  background: var(--color-medium-teal);
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 60px 20px;
+  text-align: center;
+  border: 1px dashed var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-card i {
+  font-size: 56px;
+  color: var(--color-slate-teal);
+  opacity: 0.4;
+  margin-bottom: 16px;
+}
+
+.empty-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-card p {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.browse-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-slate-teal);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.browse-btn:hover {
+  background: var(--color-medium-teal);
+}
+
+/* ================= FOOTER ================= */
+footer{
+  background: var(--color-charcoal);
+  color: white;
+  text-align: center;
+  padding: 24px;
+  font-size: 14px;
+  border-top: 3px solid var(--color-slate-teal);
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    width: 100%;
+    background: var(--color-charcoal);
+    flex-direction: column;
+    padding: 24px;
+    gap: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--color-slate-teal);
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .summary-card {
+    max-width: 100%;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<h2>Your Event Bookings</h2>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <a href="index2.html" class="logo-link">
+    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#164e63" />
+          <stop offset="100%" stop-color="#4589be" />
+        </linearGradient>
+      </defs>
+      <rect x="20" y="25" width="60" height="50" rx="8" fill="url(#logo-grad)" />
+      <polygon points="50,15 20,25 80,25" fill="#ffffff" />
+      <circle cx="50" cy="50" r="10" fill="#ffffff" />
+      <path d="M44,50 L56,50 M50,44 L50,56" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" />
+    </svg>
+    <span class="logo-text">Campus<span>Duka</span></span>
+  </a>
 
-<table id="eventCartTable">
-  <thead>
-    <tr>
-      <th>Image</th>
-      <th>Event</th>
-      <th>Venue</th>
-      <th>Date</th>
-      <th>Price (KES)</th>
-      <th>Qty</th>
-      <th>Total (KES)</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <div class="menu-icon" id="menuIcon">
+    <i class="fas fa-bars"></i>
+  </div>
 
-<div class="total" id="eventCartTotal">Total: KES 0</div>
-<a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
-<p class="empty" id="emptyEventMsg" style="display:none;">No events booked yet 🎫</p>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index2.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="food.html">Fast Foods</a></li>
+    <li><a href="events.html" class="active">Events</a></li>
+  </ul>
+</nav>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="main-wrapper">
+  <div class="page-header">
+    <h2>Event <span>Bookings</span></h2>
+    <a href="events.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Events</a>
+  </div>
+
+  <div id="cartContent">
+    <!-- Table & Summary dynamically rendered here -->
+  </div>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  &copy; 2026 CampusDuka • All Rights Reserved
+</footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+// Toggle Mobile Navigation
+const menuIcon = document.getElementById("menuIcon");
+const navLinks = document.getElementById("navLinks");
+menuIcon.onclick = () => {
+  navLinks.classList.toggle("active");
+};
+
+// Handle Incoming URL Booking Parameters
+function processIncomingBooking() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const name = params.get('name');
+  const price = parseFloat(params.get('price'));
+  const image = params.get('image');
+
+  if (id && name) {
+    let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+    const existingIndex = eventCart.findIndex(item => item.id === id);
+
+    if (existingIndex > -1) {
+      eventCart[existingIndex].quantity += 1;
+    } else {
+      eventCart.push({
+        id: id,
+        name: name,
+        price: isNaN(price) ? 0 : price,
+        image: image || 'images/event1.jpg',
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem('eventCart', JSON.stringify(eventCart));
+    // Clean URL parameters after processing
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+// Render Event Cart Items
+function renderCart() {
   let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
-  const tableBody = document.querySelector('#eventCartTable tbody');
-  const totalDisplay = document.getElementById('eventCartTotal');
-  const emptyMsg = document.getElementById('emptyEventMsg');
-  tableBody.innerHTML = '';
+  const container = document.getElementById('cartContent');
 
   if (eventCart.length === 0) {
-    emptyMsg.style.display = 'block';
-    totalDisplay.style.display = 'none';
+    container.innerHTML = `
+      <div class="empty-card">
+        <i class="fa-solid fa-ticket-simple"></i>
+        <h3>No Event Tickets Reserved Yet</h3>
+        <p>Explore upcoming campus events, fests, and workshops to secure your spot.</p>
+        <a href="events.html" class="browse-btn"><i class="fa-solid fa-compass"></i> Explore Events</a>
+      </div>`;
     return;
   }
 
   let grandTotal = 0;
+  let tableRows = eventCart.map((event, index) => {
+    const itemTotal = event.price * event.quantity;
+    grandTotal += itemTotal;
+    const priceFormatted = event.price === 0 ? 'Free' : `KES ${event.price.toLocaleString()}`;
+    const totalFormatted = itemTotal === 0 ? 'Free' : `KES ${itemTotal.toLocaleString()}`;
 
-  eventCart.forEach((event, index) => {
-    const eventTotal = event.price * event.quantity;
-    grandTotal += eventTotal;
-
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td><img src="${event.image || 'placeholder.png'}" alt="${event.name}" /></td>
-      <td>${event.name}</td>
-      <td>${event.venue}</td>
-      <td>${event.date}</td>
-      <td>${event.price}</td>
-      <td>${event.quantity}</td>
-      <td>${eventTotal}</td>
-      <td>
-        <button class="delete-btn" data-index="${index}">Delete</button>
-        <button class="add-btn" data-index="${index}">Add Similar</button>
-      </td>
+    return `
+      <tr>
+        <td>
+          <img src="${event.image || 'images/event1.jpg'}" class="event-thumbnail" alt="${event.name}">
+        </td>
+        <td class="event-title">${event.name}</td>
+        <td>${priceFormatted}</td>
+        <td>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+            <span class="qty-val">${event.quantity}</span>
+            <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+          </div>
+        </td>
+        <td style="font-weight: 700; color: var(--color-slate-teal);">${totalFormatted}</td>
+        <td>
+          <button class="delete-btn" onclick="removeBooking(${index})">
+            <i class="fa-solid fa-trash-can"></i> Remove
+          </button>
+        </td>
+      </tr>
     `;
-    tableBody.appendChild(row);
-  });
+  }).join('');
 
-  totalDisplay.textContent = `Total: KES ${grandTotal.toLocaleString()}`;
+  container.innerHTML = `
+    <div class="cart-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Event Title</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  // Delete item from event cart
-  document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const index = this.getAttribute('data-index');
+    <div class="summary-container">
+      <div class="summary-card">
+        <div class="summary-row">
+          <span>Tickets Count:</span>
+          <span>${eventCart.reduce((sum, item) => sum + item.quantity, 0)}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <span>KES ${grandTotal.toLocaleString()}</span>
+        </div>
+        <a href="checkout.php" class="checkout-btn">
+          Proceed to Checkout <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+// Update Ticket Quantity
+function updateQty(index, delta) {
+  let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+  if (eventCart[index]) {
+    eventCart[index].quantity += delta;
+    if (eventCart[index].quantity <= 0) {
       eventCart.splice(index, 1);
-      localStorage.setItem('eventCart', JSON.stringify(eventCart));
-      location.reload();
-    });
-  });
+    }
+    localStorage.setItem('eventCart', JSON.stringify(eventCart));
+    renderCart();
+  }
+}
 
-  // Add similar event
-  document.querySelectorAll('.add-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const index = this.getAttribute('data-index');
-      const event = eventCart[index];
-      eventCart.push({ ...event });
-      localStorage.setItem('eventCart', JSON.stringify(eventCart));
-      location.reload();
-    });
-  });
+// Remove Ticket Booking
+function removeBooking(index) {
+  let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+  eventCart.splice(index, 1);
+  localStorage.setItem('eventCart', JSON.stringify(eventCart));
+  renderCart();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  processIncomingBooking();
+  renderCart();
 });
 </script>
 
