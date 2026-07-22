@@ -649,7 +649,7 @@ function filterEvents() {
   });
 }
 
-/* BOOK TICKET ACTION - Redirect to events-cart.html */
+/* BOOK TICKET ACTION - Redirect to event_cart.html */
 function bookTicket(product) {
   const params = new URLSearchParams({
     id: product._id || product.id || '',
@@ -658,7 +658,7 @@ function bookTicket(product) {
     image: (product.images && product.images[0]) ? product.images[0] : ''
   });
   
-  window.location.href = `events-cart.html?${params.toString()}`;
+  window.location.href = `event_cart.html?${params.toString()}`;
 }
 
 /* IMAGE DISPLAY INTERACTION */
