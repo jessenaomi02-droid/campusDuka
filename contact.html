@@ -34,7 +34,7 @@
       top: 0;
       z-index: 1100;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       padding: 16px 5%;
       background: #1f2d3d; /* Brand Charcoal Base */
@@ -44,7 +44,7 @@
 
     .logo {
       color: white;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       text-decoration: none;
       display: flex;
@@ -54,31 +54,6 @@
 
     .logo i {
       color: #4589be; /* Brand Accent Blue */
-    }
-
-    .logo span {
-      color: #4589be;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: rgba(255, 255, 255, 0.85);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 14px;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 4px;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #4589be;
-      border-bottom-color: #4589be;
     }
 
     /* ---------- Main & Contact Section ---------- */
@@ -261,10 +236,6 @@
         grid-template-columns: 1fr;
         padding: 25px;
       }
-
-      .nav-links {
-        display: none;
-      }
     }
   </style>
 </head>
@@ -273,14 +244,8 @@
   <!-- Navbar -->
   <nav class="navbar">
     <a href="index2.html" class="logo">
-      <i class="fa-solid fa-graduation-cap"></i> Campus<span>Duka</span>
+      <i class="fa-solid fa-graduation-cap"></i> CampusDuka
     </a>
-    <div class="nav-links">
-      <a href="index2.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="events.html">Events</a>
-      <a href="contact.html" class="active">Contact</a>
-    </div>
   </nav>
 
   <!-- Main Content -->
