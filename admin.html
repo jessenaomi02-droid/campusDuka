@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDuka - Admin Panel</title>
-    <!-- Production CSS CDN without Play CDN runtime warning -->
+    <!-- Tailwind CSS & FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -94,7 +94,6 @@
 
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                         <h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-screwdriver-wrench text-indigo-500 mr-2"></i>Database Setup Helpers</h2>
-                        <p class="text-sm text-gray-500 mb-4">Click these initialization utilities if you need to quickly add structural columns or create tables in your Database on the fly.</p>
                         <div class="flex flex-wrap gap-3">
                             <button onclick="runDbHelper('/create-users')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Users Table</button>
                             <button onclick="runDbHelper('/create-products')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Products & Sellers Tables</button>
@@ -112,7 +111,7 @@
                     <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-6 rounded-xl shadow-md flex justify-between items-center">
                         <div>
                             <h2 class="text-2xl font-bold">Revenue & Earnings Overview</h2>
-                            <p class="text-sm text-emerald-200 mt-1">Track accurate platform earnings via seller subscriptions and successful sales commissions.</p>
+                            <p class="text-sm text-emerald-200 mt-1">Track platform earnings via seller subscriptions and sales commissions.</p>
                         </div>
                         <i class="fa-solid fa-coins text-5xl text-emerald-300 opacity-80"></i>
                     </div>
@@ -126,20 +125,19 @@
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Commission Earned (Completed Sales)</p>
                             <h3 id="rev-commission-earned" class="text-2xl font-bold text-emerald-600 mt-2">KES 0</h3>
-                            <p class="text-xs text-gray-400 mt-1">Calculated only after successful delivery</p>
+                            <p class="text-xs text-gray-400 mt-1">Calculated at 10% rate</p>
                         </div>
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Pending Commission (In-Transit)</p>
+                            <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Pending Commission (In-Transit / Preparing)</p>
                             <h3 id="rev-commission-pending" class="text-2xl font-bold text-amber-500 mt-2">KES 0</h3>
-                            <p class="text-xs text-gray-400 mt-1">Pending buyer delivery confirmation</p>
+                            <p class="text-xs text-gray-400 mt-1">Pending order fulfillment</p>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="font-bold text-gray-800 mb-3">Commission Calculation Logic</h3>
+                        <h3 class="font-bold text-gray-800 mb-3">Commission Rules</h3>
                         <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs text-slate-600 space-y-2">
-                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Default commission cut rate: <strong>5% per completed sale</strong>.</p>
-                            <p><i class="fa-solid fa-shield-check text-emerald-500 mr-1"></i> Standard Rule: Commissions are marked as <strong>Earned Revenue</strong> only after an order status is marked as <strong>"Delivered"</strong> or <strong>"Completed"</strong>.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Default commission percentage rate: <strong>10% per sale</strong>.</p>
                         </div>
                     </div>
                 </section>
@@ -174,33 +172,33 @@
                     <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
                         <div>
                             <h2 class="text-xl font-bold">Featured Deals Manager</h2>
-                            <p class="text-sm text-indigo-200 mt-1">Control which approved products appear on the "Featured Deals" section of the main website.</p>
+                            <p class="text-sm text-indigo-200 mt-1">Control products featured on the home page.</p>
                         </div>
                         <i class="fa-solid fa-star text-4xl text-amber-400"></i>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Promote Approved Product to Featured</h3>
+                            <h3 class="font-bold text-gray-800 mb-4">Promote Product</h3>
                             <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product (Approved Marketplace Items)</label>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Select Product</label>
                                     <select id="feature-product-select" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm" required>
                                         <option value="">-- Choose a Product --</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Featured Duration (in Minutes)</label>
-                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 60 for 1 hour" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Duration (Minutes)</label>
+                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 60" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                                 </div>
                                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
-                                    Feature Item & Start Timer
+                                    Feature Item
                                 </button>
                             </form>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-4">Currently Featured Deals</h3>
+                            <h3 class="font-bold text-gray-800 mb-4">Active Featured Deals</h3>
                             <div class="overflow-y-auto max-h-80 space-y-3" id="active-featured-list">
                             </div>
                         </div>
@@ -211,7 +209,7 @@
                 <section id="orders" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Orders Log & Delivery Tracker</h2>
+                            <h2 class="font-bold text-gray-800">Orders Log & Delivery Status Updates</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -219,10 +217,9 @@
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">Order ID</th>
                                         <th class="p-4">Buyer Details</th>
-                                        <th class="p-4">Payment Time & Location</th>
-                                        <th class="p-4">Product</th>
+                                        <th class="p-4">Purchased Items Details</th>
+                                        <th class="p-4">Location & Time</th>
                                         <th class="p-4">Amount</th>
-                                        <th class="p-4">M-Pesa Status</th>
                                         <th class="p-4">Delivery Status</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
@@ -238,16 +235,16 @@
                 <section id="sellers" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Verified Sellers & Associated Products</h2>
+                            <h2 class="font-bold text-gray-800">Verified Sellers & Product Catalog</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">ID</th>
-                                        <th class="p-4">Store / Business Name</th>
-                                        <th class="p-4">Contact Details</th>
-                                        <th class="p-4">Subscription Plan</th>
+                                        <th class="p-4">Store Name</th>
+                                        <th class="p-4">Contact</th>
+                                        <th class="p-4">Subscription</th>
                                         <th class="p-4">Active Listings</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
@@ -263,7 +260,7 @@
                 <section id="users" class="hidden space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                            <h2 class="font-bold text-gray-800">Buyers Registered Database</h2>
+                            <h2 class="font-bold text-gray-800">Registered Buyers Database</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -271,8 +268,8 @@
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">ID</th>
                                         <th class="p-4">Full Name</th>
-                                        <th class="p-4">Email Address</th>
-                                        <th class="p-4">Phone Number</th>
+                                        <th class="p-4">Email</th>
+                                        <th class="p-4">Phone</th>
                                         <th class="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -287,15 +284,53 @@
         </div>
     </div>
 
+    <!-- Edit Pending Product Modal -->
+    <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h3 class="text-lg font-bold text-slate-800">Edit Pending Product Details</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
+            </div>
+            <form id="edit-pending-form" onsubmit="savePendingProductEdits(event)" class="space-y-4">
+                <input type="hidden" id="edit-prod-id">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Title / Name</label>
+                    <input type="text" id="edit-prod-name" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Price (KES)</label>
+                        <input type="number" id="edit-prod-price" step="0.01" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Category</label>
+                        <input type="text" id="edit-prod-category" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Image URL</label>
+                    <input type="url" id="edit-prod-image" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Description</label>
+                    <textarea id="edit-prod-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
+                </div>
+                <div class="flex justify-end gap-3 text-sm font-semibold pt-2">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">Save & Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Rejection Reason Modal -->
     <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
             <h3 class="text-lg font-bold text-slate-800 mb-2">Reject Product</h3>
-            <p class="text-sm text-slate-500 mb-4">Please specify a reason. The seller will be informed why their submission was declined.</p>
-            <textarea id="rejection-reason" rows="4" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mb-4" placeholder="e.g. Low resolution image, prohibited campus listing, incorrect pricing..."></textarea>
+            <textarea id="rejection-reason" rows="4" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mb-4" placeholder="Reason..."></textarea>
             <div class="flex justify-end gap-3 text-sm font-semibold">
-                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50">Cancel</button>
-                <button id="confirm-reject-btn" onclick="submitProductRejection()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm Rejection</button>
+                <button onclick="closeRejectionModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg">Cancel</button>
+                <button id="confirm-reject-btn" onclick="submitProductRejection()" class="px-4 py-2 bg-red-600 text-white rounded-lg">Confirm Rejection</button>
             </div>
         </div>
     </div>
@@ -321,6 +356,7 @@
         let previousPendingCount = null;
         let previousOrdersCount = null;
         let globalAllProducts = [];
+        let globalPendingProducts = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             refreshAllData();
@@ -337,22 +373,16 @@
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(587.33, ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
-                
                 gain.gain.setValueAtTime(0.2, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                
                 osc.start();
                 osc.stop(ctx.currentTime + 0.3);
-            } catch(e) {
-                console.log("Audio notification blocked.");
-            }
+            } catch(e) {}
         }
 
         function toggleAudio() {
@@ -392,7 +422,7 @@
             fetchStats();
             fetchPendingProducts(isBackground);
             fetchOrders();
-            fetchSellers();
+            fetchSellers(isBackground);
             fetchUsers();
             populateApprovedProducts();
         }
@@ -419,9 +449,7 @@
                 document.getElementById('stat-users').innerText = Array.isArray(usr) ? usr.length : 0;
 
                 calculateRevenueMetrics(ord, sel);
-            } catch (err) {
-                console.error("Failed to load dashboard metrics.", err);
-            }
+            } catch (err) {}
         }
 
         function calculateRevenueMetrics(orders, sellers) {
@@ -440,12 +468,12 @@
             if (Array.isArray(orders)) {
                 orders.forEach(o => {
                     const amount = parseFloat(o.amount || o.price || 0);
-                    const comm = amount * 0.05; // 5% Cut
+                    const comm = amount * 0.10; // 10% DEFAULT COMMISSION
                     const status = (o.delivery_status || o.status || '').toLowerCase();
 
                     if (status === 'delivered' || status === 'completed') {
                         completedCommission += comm;
-                    } else {
+                    } else if (status !== 'cancelled') {
                         pendingCommission += comm;
                     }
                 });
@@ -459,9 +487,9 @@
         async function runDbHelper(endpoint) {
             try {
                 const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'POST' }).then(r => r.json());
-                alert(res.message || "Database helper executed successfully!");
+                alert(res.message || "Executed successfully!");
             } catch (err) {
-                alert("Database helper error: " + err.message);
+                alert("Error: " + err.message);
             }
         }
 
@@ -486,16 +514,19 @@
             }
             try {
                 const products = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
+                globalPendingProducts = Array.isArray(products) ? products : [];
+
                 if(!Array.isArray(products) || products.length === 0) {
                     list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">No products pending approval.</td></tr>`;
                     return;
                 }
                 list.innerHTML = products.map(prod => {
-                    const imgList = JSON.stringify(prod.images || [prod.image_url || 'https://via.placeholder.com/150']).replace(/"/g, '&quot;');
+                    const firstImg = prod.images && prod.images[0] ? prod.images[0] : (prod.image_url || 'https://via.placeholder.com/60');
+                    const imgList = JSON.stringify(prod.images || [firstImg]).replace(/"/g, '&quot;');
                     return `
                     <tr>
                         <td class="p-4 flex items-center gap-3">
-                            <img src="${prod.images && prod.images[0] ? prod.images[0] : (prod.image_url || 'https://via.placeholder.com/60')}" class="w-12 h-12 object-cover rounded-lg border">
+                            <img src="${firstImg}" class="w-12 h-12 object-cover rounded-lg border">
                             <div>
                                 <h4 class="font-bold text-gray-800">${prod.name}</h4>
                                 <p class="text-xs text-gray-400 line-clamp-1">${prod.description || ''}</p>
@@ -509,10 +540,11 @@
                         <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-full">${prod.category || 'General'}</span></td>
                         <td class="p-4">
                             <button onclick="viewProductImages('${prod.name}', ${imgList})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1">
-                                <i class="fa-solid fa-image"></i> View Images
+                                <i class="fa-solid fa-image"></i> View
                             </button>
                         </td>
                         <td class="p-4 text-right space-x-2">
+                            <button onclick="openEditModal(${prod.id})" class="bg-amber-100 text-amber-800 hover:bg-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-pen"></i> Edit</button>
                             <button onclick="approveProduct(${prod.id})" class="bg-green-100 text-green-700 hover:bg-green-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-check"></i> Approve</button>
                             <button onclick="openRejectionModal(${prod.id})" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"><i class="fa-solid fa-xmark"></i> Reject</button>
                             <button onclick="deleteProduct(${prod.id})" class="text-red-500 hover:text-red-700 text-xs px-2 py-1.5"><i class="fa-solid fa-trash"></i> Delete</button>
@@ -521,6 +553,61 @@
                 `}).join('');
             } catch(err) {
                 list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error fetching products: ${err.message}</td></tr>`;
+            }
+        }
+
+        // EDIT PENDING PRODUCT FUNCTIONS
+        function openEditModal(prodId) {
+            const prod = globalPendingProducts.find(p => p.id == prodId);
+            if (!prod) return;
+
+            document.getElementById('edit-prod-id').value = prod.id;
+            document.getElementById('edit-prod-name').value = prod.name || '';
+            document.getElementById('edit-prod-price').value = prod.price || '';
+            document.getElementById('edit-prod-category').value = prod.category || '';
+            document.getElementById('edit-prod-image').value = prod.images && prod.images[0] ? prod.images[0] : (prod.image_url || '');
+            document.getElementById('edit-prod-description').value = prod.description || '';
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        async function savePendingProductEdits(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-prod-id').value;
+            const updatedData = {
+                name: document.getElementById('edit-prod-name').value,
+                price: parseFloat(document.getElementById('edit-prod-price').value),
+                category: document.getElementById('edit-prod-category').value,
+                image_url: document.getElementById('edit-prod-image').value,
+                images: [document.getElementById('edit-prod-image').value],
+                description: document.getElementById('edit-prod-description').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/update-pending-product/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+                
+                if (!res.ok) {
+                    // Fallback route if direct route isn't available
+                    await fetch(`${API_BASE_URL}/products/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedData)
+                    });
+                }
+
+                alert("Product details updated successfully!");
+                closeEditModal();
+                refreshAllData();
+            } catch (err) {
+                alert("Failed to update product details: " + err.message);
             }
         }
 
@@ -546,7 +633,7 @@
         }
 
         async function approveProduct(id) {
-            if(!confirm("Approve this product? It will appear directly in its respective category on the store.")) return;
+            if(!confirm("Approve this product?")) return;
             try {
                 const res = await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' }).then(r => r.json());
                 if(res.success || res.status === 'ok') {
@@ -557,7 +644,7 @@
         }
 
         async function deleteProduct(id) {
-            if(!confirm("Are you sure you want to delete this product permanently from the website?")) return;
+            if(!confirm("Are you sure you want to delete this product?")) return;
             const success = await performDeleteRequest([
                 `${API_BASE_URL}/delete-product/${id}`,
                 `${API_BASE_URL}/products/${id}`,
@@ -567,7 +654,7 @@
                 alert("Product deleted successfully.");
                 refreshAllData();
             } else {
-                alert("Could not delete product. Ensure endpoint routes exist on your Render server.");
+                alert("Could not delete product.");
             }
         }
 
@@ -586,11 +673,11 @@
             if(!selectedRejectProductId) return;
             const reason = document.getElementById('rejection-reason').value || "Does not meet site requirements.";
             try {
-                const res = await fetch(`${API_BASE_URL}/reject-product/${selectedRejectProductId}`, {
+                await fetch(`${API_BASE_URL}/reject-product/${selectedRejectProductId}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ reason })
-                }).then(r => r.json());
+                });
                 alert("Product rejected.");
                 closeRejectionModal();
                 refreshAllData();
@@ -619,14 +706,13 @@
             featuredTimers[prodId] = expiryTime;
             localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
             
-            // Call API to mark item as featured
             fetch(`${API_BASE_URL}/feature-product/${prodId}`, { 
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ featured: true })
             }).catch(e => {});
 
-            alert("Product added to Featured Deals!");
+            alert("Product featured!");
             renderActiveFeaturedList();
         }
 
@@ -681,13 +767,13 @@
             }, 1000);
         }
 
-        // ORDERS & MPESA TRACKER (FIXED CAMPUS LOCATION DISPLAY)
+        // ORDERS & DELIVERY STATUS MANAGEMENT
         async function fetchOrders() {
             const list = document.getElementById('orders-list');
             try {
                 const orders = await fetch(`${API_BASE_URL}/orders`).then(r => r.json());
                 if(!Array.isArray(orders) || orders.length === 0) {
-                    list.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400">No orders logged yet.</td></tr>`;
+                    list.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">No orders logged yet.</td></tr>`;
                     return;
                 }
                 list.innerHTML = orders.map(o => {
@@ -696,7 +782,16 @@
                         pickupLoc = "Main Campus - Student Center / Gate 1";
                     }
 
-                    const isDelivered = (o.delivery_status || '').toLowerCase() === 'delivered';
+                    let itemsHtml = '';
+                    if (o.items && Array.isArray(o.items) && o.items.length > 0) {
+                        itemsHtml = o.items.map(i => `<div class="font-medium text-xs text-slate-800">• ${i.name || i.product_name} (x${i.quantity || 1}) - KES ${i.price || ''}</div>`).join('');
+                    } else if (o.product_name || o.products) {
+                        itemsHtml = `<p class="font-medium text-xs text-slate-800">${o.product_name || o.products}</p>`;
+                    } else {
+                        itemsHtml = `<p class="font-medium text-xs text-slate-800">Product ID #${o.product_id || o.id}</p>`;
+                    }
+
+                    const currentStatus = (o.delivery_status || o.status || 'Pending').toLowerCase();
 
                     return `
                     <tr>
@@ -705,43 +800,81 @@
                             <p class="font-bold text-gray-800">${o.buyer_name || 'Buyer'}</p>
                             <p class="text-xs text-gray-400">${o.phone || o.buyer_phone || 'N/A'}</p>
                         </td>
+                        <td class="p-4 space-y-1">
+                            ${itemsHtml}
+                        </td>
                         <td class="p-4 text-xs">
                             <p class="text-gray-700"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i> ${pickupLoc}</p>
                             <p class="text-gray-400 mt-0.5">${o.created_at ? new Date(o.created_at).toLocaleString() : 'Recent'}</p>
                         </td>
-                        <td class="p-4 font-medium">${o.product_name || o.product_id}</td>
                         <td class="p-4 font-bold text-emerald-600">KES ${o.amount || o.price}</td>
-                        <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-bold">Paid</span></td>
                         <td class="p-4">
-                            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${isDelivered ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
-                                ${o.delivery_status || 'Pending Delivery'}
-                            </span>
+                            <select onchange="updateDeliveryStatus(${o.id}, this.value)" class="text-xs font-bold rounded-lg p-2 border border-gray-200 bg-white cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                <option value="Pending" ${currentStatus === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                <option value="Preparing" ${currentStatus === 'preparing' ? 'selected' : ''}>📦 Preparing</option>
+                                <option value="In Transit" ${currentStatus === 'in transit' ? 'selected' : ''}>🚚 In Transit</option>
+                                <option value="Delivered" ${currentStatus === 'delivered' ? 'selected' : ''}>✅ Delivered</option>
+                                <option value="Cancelled" ${currentStatus === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
+                            </select>
                         </td>
-                        <td class="p-4 text-right space-x-2">
-                            ${!isDelivered ? `<button onclick="updateOrderStatus(${o.id}, 'Delivered')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Mark Delivered</button>` : `<span class="text-xs text-gray-400"><i class="fa-solid fa-circle-check text-green-500"></i> Settled</span>`}
+                        <td class="p-4 text-right">
+                            <button onclick="deleteOrder(${o.id})" class="bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
                         </td>
                     </tr>
                 `}).join('');
             } catch(e) {
-                list.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400">Unable to load orders.</td></tr>`;
+                list.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Unable to load orders.</td></tr>`;
             }
         }
 
-        async function updateOrderStatus(orderId, status) {
+        async function updateDeliveryStatus(orderId, newStatus) {
             try {
-                await fetch(`${API_BASE_URL}/update-order-status/${orderId}`, {
+                const res = await fetch(`${API_BASE_URL}/update-order-status/${orderId}`, {
                     method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ status })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus, delivery_status: newStatus })
                 });
-                alert(`Order marked as ${status}. Commission earnings updated!`);
+                
+                if (!res.ok) {
+                    await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: newStatus, delivery_status: newStatus })
+                    });
+                }
+
+                alert(`Order #${orderId} status updated to: ${newStatus}`);
+                fetchStats();
+            } catch(err) {
+                alert("Failed to update status: " + err.message);
+            }
+        }
+
+        async function deleteOrder(orderId) {
+            if(!confirm("Are you sure you want to delete this order record?")) return;
+            const success = await performDeleteRequest([
+                `${API_BASE_URL}/delete-order/${orderId}`,
+                `${API_BASE_URL}/orders/${orderId}`,
+                `${API_BASE_URL}/order/${orderId}`
+            ]);
+            if(success) {
+                alert("Order deleted.");
                 refreshAllData();
-            } catch(e) { alert("Error updating status."); }
+            } else {
+                alert("Unable to delete order.");
+            }
         }
 
         // SELLERS & PRODUCT CATALOG SECTION
-        async function fetchSellers() {
+        async function fetchSellers(isBackground = false) {
             const list = document.getElementById('sellers-list');
+            
+            const openDetails = Array.from(document.querySelectorAll('#sellers-list details[open]'))
+                .map(d => d.getAttribute('data-seller-id'))
+                .filter(Boolean);
+
             try {
                 const sellers = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
                 if(!Array.isArray(sellers) || sellers.length === 0) {
@@ -750,7 +883,8 @@
                 }
                 list.innerHTML = sellers.map(s => {
                     const sellerProds = globalAllProducts.filter(p => p.seller_id == s.id || p.seller_phone == s.phone);
-                    
+                    const isOpen = openDetails.includes(String(s.id)) ? 'open' : '';
+
                     return `
                     <tr>
                         <td class="p-4 font-mono text-xs font-bold text-slate-500">#SEL-${s.id}</td>
@@ -761,7 +895,7 @@
                         </td>
                         <td class="p-4"><span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">${s.subscription_plan || 'Standard'}</span></td>
                         <td class="p-4 text-xs">
-                            <details class="cursor-pointer">
+                            <details class="cursor-pointer" data-seller-id="${s.id}" ${isOpen}>
                                 <summary class="font-bold text-indigo-600 hover:underline">${sellerProds.length} Products (Click to view)</summary>
                                 <div class="mt-2 space-y-2 pl-2 border-l-2 border-indigo-200">
                                     ${sellerProds.length === 0 ? '<p class="text-gray-400">No items uploaded</p>' : sellerProds.map(p => `
@@ -779,12 +913,14 @@
                     </tr>
                 `}).join('');
             } catch(e) {
-                list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">Unable to load sellers list.</td></tr>`;
+                if (!isBackground) {
+                    list.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">Unable to load sellers list.</td></tr>`;
+                }
             }
         }
 
         async function deleteSeller(id) {
-            if(!confirm("Are you sure you want to remove this seller account and its associated catalog?")) return;
+            if(!confirm("Are you sure you want to remove this seller account?")) return;
             const success = await performDeleteRequest([
                 `${API_BASE_URL}/delete-seller/${id}`,
                 `${API_BASE_URL}/sellers/${id}`
