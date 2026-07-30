@@ -188,8 +188,9 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Duration (Minutes)</label>
-                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 60" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Duration (Days)</label>
+                                    <input type="number" id="feature-duration" min="1" placeholder="e.g., 3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    <p class="text-[11px] text-gray-400 mt-1">This is how many days the item stays in the homepage Featured Deals section.</p>
                                 </div>
                                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
                                     Feature Item
@@ -351,7 +352,6 @@
         const API_BASE_URL = "https://campusduka-api.onrender.com"; 
 
         let selectedRejectProductId = null;
-        let featuredTimers = JSON.parse(localStorage.getItem('featured_timers')) || {};
         let soundEnabled = true;
         let previousPendingCount = null;
         let previousOrdersCount = null;
@@ -360,7 +360,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             refreshAllData();
-            startLocalCountdownLoop();
             
             setInterval(() => {
                 refreshAllData(true);
@@ -453,12 +452,18 @@
         }
 
         function calculateRevenueMetrics(orders, sellers) {
+            // FIX: the real subscription plans are free/copper/bronze/gold
+            // (see seller-register / upgrade-plan), not pro/premium/basic/starter,
+            // so this was always adding KES 0 for every seller. The backend
+            // doesn't store a fixed KES price per plan anywhere (the amount is
+            // set client-side at checkout in stkpush-subscription), so these
+            // per-plan values are placeholders — swap them for your real prices.
+            const PLAN_PRICES_KES = { free: 0, copper: 200, bronze: 500, gold: 1000 };
             let subscriptionTotal = 0;
             if (Array.isArray(sellers)) {
                 sellers.forEach(s => {
-                    const plan = (s.subscription_plan || '').toLowerCase();
-                    if(plan.includes('pro') || plan.includes('premium')) subscriptionTotal += 500;
-                    else if(plan.includes('basic') || plan.includes('starter')) subscriptionTotal += 200;
+                    const plan = (s.subscription_plan || 'free').toLowerCase();
+                    subscriptionTotal += PLAN_PRICES_KES[plan] || 0;
                 });
             }
 
@@ -530,7 +535,7 @@
         async function deleteUser(id) {
             if (!confirm('Are you sure you want to delete this buyer?')) return;
             try {
-                await fetch(`${API_BASE_URL}/users/${id}`, { method: 'DELETE' });
+                await fetch(`${API_BASE_URL}/delete-user/${id}`, { method: 'DELETE' });
                 fetchUsers();
             } catch (err) {
                 alert('Failed to delete user');
@@ -539,6 +544,9 @@
 
         /* -------------------------------------------------------------
            2. SELLERS & PRODUCTS (SHOW PRODUCTS FOR INDIVIDUAL SELLERS & DELETE)
+           FIX: guard every match field so blank/undefined values on both
+           sides never count as a "match" (undefined == undefined is true
+           in JS, which was making every seller show every product).
         ------------------------------------------------------------- */
         async function fetchSellers(isBackground = false) {
             try {
@@ -551,12 +559,16 @@
 
                 if (Array.isArray(sellers)) {
                     sellers.forEach(s => {
-                        // FIX: Filter products belonging to this specific seller
-                        const sellerProducts = globalAllProducts.filter(p => 
-                            p.seller_id == s.id || 
-                            p.seller_phone == s.phone_number || 
-                            p.seller_email == s.email
-                        );
+                        // FIX: Filter products belonging to this specific seller only.
+                        // Each comparison requires both sides to actually have a value,
+                        // so two products that are both missing a seller_phone (for
+                        // example) no longer get treated as "matching".
+                        const sellerProducts = globalAllProducts.filter(p => {
+                            const idMatch = p.seller_id != null && s.id != null && String(p.seller_id) === String(s.id);
+                            const phoneMatch = p.seller_phone && (s.phone_number || s.phone) && p.seller_phone === (s.phone_number || s.phone);
+                            const emailMatch = p.seller_email && s.email && p.seller_email === s.email;
+                            return idMatch || phoneMatch || emailMatch;
+                        });
 
                         let productsHTML = `<span class="text-gray-400 text-xs italic">No active items</span>`;
                         if (sellerProducts.length > 0) {
@@ -600,7 +612,7 @@
         async function deleteSeller(id) {
             if (!confirm('Are you sure you want to delete this seller?')) return;
             try {
-                await fetch(`${API_BASE_URL}/sellers/${id}`, { method: 'DELETE' });
+                await fetch(`${API_BASE_URL}/delete-seller/${id}`, { method: 'DELETE' });
                 fetchSellers();
             } catch (err) {
                 alert('Failed to delete seller');
@@ -645,7 +657,9 @@
                         const buyerName = o.buyer_name || o.customer_name || 'Buyer';
                         const buyerPhone = o.buyer_phone || o.phone || 'N/A';
                         const amount = o.amount || o.price || 0;
-                        const mpesaRef = o.mpesa_code || o.mpesa_reference || o.transaction_id || 'M-PESA Paid';
+                        // FIX: there's no mpesa reference/code column on orders —
+                        // only payment_status — so show that instead of a made-up label.
+                        const mpesaRef = (o.payment_status || 'pending').toUpperCase();
 
                         tbody.innerHTML += `
                             <tr>
@@ -687,10 +701,10 @@
 
         async function updateOrderStatus(id, status) {
             try {
-                await fetch(`${API_BASE_URL}/orders/${id}/status`, {
+                await fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ delivery_status: status })
+                    body: JSON.stringify({ status: status })
                 });
                 fetchStats();
             } catch (err) {
@@ -701,7 +715,15 @@
         async function deleteOrder(id) {
             if (!confirm('Are you sure you want to delete this order?')) return;
             try {
-                await fetch(`${API_BASE_URL}/orders/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    // The backend only allows deleting orders that are already
+                    // marked Delivered — surface its real message instead of
+                    // a generic failure.
+                    alert(data.message || 'Only delivered orders can be deleted.');
+                    return;
+                }
                 fetchOrders();
                 fetchStats();
             } catch (err) {
@@ -711,6 +733,8 @@
 
         /* -------------------------------------------------------------
            5. PENDING APPROVALS & FIX FOR EDIT FUNCTIONALITY
+           FIX: media column now shows every uploaded image (not just one)
+           via a gallery modal, with a count badge when there's more than one.
         ------------------------------------------------------------- */
         async function fetchPendingProducts(isBackground = false) {
             try {
@@ -723,7 +747,14 @@
                 if (Array.isArray(products)) {
                     products.forEach(p => {
                         const seller = p.seller_store || p.seller_name || p.seller_phone || 'Seller';
-                        const image = p.image_url || p.image || 'https://via.placeholder.com/150';
+
+                        // FIX: support multiple uploaded images (p.images array),
+                        // falling back to a single image_url/image field if that's
+                        // all the backend has for this product.
+                        const imagesArr = Array.isArray(p.images) && p.images.length > 0
+                            ? p.images
+                            : (p.image_url || p.image ? [p.image_url || p.image] : []);
+                        const thumb = imagesArr[0] || 'https://via.placeholder.com/150?text=No+Image';
 
                         tbody.innerHTML += `
                             <tr>
@@ -735,7 +766,10 @@
                                 <td class="p-4 font-bold text-emerald-600">KES ${p.price}</td>
                                 <td class="p-4 text-gray-600">${p.category || 'General'}</td>
                                 <td class="p-4">
-                                    <img src="${image}" onclick="openImageModal('${image}', '${p.title || p.name}')" class="w-10 h-10 object-cover rounded cursor-pointer border hover:opacity-80">
+                                    <div class="relative inline-block cursor-pointer" onclick="openImageModal(${p.id})" title="View all uploaded images">
+                                        <img src="${thumb}" class="w-10 h-10 object-cover rounded cursor-pointer border hover:opacity-80" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                        ${imagesArr.length > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">${imagesArr.length}</span>` : ''}
+                                    </div>
                                 </td>
                                 <td class="p-4 text-right space-x-2">
                                     <button onclick="approveProduct(${p.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
@@ -782,14 +816,18 @@
             };
 
             try {
-                const res = await fetch(`${API_BASE_URL}/pending-products/${id}`, {
+                // NOTE: /edit-product/:id currently only persists name,
+                // description, and price — category and image changes made
+                // here won't be saved until the backend route is extended
+                // to accept those fields too.
+                const res = await fetch(`${API_BASE_URL}/edit-product/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updatedData)
                 });
 
                 if (res.ok) {
-                    alert('Pending product updated successfully!');
+                    alert('Pending product updated (name, description & price saved).');
                     closeEditModal();
                     fetchPendingProducts();
                 } else {
@@ -802,7 +840,7 @@
 
         async function approveProduct(id) {
             try {
-                await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'POST' });
+                await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' });
                 alert('Product approved and moved live to main products!');
                 refreshAllData();
             } catch (err) {
@@ -825,7 +863,7 @@
             const reason = document.getElementById('rejection-reason').value;
             try {
                 await fetch(`${API_BASE_URL}/reject-product/${selectedRejectProductId}`, {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ reason })
                 });
@@ -838,6 +876,13 @@
 
         /* -------------------------------------------------------------
            6. FEATURED MANAGER & HOMEPAGE CONTENT DELETION
+           FIX: featuring a product now persists to the backend (`featured`
+           + `featured_days` on the product itself) instead of only writing
+           to this browser's localStorage, so index2.html's homepage query
+           (which reads featured/featured_days/created_at from /products)
+           can actually see it. The active list and countdown are now
+           derived the same way the homepage derives them, so what admin
+           shows matches what buyers see.
         ------------------------------------------------------------- */
         async function populateApprovedProducts() {
             try {
@@ -849,97 +894,122 @@
                     products.forEach(p => {
                         select.innerHTML += `<option value="${p.id}">${p.title || p.name} (KES ${p.price})</option>`;
                     });
+                    globalAllProducts = products;
+                    renderActiveFeaturedList();
                 }
             } catch (err) {}
         }
 
-        function handleFeatureProduct(e) {
+        async function handleFeatureProduct(e) {
             e.preventDefault();
             const productId = document.getElementById('feature-product-select').value;
-            const durationMins = parseInt(document.getElementById('feature-duration').value);
+            const durationDays = parseInt(document.getElementById('feature-duration').value);
 
-            if (!productId || !durationMins) return;
+            if (!productId || !durationDays) return;
 
-            const expiryTime = Date.now() + (durationMins * 60 * 1000);
-            featuredTimers[productId] = expiryTime;
-            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
+            try {
+                const res = await fetch(`${API_BASE_URL}/feature-product/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ days: durationDays })
+                });
+                const data = await res.json().catch(() => ({}));
 
-            alert(`Product #${productId} is now featured on Homepage for ${durationMins} minutes!`);
-            renderActiveFeaturedList();
+                if (res.ok && data.success) {
+                    alert(data.payment_terms
+                        ? `${data.message} ${data.payment_terms}`
+                        : `Product #${productId} is now featured on the homepage for ${durationDays} day(s)!`);
+                    document.getElementById('feature-form').reset();
+                    refreshAllData();
+                } else {
+                    alert(data.message || 'Failed to feature this product on the server.');
+                }
+            } catch (err) {
+                alert('Error connecting to backend server.');
+            }
         }
 
-        /* FIX: ABILITY TO DELETE CONTENT/FEATURED ITEMS FROM HOMEPAGE */
-        async function deleteHomepageContent(productId) {
-            if (!confirm('Are you sure you want to remove/delete this content item from the homepage?')) return;
-            
-            // Remove from featured timers
-            delete featuredTimers[productId];
-            localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-
-            // Delete product directly from main store if needed
-            deleteProductFromAdmin(productId);
-            renderActiveFeaturedList();
+        /* FIX: unfeaturing only clears the featured flag — it no longer
+           deletes the product entirely. Requires a PUT /unfeature-product/:id
+           route on the backend (see the snippet shared alongside this file) —
+           until that route exists, this will show a clear error rather than
+           silently doing nothing. */
+        async function unfeatureProduct(productId) {
+            if (!confirm('Remove this product from the homepage Featured Deals section? The product itself will stay in your catalog.')) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/unfeature-product/${productId}`, { method: 'PUT' });
+                if (!res.ok) {
+                    alert('Failed to unfeature this product — the backend needs a PUT /unfeature-product/:id route added first.');
+                    return;
+                }
+                refreshAllData();
+            } catch (err) {
+                alert('Failed to unfeature product.');
+            }
         }
 
         function renderActiveFeaturedList() {
             const container = document.getElementById('active-featured-list');
             container.innerHTML = '';
 
-            const activeIds = Object.keys(featuredTimers);
-            if (activeIds.length === 0) {
+            const featuredItems = globalAllProducts.filter(p => p.featured === true || p.featured === "true");
+
+            if (featuredItems.length === 0) {
                 container.innerHTML = `<p class="text-xs text-gray-400 italic">No products currently featured.</p>`;
                 return;
             }
 
-            activeIds.forEach(id => {
-                const item = globalAllProducts.find(p => p.id == id);
-                const title = item ? (item.title || item.name) : `Product #${id}`;
-                
+            featuredItems.forEach(p => {
+                // Mirrors index2.html's homepage countdown calculation exactly,
+                // so what admin shows here matches what buyers see live.
+                const allocatedDays = parseInt(p.featured_days) || 1;
+                const createdTime = p.created_at ? new Date(p.created_at).getTime() : Date.now();
+                const expiryTime = createdTime + (allocatedDays * 24 * 60 * 60 * 1000);
+                const remainingMs = expiryTime - Date.now();
+
+                let timerText;
+                if (remainingMs > 0) {
+                    const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
+                    const remainingDays = Math.floor(remainingHours / 24);
+                    timerText = remainingDays > 0 ? `${remainingDays}d ${remainingHours % 24}h remaining` : `${remainingHours}h remaining`;
+                } else {
+                    timerText = 'Expired — will drop off homepage';
+                }
+
                 container.innerHTML += `
                     <div class="flex items-center justify-between p-3 bg-indigo-50 rounded-lg border border-indigo-100 text-xs">
                         <div>
-                            <p class="font-bold text-slate-800">${title}</p>
-                            <p class="text-indigo-600 font-mono" id="timer-${id}">Calculating time...</p>
+                            <p class="font-bold text-slate-800">${p.title || p.name}</p>
+                            <p class="text-indigo-600 font-mono">${timerText}</p>
                         </div>
-                        <button onclick="deleteHomepageContent(${id})" class="text-red-600 hover:text-red-800 font-bold bg-white px-2 py-1 rounded border shadow-sm">
-                            <i class="fa-solid fa-trash mr-1"></i> Remove
+                        <button onclick="unfeatureProduct(${p.id})" class="text-red-600 hover:text-red-800 font-bold bg-white px-2 py-1 rounded border shadow-sm">
+                            <i class="fa-solid fa-star-half-stroke mr-1"></i> Unfeature
                         </button>
                     </div>
                 `;
             });
         }
 
-        function startLocalCountdownLoop() {
-            setInterval(() => {
-                const now = Date.now();
-                let updated = false;
+        /* FIX: shows every uploaded image for a pending product, not just one. */
+        function openImageModal(productId) {
+            const item = globalPendingProducts.find(p => p.id == productId);
+            if (!item) return;
 
-                Object.keys(featuredTimers).forEach(id => {
-                    const diff = featuredTimers[id] - now;
-                    const timerElem = document.getElementById(`timer-${id}`);
+            const imagesArr = Array.isArray(item.images) && item.images.length > 0
+                ? item.images
+                : (item.image_url || item.image ? [item.image_url || item.image] : []);
 
-                    if (diff <= 0) {
-                        delete featuredTimers[id];
-                        updated = true;
-                    } else if (timerElem) {
-                        const mins = Math.floor(diff / 60000);
-                        const secs = Math.floor((diff % 60000) / 1000);
-                        timerElem.innerText = `${mins}m ${secs}s remaining`;
-                    }
-                });
+            document.getElementById('image-modal-title').innerText = (item.title || item.name || 'Image Gallery') + (imagesArr.length > 1 ? ` (${imagesArr.length} images)` : '');
 
-                if (updated) {
-                    localStorage.setItem('featured_timers', JSON.stringify(featuredTimers));
-                    renderActiveFeaturedList();
-                }
-            }, 1000);
-        }
+            const container = document.getElementById('image-modal-container');
+            if (imagesArr.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-400 col-span-2 text-center py-6">No images were uploaded for this product.</p>`;
+            } else {
+                container.innerHTML = imagesArr.map(url => `
+                    <img src="${url}" class="w-full h-auto rounded-lg shadow border max-h-96 object-contain" onerror="this.src='https://via.placeholder.com/300?text=Image+Unavailable'">
+                `).join('');
+            }
 
-        function openImageModal(url, title) {
-            document.getElementById('image-modal-title').innerText = title || 'Image Gallery';
-            document.getElementById('image-modal-container').innerHTML = `
-                <img src="${url}" class="w-full h-auto rounded-lg shadow border col-span-2 max-h-96 object-contain">
-            `;
             document.getElementById('image-modal').classList.remove('hidden');
         }
 
