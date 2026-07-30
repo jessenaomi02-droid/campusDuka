@@ -1181,7 +1181,21 @@ app.get("/subscription-status/:checkoutId", async (req, res) => {
     });
   }
 });
-
+/* UNFEATURE PRODUCT (remove from home page Featured Deals) */
+app.put("/unfeature-product/:id", async (req, res) => {
+  try {
+    const result = await db.query(
+      `UPDATE products SET featured = false WHERE id = $1 RETURNING id, name, featured`,
+      [req.params.id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Product listing not found" });
+    }
+    res.json({ success: true, message: "Product removed from featured deals", product: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
