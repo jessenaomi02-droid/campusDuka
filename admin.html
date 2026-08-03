@@ -947,10 +947,12 @@
                                         ${imagesArr.length > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">${imagesArr.length}</span>` : ''}
                                     </div>
                                 </td>
-                                <td class="p-4 text-right space-x-2">
-                                    <button onclick="approveProduct(${p.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
-                                    <button onclick="openEditModal(${p.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Edit</button>
-                                    <button onclick="openRejectionModal(${p.id})" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Reject</button>
+                                <td class="p-4 text-right">
+                                    <div class="flex flex-wrap justify-end gap-2">
+                                        <button onclick="approveProduct(${p.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
+                                        <button onclick="openEditModal(${p.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Edit</button>
+                                        <button onclick="openRejectionModal(${p.id})" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Reject</button>
+                                    </div>
                                 </td>
                             </tr>
                         `;
