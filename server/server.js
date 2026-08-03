@@ -790,7 +790,10 @@ app.delete("/delete-order/:id", async (req, res) => {
         message: "Order not found"
       });
     }
-    if (order.rows[0].delivery_status !== "delivered") {
+    // FIX: the admin dropdown sends "Delivered" (capital D), but this was
+    // comparing against a strict lowercase "delivered" — they never matched,
+    // so delete failed on every order, even ones correctly marked delivered.
+    if ((order.rows[0].delivery_status || "").toLowerCase() !== "delivered") {
       return res.status(400).json({
         success: false,
         message: "Only delivered orders can be deleted"
