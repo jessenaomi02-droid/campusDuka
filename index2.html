@@ -930,16 +930,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     </li>
     <li><a href="contact.html"><i class="fas fa-phone"></i>Contact</a></li>
   </ul>
-
-  <div class="nav-right">
-    <div id="user-area">
-      <a href="login.html" class="login-btn"><i class="fas fa-user"></i>Login</a>
-    </div>
-    <a href="cart.html" class="cart-link">
-      <i class="fas fa-shopping-cart"></i>
-      <span id="cart-count">0</span>
-    </a>
-  </div>
 </nav>
 
 <div class="search-bar-container">
@@ -1269,73 +1259,58 @@ function renderUserAuthArea(){
 }
 renderUserAuthArea();
 
-/* RANDOM ADVERT SYSTEM SEED ENGINE */
-const sampleAds = [
-  {
-    title: "🍔 Fast Joint Burger Special!",
-    desc: "Buy 2 Classic Beef Burgers and get a free soda. Deliveries straight to your hostel floor.",
-    cta: "Order Now",
-    link: "food.html?search=burger"
-  },
-  {
-    title: "🎒 Sell Your Unused Campus Items",
-    desc: "Finished your semester? Clean your room and get fast cash. Post an ad instantly!",
-    cta: "Start Selling",
-    link: "seller-register.html"
-  },
-  {
-    title: "🎉 Tech Club Hackathon 2026",
-    desc: "Showcase your innovations, win cash prizes, and network with industry engineers. RSVP today!",
-    cta: "Book Ticket",
-    link: "events.html"
-  },
-  {
-    title: "☀️ Smart Solar Campus Chargers",
-    desc: "Never run out of power during blackouts. Portable lightweight solar power systems available.",
-    cta: "View Solar",
-    link: "products.html?search=solar"
-  }
-];
-
-function injectRandomAdverts() {
+/* HOMEPAGE ADS: now pulled from the admin-managed backend instead of a
+   hardcoded sample list, so ads added/removed in the admin panel show up
+   here automatically at their chosen placement (top or middle). */
+async function loadHomepageAds() {
   const topAdPlacement = document.getElementById("ad-placement-top");
   const midAdPlacement = document.getElementById("ad-placement-mid");
 
-  // Pick two different random ads
-  const randomAd1 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
-  let randomAd2 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
-  
-  while (randomAd2 === randomAd1 && sampleAds.length > 1) {
-    randomAd2 = sampleAds[Math.floor(Math.random() * sampleAds.length)];
-  }
+  try {
+    const res = await fetch("https://campusduka-api.onrender.com/ads");
+    const ads = await res.json();
 
-  if (topAdPlacement) {
-    topAdPlacement.innerHTML = `
-      <div class="campus-ad-banner">
-        <div class="ad-text-content">
-          <span class="ad-badge">Sponsored</span>
-          <h3>${randomAd1.title}</h3>
-          <p>${randomAd1.desc}</p>
-        </div>
-        <a href="${randomAd1.link}" class="ad-cta-btn">${randomAd1.cta}</a>
-      </div>
-    `;
-  }
+    if (!Array.isArray(ads) || ads.length === 0) {
+      if (topAdPlacement) topAdPlacement.innerHTML = "";
+      if (midAdPlacement) midAdPlacement.innerHTML = "";
+      return;
+    }
 
-  if (midAdPlacement) {
-    midAdPlacement.innerHTML = `
-      <div class="campus-ad-banner" style="background: linear-gradient(135deg, #111827 0%, #1f2d3d 100%); border-color: #10b981;">
-        <div class="ad-text-content">
-          <span class="ad-badge" style="background: #10b981;">Trending Deal</span>
-          <h3>${randomAd2.title}</h3>
-          <p>${randomAd2.desc}</p>
-        </div>
-        <a href="${randomAd2.link}" class="ad-cta-btn" style="background: #164e63;">${randomAd2.cta}</a>
-      </div>
-    `;
+    const topAds = ads.filter(a => a.placement === "top");
+    const midAds = ads.filter(a => a.placement === "mid");
+
+    if (topAdPlacement) {
+      topAdPlacement.innerHTML = topAds.map(ad => renderAdBanner(ad)).join("");
+    }
+    if (midAdPlacement) {
+      midAdPlacement.innerHTML = midAds.map(ad => renderAdBanner(ad, true)).join("");
+    }
+  } catch (error) {
+    console.error("Could not load homepage ads:", error);
   }
 }
-injectRandomAdverts();
+
+function renderAdBanner(ad, altStyle) {
+  const bg = altStyle
+    ? "background: linear-gradient(135deg, #111827 0%, #1f2d3d 100%); border-color: #10b981;"
+    : "";
+  const badgeStyle = altStyle ? "background: #10b981;" : "";
+  const btnStyle = altStyle ? "background: #164e63;" : "";
+  const badgeText = altStyle ? "Trending Deal" : "Sponsored";
+
+  return `
+    <div class="campus-ad-banner" style="${bg}">
+      <div class="ad-text-content">
+        <span class="ad-badge" style="${badgeStyle}">${badgeText}</span>
+        <h3>${ad.title}</h3>
+        <p>${ad.description || ''}</p>
+      </div>
+      <a href="${ad.cta_link || '#'}" class="ad-cta-btn" style="${btnStyle}">${ad.cta_text || 'Learn More'}</a>
+    </div>
+  `;
+}
+
+loadHomepageAds();
 
 /* GLOBAL STORAGE CART INJECTION ROUTINE */
 window.handleCartAddition = function(id, name, price, category, image) {
