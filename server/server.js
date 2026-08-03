@@ -323,10 +323,10 @@ app.delete("/delete-product/:id", async (req, res) => {
 app.put("/edit-product/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, description, price } = req.body;
+    const { name, description, price, category } = req.body;
     await db.query(
-      `UPDATE products SET name=$1, description=$2, price=$3 WHERE id=$4`,
-      [name, description, price, id]
+      `UPDATE products SET name=$1, description=$2, price=$3, category=$4 WHERE id=$5`,
+      [name, description, price, category, id]
     );
     res.json({
       success: true,
@@ -1181,6 +1181,7 @@ app.get("/subscription-status/:checkoutId", async (req, res) => {
     });
   }
 });
+
 /* UNFEATURE PRODUCT (remove from home page Featured Deals) */
 app.put("/unfeature-product/:id", async (req, res) => {
   try {
@@ -1196,6 +1197,231 @@ app.put("/unfeature-product/:id", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+/* =====================================================================
+   SELLER FEATURE REQUESTS (seller asks to be featured, admin approves)
+   ===================================================================== */
+
+/* One-time setup: creates the feature_requests table */
+app.get("/create-feature-requests", async (req, res) => {
+  try {
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS feature_requests(
+        id SERIAL PRIMARY KEY,
+        product_id INTEGER,
+        seller_id INTEGER,
+        requested_days INTEGER DEFAULT 1,
+        status VARCHAR(20) DEFAULT 'pending',
+        admin_note TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    res.send("feature_requests table created");
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+/* Seller sends a request to be featured on the home page */
+app.post("/request-feature", async (req, res) => {
+  try {
+    const { product_id, seller_id, requested_days } = req.body;
+    await db.query(
+      `INSERT INTO feature_requests (product_id, seller_id, requested_days, status)
+       VALUES ($1, $2, $3, 'pending')`,
+      [product_id, seller_id, parseInt(requested_days) || 1]
+    );
+    res.json({ success: true, message: "Feature request sent to admin for review" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* Admin: list pending requests, with product + seller details attached */
+app.get("/feature-requests", async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT
+        feature_requests.*,
+        products.name AS product_name,
+        products.price AS product_price,
+        products.category AS product_category,
+        sellers.name AS seller_name,
+        sellers.email AS seller_email,
+        sellers.phone AS seller_phone
+      FROM feature_requests
+      LEFT JOIN products ON feature_requests.product_id = products.id
+      LEFT JOIN sellers ON feature_requests.seller_id = sellers.id
+      WHERE feature_requests.status = 'pending'
+      ORDER BY feature_requests.id DESC
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* Admin approves a request: features the product for the requested days */
+app.put("/approve-feature-request/:id", async (req, res) => {
+  try {
+    const request = await db.query(`SELECT * FROM feature_requests WHERE id=$1`, [req.params.id]);
+    if (request.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Request not found" });
+    }
+    const { product_id, requested_days } = request.rows[0];
+    const DAILY_RATE = 50;
+    const totalCost = (requested_days || 1) * DAILY_RATE;
+
+    await db.query(
+      `UPDATE products SET featured = true, featured_days = $1, ad_charge = $2 WHERE id = $3`,
+      [requested_days || 1, totalCost, product_id]
+    );
+    await db.query(`UPDATE feature_requests SET status='approved' WHERE id=$1`, [req.params.id]);
+
+    res.json({ success: true, message: "Request approved — product is now featured on the home page" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* Admin rejects a request */
+app.put("/reject-feature-request/:id", async (req, res) => {
+  try {
+    const { reason } = req.body;
+    await db.query(
+      `UPDATE feature_requests SET status='rejected', admin_note=$1 WHERE id=$2`,
+      [reason || null, req.params.id]
+    );
+    res.json({ success: true, message: "Request rejected" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* =====================================================================
+   HOMEPAGE ADS
+   ===================================================================== */
+
+/* One-time setup: creates the ads table */
+app.get("/create-ads", async (req, res) => {
+  try {
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS ads(
+        id SERIAL PRIMARY KEY,
+        title TEXT,
+        description TEXT,
+        cta_text VARCHAR(50) DEFAULT 'Learn More',
+        cta_link TEXT,
+        placement VARCHAR(20) DEFAULT 'top',
+        active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    res.send("ads table created");
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+/* Public: homepage fetches only active ads */
+app.get("/ads", async (req, res) => {
+  try {
+    const result = await db.query(`SELECT * FROM ads WHERE active = true ORDER BY id DESC`);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* Admin: sees every ad, active or not */
+app.get("/all-ads", async (req, res) => {
+  try {
+    const result = await db.query(`SELECT * FROM ads ORDER BY id DESC`);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post("/add-ad", async (req, res) => {
+  try {
+    const { title, description, cta_text, cta_link, placement } = req.body;
+    await db.query(
+      `INSERT INTO ads (title, description, cta_text, cta_link, placement, active)
+       VALUES ($1, $2, $3, $4, $5, true)`,
+      [title, description, cta_text || 'Learn More', cta_link, placement || 'top']
+    );
+    res.json({ success: true, message: "Ad added" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.put("/toggle-ad/:id", async (req, res) => {
+  try {
+    const result = await db.query(
+      `UPDATE ads SET active = NOT active WHERE id = $1 RETURNING id, active`,
+      [req.params.id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Ad not found" });
+    }
+    res.json({ success: true, active: result.rows[0].active });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete("/delete-ad/:id", async (req, res) => {
+  try {
+    await db.query(`DELETE FROM ads WHERE id=$1`, [req.params.id]);
+    res.json({ success: true, message: "Ad deleted" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* =====================================================================
+   REVENUE SUMMARY (products & food combined, events separate,
+   subscriptions from real payments, and money owed to sellers)
+   ===================================================================== */
+app.get("/admin/revenue-summary", async (req, res) => {
+  try {
+    // Products & food revenue vs events revenue, split by category on the
+    // joined product. Anything not categorised "Events" counts as products/food.
+    const salesResult = await db.query(`
+      SELECT
+        COALESCE(SUM(CASE WHEN p.category IS DISTINCT FROM 'Events' THEN o.amount ELSE 0 END), 0) AS products_gross,
+        COALESCE(SUM(CASE WHEN p.category IS DISTINCT FROM 'Events' THEN o.commission_amount ELSE 0 END), 0) AS products_commission,
+        COALESCE(SUM(CASE WHEN p.category = 'Events' THEN o.amount ELSE 0 END), 0) AS events_gross,
+        COALESCE(SUM(CASE WHEN p.category = 'Events' THEN o.commission_amount ELSE 0 END), 0) AS events_commission,
+        COALESCE(SUM(CASE WHEN o.payout_status = 'pending' THEN o.seller_payout ELSE 0 END), 0) AS payouts_owed
+      FROM orders o
+      LEFT JOIN products p ON o.product_id = p.id
+    `);
+
+    // Subscription revenue: only what has actually been paid, from the real
+    // payments table — not guessed per-plan prices.
+    const subsResult = await db.query(`
+      SELECT COALESCE(SUM(amount), 0) AS subscriptions_total
+      FROM subscription_payments
+      WHERE status = 'paid'
+    `);
+
+    res.json({
+      success: true,
+      products_gross: parseFloat(salesResult.rows[0].products_gross),
+      products_commission: parseFloat(salesResult.rows[0].products_commission),
+      events_gross: parseFloat(salesResult.rows[0].events_gross),
+      events_commission: parseFloat(salesResult.rows[0].events_commission),
+      payouts_owed: parseFloat(salesResult.rows[0].payouts_owed),
+      subscriptions_total: parseFloat(subsResult.rows[0].subscriptions_total)
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
