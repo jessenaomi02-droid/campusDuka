@@ -13,7 +13,7 @@
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar -->
-        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between" style="background-color: #0f172a;">
+        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto" style="background-color: #0f172a;">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2" style="border-color: #1e293b;">
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
@@ -489,6 +489,13 @@
     <script>
         const API_BASE_URL = "https://campusduka-api.onrender.com"; 
 
+        // FIX: via.placeholder.com was failing outright on some networks
+        // (ERR_CONNECTION_CLOSED). This placeholder is drawn locally in the
+        // browser instead, so it never depends on reaching an outside site.
+        const NO_IMAGE_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150"><rect width="100%" height="100%" fill="#e2e8f0"/><text x="50%" y="50%" font-family="sans-serif" font-size="13" fill="#64748b" text-anchor="middle" dominant-baseline="middle">No Image</text></svg>'
+        );
+
         let selectedRejectProductId = null;
         let soundEnabled = true;
         let previousPendingCount = null;
@@ -907,7 +914,7 @@
                         const imagesArr = Array.isArray(p.images) && p.images.length > 0
                             ? p.images
                             : (p.image ? [p.image] : []);
-                        const thumb = imagesArr[0] || 'https://via.placeholder.com/150?text=No+Image';
+                        const thumb = imagesArr[0] || NO_IMAGE_PLACEHOLDER;
 
                         tbody.innerHTML += `
                             <tr>
@@ -920,7 +927,7 @@
                                 <td class="p-4 text-gray-600">${p.category || 'General'}</td>
                                 <td class="p-4">
                                     <div class="relative inline-block cursor-pointer" onclick="openImageModal(${p.id})" title="See all uploaded photos">
-                                        <img src="${thumb}" class="w-10 h-10 object-cover rounded cursor-pointer border hover:opacity-80" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                        <img src="${thumb}" class="w-10 h-10 object-cover rounded cursor-pointer border hover:opacity-80" onerror="this.onerror=null;this.src='${NO_IMAGE_PLACEHOLDER}'">
                                         ${imagesArr.length > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">${imagesArr.length}</span>` : ''}
                                     </div>
                                 </td>
@@ -1190,7 +1197,7 @@
                 container.innerHTML = `<p class="text-sm text-gray-400 col-span-2 text-center py-6">No photos were uploaded for this product.</p>`;
             } else {
                 container.innerHTML = imagesArr.map(url => `
-                    <img src="${url}" class="w-full h-auto rounded-lg shadow border max-h-96 object-contain" onerror="this.src='https://via.placeholder.com/300?text=Image+Unavailable'">
+                    <img src="${url}" class="w-full h-auto rounded-lg shadow border max-h-96 object-contain" onerror="this.onerror=null;this.src='${NO_IMAGE_PLACEHOLDER}'">
                 `).join('');
             }
 
