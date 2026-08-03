@@ -112,6 +112,7 @@
                             <button onclick="runDbHelper('/update-status')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Status Column</button>
                             <button onclick="runDbHelper('/add-seller-id')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Seller ID Column</button>
                             <button onclick="runDbHelper('/add-featured')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Featured Column</button>
+                            <button onclick="runDbHelper('/add-rejection-reason')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Rejection Reason Column</button>
                             <button onclick="runDbHelper('/create-feature-requests')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Feature Requests Table</button>
                             <button onclick="runDbHelper('/create-ads')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Ads Table</button>
                         </div>
@@ -620,7 +621,10 @@
 
         async function runDbHelper(endpoint) {
             try {
-                const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'POST' }).then(r => r.json());
+                // FIX: every setup route on the backend (create-*, add-*, update-status)
+                // is defined as app.get(...), not app.post(...). Sending POST here made
+                // every one of these buttons 404 silently — nothing ever actually ran.
+                const res = await fetch(`${API_BASE_URL}${endpoint}`, { method: 'GET' }).then(r => r.json().catch(() => ({})));
                 alert(res.message || "Executed successfully!");
             } catch (err) {
                 alert("Helper execution failed.");
@@ -663,10 +667,14 @@
         async function deleteUser(id) {
             if (!confirm('Are you sure you want to delete this buyer?')) return;
             try {
-                await fetch(`${API_BASE_URL}/delete-user/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE_URL}/delete-user/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    alert('The server could not delete this buyer.');
+                    return;
+                }
                 fetchUsers();
             } catch (err) {
-                alert('Failed to delete user');
+                alert('Failed to delete user — could not reach the server.');
             }
         }
 
@@ -740,10 +748,14 @@
         async function deleteSeller(id) {
             if (!confirm('Are you sure you want to delete this seller?')) return;
             try {
-                await fetch(`${API_BASE_URL}/delete-seller/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE_URL}/delete-seller/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    alert('The server could not delete this seller.');
+                    return;
+                }
                 fetchSellers();
             } catch (err) {
-                alert('Failed to delete seller');
+                alert('Failed to delete seller — could not reach the server.');
             }
         }
 
@@ -803,9 +815,13 @@
                 if(!res.ok) {
                     res = await fetch(`${API_BASE_URL}/products/${productId}`, { method: 'DELETE' });
                 }
+                if (!res.ok) {
+                    alert('The server could not delete this product.');
+                    return;
+                }
                 refreshAllData();
             } catch (err) {
-                alert('Failed to delete product.');
+                alert('Failed to delete product — could not reach the server.');
             }
         }
 
@@ -991,10 +1007,15 @@
 
         async function approveProduct(id) {
             try {
-                await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' });
+                const res = await fetch(`${API_BASE_URL}/approve-product/${id}`, { method: 'PUT' });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    alert(data.error || 'The server rejected this approval — check that the products table has a rejection_reason column (Dashboard \u2192 Add Rejection Reason Column).');
+                    return;
+                }
                 refreshAllData();
             } catch (err) {
-                alert('Failed to approve product');
+                alert('Failed to approve product — could not reach the server.');
             }
         }
 
@@ -1266,7 +1287,7 @@
                     document.getElementById('add-ad-form').reset();
                     fetchAds();
                 } else {
-                    alert('Could not add this ad on the server.');
+                    alert('Could not add this ad on the server. If this is the first ad you have added, click "Create Ads Table" on the Dashboard first, then try again.');
                 }
             } catch (err) {
                 alert('Error connecting to backend server.');
@@ -1275,20 +1296,28 @@
 
         async function toggleAd(id) {
             try {
-                await fetch(`${API_BASE_URL}/toggle-ad/${id}`, { method: 'PUT' });
+                const res = await fetch(`${API_BASE_URL}/toggle-ad/${id}`, { method: 'PUT' });
+                if (!res.ok) {
+                    alert('The server could not change this ad\'s visibility.');
+                    return;
+                }
                 fetchAds();
             } catch (err) {
-                alert('Failed to change ad visibility.');
+                alert('Failed to change ad visibility — could not reach the server.');
             }
         }
 
         async function deleteAd(id) {
             if (!confirm('Remove this ad for good?')) return;
             try {
-                await fetch(`${API_BASE_URL}/delete-ad/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE_URL}/delete-ad/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    alert('The server could not delete this ad.');
+                    return;
+                }
                 fetchAds();
             } catch (err) {
-                alert('Failed to delete ad.');
+                alert('Failed to delete ad — could not reach the server.');
             }
         }
 
