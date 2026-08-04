@@ -306,6 +306,15 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h2 class="font-bold text-gray-800">Products With No Seller</h2>
+                            <p class="text-xs text-gray-400 mt-1">These are still live on the website, but their seller account was deleted. Delete them here to take them down.</p>
+                        </div>
+                        <div id="orphaned-products-list" class="p-4 space-y-1">
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Homepage Ads Section -->
@@ -690,59 +699,103 @@
                 const tbody = document.getElementById('sellers-list');
                 tbody.innerHTML = '';
 
-                if (Array.isArray(sellers)) {
-                    sellers.forEach(s => {
-                        // Guarded matching: both sides must actually have a value,
-                        // so two blank fields never count as a "match".
-                        const sellerProducts = globalAllProducts.filter(p => {
-                            const idMatch = p.seller_id != null && s.id != null && String(p.seller_id) === String(s.id);
-                            const phoneMatch = p.seller_phone && (s.phone_number || s.phone) && p.seller_phone === (s.phone_number || s.phone);
-                            const emailMatch = p.seller_email && s.email && p.seller_email === s.email;
-                            return idMatch || phoneMatch || emailMatch;
-                        });
+                if (!Array.isArray(sellers)) return;
 
-                        let productsHTML = `<span class="text-gray-400 text-xs italic">No active items</span>`;
-                        if (sellerProducts.length > 0) {
-                            productsHTML = sellerProducts.map(p => `
-                                <div class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
-                                    <span class="font-medium text-slate-700 truncate max-w-[130px]">${p.name}</span>
-                                    <span class="font-bold text-indigo-600">KES ${p.price}</span>
-                                    <div class="flex items-center gap-1.5">
-                                        <button onclick='openApprovedEditModal(${p.id})' title="Edit this product" class="text-indigo-500 hover:text-indigo-700">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button onclick="deleteProductFromAdmin(${p.id})" title="Delete this product" class="text-red-500 hover:text-red-700">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('');
-                        }
+                // FIX: this used to re-match products to sellers client-side by
+                // comparing id/phone/email, which could show one seller's
+                // products under every seller (e.g. if two seller records ever
+                // shared the same phone or email, or a stale seller_id happened
+                // to line up after a seller was deleted and a new one created).
+                // Each seller's own products are now fetched directly from the
+                // database with a strict seller_id match, which cannot cross
+                // over between sellers.
+                const sellersWithProducts = await Promise.all(sellers.map(async s => {
+                    try {
+                        const products = await fetch(`${API_BASE_URL}/seller-products/${s.id}`).then(r => r.json());
+                        const approvedOnly = Array.isArray(products)
+                            ? products.filter(p => (p.status || 'approved').toLowerCase() === 'approved')
+                            : [];
+                        return { seller: s, products: approvedOnly };
+                    } catch (err) {
+                        return { seller: s, products: [] };
+                    }
+                }));
 
-                        tbody.innerHTML += `
-                            <tr class="align-top">
-                                <td class="p-4 font-semibold text-gray-500">#${s.id}</td>
-                                <td class="p-4">
-                                    <div class="font-bold text-gray-800">${s.store_name || s.name || 'Seller Store'}</div>
-                                    <div class="text-xs text-gray-400">${s.email || ''}</div>
-                                </td>
-                                <td class="p-4 text-gray-600">${s.phone_number || s.phone || 'N/A'}</td>
-                                <td class="p-4">
-                                    <span class="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">
-                                        ${s.subscription_plan || 'Active'}
-                                    </span>
-                                </td>
-                                <td class="p-4 max-w-xs">${productsHTML}</td>
-                                <td class="p-4 text-right">
-                                    <button onclick="deleteSeller(${s.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs">
-                                        <i class="fa-solid fa-trash"></i> Delete Seller
+                sellersWithProducts.forEach(({ seller: s, products: sellerProducts }) => {
+                    let productsHTML = `<span class="text-gray-400 text-xs italic">No active items</span>`;
+                    if (sellerProducts.length > 0) {
+                        productsHTML = sellerProducts.map(p => `
+                            <div class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
+                                <span class="font-medium text-slate-700 truncate max-w-[130px]">${p.name}</span>
+                                <span class="font-bold text-indigo-600">KES ${p.price}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick='openApprovedEditModal(${p.id})' title="Edit this product" class="text-indigo-500 hover:text-indigo-700">
+                                        <i class="fa-solid fa-pen"></i>
                                     </button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
+                                    <button onclick="deleteProductFromAdmin(${p.id})" title="Delete this product" class="text-red-500 hover:text-red-700">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+
+                    tbody.innerHTML += `
+                        <tr class="align-top">
+                            <td class="p-4 font-semibold text-gray-500">#${s.id}</td>
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800">${s.store_name || s.name || 'Seller Store'}</div>
+                                <div class="text-xs text-gray-400">${s.email || ''}</div>
+                            </td>
+                            <td class="p-4 text-gray-600">${s.phone_number || s.phone || 'N/A'}</td>
+                            <td class="p-4">
+                                <span class="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">
+                                    ${s.subscription_plan || 'Active'}
+                                </span>
+                            </td>
+                            <td class="p-4 max-w-xs">${productsHTML}</td>
+                            <td class="p-4 text-right">
+                                <button onclick="deleteSeller(${s.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs">
+                                    <i class="fa-solid fa-trash"></i> Delete Seller
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                renderOrphanedProducts(sellers);
             } catch (err) {}
+        }
+
+        /* FEATURE: products whose seller account was deleted have nowhere to
+           show up in the per-seller list above (correctly so — they don't
+           belong to any current seller), which is why they became
+           impossible to delete. This lists them separately with a Delete
+           button so they can be cleaned up. */
+        function renderOrphanedProducts(sellers) {
+            const container = document.getElementById('orphaned-products-list');
+            if (!container) return;
+
+            const validSellerIds = new Set((Array.isArray(sellers) ? sellers : []).map(s => String(s.id)));
+            const orphaned = globalAllProducts.filter(p => p.seller_id == null || !validSellerIds.has(String(p.seller_id)));
+
+            if (orphaned.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 italic px-2 py-3">No orphaned products — every live product still belongs to a seller that exists.</p>`;
+                return;
+            }
+
+            container.innerHTML = orphaned.map(p => `
+                <div class="flex items-center justify-between gap-2 text-xs bg-red-50 border border-red-100 p-2.5 rounded my-1">
+                    <div>
+                        <span class="font-medium text-slate-700">${p.name}</span>
+                        <span class="text-slate-400"> &middot; KES ${p.price}</span>
+                        <div class="text-[11px] text-red-500 mt-0.5">Seller no longer exists (was seller #${p.seller_id != null ? p.seller_id : 'unknown'})</div>
+                    </div>
+                    <button onclick="deleteProductFromAdmin(${p.id})" class="text-red-600 hover:text-red-800 font-semibold px-2.5 py-1.5 rounded bg-white border border-red-200">
+                        <i class="fa-solid fa-trash-can"></i> Delete
+                    </button>
+                </div>
+            `).join('');
         }
 
         async function deleteSeller(id) {
