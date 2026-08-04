@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka Seller Dashboard</title> 
+<title>CampusDuka Seller Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/3405/3405824.png">
@@ -864,7 +864,6 @@ button {
         <thead>
           <tr>
             <th>Item Name</th>
-            <th>Customer Phone</th>
             <th>Amount</th>
             <th>Seller Payout (90%)</th>
             <th>Payment Status</th>
@@ -873,7 +872,7 @@ button {
         </thead>
         <tbody id="purchasedItemsBody">
           <tr>
-            <td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">Loading purchased items...</td>
+            <td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Loading purchased items...</td>
           </tr>
         </tbody>
       </table>
@@ -1124,7 +1123,7 @@ async function loadPurchasedItems() {
     const sellerOrders = orders.filter(o => o.seller_phone === seller.phone || String(o.seller_id) === String(seller.id));
 
     if (sellerOrders.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">No purchased items logged yet.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">No purchased items logged yet.</td></tr>`;
       return;
     }
 
@@ -1138,7 +1137,6 @@ async function loadPurchasedItems() {
       tbody.innerHTML += `
         <tr>
           <td><b>${o.product_name || o.item_name || 'Item'}</b></td>
-          <td>${o.customer_phone || o.buyer_phone || 'N/A'}</td>
           <td>KES ${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           <td style="color:#16a34a; font-weight:600;">KES ${payout.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           <td><span class="status-badge ${statusClass}">${o.payment_status || 'pending'}</span></td>
