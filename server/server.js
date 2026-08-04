@@ -1215,10 +1215,14 @@ app.get("/create-feature-requests", async (req, res) => {
         seller_id INTEGER,
         requested_days INTEGER DEFAULT 1,
         status VARCHAR(20) DEFAULT 'pending',
+        seller_note TEXT,
         admin_note TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    // Also covers sellers who already had this table created before
+    // seller_note existed.
+    await db.query(`ALTER TABLE feature_requests ADD COLUMN IF NOT EXISTS seller_note TEXT`);
     res.send("feature_requests table created");
   } catch (err) {
     res.send(err.message);
@@ -1228,13 +1232,32 @@ app.get("/create-feature-requests", async (req, res) => {
 /* Seller sends a request to be featured on the home page */
 app.post("/request-feature", async (req, res) => {
   try {
-    const { product_id, seller_id, requested_days } = req.body;
+    const { product_id, seller_id, requested_days, seller_note } = req.body;
     await db.query(
-      `INSERT INTO feature_requests (product_id, seller_id, requested_days, status)
-       VALUES ($1, $2, $3, 'pending')`,
-      [product_id, seller_id, parseInt(requested_days) || 1]
+      `INSERT INTO feature_requests (product_id, seller_id, requested_days, status, seller_note)
+       VALUES ($1, $2, $3, 'pending', $4)`,
+      [product_id, seller_id, parseInt(requested_days) || 1, seller_note || null]
     );
     res.json({ success: true, message: "Feature request sent to admin for review" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/* Seller: see the status of every request they've sent (pending/approved/rejected) */
+app.get("/seller-feature-requests/:seller_id", async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT
+        feature_requests.*,
+        products.name AS product_name,
+        products.price AS product_price
+      FROM feature_requests
+      LEFT JOIN products ON feature_requests.product_id = products.id
+      WHERE feature_requests.seller_id = $1
+      ORDER BY feature_requests.id DESC
+    `, [req.params.seller_id]);
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
