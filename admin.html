@@ -1073,6 +1073,7 @@
                                 <p class="font-bold text-slate-800 text-sm">${r.product_name || 'Product #' + r.product_id}</p>
                                 <p class="text-xs text-slate-500">Asked for ${r.requested_days} day(s) &middot; KES ${r.product_price || '—'}</p>
                                 <p class="text-xs text-indigo-600 mt-1"><i class="fa-solid fa-store text-[10px]"></i> ${r.seller_name || 'Seller'} &middot; ${r.seller_phone || r.seller_email || 'no contact on file'}</p>
+                                ${r.seller_note ? `<p class="text-xs text-slate-600 mt-1 italic">"${r.seller_note}"</p>` : ''}
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="approveFeatureRequest(${r.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
