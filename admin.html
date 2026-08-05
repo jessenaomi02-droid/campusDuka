@@ -705,7 +705,6 @@
                 globalAllProducts = Array.isArray(allProducts) ? allProducts : [];
 
                 const tbody = document.getElementById('sellers-list');
-                tbody.innerHTML = '';
 
                 if (!Array.isArray(sellers)) return;
 
@@ -729,6 +728,13 @@
                     }
                 }));
 
+                // FIX: rows are built into a string first and written to the
+                // page only once at the end, instead of clearing the table
+                // immediately and re-filling it row by row. The old approach
+                // left the table empty for as long as these fetches took —
+                // every single refresh, forever — which is what caused the
+                // blinking.
+                let rowsHTML = '';
                 sellersWithProducts.forEach(({ seller: s, products: sellerProducts }) => {
                     let productsHTML = `<span class="text-gray-400 text-xs italic">No active items</span>`;
                     if (sellerProducts.length > 0) {
@@ -754,7 +760,7 @@
                         }).join('');
                     }
 
-                    tbody.innerHTML += `
+                    rowsHTML += `
                         <tr class="align-top">
                             <td class="p-4 font-semibold text-gray-500">#${s.id}</td>
                             <td class="p-4">
@@ -777,6 +783,7 @@
                     `;
                 });
 
+                tbody.innerHTML = rowsHTML;
                 renderOrphanedProducts(sellers);
             } catch (err) {}
         }
