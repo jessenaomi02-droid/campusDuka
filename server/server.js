@@ -323,11 +323,30 @@ app.delete("/delete-product/:id", async (req, res) => {
 app.put("/edit-product/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, description, price, category } = req.body;
-    await db.query(
-      `UPDATE products SET name=$1, description=$2, price=$3, category=$4 WHERE id=$5`,
-      [name, description, price, category, id]
-    );
+    const { name, description, price, category, image_url } = req.body;
+
+    if (image_url) {
+      // Only touch the images array when the admin actually supplied a new
+      // photo — and even then, only replace the first (primary) image so
+      // any additional photos already on the product are kept.
+      const current = await db.query(`SELECT images FROM products WHERE id=$1`, [id]);
+      let images = (current.rows[0] && Array.isArray(current.rows[0].images)) ? [...current.rows[0].images] : [];
+      if (images.length > 0) {
+        images[0] = image_url;
+      } else {
+        images = [image_url];
+      }
+      await db.query(
+        `UPDATE products SET name=$1, description=$2, price=$3, category=$4, images=$5 WHERE id=$6`,
+        [name, description, price, category, images, id]
+      );
+    } else {
+      await db.query(
+        `UPDATE products SET name=$1, description=$2, price=$3, category=$4 WHERE id=$5`,
+        [name, description, price, category, id]
+      );
+    }
+
     res.json({
       success: true,
       message: "Updated"
