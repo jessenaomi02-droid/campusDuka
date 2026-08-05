@@ -464,6 +464,14 @@
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Description</label>
                     <textarea id="approved-edit-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Photo</label>
+                    <div class="flex items-center gap-3">
+                        <img id="approved-edit-image-preview" src="" class="w-14 h-14 object-cover rounded border" onerror="this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23e2e8f0%22/%3E%3C/svg%3E'">
+                        <input type="url" id="approved-edit-image" class="flex-1 border border-gray-300 rounded-lg p-2.5 text-sm" placeholder="https://..." oninput="document.getElementById('approved-edit-image-preview').src = this.value">
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-1">Paste a new image link to replace the main photo. Leave as-is to keep the current one.</p>
+                </div>
                 <div class="flex justify-end gap-3 text-sm font-semibold pt-2">
                     <button type="button" onclick="closeApprovedEditModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">Save Changes</button>
@@ -487,9 +495,9 @@
     <!-- Image Preview Modal -->
     <div id="image-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
-            <div class="flex justify-between items-center mb-4 border-b pb-3">
+            <button onclick="closeImageModal()" title="Close" class="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 text-white text-xl font-bold shadow-lg hover:bg-red-600 transition">&times;</button>
+            <div class="flex justify-between items-center mb-4 border-b pb-3 pr-10">
                 <h3 class="text-lg font-bold text-slate-800" id="image-modal-title">Product Image Gallery</h3>
-                <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
             </div>
             <div id="image-modal-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             </div>
@@ -724,11 +732,16 @@
                 sellersWithProducts.forEach(({ seller: s, products: sellerProducts }) => {
                     let productsHTML = `<span class="text-gray-400 text-xs italic">No active items</span>`;
                     if (sellerProducts.length > 0) {
-                        productsHTML = sellerProducts.map(p => `
+                        productsHTML = sellerProducts.map(p => {
+                            const thumb = (Array.isArray(p.images) && p.images[0]) || NO_IMAGE_PLACEHOLDER;
+                            return `
                             <div class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
-                                <span class="font-medium text-slate-700 truncate max-w-[130px]">${p.name}</span>
-                                <span class="font-bold text-indigo-600">KES ${p.price}</span>
-                                <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <img src="${thumb}" class="w-8 h-8 object-cover rounded border flex-shrink-0" onerror="this.onerror=null;this.src='${NO_IMAGE_PLACEHOLDER}'">
+                                    <span class="font-medium text-slate-700 truncate max-w-[100px]">${p.name}</span>
+                                </div>
+                                <span class="font-bold text-indigo-600 flex-shrink-0">KES ${p.price}</span>
+                                <div class="flex items-center gap-1.5 flex-shrink-0">
                                     <button onclick='openApprovedEditModal(${p.id})' title="Edit this product" class="text-indigo-500 hover:text-indigo-700">
                                         <i class="fa-solid fa-pen"></i>
                                     </button>
@@ -737,7 +750,8 @@
                                     </button>
                                 </div>
                             </div>
-                        `).join('');
+                        `;
+                        }).join('');
                     }
 
                     tbody.innerHTML += `
@@ -823,6 +837,10 @@
             document.getElementById('approved-edit-category').value = item.category || '';
             document.getElementById('approved-edit-description').value = item.description || '';
 
+            const currentImage = (Array.isArray(item.images) && item.images[0]) || '';
+            document.getElementById('approved-edit-image').value = currentImage;
+            document.getElementById('approved-edit-image-preview').src = currentImage || NO_IMAGE_PLACEHOLDER;
+
             document.getElementById('edit-approved-modal').classList.remove('hidden');
         }
 
@@ -833,11 +851,16 @@
         async function saveApprovedProductEdits(event) {
             event.preventDefault();
             const id = document.getElementById('approved-edit-id').value;
+            const imageUrl = document.getElementById('approved-edit-image').value.trim();
             const updatedData = {
                 name: document.getElementById('approved-edit-name').value,
                 price: parseFloat(document.getElementById('approved-edit-price').value),
                 category: document.getElementById('approved-edit-category').value,
-                description: document.getElementById('approved-edit-description').value
+                description: document.getElementById('approved-edit-description').value,
+                // Only sent when there's actually a value, so the server only
+                // swaps the photo when the admin meant to change it — the rest
+                // of a product's photo gallery is left untouched either way.
+                image_url: imageUrl || undefined
             };
 
             try {
