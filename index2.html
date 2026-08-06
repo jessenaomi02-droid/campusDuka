@@ -1444,16 +1444,23 @@ window.handleCartAddition = function(id, name, price, category, image) {
 };
 
 /* LOAD FEATURED PRODUCTS WITH FIXES FOR TIMERS & IMAGE TARGETS */
-async function loadFeaturedProducts(){
+async function loadFeaturedProducts(isBackground = false){
   const container = document.getElementById("featuredProducts");
   try{
-    container.innerHTML = `
-      <div class="loading">
-        <i class="fas fa-spinner fa-spin" style="color:#164e63; margin-bottom: 10px; font-size: 24px;"></i><br>
-        Waking up campus servers... <br>
-        <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
-      </div>
-    `;
+    // FIX: only show the "waking up campus servers" loading state on the
+    // very first load. On background refreshes this used to wipe the whole
+    // section back to a spinner every cycle, which would flash over
+    // products the visitor might be reading — the real content is now only
+    // written once the new data has actually arrived.
+    if (!isBackground) {
+      container.innerHTML = `
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin" style="color:#164e63; margin-bottom: 10px; font-size: 24px;"></i><br>
+          Waking up campus servers... <br>
+          <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
+        </div>
+      `;
+    }
 
     const res = await fetch("https://campusduka-api.onrender.com/products");
     const products = await res.json();
@@ -1515,11 +1522,21 @@ async function loadFeaturedProducts(){
 
   } catch(err){
     console.error("Featured items load error:", err);
-    container.innerHTML = `<div class="loading" style="color:#ef4444;">Unable to load featured deals right now.</div>`;
+    if (!isBackground) {
+      container.innerHTML = `<div class="loading" style="color:#ef4444;">Unable to load featured deals right now.</div>`;
+    }
   }
 }
 
+/* FEATURE: keep the homepage current automatically — new ads or newly
+   featured products added from admin will appear here without the visitor
+   needing to reload the page. 20 seconds keeps things fresh without
+   hammering the backend on every page load across many visitors. */
 loadFeaturedProducts();
+setInterval(() => {
+  loadHomepageAds();
+  loadFeaturedProducts(true);
+}, 20000);
 
 /* FEATURED PRODUCT QUICK VIEW: shows the full, untruncated description
    right on the homepage instead of sending the buyer to a separate page. */
