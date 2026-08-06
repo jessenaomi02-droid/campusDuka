@@ -60,7 +60,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .logo-img {
-  height: 50px; /* Highly visible height */
+  height: 62px; /* Enlarged for better visibility */
   width: auto;
   object-fit: contain;
   background: transparent;
@@ -168,18 +168,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   display: none;
 }
 
-.hamburger-menu {
-  display: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
-
 @media(max-width:1024px){
-  .hamburger-menu {
-    display: block;
-    order: 3;
-  }
   .nav-right {
     order: 2;
     margin-left: auto;
@@ -191,7 +180,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   }
   /* FIX: links used to be hidden off-screen (right:-100%) until the
      hamburger was tapped. They now stay visible at all times, wrapping
-     onto their own row below the logo/hamburger row instead of hiding. */
+     onto their own row below the logo row instead of hiding. */
   .nav-links {
     position: static;
     order: 4;
@@ -208,9 +197,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
     border-left: none;
     border-top: 1px solid #164e63;
     transition: none;
-  }
-  .nav-links.active {
-    right: 0;
   }
   .nav-links a {
     font-size: 14px;
@@ -635,45 +621,46 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .stats-section{
   width:90%;
   max-width:1200px;
-  margin:70px auto;
+  margin:40px auto;
   text-align:center;
 }
 
 .stats-section h2{
-  font-size:32px;
+  font-size:28px;
   color:#1f2d3d;
-  margin-bottom:10px;
+  margin-bottom:8px;
   font-weight: 700;
 }
 
 .stats-section p{
   color:#64748b;
-  margin-bottom:35px;
+  margin-bottom:20px;
+  font-size:14px;
 }
 
 .stats-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:14px;
 }
 
 .stat-card{
   background:white;
-  padding:30px;
-  border-radius:16px;
+  padding:18px;
+  border-radius:14px;
   box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
 }
 
 .stat-card h1{
-  font-size:42px;
+  font-size:28px;
   color:#164e63; /* Brand Slate Teal */
-  margin-bottom:6px;
+  margin-bottom:4px;
   font-weight: 700;
 }
 
 .stat-card span{
-  font-size:15px;
+  font-size:13px;
   font-weight:600;
   color:#64748b;
 }
@@ -682,36 +669,36 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .why-us{
   width:90%;
   max-width:1200px;
-  margin:70px auto;
+  margin:40px auto;
 }
 
 .section-title{
   text-align:center;
-  margin-bottom:45px;
+  margin-bottom:22px;
 }
 
 .section-title h2{
-  font-size:32px;
+  font-size:28px;
   color:#1f2d3d;
-  margin-bottom:10px;
+  margin-bottom:8px;
   font-weight: 700;
 }
 
 .section-title p{
-  font-size:16px;
+  font-size:14px;
   color:#64748b;
 }
 
 .why-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-  gap:25px;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:16px;
 }
 
 .why-card{
   background:white;
-  padding:30px 20px;
-  border-radius:16px;
+  padding:18px 14px;
+  border-radius:14px;
   text-align:center;
   box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
@@ -723,41 +710,42 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 }
 
 .why-card i{
-  font-size:40px;
+  font-size:26px;
   color:#164e63; /* Brand Slate Teal */
-  margin-bottom:16px;
+  margin-bottom:8px;
 }
 
 .why-card h3{
-  margin-bottom:12px;
-  font-size:20px;
+  margin-bottom:5px;
+  font-size:15px;
   font-weight: 600;
   color: #1f2d3d;
 }
 
 .why-card p{
   color:#64748b;
-  font-size: 14px;
+  font-size: 12.5px;
+  line-height:1.4;
 }
 
 /* HOW IT WORKS */
 .how-it-works{
   width:90%;
   max-width:1200px;
-  margin:70px auto;
+  margin:40px auto;
 }
 
 .steps-container{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
-  gap:30px;
-  margin-top:40px;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:20px;
+  margin-top:20px;
 }
 
 .steps{
   background:white;
-  padding:35px 25px;
-  border-radius:16px;
+  padding:20px 18px;
+  border-radius:14px;
   box-shadow:0 4px 15px rgba(0,0,0,0.02);
   border: 1px solid #e2e8f0;
 }
@@ -765,21 +753,21 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 .steps h3{
   text-align:center;
   color:#164e63; /* Brand Slate Teal */
-  font-size:24px;
-  margin-bottom:30px;
+  font-size:17px;
+  margin-bottom:16px;
   font-weight: 700;
 }
 
 .step{
   display:flex;
-  gap:16px;
-  margin-bottom:24px;
+  gap:12px;
+  margin-bottom:14px;
   align-items:flex-start;
 }
 
 .step-number{
-  min-width:40px;
-  height:40px;
+  min-width:28px;
+  height:28px;
   border-radius:50%;
   background:#164e63; /* Brand Slate Teal */
   color:white;
@@ -787,20 +775,20 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
   justify-content:center;
   align-items:center;
   font-weight:700;
-  font-size:18px;
+  font-size:13px;
 }
 
 .step h4{
-  margin-bottom:6px;
-  font-size:16px;
+  margin-bottom:3px;
+  font-size:14px;
   font-weight: 600;
   color: #1f2d3d;
 }
 
 .step p{
   color:#64748b;
-  font-size: 14px;
-  line-height:1.5;
+  font-size: 12.5px;
+  line-height:1.4;
 }
 
 /* SELLER PROFILE */
@@ -989,26 +977,32 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 <nav class="navbar">
   <a href="index.html" class="logo-link">
     <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-    <span id="logoFallback" style="display:none; color:white; font-size:22px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
+    <span id="logoFallback" style="display:none; color:white; font-size:26px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
   </a>
 
-  <div class="hamburger-menu" id="menuToggle">
-    <i class="fas fa-bars"></i>
-  </div>
-
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html"><i class="fas fa-house"></i>Home</a></li>
-    <li><a href="products.html"><i class="fas fa-store"></i>Products</a></li>
-    <li><a href="food.html"><i class="fas fa-burger"></i>Fast Foods</a></li>
-    <li><a href="events.html"><i class="fas fa-calendar"></i>Events</a></li>
     <li>
       <a href="my-orders.html" class="nav-orders-link">
         <i class="fas fa-box"></i>My Orders
         <span id="nav-orders-badge" class="nav-badge hidden">0</span>
       </a>
     </li>
+    <li><a href="index.html"><i class="fas fa-house"></i>Home</a></li>
+    <li><a href="products.html"><i class="fas fa-store"></i>Products</a></li>
+    <li><a href="food.html"><i class="fas fa-burger"></i>Fast Foods</a></li>
+    <li><a href="events.html"><i class="fas fa-calendar"></i>Events</a></li>
     <li><a href="contact.html"><i class="fas fa-phone"></i>Contact</a></li>
   </ul>
+
+  <div class="nav-right">
+    <div id="user-area">
+      <a href="login.html" class="login-btn"><i class="fas fa-user"></i>Sign In</a>
+    </div>
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
+  </div>
 </nav>
 
 <div class="search-bar-container">
@@ -1212,20 +1206,6 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 </div>
 
 <script>
-
-/* MOBILE HAMBURGER TOGGLE */
-const menuToggle = document.getElementById("menuToggle");
-const navLinks = document.getElementById("navLinks");
-
-menuToggle.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-  const icon = menuToggle.querySelector("i");
-  if(navLinks.classList.contains("active")) {
-    icon.classList.replace("fa-bars", "fa-xmark");
-  } else {
-    icon.classList.replace("fa-xmark", "fa-bars");
-  }
-});
 
 /* HERO BACKGROUND ROTATOR */
 const hero = document.getElementById("hero");
