@@ -234,12 +234,12 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
       border-radius: 12px;
       padding: 14px;
       font-weight: 700;
-      color: #166534;
+      color: #059669;
       margin-bottom: 18px;
       font-size: 14px;
     }
@@ -384,6 +384,18 @@
       return 0;
     }
 
+    // FIX: this was only ever computed inline (and computed twice, once for
+    // the STK payload and again for localStorage), and only handled numbers
+    // starting with "0" — a number typed as "+254712345678" was sent to
+    // M-Pesa unchanged, which the API does not accept. This now normalizes
+    // both cases in one place.
+    function formatMpesaPhone(rawPhone) {
+      const trimmed = (rawPhone || "").trim();
+      if (trimmed.startsWith("0")) return "254" + trimmed.substring(1);
+      if (trimmed.startsWith("+")) return trimmed.substring(1);
+      return trimmed;
+    }
+
     // RENDER SHOPPING BASKET (PRODUCTS + EVENT TICKETS)
     document.addEventListener("DOMContentLoaded", () => {
       const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -461,6 +473,7 @@
       const grandTotal = subtotal + activeDeliveryFee;
 
       try {
+        const formattedPhone = formatMpesaPhone(phone);
         const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
           method: "POST",
           headers: {
@@ -468,7 +481,7 @@
           },
           body: JSON.stringify({
             fullname: document.getElementById("fullname").value,
-            phone: phone.startsWith("0") ? "254" + phone.substring(1) : phone,
+            phone: formattedPhone,
             location: document.getElementById("location").value,
             cart: combinedCart,
             amount: grandTotal
@@ -479,14 +492,26 @@
         console.log("M-Pesa STK Push Response: ", mpesaData);
 
         if (mpesaData.ResponseCode === "0") {
-          localStorage.setItem("buyerPhone", phone.startsWith("0") ? "254" + phone.substring(1) : phone);
+          localStorage.setItem("buyerPhone", formattedPhone);
           localStorage.setItem("latestOrderId", mpesaData.orderId);
+
+          // FIX: cart items for individual buyer, not from others — the
+          // cart used to stay populated after checkout, so on a shared
+          // browser the next person to open checkout would inherit (and
+          // could get charged for) items someone else already paid for.
+          // It's cleared the moment a purchase is successfully placed.
+          localStorage.removeItem("cart");
+          localStorage.removeItem("eventCart");
 
           window.location.href = "waiting-payment.html";
         } else {
           payBtn.disabled = false;
           payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
-          alert("Failed to send M-Pesa push: " + (mpesaData.CustomerMessage || mpesaData.ResponseDescription || "Invalid parameters"));
+          // FIX: on a genuine backend failure (not a Safaricom rejection),
+          // the real reason arrives in mpesaData.error, which this never
+          // checked — it silently fell back to a generic "Invalid
+          // parameters" message instead of showing what actually failed.
+          alert("Failed to send M-Pesa push: " + (mpesaData.CustomerMessage || mpesaData.ResponseDescription || mpesaData.error || "Invalid parameters"));
         }
       } catch (err) {
         payBtn.disabled = false;
