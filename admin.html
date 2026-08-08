@@ -11,9 +11,12 @@
 <body class="bg-gray-100 font-sans">
 
     <div class="flex h-screen overflow-hidden">
-        
+
+        <!-- Mobile-only dark overlay behind the sidebar drawer -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"></div>
+
         <!-- Sidebar -->
-        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto" style="background-color: #0f172a;">
+        <div id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto fixed md:static inset-y-0 left-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-300" style="background-color: #0f172a;">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2" style="border-color: #1e293b;">
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
@@ -48,26 +51,31 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-y-auto">
             
-            <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center sticky top-0 z-10">
-                <h1 id="page-title" class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-                <div class="flex items-center gap-4">
+            <header class="bg-white shadow-sm px-4 md:px-8 py-4 flex flex-wrap justify-between items-center gap-3 sticky top-0 z-10">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="md:hidden text-gray-600 hover:text-gray-900 text-xl w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 id="page-title" class="text-lg md:text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 md:gap-4">
                     <button id="sound-toggle" onclick="toggleAudio()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition">
                         <i class="fa-solid fa-volume-high text-indigo-500" id="sound-icon"></i> <span id="sound-label">Sound On</span>
                     </button>
-                    <div id="live-indicator" class="flex items-center gap-2 text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+                    <div id="live-indicator" class="hidden sm:flex items-center gap-2 text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         Live Sync Active
                     </div>
-                    <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
-                        <i class="fa-solid fa-rotate"></i> Refresh Data
+                    <button onclick="refreshAllData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 md:px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
+                        <i class="fa-solid fa-rotate"></i> <span class="hidden sm:inline">Refresh Data</span>
                     </button>
-                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold flex-shrink-0">
                         A
                     </div>
                 </div>
             </header>
 
-            <main class="p-8">
+            <main class="p-4 md:p-8">
 
                 <!-- Dashboard Section -->
                 <section id="dashboard" class="space-y-6">
@@ -339,7 +347,7 @@
                                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Short Description</label>
                                     <textarea id="ad-description" rows="2" placeholder="One or two short lines about the offer" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required></textarea>
                                 </div>
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Button Text</label>
                                         <input type="text" id="ad-cta-text" placeholder="e.g. Order Now" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm">
@@ -411,7 +419,7 @@
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Title / Name</label>
                     <input type="text" id="edit-prod-name" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Price (KES)</label>
                         <input type="number" id="edit-prod-price" step="0.01" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
@@ -450,7 +458,7 @@
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Name</label>
                     <input type="text" id="approved-edit-name" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Price (KES)</label>
                         <input type="number" id="approved-edit-price" step="0.01" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
@@ -553,6 +561,14 @@
             document.getElementById('sound-icon').className = soundEnabled ? 'fa-solid fa-volume-high text-indigo-500' : 'fa-solid fa-volume-xmark text-slate-400';
         }
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+            overlay.classList.toggle('hidden');
+        }
+
         function showSection(sectionId, event) {
             if (event) event.preventDefault();
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
@@ -566,6 +582,13 @@
             if (event && event.currentTarget) {
                 event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
                 event.currentTarget.classList.add('bg-indigo-600', 'text-white');
+            }
+
+            // On mobile, picking a section should also close the drawer so
+            // the newly-shown section is actually visible.
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
             }
 
             const sectionTitles = {
@@ -1151,7 +1174,7 @@
 
                 requests.forEach(r => {
                     container.innerHTML += `
-                        <div class="flex items-center justify-between gap-4 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                        <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-50 border border-slate-200 rounded-lg p-3">
                             <div>
                                 <p class="font-bold text-slate-800 text-sm">${r.product_name || 'Product #' + r.product_id}</p>
                                 <p class="text-xs text-slate-500">Asked for ${r.requested_days} day(s) &middot; KES ${r.product_price || '—'}</p>
@@ -1333,7 +1356,7 @@
 
                 ads.forEach(ad => {
                     container.innerHTML += `
-                        <div class="flex items-start justify-between gap-3 p-3 rounded-lg border ${ad.active ? 'border-emerald-200 bg-emerald-50' : 'border-gray-200 bg-gray-50 opacity-70'}">
+                        <div class="flex flex-wrap items-start justify-between gap-3 p-3 rounded-lg border ${ad.active ? 'border-emerald-200 bg-emerald-50' : 'border-gray-200 bg-gray-50 opacity-70'}">
                             <div>
                                 <p class="font-bold text-sm text-slate-800">${ad.title}</p>
                                 <p class="text-xs text-slate-500 mt-0.5">${ad.description || ''}</p>
