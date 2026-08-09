@@ -784,9 +784,12 @@ app.get("/orders/:phone", async (req, res) => {
         orders.*,
         products.name AS product_name,
         products.images AS product_images,
-        products.price AS product_price
+        products.price AS product_price,
+        sellers.name AS seller_name,
+        sellers.phone AS seller_phone_number
       FROM orders
       LEFT JOIN products ON orders.product_id = products.id
+      LEFT JOIN sellers ON orders.seller_id = sellers.id
       WHERE orders.buyer_phone = $1
       ORDER BY orders.id DESC`,
       [req.params.phone]
