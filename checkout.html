@@ -498,6 +498,33 @@
 
       try {
         const formattedPhone = formatMpesaPhone(phone);
+
+        // FIX: event tickets arrive in the cart without a seller_id (the
+        // events → event_cart flow never attaches one), and the backend
+        // rejects any order where it can't identify the seller. Any cart
+        // item missing seller_id gets it filled in here from the live
+        // product list before the order is sent, instead of failing with
+        // "Could not identify product/seller values".
+        const needsSellerLookup = combinedCart.some(item => !item.seller_id && !item.sellerId);
+        let cartToSend = combinedCart;
+        if (needsSellerLookup) {
+          try {
+            const productsRes = await fetch("https://campusduka-api.onrender.com/products");
+            const allProducts = await productsRes.json();
+            const sellerIdByProductId = {};
+            if (Array.isArray(allProducts)) {
+              allProducts.forEach(p => { sellerIdByProductId[p.id] = p.seller_id; });
+            }
+            cartToSend = combinedCart.map(item => {
+              if (item.seller_id || item.sellerId) return item;
+              const matchedSellerId = sellerIdByProductId[item.id];
+              return matchedSellerId != null ? { ...item, seller_id: matchedSellerId } : item;
+            });
+          } catch (lookupErr) {
+            console.error("Could not backfill seller ids for cart items:", lookupErr);
+          }
+        }
+
         const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
           method: "POST",
           headers: {
@@ -507,7 +534,7 @@
             fullname: document.getElementById("fullname").value,
             phone: formattedPhone,
             location: locationValue,
-            cart: combinedCart,
+            cart: cartToSend,
             amount: grandTotal
           })
         });
