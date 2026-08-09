@@ -623,8 +623,15 @@ function toggleNotifications() {
 }
 
 async function loadOrders() {
-    let phone = localStorage.getItem("buyerPhone");
-    let buyerName = localStorage.getItem("buyerName") || "Valued Shopper";
+    // FIX: name/phone only ever came from a recent checkout in this
+    // browser ("buyerName"/"buyerPhone"). Someone who's simply logged in
+    // via login.html has their real name and phone already sitting in
+    // localStorage("user") — the same object index2.html reads for its
+    // navbar greeting — but this page never checked it, so it always
+    // fell back to "Valued Shopper" for anyone who hadn't just checked out.
+    const sessionUser = JSON.parse(localStorage.getItem("user") || "null");
+    let phone = localStorage.getItem("buyerPhone") || (sessionUser && sessionUser.phone) || null;
+    let buyerName = localStorage.getItem("buyerName") || (sessionUser && sessionUser.fullname) || "Valued Shopper";
     
     // Set Profile UI Elements
     document.getElementById("buyerWelcomeName").innerText = `Welcome, ${buyerName} 👋`;
@@ -640,6 +647,14 @@ async function loadOrders() {
         document.getElementById("activeOrderCount").style.display = "none";
         return;
     }
+
+    // Keep "buyerPhone"/"buyerName" in sync with whatever was actually
+    // resolved above — appendNotification(), markAsRead(), and
+    // clearNotifications() all read localStorage("buyerPhone") directly,
+    // so if the phone only came from the logged-in session, those would
+    // otherwise be storing notifications under a mismatched (or missing) key.
+    localStorage.setItem("buyerPhone", phone);
+    localStorage.setItem("buyerName", buyerName);
 
     if (phone.startsWith("0")) {
         phone = "254" + phone.substring(1);
