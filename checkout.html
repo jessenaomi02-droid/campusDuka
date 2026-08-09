@@ -544,6 +544,10 @@
 
         if (mpesaData.ResponseCode === "0") {
           localStorage.setItem("buyerPhone", formattedPhone);
+          // FIX: my-orders.html greets the buyer by name from
+          // localStorage("buyerName"), but nothing ever set that key —
+          // it always fell back to "Valued Shopper".
+          localStorage.setItem("buyerName", document.getElementById("fullname").value);
           localStorage.setItem("latestOrderId", mpesaData.orderId);
 
           // FIX: cart items for individual buyer, not from others — the
