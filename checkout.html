@@ -327,12 +327,16 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="locationGroup">
             <label for="location">Hostel Room & Delivery Location</label>
             <div class="input-wrapper">
               <i class="fa-solid fa-map-pin textarea-icon"></i>
               <textarea id="location" placeholder="e.g. Maseno Main Campus, Hostels Block C, Room 4B" required></textarea>
             </div>
+          </div>
+
+          <div class="payment-indicator" id="ticketOnlyNotice" style="display:none; background:#eff6ff; border-color:#bfdbfe; color:#1e3a8a;">
+            <i class="fa-solid fa-ticket"></i> Event tickets don't need a delivery address
           </div>
 
           <div class="payment-indicator">
@@ -401,6 +405,18 @@
       const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
       const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
       const combinedCart = [...regularCart, ...eventCart];
+
+      // FEATURE: a ticket-only order has nothing to deliver, so the
+      // delivery location field is hidden and no longer required —
+      // otherwise the form would block submission on an address that
+      // doesn't apply to a digital ticket.
+      const isTicketOnly = eventCart.length > 0 && regularCart.length === 0;
+      const locationField = document.getElementById("location");
+      if (isTicketOnly) {
+        document.getElementById("locationGroup").style.display = "none";
+        document.getElementById("ticketOnlyNotice").style.display = "flex";
+        locationField.required = false;
+      }
 
       const list = document.getElementById("orderSummary");
       const subtotalBox = document.getElementById("subtotalBox");
@@ -471,6 +487,14 @@
       const activeDeliveryFee = calculateDeliveryFee(regularCart, eventCart);
       const subtotal = combinedCart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
       const grandTotal = subtotal + activeDeliveryFee;
+      const isTicketOnly = eventCart.length > 0 && regularCart.length === 0;
+
+      // FEATURE: ticket-only orders skip the delivery address, but admin
+      // still needs something meaningful in that field rather than a blank
+      // value, so the order record stays informative either way.
+      const locationValue = isTicketOnly
+        ? "N/A — Digital event ticket, no delivery required"
+        : document.getElementById("location").value;
 
       try {
         const formattedPhone = formatMpesaPhone(phone);
@@ -482,7 +506,7 @@
           body: JSON.stringify({
             fullname: document.getElementById("fullname").value,
             phone: formattedPhone,
-            location: document.getElementById("location").value,
+            location: locationValue,
             cart: combinedCart,
             amount: grandTotal
           })
@@ -502,6 +526,14 @@
           // It's cleared the moment a purchase is successfully placed.
           localStorage.removeItem("cart");
           localStorage.removeItem("eventCart");
+
+          // FEATURE: ticket buyers get told their ticket details will
+          // arrive by phone instead of being asked about delivery — the
+          // order itself is still sent to the backend exactly as before,
+          // so admin sees it the same way any other order shows up.
+          if (isTicketOnly) {
+            alert("Payment initiated! Your ticket information will be sent to your phone once payment is confirmed.");
+          }
 
           window.location.href = "waiting-payment.html";
         } else {
