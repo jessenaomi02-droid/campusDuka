@@ -1233,13 +1233,21 @@ function updateCartAndOrderCounts(){
   let count = cart.reduce((sum, item)=>sum + item.quantity, 0);
   document.getElementById('cart-count').innerText = count;
 
-  // Update Orders Count dynamically
-  let orders = JSON.parse(localStorage.getItem('orders')) || [];
-  let pendingOrders = orders.filter(order => order.status !== 'delivered' && order.status !== 'cancelled');
+  // FIX: this used to read localStorage("orders"), a key nothing in the
+  // order flow ever wrote to — the badge could never show a count. The
+  // real order-change notifications live in my-orders.html's
+  // buyer_notifs_<phone> store (written whenever a delivery status
+  // changes), so the badge now reflects however many of those are unread.
+  const buyerPhone = localStorage.getItem('buyerPhone');
+  let unreadOrderNotifs = [];
+  if (buyerPhone) {
+    unreadOrderNotifs = JSON.parse(localStorage.getItem(`buyer_notifs_${buyerPhone}`)) || [];
+  }
+  const unreadCount = unreadOrderNotifs.filter(n => n.unread).length;
   const orderBadge = document.getElementById('nav-orders-badge');
-  
-  if (pendingOrders.length > 0) {
-    orderBadge.innerText = pendingOrders.length;
+
+  if (unreadCount > 0) {
+    orderBadge.innerText = unreadCount;
     orderBadge.classList.remove('hidden');
   } else {
     orderBadge.classList.add('hidden');
