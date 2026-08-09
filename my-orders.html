@@ -705,7 +705,10 @@ async function loadOrders() {
             let productPrice = Number(order.amount || order.product_price || 0).toLocaleString();
             let deliveryLocation = order.delivery_location && order.delivery_location !== "null" ? order.delivery_location : "Not Specified";
             let paymentStatus = order.payment_status && order.payment_status !== "null" ? order.payment_status : "Pending";
-            let sellerId = order.seller_id || "Direct CampusDuka";
+            // FIX: this used to show the raw numeric seller_id ("Seller ID: 7"),
+            // which means nothing to a buyer. The backend now joins the
+            // sellers table, so the actual store name is shown when available.
+            let sellerLabel = order.seller_name || (order.seller_id ? `Seller #${order.seller_id}` : "Direct CampusDuka");
 
             // Timestamp parsing
             let formattedDateTime = "Unrecorded";
@@ -739,7 +742,7 @@ async function loadOrders() {
                         <div class="order-header">
                             <div>
                                 <h2>${productName}</h2>
-                                <div class="seller-id"><i class="fas fa-id-card"></i> Seller ID: ${sellerId}</div>
+                                <div class="seller-id"><i class="fas fa-id-card"></i> Sold by: ${sellerLabel}</div>
                             </div>
                             <div class="amount">KES ${productPrice}</div>
                         </div>
