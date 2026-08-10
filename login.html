@@ -258,6 +258,19 @@ footer {
 
 <script>
 
+// Forward the redirect target to Sign Up too, so someone arriving from
+// checkout without an account yet isn't dropped after signing up instead
+// of logging in. Harmless if signup.html doesn't read it.
+(function forwardRedirectToSignup() {
+    const params = new URLSearchParams(window.location.search);
+    const redirectTo = params.get("redirect");
+    if (!redirectTo) return;
+    const signupLink = document.querySelector('.signup a');
+    if (signupLink) {
+        signupLink.href = `signup.html?redirect=${encodeURIComponent(redirectTo)}`;
+    }
+})();
+
 // Function to toggle password visibility
 function togglePasswordVisibility() {
     const passwordInput = document.getElementById("password");
@@ -296,7 +309,20 @@ async function login(){
 
         if (data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
-            window.location = "index2.html";
+
+            // FEATURE: send the person back to wherever they came from
+            // (e.g. checkout.html sends people here with
+            // ?redirect=checkout.html so they don't lose their place and
+            // have to re-add cart items) instead of always landing on the
+            // homepage. Only a plain relative page name is accepted —
+            // anything that looks like it points off-site is ignored, so
+            // this can't be turned into an open redirect via a crafted link.
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get("redirect");
+            const isSafeRedirect = redirectTo
+                && /^[a-zA-Z0-9_-]+\.html$/.test(redirectTo);
+
+            window.location = isSafeRedirect ? redirectTo : "index2.html";
         }
     } catch (error) {
         console.error("Error during login:", error);
