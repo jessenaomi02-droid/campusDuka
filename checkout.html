@@ -309,6 +309,11 @@
         <h2 class="card-title">
           <i class="fa-solid fa-truck-fast"></i> Delivery Information
         </h2>
+
+        <div id="sessionBanner" class="payment-indicator" style="background:#eff6ff; border-color:#bfdbfe; color:#1e3a8a; display:none;">
+          <i class="fa-solid fa-circle-user"></i> Checking out as <span id="sessionBannerName" style="margin-left:4px; font-weight:800;"></span>
+        </div>
+
         <form id="checkoutForm">
           
           <div class="form-group">
@@ -325,6 +330,7 @@
               <i class="fa-solid fa-phone"></i>
               <input id="phone" type="tel" placeholder="e.g. 0712345678" required>
             </div>
+            <p style="font-size:11px; color:var(--text-muted);">Pre-filled from your account — change it if you're paying from a different phone.</p>
           </div>
 
           <div class="form-group" id="locationGroup">
@@ -400,8 +406,44 @@
       return trimmed;
     }
 
+    // FEATURE: checkout now requires being logged in. This ties every
+    // order to a real account instead of trusting whatever name/phone a
+    // guest happened to type in, which is what made buyer identity easy to
+    // mix up on a shared device. getSessionUser() is the single source of
+    // truth other functions on this page check against.
+    function getSessionUser() {
+      try {
+        return JSON.parse(localStorage.getItem("user"));
+      } catch (err) {
+        return null;
+      }
+    }
+
     // RENDER SHOPPING BASKET (PRODUCTS + EVENT TICKETS)
     document.addEventListener("DOMContentLoaded", () => {
+      const sessionUser = getSessionUser();
+      if (!sessionUser) {
+        alert("Please log in to continue with checkout.");
+        window.location.href = "login.html?redirect=checkout.html";
+        return;
+      }
+
+      // Pre-fill from the authenticated account. Name is locked to the
+      // account identity; phone stays editable since the M-Pesa payment
+      // phone can legitimately differ from the account's registered phone.
+      const fullnameField = document.getElementById("fullname");
+      fullnameField.value = sessionUser.fullname || "";
+      fullnameField.readOnly = true;
+      fullnameField.style.background = "#f1f5f9";
+      fullnameField.style.cursor = "not-allowed";
+      document.getElementById("phone").value = sessionUser.phone || "";
+
+      const sessionBanner = document.getElementById("sessionBanner");
+      if (sessionUser.fullname) {
+        document.getElementById("sessionBannerName").textContent = sessionUser.fullname;
+        sessionBanner.style.display = "flex";
+      }
+
       const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
       const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
       const combinedCart = [...regularCart, ...eventCart];
@@ -467,6 +509,16 @@
     // SECURED MPESA STK API DISPATCH
     document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
+      // Defensive re-check — the page-load redirect should already have
+      // caught a logged-out visitor, but this guards against edge cases
+      // (e.g. session cleared in another tab) rather than letting an order
+      // go through with no verified identity behind it.
+      if (!getSessionUser()) {
+        alert("Please log in to continue with checkout.");
+        window.location.href = "login.html?redirect=checkout.html";
+        return;
+      }
 
       const payBtn = document.querySelector(".pay-btn");
       payBtn.disabled = true;
