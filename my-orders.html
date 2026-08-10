@@ -514,8 +514,13 @@
         <p><i class="fas fa-phone-alt"></i> Connected: <span id="buyerDisplayPhone">011...</span></p>
       </div>
     </div>
-    <div class="active-badge" id="activeOrderCount">
-      Checking Active Orders...
+    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+      <div class="active-badge" id="activeOrderCount">
+        Checking Active Orders...
+      </div>
+      <button onclick="clearBuyerSession()" title="On a shared or campus lab computer? Clear this device's saved session so the next person can't see your orders." style="background:transparent; border:1px solid rgba(255,255,255,0.25); color:#94a3b8; font-size:11px; padding:6px 12px; border-radius:20px; cursor:pointer;">
+        <i class="fas fa-user-slash"></i> Not you? Clear this session
+      </button>
     </div>
   </div>
 
@@ -620,6 +625,23 @@ function clearNotifications() {
 function toggleNotifications() {
   const drawer = document.getElementById("notif-drawer");
   drawer.style.display = drawer.style.display === "block" ? "none" : "block";
+}
+
+// FEATURE: checkout doesn't require logging in, so on a shared campus
+// computer two different guest buyers would never trigger a login/logout
+// event that clears anything — this gives anyone a manual way to wipe
+// their own session so the next person on the machine can't see their
+// order history.
+function clearBuyerSession() {
+  if (!confirm("This clears this device's saved buyer session so the next person here can't see your orders. Continue?")) return;
+  const phone = localStorage.getItem("buyerPhone");
+  if (phone) {
+    localStorage.removeItem(`status_cache_${phone}`);
+    localStorage.removeItem(`buyer_notifs_${phone}`);
+  }
+  localStorage.removeItem("buyerPhone");
+  localStorage.removeItem("buyerName");
+  window.location.reload();
 }
 
 async function loadOrders() {
