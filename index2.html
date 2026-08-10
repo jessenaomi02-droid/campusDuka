@@ -1327,6 +1327,27 @@ function renderUserAuthArea(){
     // for whoever logs in next on the same browser.
     localStorage.removeItem("cart");
     localStorage.removeItem("eventCart");
+
+    // BUYER IDENTITY ISOLATION: "buyerPhone"/"buyerName" (set at checkout)
+    // were never cleared across logins either, so my-orders.html could
+    // keep showing a completely different person's order history to
+    // whoever logs in next on a shared browser. Only wiped when the phone
+    // on file doesn't actually belong to the person now logging in — so a
+    // person re-logging into their own account doesn't lose their own
+    // session for no reason.
+    const normalizePhoneForCompare = (p) => {
+      if (!p) return "";
+      const trimmed = String(p).trim();
+      if (trimmed.startsWith("0")) return "254" + trimmed.substring(1);
+      if (trimmed.startsWith("+")) return trimmed.substring(1);
+      return trimmed;
+    };
+    const storedBuyerPhone = localStorage.getItem("buyerPhone");
+    if (storedBuyerPhone && normalizePhoneForCompare(storedBuyerPhone) !== normalizePhoneForCompare(activeSessionUser.phone)) {
+      localStorage.removeItem("buyerPhone");
+      localStorage.removeItem("buyerName");
+    }
+
     updateCartAndOrderCounts();
 
     // Determine if the logged-in account is a Seller
@@ -1375,6 +1396,8 @@ function renderUserAuthArea(){
       localStorage.removeItem("user");
       localStorage.removeItem("cart");
       localStorage.removeItem("eventCart");
+      localStorage.removeItem("buyerPhone");
+      localStorage.removeItem("buyerName");
       window.location.reload();
     });
   }
@@ -1577,3 +1600,4 @@ function closeQuickView() {
 </script>
 </body>
 </html>
+ 
