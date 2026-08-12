@@ -3,697 +3,1605 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusDuka | Events</title>
+<title>CampusDuka | Buy • Sell • Connect</title>
+<meta name="description" content="CampusDuka is the student marketplace for buying, selling, fast foods and events.">
 
+<link rel="icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
-/* ==========================================
-   COLOR SYSTEM & VARIABLES
-   ========================================== */
-:root{
-  --color-charcoal: #1f2d3d;      
-  --color-slate-teal: #164e63;    
-  --color-medium-teal: #1f6b88;   
-  --color-accent-blue: #4589be;   
-  
-  --bg-main: #f8fafc;             
-  --text-dark: #1f2d3d;           
-  --text-muted: #64748b;          
-  --card-bg: #ffffff;
-  --border-light: #e2e8f0;        
-  
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(31, 45, 61, 0.08), 0 2px 4px -1px rgba(31, 45, 61, 0.04);
-  --shadow-lg: 0 10px 20px -3px rgba(31, 45, 61, 0.12), 0 4px 6px -4px rgba(31, 45, 61, 0.08);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+/* ==========================
+    RESET & SYSTEM BASIS
+========================== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+  scroll-behavior:smooth;
 }
 
 body{
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg-main);
-  color: var(--text-dark);
-  -webkit-font-smoothing: antialiased;
+  background:#f8fafc;
+  color:#1f2d3d; /* Dark Slate Gray */
+  overflow-x:hidden;
+  line-height:1.6;
 }
 
-*{
-  box-sizing: border-box;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
+a{ text-decoration:none; color: inherit; }
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 
 /* ================= NAVBAR ================= */
 .navbar{
-  background: var(--color-charcoal);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 5%;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 2px solid var(--color-slate-teal);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  position:sticky;
+  top:0;
+  z-index:1100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 5%; /* Tightened padding for better alignment */
+  background:#1f2d3d; /* Brand Charcoal Base */
+  border-bottom: 2px solid #164e63; /* Brand Slate Teal */
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
-.logo-svg {
-  height: 40px;
+.logo-img {
+  height: 62px; /* Enlarged for better visibility */
   width: auto;
-}
-
-.logo-text {
-  color: #ffffff;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.logo-text span {
-  color: var(--color-accent-blue);
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  outline: none;
+  /* Blends light-background image assets seamlessly into dark navbar backgrounds */
+  mix-blend-mode: lighten; 
+  display: block;
 }
 
 .nav-links{
-  display: flex;
-  gap: 20px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  list-style:none;
 }
 
 .nav-links a{
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  font-weight: 500;
+  color:rgba(255, 255, 255, 0.85);
+  font-size:14px;
+  font-weight:500;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 0;
+  transition:.2s;
+  border-bottom:2px solid transparent;
+}
+
+.nav-links a:hover{
+  color: #4589be; /* Brand Accent Blue */
+  border-bottom:2px solid #4589be;
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.login-btn, .logout-btn, .dashboard-btn{
+  color:white;
+  font-weight:600;
   font-size: 14px;
-  padding: 6px 12px;
-  border-bottom: 2px solid transparent;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background: rgba(255,255,255,0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.nav-links a:hover, .nav-links a.active{
-  color: var(--color-accent-blue);
-  border-bottom: 2px solid var(--color-accent-blue);
+.login-btn:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: #4589be;
 }
 
-.menu-icon{
-  display: none;
-  color: white;
-  font-size: 22px;
-  cursor: pointer;
+.logout-btn {
+  background: #ef4444;
 }
 
-/* ================= HERO BANNER ================= */
-.hero{
-  height: 300px;
-  background: linear-gradient(rgba(31, 45, 61, 0.8), rgba(22, 78, 99, 0.7)), url("images/event1.jpg");
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  text-align: center;
-  padding: 0 20px;
+.logout-btn:hover {
+  background: #dc2626;
 }
 
-.hero h1{
-  font-size: 38px;
-  font-weight: 800;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-
-.hero h1 span {
-  color: var(--color-accent-blue);
-}
-
-.hero p {
-  font-size: 16px;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
-/* ================= FILTER & SEARCH STRIP ================= */
-.filter-search-container {
-  max-width: 1200px;
-  margin: -30px auto 20px;
-  padding: 0 20px;
-  position: relative;
-  z-index: 10;
-}
-
-.search-filter-card {
-  background: white;
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-light);
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 15px;
-  align-items: center;
-}
-
-.search-box-wrapper {
-  display: flex;
-  background: #f1f5f9;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-box-wrapper:focus-within {
-  border-color: var(--color-slate-teal);
-  background: white;
-}
-
-.search-box-wrapper i {
-  color: var(--text-muted);
-}
-
-.search-box-wrapper input {
-  border: none;
-  outline: none;
-  background: transparent;
-  width: 100%;
-  font-family: inherit;
-  font-size: 14px;
-  color: var(--text-dark);
-}
-
-.sort-label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--color-slate-teal);
-}
-
-.sort-label i {
-  font-size: 16px;
-  color: var(--color-accent-blue);
-}
-
-/* ================= EVENTS GRID ================= */
-.product-container{
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 28px;
-  padding: 20px 20px 60px;
-}
-
-.product-card{
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
-
-.event-price-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: var(--color-slate-teal);
-  color: white;
-  padding: 6px 12px;
-  font-weight: 700;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  z-index: 5;
-  box-shadow: var(--shadow-md);
-}
-
-.event-price-badge.free {
+.dashboard-btn {
   background: #10b981;
 }
 
-.img-wrapper {
+.dashboard-btn:hover {
+  background: #059669;
+}
+
+.cart-link, .nav-orders-link{
+  position:relative;
+  color:white;
+  font-size:22px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.cart-link:hover, .nav-orders-link:hover {
+  color: #4589be;
+}
+
+#cart-count, .nav-badge{
+  position:absolute;
+  top:-8px;
+  right:-10px;
+  background:#ef4444;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  font-weight:bold;
+  color:white;
+}
+
+.nav-badge.hidden {
+  display: none;
+}
+
+@media(max-width:1024px){
+  .nav-right {
+    order: 2;
+    margin-left: auto;
+    margin-right: 15px;
+  }
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+  /* FIX: links used to be hidden off-screen (right:-100%) until the
+     hamburger was tapped. They now stay visible at all times, wrapping
+     onto their own row below the logo row instead of hiding. */
+  .nav-links {
+    position: static;
+    order: 4;
+    width: 100%;
+    height: auto;
+    background: transparent;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0 0;
+    gap: 12px 22px;
+    box-shadow: none;
+    border-left: none;
+    border-top: 1px solid #164e63;
+    transition: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    width: auto;
+  }
+}
+
+/* SEARCH BAR */
+.search-bar-container{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:16px 20px;
+  background:#1f2d3d;
+}
+
+.search-box-wrapper {
   width: 100%;
-  height: 190px;
+  max-width: 500px;
+  display: flex;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.search-bar-container input{
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #2d3f55;
+  border-radius: 8px 0 0 8px;
+  font-size:15px;
+  outline: none;
+  background: #2d3f55;
+  color: white;
+}
+
+.search-bar-container input::placeholder {
+  color: #94a3b8;
+}
+
+.search-bar-container button{
+  padding:12px 24px;
+  border:none;
+  background:#164e63; /* Brand Slate Teal */
+  color:white;
+  font-weight:600;
+  border-radius:0 8px 8px 0;
+  border: 1px solid #164e63;
+}
+
+.search-bar-container button:hover {
+  background: #1f6b88;
+}
+
+/* ================= HERO ================= */
+.hero{
+  position:relative;
+  height:65vh;
+  min-height: 450px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  overflow:hidden;
+  background-size:cover;
+  background-position:center;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.overlay{
+  position:absolute;
+  inset: 0;
+  background: linear-gradient(rgba(31, 45, 61, 0.75), rgba(31, 45, 61, 0.9)); /* Brand Charcoal Gradient Overlay */
+  z-index: 1;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:800px;
+  padding:0 24px;
+  color:white;
+  animation:fadeUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero h1{
+  font-size:48px;
+  font-weight:800;
+  margin-bottom:16px;
+  line-height:1.2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.hero p{
+  font-size:18px;
+  margin-bottom:32px;
+  opacity:.9;
+}
+
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.button{
+  padding:14px 28px;
+  border-radius:8px;
+  background:#164e63; /* Brand Slate Teal */
+  color:white;
+  font-size:15px;
+  font-weight:600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow:0 4px 14px rgba(22, 78, 99, 0.4);
+}
+
+.button:hover{
+  transform:translateY(-2px);
+  background:#1f6b88;
+}
+
+.button.secondary{
+  background:white;
+  color:#1f2d3d;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+.button.secondary:hover{
+  background:#f1f5f9;
+}
+
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(20px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+@media(max-width:768px){
+  .hero h1{ font-size:32px; }
+  .hero p{ font-size:15px; }
+}
+
+/* ================= CAMPUSDUKA ADVERTS ================= */
+.campus-ad-banner {
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  background: linear-gradient(135deg, #164e63 0%, #1f2d3d 100%);
+  border: 1px solid #4589be;
+  border-radius: 16px;
+  padding: 30px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  position: relative;
   overflow: hidden;
-  background: #f1f5f9;
-  cursor: pointer;
+}
+
+.campus-ad-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 60%;
+  height: 200%;
+  background: rgba(69, 137, 190, 0.1);
+  transform: rotate(30deg);
+  pointer-events: none;
+}
+
+.ad-badge {
+  background: #e11d48;
+  color: white;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.ad-text-content {
+  flex: 1;
+  min-width: 280px;
+  z-index: 2;
+}
+
+.ad-text-content h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ad-text-content p {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.ad-cta-btn {
+  background: #10b981;
+  color: white;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.ad-cta-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+/* ================= FEATURED PRODUCTS ================= */
+.featured-products{
+  width:90%;
+  max-width:1200px;
+  margin:70px auto;
+}
+
+.section-header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.section-header h2{
+  font-size:32px;
+  color:#1f2d3d;
+  margin-bottom:10px;
+  font-weight: 700;
+}
+
+.section-header p{
+  color:#64748b;
+  font-size:16px;
+}
+
+.featured-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:25px;
+}
+
+.product-card{
+  position: relative;
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow: 0 10px 22px rgba(31, 45, 61, 0.08);
 }
 
 .product-card img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width:100%;
+  height:200px;
+  object-fit:cover;
 }
 
-.card-details {
-  padding: 20px;
+.urgency-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #ef4444;
+  color: white;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  z-index: 10;
+}
+
+.product-info{
+  padding:20px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
 }
 
-.product-card h3{
-  font-size: 17px;
-  font-weight: 700;
+.product-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
-  color: var(--text-dark);
-  line-height: 1.4;
 }
 
-.product-card small{
+.product-info h3{
+  font-size:16px;
+  font-weight: 600;
+  margin-bottom:8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #1f2d3d;
+}
+
+.product-price{
+  color:#164e63; /* Brand Slate Teal */
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.product-category{
+  display:inline-block;
+  background:#f1f5f9;
+  color:#1f2d3d;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+}
+
+.product-info p {
+  color: #64748b;
+  font-size: 13px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: var(--text-muted);
-  font-size: 13px;
   line-height: 1.5;
-  height: 38px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
-.card-actions {
+.countdown-box {
+  background: #fff5f5;
+  border: 1px dashed #ef4444;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: #dc2626;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Button Action Layout Updated */
+.card-actions-wrapper {
   display: flex;
   gap: 8px;
   margin-top: auto;
 }
 
-.bn{
-  background: var(--color-slate-teal);
-  color: white;
-  border: none;
-  padding: 11px 14px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
+.card-action-btn {
   flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.bn:hover {
-  background: var(--color-medium-teal);
-}
-
-.bn-secondary {
-  background: #e2e8f0;
-  color: var(--text-dark);
+  padding: 10px;
   border: none;
-  padding: 11px 14px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  border-radius: 8px;
   font-size: 13px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bn-secondary:hover {
-  background: #cbd5e1;
-}
-
-/* ================= NO RESULTS STATE ================= */
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-muted);
-  background: white;
-  border-radius: var(--radius-lg);
-  border: 1px dashed var(--border-light);
-}
-
-.no-results i {
-  font-size: 48px;
-  margin-bottom: 15px;
-  color: var(--text-muted);
-  opacity: 0.5;
-}
-
-.no-results h3 {
-  color: var(--text-dark);
-  margin-bottom: 8px;
-}
-
-/* ================= MODAL ================= */
-.modal{
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  padding: 20px;
-}
-
-.modal-content{
-  background: white;
-  padding: 25px;
-  width: 100%;
-  max-width: 500px;
-  border-radius: var(--radius-lg);
-  position: relative;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--border-light);
-}
-
-.close-btn{
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  font-size: 28px;
-  cursor: pointer;
-  color: var(--text-muted);
-}
-
-.close-btn:hover {
-  color: var(--text-dark);
-}
-
-#mainImage{
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  background: #f1f5f9;
-}
-
-.thumbnail-container{
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.thumbnail-container img{
-  width: 65px;
-  height: 65px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  object-fit: cover;
-  border: 2px solid transparent;
-}
-
-.thumbnail-container img:hover {
-  border-color: var(--color-slate-teal);
-}
-
-/* ================= FOOTER ================= */
-footer{
-  background: var(--color-charcoal);
+  font-weight: 600;
   color: white;
-  text-align: center;
-  padding: 24px;
-  font-size: 14px;
-  border-top: 3px solid var(--color-slate-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-/* ================= MEDIA QUERY BREAKPOINTS ================= */
-@media (max-width: 768px) {
-  .menu-icon {
-    display: block;
-  }
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 68px;
-    left: 0;
-    width: 100%;
-    background: var(--color-charcoal);
-    flex-direction: column;
-    padding: 24px;
-    gap: 20px;
-    text-align: center;
-    border-bottom: 2px solid var(--color-slate-teal);
-    box-shadow: var(--shadow-md);
-  }
-  .nav-links a {
-    display: block;
-    width: 100%;
-  }
-  .nav-links.active {
-    display: flex;
-  }
-  .search-filter-card {
-    grid-template-columns: 1fr;
-  }
-  .sort-label {
-    justify-content: start;
-  }
-  .hero h1 {
-    font-size: 32px;
-  }
+.card-action-btn.cart-btn {
+  background: #164e63; /* Brand Slate Teal */
 }
+
+.card-action-btn.cart-btn:hover {
+  background: #1f6b88;
+}
+
+.card-action-btn.book-btn {
+  background: #10b981;
+}
+
+.card-action-btn.book-btn:hover {
+  background: #059669;
+}
+
+.card-action-btn.view-btn {
+  background: #f1f5f9;
+  color: #1f2d3d;
+  border: 1px solid #cbd5e1;
+  flex: 0 0 45px;
+}
+
+.card-action-btn.view-btn:hover {
+  background: #e2e8f0;
+}
+
+.view-all{
+  margin-top:40px;
+  text-align:center;
+}
+
+.loading{
+  text-align:center;
+  grid-column: 1 / -1;
+  padding:40px;
+  font-size:15px;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* ==========================
+    STATISTICS & LAYOUTS
+========================== */
+.stats-section{
+  width:90%;
+  max-width:1200px;
+  margin:40px auto;
+  text-align:center;
+}
+
+.stats-section h2{
+  font-size:28px;
+  color:#1f2d3d;
+  margin-bottom:8px;
+  font-weight: 700;
+}
+
+.stats-section p{
+  color:#64748b;
+  margin-bottom:20px;
+  font-size:14px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:14px;
+}
+
+.stat-card{
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.stat-card h1{
+  font-size:28px;
+  color:#164e63; /* Brand Slate Teal */
+  margin-bottom:4px;
+  font-weight: 700;
+}
+
+.stat-card span{
+  font-size:13px;
+  font-weight:600;
+  color:#64748b;
+}
+
+/* WHY US */
+.why-us{
+  width:90%;
+  max-width:1200px;
+  margin:40px auto;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.section-title h2{
+  font-size:28px;
+  color:#1f2d3d;
+  margin-bottom:8px;
+  font-weight: 700;
+}
+
+.section-title p{
+  font-size:14px;
+  color:#64748b;
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:16px;
+}
+
+.why-card{
+  background:white;
+  padding:18px 14px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.why-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 24px rgba(31, 45, 61, 0.06);
+}
+
+.why-card i{
+  font-size:26px;
+  color:#164e63; /* Brand Slate Teal */
+  margin-bottom:8px;
+}
+
+.why-card h3{
+  margin-bottom:5px;
+  font-size:15px;
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.why-card p{
+  color:#64748b;
+  font-size: 12.5px;
+  line-height:1.4;
+}
+
+/* HOW IT WORKS */
+.how-it-works{
+  width:90%;
+  max-width:1200px;
+  margin:40px auto;
+}
+
+.steps-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:20px;
+  margin-top:20px;
+}
+
+.steps{
+  background:white;
+  padding:20px 18px;
+  border-radius:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.steps h3{
+  text-align:center;
+  color:#164e63; /* Brand Slate Teal */
+  font-size:17px;
+  margin-bottom:16px;
+  font-weight: 700;
+}
+
+.step{
+  display:flex;
+  gap:12px;
+  margin-bottom:14px;
+  align-items:flex-start;
+}
+
+.step-number{
+  min-width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#164e63; /* Brand Slate Teal */
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  font-size:13px;
+}
+
+.step h4{
+  margin-bottom:3px;
+  font-size:14px;
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.step p{
+  color:#64748b;
+  font-size: 12.5px;
+  line-height:1.4;
+}
+
+/* SELLER PROFILE */
+.seller-section{
+  width:90%;
+  max-width:1200px;
+  margin:70px auto;
+  background:#1f2d3d; /* Brand Charcoal */
+  padding:45px 24px;
+  border-radius:16px;
+  text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #164e63; /* Brand Slate Teal */
+  color: white;
+}
+
+.seller-section h2{
+  font-size:28px;
+  color:white;
+  margin-bottom:12px;
+  font-weight: 700;
+}
+
+.seller-section p{
+  font-size:15px;
+  margin-bottom:24px;
+  color:#94a3b8;
+}
+
+.seller-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.seller-buttons a button{
+  padding:12px 24px;
+  border-radius:8px;
+  background:#164e63; /* Brand Slate Teal */
+  color:white;
+  font-size:14px;
+  font-weight:600;
+}
+
+.seller-buttons a button:hover{
+  background:#1f6b88;
+  transform:translateY(-2px);
+}
+
+/* CATEGORIES */
+.categories{
+  width:90%;
+  max-width:1200px;
+  margin:70px auto;
+  text-align:center;
+}
+
+.categories h2{
+  margin-bottom:30px;
+  color:#1f2d3d;
+  font-size:28px;
+  font-weight: 700;
+}
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+  gap:15px;
+}
+
+.category-grid a{
+  background:white;
+  padding:18px 10px;
+  border-radius:12px;
+  color:#1f2d3d;
+  font-weight:600;
+  font-size: 14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.category-grid a:hover{
+  transform:translateY(-3px);
+  background:#164e63; /* Brand Slate Teal */
+  color:white;
+  border-color: #164e63;
+}
+
+/* FOOTER ARCHITECTURE */
+.footer{
+  background:#1f2d3d; /* Brand Charcoal */
+  color:white;
+  text-align:center;
+  padding:35px 20px;
+  margin-top:70px;
+  border-top: 3px solid #164e63; /* Brand Slate Teal */
+}
+
+.footer h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.footer p{
+  margin:4px 0;
+  font-size: 14px;
+  opacity: 0.8;
+}/* ================= FEATURED PRODUCT QUICK VIEW MODAL ================= */
+.quickview-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,0.65);
+  z-index:2000;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.quickview-overlay.active{
+  display:flex;
+}
+.quickview-box{
+  background:white;
+  border-radius:16px;
+  width:100%;
+  max-width:520px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 25px 50px rgba(0,0,0,0.3);
+  max-height:90vh;
+  overflow-y:auto;
+}
+.quickview-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#1f2d3d;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:2;
+}
+.quickview-close:hover{
+  background:#ef4444;
+}
+.quickview-box img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+.quickview-body{
+  padding:22px;
+}
+.quickview-body h3{
+  font-size:20px;
+  font-weight:700;
+  color:#1f2d3d;
+  margin-bottom:8px;
+}
+.quickview-body .product-price{
+  margin-bottom:14px;
+}
+.quickview-body p{
+  color:#475569;
+  font-size:14px;
+  line-height:1.7;
+  margin-bottom:20px;
+  -webkit-line-clamp:unset;
+  display:block;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
-  <a href="index2.html" class="logo-link">
-    <!-- Inline SVG CampusDuka Logo -->
-    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#164e63" />
-          <stop offset="100%" stop-color="#4589be" />
-        </linearGradient>
-      </defs>
-      <rect x="20" y="25" width="60" height="50" rx="8" fill="url(#logo-grad)" />
-      <polygon points="50,15 20,25 80,25" fill="#ffffff" />
-      <circle cx="50" cy="50" r="10" fill="#ffffff" />
-      <path d="M44,50 L56,50 M50,44 L50,56" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" />
-    </svg>
-    <span class="logo-text">Campus<span>Duka</span></span>
+  <a href="index.html" class="logo-link">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <span id="logoFallback" style="display:none; color:white; font-size:26px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
   </a>
 
-  <div class="menu-icon" id="menuIcon">
-    <i class="fas fa-bars"></i>
-  </div>
-
   <ul class="nav-links" id="navLinks">
-    <li><a href="index2.html">Home</a></li>
-    <li><a href="products.html">Products</a></li>
-    <li><a href="food.html">Fast Foods</a></li>
-    <li><a href="events.html" class="active">Events</a></li>
+    <li>
+      <a href="my-orders.html" class="nav-orders-link">
+        <i class="fas fa-box"></i>My Orders
+        <span id="nav-orders-badge" class="nav-badge hidden">0</span>
+      </a>
+    </li>
+    <li><a href="index.html"><i class="fas fa-house"></i>Home</a></li>
+    <li><a href="products.html"><i class="fas fa-store"></i>Products</a></li>
+    <li><a href="food.html"><i class="fas fa-burger"></i>Fast Foods</a></li>
+    <li><a href="events.html"><i class="fas fa-calendar"></i>Events</a></li>
+    <li><a href="contact.html"><i class="fas fa-phone"></i>Contact</a></li>
   </ul>
+
+  <div class="nav-right">
+    <div id="user-area">
+      <a href="login.html" class="login-btn"><i class="fas fa-user"></i>Sign In</a>
+    </div>
+    <a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cart-count">0</span>
+    </a>
+  </div>
 </nav>
 
-<!-- ================= HERO BANNER ================= -->
-<section class="hero">
-  <div>
-    <h1>Campus <span>Events</span></h1>
-    <p>Discover plans, tech meetups, festivals, & campus life</p>
+<div class="search-bar-container">
+  <form id="globalSearchForm" class="search-box-wrapper">
+    <input type="text" id="globalSearchInput" placeholder="Search products, foods, or events..." required>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<section class="hero" id="hero">
+  <div class="overlay"></div>
+  <div class="hero-content">
+    <h1>Campus's Student Marketplace</h1>
+    <p>Buy products, order delicious meals, discover campus events and grow your business with CampusDuka.</p>
+    <div class="hero-buttons">
+      <a href="products.html" class="button">🛒 Shop Now</a>
+      <a href="events.html" class="button secondary">🎉 Events</a>
+      <a href="seller-register.html" class="button" id="heroSellerBtn">🚀 Become a Seller</a>
+    </div>
   </div>
 </section>
 
-<!-- ================= SEARCH & FILTER CONTROL BAR ================= -->
-<div class="filter-search-container">
-  <div class="search-filter-card">
-    <div class="search-box-wrapper">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="eventSearch" placeholder="Search events by name or keyword..." oninput="filterEvents()">
+<div id="ad-placement-top"></div>
+
+<section class="featured-products">
+  <div class="section-header">
+    <h2>🔥 Featured Deals</h2>
+    <p>High-demand products moving fast on campus right now.</p>
+  </div>
+  <div id="featuredProducts" class="featured-grid">
+    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Connecting to campus servers...</div>
+  </div>
+  <div class="view-all">
+    <a href="products.html" class="button">View All Products →</a>
+  </div>
+</section>
+
+<div id="ad-placement-mid"></div>
+
+<section class="stats-section">
+  <h2>CampusDuka Ecosystem</h2>
+  <p>Connecting students, businesses and opportunities across campuses.</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h1 id="productCount">10+</h1>
+      <span>Products Active</span>
     </div>
-    <div class="sort-label">
-      <i class="fa-solid fa-arrow-down-short-wide"></i> Most Upcoming Events
+    <div class="stat-card">
+      <h1 id="sellerCount">10+</h1>
+      <span>Verified Sellers</span>
+    </div>
+    <div class="stat-card">
+      <h1 id="memberCount">100+</h1>
+      <span>Active Members</span>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ================= EVENTS GRID ================= -->
-<div class="product-container" id="product-container"></div>
-
-<!-- ================= EVENT MODAL ================= -->
-<div class="modal" id="viewModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <img id="mainImage" alt="Main View Image">
-    <div id="thumbnails" class="thumbnail-container"></div>
+<section class="why-us">
+  <div class="section-title">
+    <h2>Why Choose CampusDuka?</h2>
+    <p>Everything you need in one campus marketplace.</p>
   </div>
-</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <i class="fas fa-shield-halved"></i>
+      <h3>Trusted Marketplace</h3>
+      <p>Every product is reviewed before appearing on CampusDuka.</p>
+    </div>
+    <div class="why-card">
+      <i class="fas fa-credit-card"></i>
+      <h3>Secure Payments</h3>
+      <p>Pay easily using M-Pesa with a simple checkout process.</p>
+    </div>
+    <div class="why-card">
+      <i class="fas fa-store"></i>
+      <h3>Student Businesses</h3>
+      <p>Support fellow students by buying directly from campus sellers.</p>
+    </div>
+    <div class="why-card">
+      <i class="fas fa-truck-fast"></i>
+      <h3>Fast Delivery</h3>
+      <p>Receive your products quickly within and around campus.</p>
+    </div>
+    <div class="why-card">
+      <i class="fas fa-box-open"></i>
+      <h3>Quality Products</h3>
+      <p>Browse electronics, fashion, food, beauty products and much more.</p>
+    </div>
+    <div class="why-card">
+      <i class="fas fa-headset"></i>
+      <h3>Customer Support</h3>
+      <p>We're here to help whenever you need assistance.</p>
+    </div>
+  </div>
+</section>
 
-<!-- ================= FOOTER ================= -->
-<footer>
-  &copy; 2026 CampusDuka • All Rights Reserved
-</footer>
-
-<script>
-// Mobile navigation menu toggle
-const menuIcon = document.getElementById("menuIcon");
-const navLinks = document.getElementById("navLinks");
-menuIcon.onclick = () => {
-  navLinks.classList.toggle("active");
-};
-
-let rawEventsData = [];
-
-/* GENERATE TEMPLATE ENGINE */
-function buildEventCardMarkup(product) {
-  const imgs = product.images && product.images.length ? product.images : ["images/event1.jpg"];
-  const first = imgs[0];
-  const isFree = product.price == 0;
-  const priceDisplay = isFree ? 'Free' : `KES ${product.price}`;
-  
-  return `
-    <div class="product-card">
-      <div class="event-price-badge ${isFree ? 'free' : ''}">
-        ${priceDisplay}
-      </div>
-      <div class="img-wrapper" onclick='viewProduct(${JSON.stringify(imgs)})'>
-        <img src="${first}" alt="${product.name}" loading="lazy">
-      </div>
-      <div class="card-details">
-        <h3>${product.name}</h3>
-        <small>${product.description || 'No additional details provided for this event.'}</small>
-        <div class="card-actions">
-          <button class="bn-secondary" title="View Photos" onclick='viewProduct(${JSON.stringify(imgs)})'>
-            <i class="fa-solid fa-images"></i>
-          </button>
-          <button class="bn" onclick='bookTicket(${JSON.stringify(product)})'>
-            <i class="fa-solid fa-ticket"></i> Book Ticket
-          </button>
+<section class="how-it-works">
+  <div class="section-title">
+    <h2>How CampusDuka Works</h2>
+    <p>Simple steps for buyers and sellers.</p>
+  </div>
+  <div class="steps-container">
+    <div class="steps">
+      <h3>🛒 For Buyers</h3>
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <h4>Browse Products</h4>
+          <p>Explore thousands of products from trusted sellers.</p>
         </div>
       </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <h4>Add to Cart</h4>
+          <p>Select the products you love and add them to your cart.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div>
+          <h4>Pay with M-Pesa</h4>
+          <p>Complete checkout quickly using M-Pesa STK Push.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div>
+          <h4>Receive Your Order</h4>
+          <p>Your order is processed and delivered to you.</p>
+        </div>
+      </div>
+    </div>
+    <div class="steps">
+      <h3>🏪 For Sellers</h3>
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <h4>Create Seller Account</h4>
+          <p>Register your business in just a few minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <h4>Upload Products</h4>
+          <p>Add product images, prices and descriptions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div>
+          <h4>Admin Approval</h4>
+          <p>Products are reviewed before appearing online.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div>
+          <h4>Start Selling</h4>
+          <p>Receive orders and grow your business.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seller-section" id="bottomSellerSection">
+  <h2>Start Selling on CampusDuka</h2>
+  <p>Upload products, reach campus buyers and grow your side hustle.</p>
+  <div class="seller-buttons" id="bottomSellerButtons">
+    <a href="seller-register.html"><button>Become a Seller</button></a>
+    <a href="seller-register.html"><button>Seller Login</button></a>
+    <a href="seller-register.html"><button>Upload Product</button></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <h2>CampusDuka</h2>
+  <p>Your Campus Marketplace</p>
+  <p>Buy • Sell • Connect</p>
+</footer>
+
+<!-- FEATURED PRODUCT QUICK VIEW: lets a buyer read the full description
+     right here without leaving the homepage. -->
+<div class="quickview-overlay" id="quickviewOverlay" onclick="if(event.target===this) closeQuickView()">
+  <div class="quickview-box">
+    <div class="quickview-close" onclick="closeQuickView()">&times;</div>
+    <img id="quickviewImage" src="" alt="Product photo">
+    <div class="quickview-body">
+      <span class="product-category" id="quickviewCategory"></span>
+      <h3 id="quickviewName" style="margin-top:10px;"></h3>
+      <div class="product-price" id="quickviewPrice"></div>
+      <p id="quickviewDescription"></p>
+      <button class="card-action-btn cart-btn" id="quickviewAddBtn" style="width:100%;">
+        <i class="fas fa-cart-plus"></i> Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* HERO BACKGROUND ROTATOR */
+const hero = document.getElementById("hero");
+const images = [
+  "images/food1.jpg", 
+  "images/food2.jpg", 
+  "images/food3.jpg", 
+  "images/food4.jpg"
+];
+let index = 0;
+
+function changeBackground(){
+  if(images.length > 0) {
+    hero.style.backgroundImage = `url('${images[index]}')`;
+    index = (index + 1) % images.length;
+  }
+}
+changeBackground();
+setInterval(changeBackground, 4000);
+
+/* CART & ORDERS NOTIFICATION BADGES SYNCHRONIZATION */
+function updateCartAndOrderCounts(){
+  // Update Cart Count
+  // FIX: tickets booked on events.html now go into eventCart (added to a
+  // cart instead of navigating to event_cart.html), but this badge only
+  // ever counted "cart" — booking a ticket wouldn't move the number at all.
+  let cart = JSON.parse(localStorage.getItem('cart'))||[];
+  let eventCart = JSON.parse(localStorage.getItem('eventCart'))||[];
+  let count = cart.reduce((sum, item)=>sum + item.quantity, 0)
+            + eventCart.reduce((sum, item)=>sum + item.quantity, 0);
+  document.getElementById('cart-count').innerText = count;
+
+  // FIX: this used to read localStorage("orders"), a key nothing in the
+  // order flow ever wrote to — the badge could never show a count. The
+  // real order-change notifications live in my-orders.html's
+  // buyer_notifs_<phone> store (written whenever a delivery status
+  // changes), so the badge now reflects however many of those are unread.
+  const buyerPhone = localStorage.getItem('buyerPhone');
+  let unreadOrderNotifs = [];
+  if (buyerPhone) {
+    unreadOrderNotifs = JSON.parse(localStorage.getItem(`buyer_notifs_${buyerPhone}`)) || [];
+  }
+  const unreadCount = unreadOrderNotifs.filter(n => n.unread).length;
+  const orderBadge = document.getElementById('nav-orders-badge');
+
+  if (unreadCount > 0) {
+    orderBadge.innerText = unreadCount;
+    orderBadge.classList.remove('hidden');
+  } else {
+    orderBadge.classList.add('hidden');
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateCartAndOrderCounts);
+
+/* INTELLIGENT GLOBAL MARKETPLACE SEARCH ENGINE */
+const searchForm = document.getElementById("globalSearchForm");
+/* FIX: matching used to require the exact keyword string to appear inside
+   the query, so a typo like "piza" or "brger" never matched "pizza"/
+   "burger" and always fell through to Products. This adds partial-word and
+   small-typo tolerance so a close spelling still finds the right category.
+   The redirect target and URL pattern are unchanged either way. */
+function levenshteinDistance(a, b) {
+  const rows = a.length + 1, cols = b.length + 1;
+  const dp = Array.from({ length: rows }, () => new Array(cols).fill(0));
+  for (let i = 0; i < rows; i++) dp[i][0] = i;
+  for (let j = 0; j < cols; j++) dp[0][j] = j;
+  for (let i = 1; i < rows; i++) {
+    for (let j = 1; j < cols; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[rows - 1][cols - 1];
+}
+
+function isCloseWordMatch(word, keyword) {
+  if (!word || !keyword) return false;
+  if (keyword.includes(word) || word.includes(keyword)) return true;
+  const tolerance = keyword.length <= 4 ? 1 : 2;
+  return levenshteinDistance(word, keyword) <= tolerance;
+}
+
+function queryMatchesCategory(query, keywords) {
+  const words = query.split(/\s+/).filter(Boolean);
+  return keywords.some(keyword =>
+    isCloseWordMatch(query, keyword) || words.some(word => isCloseWordMatch(word, keyword))
+  );
+}
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const query = document.getElementById("globalSearchInput").value.trim().toLowerCase();
+  if(!query) return;
+
+  const foodKeywords = ['food', 'burger', 'pizza', 'fries', 'chips', 'chicken', 'snack', 'drink', 'lunch', 'dinner', 'breakfast', 'smoothie', 'cafe', 'meals'];
+  const eventKeywords = ['event', 'party', 'gig', 'concert', 'ticket', 'show', 'campus club', 'bash', 'rave', 'seminar', 'expo', 'gathering', 'festival'];
+
+  let targetPage = "products.html"; 
+
+  if (queryMatchesCategory(query, foodKeywords)) {
+    targetPage = "food.html";
+  } else if (queryMatchesCategory(query, eventKeywords)) {
+    targetPage = "events.html";
+  }
+
+  window.location.href = `${targetPage}?search=${encodeURIComponent(query)}`;
+});
+
+/* USER SIGN IN STATUS MANAGEMENT WITH SIGNOUT SYSTEM */
+function renderUserAuthArea(){
+  const userArea = document.getElementById("user-area");
+  const activeSessionUser = JSON.parse(localStorage.getItem("user"));
+  const heroSellerBtn = document.getElementById("heroSellerBtn");
+  const bottomSellerSection = document.getElementById("bottomSellerSection");
+  const bottomSellerButtons = document.getElementById("bottomSellerButtons");
+  
+  if(activeSessionUser){
+    // CART ISOLATION: Prevent saved shopping cart contents from leaking
+    // across user logins. FIX: this only ever cleared "cart" (products/
+    // food) — event ticket carts ("eventCart") were never cleared, so a
+    // previous person's event tickets could still be sitting in checkout
+    // for whoever logs in next on the same browser.
+    localStorage.removeItem("cart");
+    localStorage.removeItem("eventCart");
+
+    // BUYER IDENTITY ISOLATION: "buyerPhone"/"buyerName" (set at checkout)
+    // were never cleared across logins either, so my-orders.html could
+    // keep showing a completely different person's order history to
+    // whoever logs in next on a shared browser. Only wiped when the phone
+    // on file doesn't actually belong to the person now logging in — so a
+    // person re-logging into their own account doesn't lose their own
+    // session for no reason.
+    const normalizePhoneForCompare = (p) => {
+      if (!p) return "";
+      const trimmed = String(p).trim();
+      if (trimmed.startsWith("0")) return "254" + trimmed.substring(1);
+      if (trimmed.startsWith("+")) return trimmed.substring(1);
+      return trimmed;
+    };
+    const storedBuyerPhone = localStorage.getItem("buyerPhone");
+    if (storedBuyerPhone && normalizePhoneForCompare(storedBuyerPhone) !== normalizePhoneForCompare(activeSessionUser.phone)) {
+      localStorage.removeItem("buyerPhone");
+      localStorage.removeItem("buyerName");
+    }
+
+    updateCartAndOrderCounts();
+
+    // Determine if the logged-in account is a Seller
+    const isSeller = activeSessionUser.role === 'seller';
+    
+    // Standard User vs Seller UI rendering
+    if (isSeller) {
+      userArea.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <a href="seller-dashboard.html" class="dashboard-btn" style="position: relative;">
+            <i class="fas fa-chart-line"></i> Dashboard
+            <span class="nav-badge" style="top: -6px; right: -8px; background: #3b82f6;">1</span>
+          </a>
+          <button id="logoutTrigger" class="logout-btn" style="padding: 6px 12px; font-size:12px;"><i class="fas fa-sign-out-alt"></i> Out</button>
+        </div>
+      `;
+      
+      // Update Hero Call to Action for Quick Dashboard access
+      if(heroSellerBtn) {
+        heroSellerBtn.href = "seller-dashboard.html";
+        heroSellerBtn.innerHTML = "📊 Seller Dashboard";
+        heroSellerBtn.style.background = "#10b981";
+      }
+
+      // Update bottom registration section to reflect dashboard actions
+      if(bottomSellerSection) {
+        bottomSellerSection.querySelector("h2").innerText = "Manage Your Campus Business";
+        bottomSellerSection.querySelector("p").innerText = "View sales, process incoming student orders, and update products.";
+      }
+      if(bottomSellerButtons) {
+        bottomSellerButtons.innerHTML = `
+          <a href="seller-dashboard.html"><button style="background: #10b981;">Go to Dashboard</button></a>
+          <a href="upload-product.html"><button>Add New Product</button></a>
+        `;
+      }
+    } else {
+      userArea.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span style="color:white; font-size:14px; font-weight:600;">👋 Hi, ${activeSessionUser.fullname || 'Student'}</span>
+          <button id="logoutTrigger" class="logout-btn" style="padding: 6px 12px; font-size:12px;"><i class="fas fa-sign-out-alt"></i> Out</button>
+        </div>
+      `;
+    }
+    
+    document.getElementById("logoutTrigger").addEventListener("click", () => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("cart");
+      localStorage.removeItem("eventCart");
+      localStorage.removeItem("buyerPhone");
+      localStorage.removeItem("buyerName");
+      window.location.reload();
+    });
+  }
+}
+renderUserAuthArea();
+
+/* HOMEPAGE ADS: now pulled from the admin-managed backend instead of a
+   hardcoded sample list, so ads added/removed in the admin panel show up
+   here automatically at their chosen placement (top or middle). */
+async function loadHomepageAds() {
+  const topAdPlacement = document.getElementById("ad-placement-top");
+  const midAdPlacement = document.getElementById("ad-placement-mid");
+
+  try {
+    const res = await fetch("https://campusduka-api.onrender.com/ads");
+    const ads = await res.json();
+
+    if (!Array.isArray(ads) || ads.length === 0) {
+      if (topAdPlacement) topAdPlacement.innerHTML = "";
+      if (midAdPlacement) midAdPlacement.innerHTML = "";
+      return;
+    }
+
+    const topAds = ads.filter(a => a.placement === "top");
+    const midAds = ads.filter(a => a.placement === "mid");
+
+    if (topAdPlacement) {
+      topAdPlacement.innerHTML = topAds.map(ad => renderAdBanner(ad)).join("");
+    }
+    if (midAdPlacement) {
+      midAdPlacement.innerHTML = midAds.map(ad => renderAdBanner(ad, true)).join("");
+    }
+  } catch (error) {
+    console.error("Could not load homepage ads:", error);
+  }
+}
+
+function renderAdBanner(ad, altStyle) {
+  const bg = altStyle
+    ? "background: linear-gradient(135deg, #111827 0%, #1f2d3d 100%); border-color: #10b981;"
+    : "";
+  const badgeStyle = altStyle ? "background: #10b981;" : "";
+  const btnStyle = altStyle ? "background: #164e63;" : "";
+  const badgeText = altStyle ? "Trending Deal" : "Sponsored";
+
+  return `
+    <div class="campus-ad-banner" style="${bg}">
+      <div class="ad-text-content">
+        <span class="ad-badge" style="${badgeStyle}">${badgeText}</span>
+        <h3>${ad.title}</h3>
+        <p>${ad.description || ''}</p>
+      </div>
+      <a href="${ad.cta_link || '#'}" class="ad-cta-btn" style="${btnStyle}">${ad.cta_text || 'Learn More'}</a>
     </div>
   `;
 }
 
-/* FETCH & ALLOCATE COMPONENT RENDERING */
-async function loadProducts(){
-  try {
-    const response = await fetch("https://campusduka-api.onrender.com/products");
-    const products = await response.json();
-    
-    // Filter and sort by most upcoming events first
-    rawEventsData = products
-      .filter(product => product.category === "Events")
-      .sort((a, b) => {
-        if (a.date && b.date) {
-          return new Date(a.date) - new Date(b.date);
+loadHomepageAds();
+
+/* GLOBAL STORAGE CART INJECTION ROUTINE */
+window.handleCartAddition = function(id, name, price, category, image) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let existingItem = cart.find(item => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: name,
+      price: parseFloat(price),
+      category: category,
+      image: image,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartAndOrderCounts();
+  alert(`🛒 "${name}" added to your cart successfully!`);
+};
+
+/* LOAD FEATURED PRODUCTS WITH FIXES FOR TIMERS & IMAGE TARGETS */
+async function loadFeaturedProducts(isBackground = false){
+  const container = document.getElementById("featuredProducts");
+  try{
+    // FIX: only show the "waking up campus servers" loading state on the
+    // very first load. On background refreshes this used to wipe the whole
+    // section back to a spinner every cycle, which would flash over
+    // products the visitor might be reading — the real content is now only
+    // written once the new data has actually arrived.
+    if (!isBackground) {
+      container.innerHTML = `
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin" style="color:#164e63; margin-bottom: 10px; font-size: 24px;"></i><br>
+          Waking up campus servers... <br>
+          <span style="font-size:12px; color:#64748b; font-weight: normal;">(Free servers spin down when quiet. This can take up to 60 seconds on first load)</span>
+        </div>
+      `;
+    }
+
+    const res = await fetch("https://campusduka-api.onrender.com/products");
+    const products = await res.json();
+
+    // STRICT FEATURED FILTERING: Keep newly approved standard items OUT of Featured Deals
+    const featuredOnly = products.filter(p => p.featured === true || p.featured === "true");
+
+    if(!featuredOnly || featuredOnly.length === 0){
+      container.innerHTML = `<div class="loading">No featured promotions available right now. Check back soon!</div>`;
+      return;
+    }
+
+    container.innerHTML = featuredOnly.map(p => {
+      const pImage = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'images/placeholder.jpg');
+
+      // ACCURATE TIME CALCULATION MATCHING ADMIN ALLOCATED DAYS
+      const allocatedDays = parseInt(p.featured_days) || 1;
+      const createdTime = p.created_at ? new Date(p.created_at).getTime() : Date.now();
+      const expiryTime = createdTime + (allocatedDays * 24 * 60 * 60 * 1000);
+      const remainingMs = expiryTime - Date.now();
+
+      let timerText = "Ends Soon";
+      if (remainingMs > 0) {
+        const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
+        const remainingDays = Math.floor(remainingHours / 24);
+        if (remainingDays > 0) {
+          timerText = `Ends in ${remainingDays}d ${remainingHours % 24}h`;
+        } else {
+          timerText = `Ends in ${remainingHours}h`;
         }
-        return (b._id || b.id || 0) > (a._id || a.id || 0) ? 1 : -1;
-      });
+      } else {
+        timerText = "Ending Shortly";
+      }
 
-    filterEvents();
-  } catch (error) {
-    console.error("Error reading events from backend api:", error);
-    document.getElementById("product-container").innerHTML = `
-      <div class="no-results">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <h3>Connection Error</h3>
-        <p>Could not connect to the campus event pipeline.</p>
-      </div>`;
+      return `
+        <div class="product-card">
+          <span class="urgency-badge">🔥 Featured</span>
+          <img src="${pImage}" alt="${p.name}" onerror="this.src='images/placeholder.jpg'">
+          <div class="product-info">
+            <div class="product-meta-row">
+              <span class="product-category">${p.category || 'General'}</span>
+            </div>
+            <h3>${p.name}</h3>
+            <div class="product-price">KES ${p.price}</div>
+            <p>${p.description || 'Quality product available on campus.'}</p>
+            <div class="countdown-box"><i class="fas fa-clock"></i> ${timerText}</div>
+            <div class="card-actions-wrapper">
+              <button onclick="handleCartAddition(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.category || 'General'}', '${pImage}')" class="card-action-btn cart-btn">
+                <i class="fas fa-cart-plus"></i> Add
+              </button>
+              <button onclick='openQuickView(${JSON.stringify({ id: p.id, name: p.name, description: p.description, price: p.price, category: p.category, image: pImage })})' class="card-action-btn view-btn" title="See full description">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+  } catch(err){
+    console.error("Featured items load error:", err);
+    if (!isBackground) {
+      container.innerHTML = `<div class="loading" style="color:#ef4444;">Unable to load featured deals right now.</div>`;
+    }
   }
 }
 
-/* FILTER AND SEARCH MATRIX */
-function filterEvents() {
-  const query = document.getElementById("eventSearch").value.toLowerCase().trim();
-  const container = document.getElementById("product-container");
-  container.innerHTML = "";
+/* FEATURE: keep the homepage current automatically — new ads or newly
+   featured products added from admin will appear here without the visitor
+   needing to reload the page. 20 seconds keeps things fresh without
+   hammering the backend on every page load across many visitors. */
+loadFeaturedProducts();
+setInterval(() => {
+  loadHomepageAds();
+  loadFeaturedProducts(true);
+}, 20000);
 
-  let filtered = rawEventsData;
+/* FEATURED PRODUCT QUICK VIEW: shows the full, untruncated description
+   right on the homepage instead of sending the buyer to a separate page. */
+function openQuickView(product) {
+  document.getElementById('quickviewImage').src = product.image || 'images/placeholder.jpg';
+  document.getElementById('quickviewImage').alt = product.name;
+  document.getElementById('quickviewCategory').innerText = product.category || 'General';
+  document.getElementById('quickviewName').innerText = product.name;
+  document.getElementById('quickviewPrice').innerText = `KES ${product.price}`;
+  document.getElementById('quickviewDescription').innerText = product.description || 'Quality product available on campus.';
 
-  // Search Filter
-  if (query) {
-    filtered = filtered.filter(event => 
-      event.name.toLowerCase().includes(query) || 
-      (event.description && event.description.toLowerCase().includes(query))
-    );
-  }
+  const addBtn = document.getElementById('quickviewAddBtn');
+  addBtn.onclick = () => {
+    handleCartAddition(product.id, product.name, product.price, product.category || 'General', product.image);
+    closeQuickView();
+  };
 
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div class="no-results">
-        <i class="fa-solid fa-calendar-xmark"></i>
-        <h3>No upcoming events found</h3>
-        <p>Try modifying your search query.</p>
-      </div>`;
-    return;
-  }
-
-  filtered.forEach(product => {
-    container.innerHTML += buildEventCardMarkup(product);
-  });
+  document.getElementById('quickviewOverlay').classList.add('active');
 }
 
-/* BOOK TICKET ACTION - Redirect to event_cart.html */
-function bookTicket(product) {
-  const params = new URLSearchParams({
-    id: product._id || product.id || '',
-    name: product.name || '',
-    price: product.price || 0,
-    image: (product.images && product.images[0]) ? product.images[0] : ''
-  });
-  
-  window.location.href = `event_cart.html?${params.toString()}`;
+function closeQuickView() {
+  document.getElementById('quickviewOverlay').classList.remove('active');
 }
-
-/* IMAGE DISPLAY INTERACTION */
-function viewProduct(images){
-  const modal = document.getElementById("viewModal");
-  const main = document.getElementById("mainImage");
-  const thumbs = document.getElementById("thumbnails");
-  
-  main.src = images[0];
-  thumbs.innerHTML = "";
-
-  images.forEach(img => {
-    let t = document.createElement("img");
-    t.src = img;
-    t.onclick = () => { main.src = img; };
-    thumbs.appendChild(t);
-  });
-
-  modal.style.display = "flex";
-}
-
-// Close modal when clicking outside modal box
-window.onclick = function(event) {
-  const modal = document.getElementById("viewModal");
-  if (event.target === modal) {
-    closeModal();
-  }
-}
-
-function closeModal(){
-  document.getElementById("viewModal").style.display = "none";
-}
-
-document.addEventListener("DOMContentLoaded", loadProducts);
 </script>
-
 </body>
 </html>
