@@ -975,7 +975,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
 <body>
 
 <nav class="navbar">
-  <a href="index.html" class="logo-link">
+  <a href="index2.html" class="logo-link">
     <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
     <span id="logoFallback" style="display:none; color:white; font-size:26px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
   </a>
@@ -987,7 +987,7 @@ button{ font-family:inherit; cursor:pointer; border:none; transition:.3s; }
         <span id="nav-orders-badge" class="nav-badge hidden">0</span>
       </a>
     </li>
-    <li><a href="index.html"><i class="fas fa-house"></i>Home</a></li>
+    <li><a href="index2.html"><i class="fas fa-house"></i>Home</a></li>
     <li><a href="products.html"><i class="fas fa-store"></i>Products</a></li>
     <li><a href="food.html"><i class="fas fa-burger"></i>Fast Foods</a></li>
     <li><a href="events.html"><i class="fas fa-calendar"></i>Events</a></li>
@@ -1229,8 +1229,13 @@ setInterval(changeBackground, 4000);
 /* CART & ORDERS NOTIFICATION BADGES SYNCHRONIZATION */
 function updateCartAndOrderCounts(){
   // Update Cart Count
+  // FIX: tickets booked on events.html now go into eventCart (added to a
+  // cart instead of navigating to event_cart.html), but this badge only
+  // ever counted "cart" — booking a ticket wouldn't move the number at all.
   let cart = JSON.parse(localStorage.getItem('cart'))||[];
-  let count = cart.reduce((sum, item)=>sum + item.quantity, 0);
+  let eventCart = JSON.parse(localStorage.getItem('eventCart'))||[];
+  let count = cart.reduce((sum, item)=>sum + item.quantity, 0)
+            + eventCart.reduce((sum, item)=>sum + item.quantity, 0);
   document.getElementById('cart-count').innerText = count;
 
   // FIX: this used to read localStorage("orders"), a key nothing in the
@@ -1600,4 +1605,3 @@ function closeQuickView() {
 </script>
 </body>
 </html>
- 
