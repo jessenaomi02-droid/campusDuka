@@ -114,6 +114,42 @@ body{
   cursor: pointer;
 }
 
+/* ================= NAV RIGHT / CART ICON ================= */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-link {
+  position: relative;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.cart-link:hover {
+  color: var(--color-accent-blue);
+}
+
+#eventCartCount {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ef4444;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
 /* ================= HERO BANNER ================= */
 .hero{
   height: 300px;
@@ -509,6 +545,13 @@ footer{
     <li><a href="food.html">Fast Foods</a></li>
     <li><a href="events.html" class="active">Events</a></li>
   </ul>
+
+  <div class="nav-right">
+    <a href="event_cart.html" class="cart-link" title="View your ticket cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span id="eventCartCount">0</span>
+    </a>
+  </div>
 </nav>
 
 <!-- ================= HERO BANNER ================= -->
@@ -558,6 +601,15 @@ menuIcon.onclick = () => {
 };
 
 let rawEventsData = [];
+
+/* FEATURE: keeps the navbar cart icon's badge in sync with eventCart,
+   both on load and whenever a ticket is booked. */
+function updateEventCartBadge() {
+  const eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+  const count = eventCart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const badge = document.getElementById('eventCartCount');
+  if (badge) badge.innerText = count;
+}
 
 /* GENERATE TEMPLATE ENGINE */
 function buildEventCardMarkup(product) {
@@ -673,6 +725,7 @@ function bookTicket(product) {
   }
 
   localStorage.setItem('eventCart', JSON.stringify(eventCart));
+  updateEventCartBadge();
   alert(`🎟️ "${product.name}" ticket added to your cart!`);
 }
 
@@ -707,7 +760,10 @@ function closeModal(){
   document.getElementById("viewModal").style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", loadProducts);
+document.addEventListener("DOMContentLoaded", () => {
+  loadProducts();
+  updateEventCartBadge();
+});
 </script>
 
 </body>
