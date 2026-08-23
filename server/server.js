@@ -1459,7 +1459,7 @@ app.get("/admin/revenue-summary", async (req, res) => {
     res.json({
       success: true,
       products_gross: parseFloat(salesResult.rows[0].products_gross),
-      products_commission: parseFloat(salesResult.rows[0].products_commission),
+      products_commission: parseFloat(salesResult.rows[0].products_commission), 
       events_gross: parseFloat(salesResult.rows[0].events_gross),
       events_commission: parseFloat(salesResult.rows[0].events_commission),
       payouts_owed: parseFloat(salesResult.rows[0].payouts_owed),
