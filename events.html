@@ -302,7 +302,7 @@ body{
 .product-card img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* was cover: shows the whole image */
 }
 
 .card-details {
@@ -417,6 +417,9 @@ body{
   padding: 25px;
   width: 100%;
   max-width: 500px;
+  max-height: 90vh;       /* lets long content scroll inside the modal */
+  max-height: 90dvh;
+  overflow-y: auto;
   border-radius: var(--radius-lg);
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -430,6 +433,7 @@ body{
   font-size: 28px;
   cursor: pointer;
   color: var(--text-muted);
+  z-index: 5;
 }
 
 .close-btn:hover {
@@ -438,10 +442,12 @@ body{
 
 #mainImage{
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  height: auto;           /* keeps the photo's natural proportions */
+  max-height: 360px;
+  object-fit: contain;    /* was cover: shows the whole image */
   border-radius: var(--radius-md);
   background: #f1f5f9;
+  display: block;
 }
 
 .thumbnail-container{
@@ -457,12 +463,41 @@ body{
   height: 65px;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  object-fit: cover;
+  object-fit: contain;    /* was cover */
+  background: #f1f5f9;
   border: 2px solid transparent;
 }
 
 .thumbnail-container img:hover {
   border-color: var(--color-slate-teal);
+}
+
+/* Event info inside the modal */
+.modal-info {
+  margin-top: 18px;
+}
+
+.modal-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.modal-price {
+  color: var(--color-slate-teal);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.modal-desc {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;  /* keeps line breaks from the description */
+  word-break: break-word;
 }
 
 /* ================= FOOTER ================= */
@@ -584,6 +619,12 @@ footer{
     <span class="close-btn" onclick="closeModal()">&times;</span>
     <img id="mainImage" alt="Main View Image">
     <div id="thumbnails" class="thumbnail-container"></div>
+
+    <div class="modal-info">
+      <h3 id="modalName"></h3>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+    </div>
   </div>
 </div>
 
@@ -617,20 +658,21 @@ function buildEventCardMarkup(product) {
   const first = imgs[0];
   const isFree = product.price == 0;
   const priceDisplay = isFree ? 'Free' : `KES ${product.price}`;
+  const eventKey = product._id || product.id || '';
   
   return `
     <div class="product-card">
       <div class="event-price-badge ${isFree ? 'free' : ''}">
         ${priceDisplay}
       </div>
-      <div class="img-wrapper" onclick='viewProduct(${JSON.stringify(imgs)})'>
+      <div class="img-wrapper" onclick="viewProduct('${eventKey}')">
         <img src="${first}" alt="${product.name}" loading="lazy">
       </div>
       <div class="card-details">
         <h3>${product.name}</h3>
         <small>${product.description || 'No additional details provided for this event.'}</small>
         <div class="card-actions">
-          <button class="bn-secondary" title="View Photos" onclick='viewProduct(${JSON.stringify(imgs)})'>
+          <button class="bn-secondary" title="View Details" onclick="viewProduct('${eventKey}')">
             <i class="fa-solid fa-images"></i>
           </button>
           <button class="bn" onclick='bookTicket(${JSON.stringify(product)})'>
@@ -729,8 +771,13 @@ function bookTicket(product) {
   alert(`🎟️ "${product.name}" ticket added to your cart!`);
 }
 
-/* IMAGE DISPLAY INTERACTION */
-function viewProduct(images){
+/* EVENT DETAILS + IMAGE DISPLAY INTERACTION */
+function viewProduct(id){
+  const product = rawEventsData.find(p => String(p._id || p.id || '') === String(id));
+  if (!product) return;
+
+  const images = product.images && product.images.length ? product.images : ["images/event1.jpg"];
+
   const modal = document.getElementById("viewModal");
   const main = document.getElementById("mainImage");
   const thumbs = document.getElementById("thumbnails");
@@ -738,12 +785,21 @@ function viewProduct(images){
   main.src = images[0];
   thumbs.innerHTML = "";
 
-  images.forEach(img => {
-    let t = document.createElement("img");
-    t.src = img;
-    t.onclick = () => { main.src = img; };
-    thumbs.appendChild(t);
-  });
+  // Thumbnails only when there is more than one image
+  if (images.length > 1) {
+    images.forEach(img => {
+      let t = document.createElement("img");
+      t.src = img;
+      t.onclick = () => { main.src = img; };
+      thumbs.appendChild(t);
+    });
+  }
+
+  document.getElementById("modalName").textContent = product.name;
+  document.getElementById("modalPrice").textContent =
+    product.price == 0 ? "Free" : "KES " + product.price;
+  document.getElementById("modalDesc").textContent =
+    product.description || "No additional details provided for this event.";
 
   modal.style.display = "flex";
 }
