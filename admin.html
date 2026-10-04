@@ -2,21 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CampusDuka - Admin Panel</title>
     <!-- Tailwind CSS & FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ===== Responsive additions ===== */
+html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{touch-action:manipulation}
+.app-shell{height:100vh;height:100dvh}
+#sidebar{max-width:85vw;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom)}
+header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
+#edit-modal>div,#edit-approved-modal>div,#image-modal>div{max-height:90dvh!important}
+
+/* Bigger tap targets on touch screens */
+@media (pointer:coarse){
+  button,select,.nav-link{min-height:40px}
+  .responsive-table button{min-width:40px}
+}
+
+/* Phones and small tablets: tables become stacked cards */
+@media (max-width:767px){
+  input,select,textarea{font-size:16px!important} /* stops iOS zoom on focus */
+
+  .responsive-table,.responsive-table tbody{display:block}
+  .responsive-table thead{display:none}
+  .responsive-table tr{display:block;margin:.75rem;border:1px solid #e5e7eb;border-radius:.75rem;background:#fff;overflow:hidden}
+  .responsive-table td{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:.6rem .9rem;text-align:right;word-break:break-word;max-width:none;border-bottom:1px solid #f1f5f9}
+  .responsive-table td:last-child{border-bottom:0;justify-content:flex-end}
+  .responsive-table td::before{font-size:.7rem;font-weight:700;text-transform:uppercase;color:#64748b;text-align:left;flex-shrink:0;padding-top:.15rem}
+
+  #pending-products-list td:nth-child(1)::before{content:"Product"}
+  #pending-products-list td:nth-child(2)::before{content:"Seller"}
+  #pending-products-list td:nth-child(3)::before{content:"Price"}
+  #pending-products-list td:nth-child(4)::before{content:"Category"}
+  #pending-products-list td:nth-child(5)::before{content:"Photos"}
+
+  #orders-list td:nth-child(1)::before{content:"Order"}
+  #orders-list td:nth-child(2)::before{content:"Buyer"}
+  #orders-list td:nth-child(3)::before{content:"Item"}
+  #orders-list td:nth-child(4)::before{content:"Pickup"}
+  #orders-list td:nth-child(5)::before{content:"Amount"}
+  #orders-list td:nth-child(6)::before{content:"Delivery"}
+
+  #sellers-list td:nth-child(1)::before{content:"ID"}
+  #sellers-list td:nth-child(2)::before{content:"Store"}
+  #sellers-list td:nth-child(3)::before{content:"Contact"}
+  #sellers-list td:nth-child(4)::before{content:"Plan"}
+  #sellers-list td:nth-child(5)::before{content:"Items";display:block;margin-bottom:.4rem}
+  #sellers-list td:nth-child(5){display:block;text-align:left}
+
+  #users-list td:nth-child(1)::before{content:"ID"}
+  #users-list td:nth-child(2)::before{content:"Name"}
+  #users-list td:nth-child(3)::before{content:"Email"}
+  #users-list td:nth-child(4)::before{content:"Phone"}
+}
+
+/* Small phones: tighter padding, hide decorative banner icons */
+@media (max-width:639px){
+  main .p-6{padding:1rem}
+  main .px-6{padding-left:1rem;padding-right:1rem}
+  main section > div.flex > i.text-4xl,
+  main section > div.flex > i.text-5xl{display:none}
+}
+</style>
 </head>
 <body class="bg-gray-100 font-sans">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="app-shell flex h-screen overflow-hidden">
 
         <!-- Mobile-only dark overlay behind the sidebar drawer -->
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"></div>
 
         <!-- Sidebar -->
-        <div id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto fixed md:static inset-y-0 left-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-300" style="background-color: #0f172a;">
+        <div id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto transform fixed md:static inset-y-0 left-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-300" style="background-color: #0f172a;">
             <div>
                 <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2" style="border-color: #1e293b;">
                     <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
@@ -49,7 +109,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-y-auto">
+        <div class="flex-1 min-w-0 flex flex-col overflow-y-auto">
             
             <header class="bg-white shadow-sm px-4 md:px-8 py-4 flex flex-wrap justify-between items-center gap-3 sticky top-0 z-10">
                 <div class="flex items-center gap-3">
@@ -60,7 +120,7 @@
                 </div>
                 <div class="flex flex-wrap items-center gap-2 md:gap-4">
                     <button id="sound-toggle" onclick="toggleAudio()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition">
-                        <i class="fa-solid fa-volume-high text-indigo-500" id="sound-icon"></i> <span id="sound-label">Sound On</span>
+                        <i class="fa-solid fa-volume-high text-indigo-500" id="sound-icon"></i> <span id="sound-label" class="hidden sm:inline">Sound On</span>
                     </button>
                     <div id="live-indicator" class="hidden sm:flex items-center gap-2 text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -79,7 +139,7 @@
 
                 <!-- Dashboard Section -->
                 <section id="dashboard" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
                             <div class="p-4 bg-yellow-50 text-yellow-600 rounded-lg text-2xl"><i class="fa-solid fa-clock"></i></div>
                             <div>
@@ -140,7 +200,7 @@
 
                     <div>
                         <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">Products & Food (events not included)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                                 <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Money Paid</p>
                                 <h3 id="rev-products-gross" class="text-2xl font-bold text-gray-800 mt-2">KES 0</h3>
@@ -161,7 +221,7 @@
 
                     <div>
                         <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">Events (kept separate from products & food)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                                 <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Money Paid for Events</p>
                                 <h3 id="rev-events-gross" class="text-2xl font-bold text-gray-800 mt-2">KES 0</h3>
@@ -198,7 +258,7 @@
                             <h2 class="font-bold text-gray-800">Products Waiting for Review</h2>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
+                            <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">Product Details</th>
@@ -235,7 +295,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <h3 class="font-bold text-gray-800 mb-4">Feature a Product Yourself</h3>
                             <form id="feature-form" onsubmit="handleFeatureProduct(event)" class="space-y-4">
@@ -271,7 +331,7 @@
                             <h2 class="font-bold text-gray-800">Orders Log & Delivery Status Updates</h2>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
+                            <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">Order ID</th>
@@ -298,7 +358,7 @@
                             <p class="text-xs text-gray-400 mt-1">Every product live on the website right now. Edit or delete any item directly.</p>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
+                            <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">ID</th>
@@ -335,7 +395,7 @@
                         <i class="fa-solid fa-bullhorn text-4xl text-amber-400"></i>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <h3 class="font-bold text-gray-800 mb-4">Add a New Ad</h3>
                             <form id="add-ad-form" onsubmit="handleAddAd(event)" class="space-y-4">
@@ -385,7 +445,7 @@
                             <h2 class="font-bold text-gray-800">Registered Buyers Database</h2>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
+                            <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
                                         <th class="p-4">ID</th>
@@ -489,7 +549,7 @@
     </div>
 
     <!-- Rejection Reason Modal -->
-    <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="rejection-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
             <h3 class="text-lg font-bold text-slate-800 mb-2">Reject Product</h3>
             <textarea id="rejection-reason" rows="4" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mb-4" placeholder="Reason..."></textarea>
@@ -507,7 +567,7 @@
             <div class="flex justify-between items-center mb-4 border-b pb-3 pr-10">
                 <h3 class="text-lg font-bold text-slate-800" id="image-modal-title">Product Image Gallery</h3>
             </div>
-            <div id="image-modal-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div id="image-modal-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             </div>
         </div>
     </div>
@@ -573,6 +633,7 @@
             if (event) event.preventDefault();
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
+            document.querySelector('.flex-1.min-w-0').scrollTo({ top: 0 });
             
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-indigo-600', 'text-white');
