@@ -277,12 +277,13 @@ body{
   width: 100%;
   height: 200px;
   overflow: hidden;
+  background: var(--color-slate-light); /* fills the space around uncropped images */
 }
 
 .product-card img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* was cover: shows the whole image */
 }
 
 .delivery-badge {
@@ -421,6 +422,9 @@ body{
   border-radius: 16px;
   width: 95%;
   max-width: 500px;
+  max-height: 90vh;       /* lets long content scroll inside the modal */
+  max-height: 90dvh;
+  overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
   border: 1px solid var(--color-border-light);
@@ -433,6 +437,7 @@ body{
   font-size: 28px;
   cursor: pointer;
   color: var(--color-text-light);
+  z-index: 5;
 }
 
 .close-btn:hover {
@@ -441,9 +446,12 @@ body{
 
 #mainImage{
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  height: auto;           /* keeps the photo's natural proportions */
+  max-height: 360px;
+  object-fit: contain;    /* was cover: shows the whole image */
   border-radius: 12px;
+  background: var(--color-slate-light);
+  display: block;
 }
 
 .thumbnail-container{
@@ -459,12 +467,40 @@ body{
   height: 65px;
   border-radius: 8px;
   cursor: pointer;
-  object-fit: cover;
+  object-fit: contain;    /* was cover */
+  background: var(--color-slate-light);
   border: 2px solid transparent;
 }
 
 .thumbnail-container img:hover {
   border-color: var(--color-slate-teal);
+}
+
+/* Product info inside the modal */
+.modal-info {
+  margin-top: 18px;
+}
+
+.modal-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 6px;
+}
+
+.modal-price {
+  color: var(--color-slate-teal);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.modal-desc {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;  /* keeps line breaks from the description */
+  word-break: break-word;
 }
 
 /* ================= FOOTER ================= */
@@ -578,6 +614,12 @@ footer{
     <span class="close-btn" onclick="closeModal()">&times;</span>
     <img id="mainImage" alt="Main View">
     <div id="thumbnails" class="thumbnail-container"></div>
+
+    <div class="modal-info">
+      <h3 id="modalName"></h3>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+    </div>
   </div>
 </div>
 
@@ -623,7 +665,12 @@ function addToCart(name, price, image){
 }
 
 /* PRODUCT PREVIEW ENGINE */
-function viewProduct(images){
+function viewProduct(id){
+  const product = fetchedFoodDataset.find(p => p.id === id);
+  if (!product) return;
+
+  const images = product.images && product.images.length ? product.images : ["images/food1.jpg"];
+
   const modal = document.getElementById("viewModal");
   const main = document.getElementById("mainImage");
   const thumbs = document.getElementById("thumbnails");
@@ -631,12 +678,20 @@ function viewProduct(images){
   main.src = images[0];
   thumbs.innerHTML = "";
 
-  images.forEach(img => {
-    let t = document.createElement("img");
-    t.src = img;
-    t.onclick = () => { main.src = img; };
-    thumbs.appendChild(t);
-  });
+  // Thumbnails only when there is more than one image
+  if (images.length > 1) {
+    images.forEach(img => {
+      let t = document.createElement("img");
+      t.src = img;
+      t.onclick = () => { main.src = img; };
+      thumbs.appendChild(t);
+    });
+  }
+
+  document.getElementById("modalName").textContent = product.name;
+  document.getElementById("modalPrice").textContent = "KES " + product.price;
+  document.getElementById("modalDesc").textContent =
+    product.description || "Tasty and freshly-made campus favorite.";
 
   modal.style.display = "flex";
 }
@@ -667,7 +722,7 @@ function buildFoodCardMarkup(product) {
           <i class="fa-solid fa-clock"></i> Delivery in: 15-25 mins
         </div>
         <div class="card-actions">
-          <button class="bn bn-view" onclick='viewProduct(${JSON.stringify(imgs)})'>
+          <button class="bn bn-view" onclick="viewProduct(${product.id})">
             <i class="fa-solid fa-eye"></i> View
           </button>
           <button class="bn bn-add" onclick="addToCart('${product.name.replace(/'/g, "\\'")}', ${product.price}, '${first}')">
