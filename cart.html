@@ -140,6 +140,36 @@ td img{
   white-space:nowrap;
 }
 
+/* ticket quantity control (carried over from the old tickets cart) */
+.qty-control{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty-btn{
+  background:#f1f5f9;
+  border:1px solid #ddd;
+  color:var(--dark);
+  width:28px;
+  height:28px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.qty-btn:hover{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+
+.qty-val{
+  font-weight:bold;
+  min-width:20px;
+  text-align:center;
+}
+
 .btn{
   padding:8px 12px;
   border:none;
@@ -278,11 +308,59 @@ menuIcon.addEventListener("click", ()=>{
   navLinks.classList.toggle("active");
 });
 
+/* ===== BOOKING LINKS =====
+   A link such as cart.html?id=5&name=Fest&price=300&image=... adds that
+   event as a ticket (this is what the old tickets cart page supported). */
+function processIncomingBooking(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const name = params.get("name");
+  const price = parseFloat(params.get("price"));
+  const image = params.get("image");
+
+  if(id && name){
+    let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+    const existingIndex = eventCart.findIndex(item => String(item.id) === String(id));
+
+    if(existingIndex > -1){
+      eventCart[existingIndex].quantity += 1;
+    }else{
+      eventCart.push({
+        id: id,
+        name: name,
+        price: isNaN(price) ? 0 : price,
+        category: "Events",
+        image: image || "images/event1.jpg",
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem("eventCart", JSON.stringify(eventCart));
+    // clean the link so a refresh doesn't add the ticket again
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+/* ===== TICKET QUANTITY (- / +) ===== */
+function updateTicketQty(index, delta){
+  let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+  if(eventCart[index]){
+    eventCart[index].quantity += delta;
+    if(eventCart[index].quantity <= 0){
+      eventCart.splice(index,1);
+    }
+    localStorage.setItem("eventCart", JSON.stringify(eventCart));
+    location.reload();
+  }
+}
+
 /* ===== CART LOGIC =====
    Products live in "cart" and event tickets in "eventCart". This page
    shows both together, so there is only one place to review everything
    before checkout. */
 document.addEventListener("DOMContentLoaded", ()=>{
+  processIncomingBooking();
+
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
   const tbody = document.querySelector("#cart-table tbody");
@@ -311,17 +389,32 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     const isTicket = source === "eventCart" || String(item.category || "").trim().toLowerCase() === "events";
 
+    // tickets keep the - / + quantity control from the old tickets cart;
+    // products keep Delete / Add Similar exactly as before
+    const qtyCell = source === "eventCart"
+      ? `<div class="qty-control">
+           <button class="qty-btn" onclick="updateTicketQty(${index}, -1)">-</button>
+           <span class="qty-val">${item.quantity}</span>
+           <button class="qty-btn" onclick="updateTicketQty(${index}, 1)">+</button>
+         </div>`
+      : `${item.quantity}`;
+
+    const actionCell = source === "eventCart"
+      ? `<button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>`
+      : `<button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>
+         <button class="btn similar-btn" data-source="${source}" data-index="${index}">Add Similar</button>`;
+
+    const priceText = item.price === 0 ? "Free" : `KES ${item.price}`;
+    const totalText = itemTotal === 0 ? "Free" : `KES ${itemTotal}`;
+
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td data-label="Image"><img src="${item.image}"></td>
+      <td data-label="Image"><img src="${item.image || 'images/event1.jpg'}"></td>
       <td data-label="Item">${item.name}${isTicket ? '<span class="ticket-tag">🎟️ Ticket</span>' : ''}</td>
-      <td data-label="Price">KES ${item.price}</td>
-      <td data-label="Qty">${item.quantity}</td>
-      <td data-label="Total">KES ${itemTotal}</td>
-      <td data-label="Actions">
-        <button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>
-        <button class="btn similar-btn" data-source="${source}" data-index="${index}">Add Similar</button>
-      </td>
+      <td data-label="Price">${priceText}</td>
+      <td data-label="Qty">${qtyCell}</td>
+      <td data-label="Total">${totalText}</td>
+      <td data-label="Actions">${actionCell}</td>
     `;
     tbody.appendChild(row);
   });
@@ -360,4 +453,3 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
-
