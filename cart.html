@@ -127,6 +127,19 @@ td img{
   border-radius:10px;
 }
 
+/* small label shown next to event tickets */
+.ticket-tag{
+  display:inline-block;
+  margin-left:6px;
+  background:#e0f2fe;
+  color:#0369a1;
+  font-size:11px;
+  font-weight:bold;
+  padding:2px 8px;
+  border-radius:20px;
+  white-space:nowrap;
+}
+
 .btn{
   padding:8px 12px;
   border:none;
@@ -265,16 +278,26 @@ menuIcon.addEventListener("click", ()=>{
   navLinks.classList.toggle("active");
 });
 
-/* ===== CART LOGIC ===== */
+/* ===== CART LOGIC =====
+   Products live in "cart" and event tickets in "eventCart". This page
+   shows both together, so there is only one place to review everything
+   before checkout. */
 document.addEventListener("DOMContentLoaded", ()=>{
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
   const tbody = document.querySelector("#cart-table tbody");
   const totalDisplay = document.getElementById("cart-total");
   const emptyMsg = document.getElementById("empty-cart");
 
   tbody.innerHTML = "";
 
-  if(cart.length === 0){
+  // one combined list; remember which basket and position each row came from
+  const rows = [
+    ...cart.map((item,index)=>({item, source:"cart", index})),
+    ...eventCart.map((item,index)=>({item, source:"eventCart", index}))
+  ];
+
+  if(rows.length === 0){
     emptyMsg.style.display = "block";
     totalDisplay.style.display = "none";
     return;
@@ -282,20 +305,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   let grandTotal = 0;
 
-  cart.forEach((item,index)=>{
+  rows.forEach(({item, source, index})=>{
     const itemTotal = item.price * item.quantity;
     grandTotal += itemTotal;
+
+    const isTicket = source === "eventCart" || String(item.category || "").trim().toLowerCase() === "events";
 
     const row = document.createElement("tr");
     row.innerHTML = `
       <td data-label="Image"><img src="${item.image}"></td>
-      <td data-label="Item">${item.name}</td>
+      <td data-label="Item">${item.name}${isTicket ? '<span class="ticket-tag">🎟️ Ticket</span>' : ''}</td>
       <td data-label="Price">KES ${item.price}</td>
       <td data-label="Qty">${item.quantity}</td>
       <td data-label="Total">KES ${itemTotal}</td>
       <td data-label="Actions">
-        <button class="btn delete-btn" data-index="${index}">Delete</button>
-        <button class="btn similar-btn" data-index="${index}">Add Similar</button>
+        <button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>
+        <button class="btn similar-btn" data-source="${source}" data-index="${index}">Add Similar</button>
       </td>
     `;
     tbody.appendChild(row);
@@ -305,17 +330,28 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   document.querySelectorAll(".delete-btn").forEach(btn=>{
     btn.onclick = ()=>{
-      cart.splice(btn.dataset.index,1);
-      localStorage.setItem("cart",JSON.stringify(cart));
+      if(btn.dataset.source === "eventCart"){
+        eventCart.splice(btn.dataset.index,1);
+        localStorage.setItem("eventCart",JSON.stringify(eventCart));
+      }else{
+        cart.splice(btn.dataset.index,1);
+        localStorage.setItem("cart",JSON.stringify(cart));
+      }
       location.reload();
     };
   });
 
   document.querySelectorAll(".similar-btn").forEach(btn=>{
     btn.onclick = ()=>{
-      const item = cart[btn.dataset.index];
-      cart.push({...item});
-      localStorage.setItem("cart",JSON.stringify(cart));
+      if(btn.dataset.source === "eventCart"){
+        const item = eventCart[btn.dataset.index];
+        eventCart.push({...item});
+        localStorage.setItem("eventCart",JSON.stringify(eventCart));
+      }else{
+        const item = cart[btn.dataset.index];
+        cart.push({...item});
+        localStorage.setItem("cart",JSON.stringify(cart));
+      }
       location.reload();
     };
   });
