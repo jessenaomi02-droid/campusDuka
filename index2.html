@@ -181,14 +181,27 @@ button{font-family:inherit;cursor:pointer;border:none;transition:.3s}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#10b981;color:#fff;padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:4000;max-width:90%;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(prefers-reduced-motion:reduce){#cartPointer,.cart-link.pulse{animation:none}}
+
+/* GUIDE ARROWS (blinking arrows that point to each icon and button) */
+#hintLayer{position:absolute;top:0;left:0;width:0;height:0;z-index:3500}
+.hint{position:absolute;display:flex;flex-direction:column;align-items:center;pointer-events:none;animation:hintBlink 1s ease-in-out infinite}
+.hint.fixed{position:fixed}
+.hint i{font-size:22px;color:#facc15;filter:drop-shadow(0 0 6px #facc15)}
+.hint span{background:#facc15;color:#1f2d3d;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;margin-top:2px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+@keyframes hintBlink{0%,100%{opacity:1;transform:translateY(0)}50%{opacity:.25;transform:translateY(6px)}}
+#guideBtn{position:fixed;bottom:20px;right:16px;z-index:3600;width:46px;height:46px;border-radius:50%;background:#facc15;color:#1f2d3d;font-size:20px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}
+#guideBtn:hover{transform:scale(1.08)}
+@media(prefers-reduced-motion:reduce){.hint{animation:none}}
 </style>
 </head>
 
 <body>
 
 <div id="pageLoader"><i class="fas fa-spinner fa-spin"></i></div>
-<div id="cartPointer" onclick="location.href='cart.html'"><i class="fas fa-arrow-up"></i><span>Your cart · tap to view</span></div>
+<div id="cartPointer" data-href="cart.html" onclick="location.href=this.dataset.href || 'cart.html'"><i class="fas fa-arrow-up"></i><span>Your cart · tap to view</span></div>
 <div id="toast"></div>
+<div id="hintLayer"></div>
+<button id="guideBtn" type="button" title="Show me around" aria-label="Show me around"><i class="fas fa-question"></i></button>
 
 <nav class="navbar">
   <a href="index2.html" class="logo-link">
@@ -384,10 +397,13 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
 }
-function pointToCart() {
+function pointToCart(isEvent) {
   const cartIcon = document.querySelector(".cart-link");
   const p = document.getElementById("cartPointer");
   if (!cartIcon || !p) return;
+  // Tickets live in their own cart page, products in the normal one
+  p.dataset.href = isEvent ? "event_cart.html" : "cart.html";
+  p.querySelector("span").textContent = isEvent ? "Your tickets · tap to view" : "Your cart · tap to view";
   const r = cartIcon.getBoundingClientRect();
   p.classList.add("show");
   const left = Math.min(Math.max(8, r.left + r.width / 2 - p.offsetWidth / 2), innerWidth - p.offsetWidth - 8);
@@ -402,6 +418,74 @@ function pointToCart() {
     cartIcon.classList.remove("pulse");
   }, 4500);
 }
+
+/* ===== GUIDE ARROWS: blinking arrows that explain every icon and button ===== */
+let guideOn = false, guideTimer;
+
+function guideTargets() {
+  let u = null;
+  try { u = JSON.parse(localStorage.getItem("user")); } catch (e) {}
+  const accountHint = !u
+    ? { sel: ".login-btn", text: "Sign in to order", fixed: true }
+    : (u.role === "seller"
+        ? { sel: ".dashboard-btn", text: "Your seller dashboard", fixed: true }
+        : { sel: "#logoutTrigger", text: "Sign out here", fixed: true });
+  return [
+    { sel: ".nav-orders-link", text: "Track your orders", fixed: true },
+    { sel: '.nav-links a[href="index2.html"]', text: "Back to home", fixed: true },
+    { sel: '.nav-links a[href="products.html"]', text: "Browse products", fixed: true },
+    { sel: '.nav-links a[href="food.html"]', text: "Order fast food", fixed: true },
+    { sel: '.nav-links a[href="events.html"]', text: "Events & tickets", fixed: true },
+    { sel: '.nav-links a[href="contact.html"]', text: "Need help? Contact us", fixed: true },
+    accountHint,
+    { sel: ".cart-link", text: "Your cart", fixed: true },
+    { sel: ".search-bar-container button", text: "Search anything", fixed: false },
+    { sel: ".hero-buttons a.button:not(.secondary)", text: "Start shopping", fixed: false },
+    { sel: ".hero-buttons a.button.secondary", text: "Find campus events", fixed: false },
+    { sel: "#featuredProducts .cart-btn", text: "Add to cart", fixed: false },
+    { sel: "#featuredProducts .view-btn", text: "See full details", fixed: false }
+  ];
+}
+
+function renderGuide() {
+  const layer = document.getElementById("hintLayer");
+  layer.innerHTML = "";
+  let n = 0;
+  guideTargets().forEach(h => {
+    const el = document.querySelector(h.sel);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const d = document.createElement("div");
+    d.className = "hint" + (h.fixed ? " fixed" : "");
+    d.innerHTML = '<i class="fas fa-arrow-up"></i><span>' + h.text + "</span>";
+    layer.appendChild(d);
+    // alternate heights so neighbouring labels in the navbar don't overlap
+    const stagger = h.fixed ? (n++ % 2) * 34 : 0;
+    const left = Math.min(Math.max(6, r.left + r.width / 2 - d.offsetWidth / 2), innerWidth - d.offsetWidth - 6);
+    d.style.left = left + "px";
+    d.style.top = (r.bottom + (h.fixed ? 0 : window.scrollY) + 4 + stagger) + "px";
+  });
+}
+function showGuide(ms) {
+  guideOn = true;
+  renderGuide();
+  clearTimeout(guideTimer);
+  guideTimer = setTimeout(hideGuide, ms || 15000);
+}
+function hideGuide() {
+  guideOn = false;
+  clearTimeout(guideTimer);
+  document.getElementById("hintLayer").innerHTML = "";
+}
+document.getElementById("guideBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  guideOn ? hideGuide() : showGuide(25000);
+});
+// tapping anywhere else closes the guide (scrolling does not)
+document.addEventListener("click", () => { if (guideOn) hideGuide(); });
+window.addEventListener("resize", () => { if (guideOn) renderGuide(); });
+window.addEventListener("load", () => setTimeout(() => showGuide(15000), 800));
 
 /* ===== HERO SLIDESHOW ===== */
 const heroBg = document.getElementById("heroBg");
@@ -443,9 +527,16 @@ function updateCartAndOrderCounts() {
   let count = cart.reduce((s, i) => s + i.quantity, 0) + eventCart.reduce((s, i) => s + i.quantity, 0);
   document.getElementById('cart-count').innerText = count;
 
-  const buyerPhone = localStorage.getItem('buyerPhone');
+  // If only tickets are in the basket, the cart icon should open the tickets page
+  const cartLink = document.querySelector('.cart-link');
+  if (cartLink) cartLink.setAttribute('href', (cart.length === 0 && eventCart.length > 0) ? 'event_cart.html' : 'cart.html');
+
+  // Order notifications are stored per signed-in email (not per payment phone)
+  let sessionUser = null;
+  try { sessionUser = JSON.parse(localStorage.getItem('user')); } catch (e) {}
+  const buyerEmail = sessionUser && sessionUser.email ? String(sessionUser.email).trim().toLowerCase() : '';
   let notifs = [];
-  if (buyerPhone) notifs = JSON.parse(localStorage.getItem(`buyer_notifs_${buyerPhone}`)) || [];
+  if (buyerEmail) notifs = JSON.parse(localStorage.getItem(`buyer_notifs_${buyerEmail}`)) || [];
   const unreadCount = notifs.filter(n => n.unread).length;
   const orderBadge = document.getElementById('nav-orders-badge');
   if (unreadCount > 0) {
@@ -627,23 +718,40 @@ function renderAdBanner(ad, altStyle) {
 }
 loadHomepageAds();
 
-/* ===== ADD TO CART (with loading lock + arrow to cart) ===== */
+/* ===== ADD TO CART (with loading lock + arrow to cart) =====
+   Events are saved to "eventCart" (same format as events.html) so they are
+   treated as tickets at checkout: no delivery fee, no delivery address.
+   Everything else goes to the normal "cart". */
 window.handleCartAddition = function (id, name, price, category, image, btn) {
   if (btn && btn.disabled) return;
   setBusy(btn, true);
   setTimeout(() => {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let existingItem = cart.find(item => item.id === id);
-    if (existingItem) {
-      existingItem.quantity += 1;
+    const isEvent = String(category || "").trim().toLowerCase() === "events";
+
+    if (isEvent) {
+      let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
+      let existingTicket = eventCart.find(item => item.id === id);
+      if (existingTicket) {
+        existingTicket.quantity += 1;
+      } else {
+        eventCart.push({ id, name, price: parseFloat(price) || 0, category: 'Events', image, quantity: 1 });
+      }
+      localStorage.setItem('eventCart', JSON.stringify(eventCart));
     } else {
-      cart.push({ id, name, price: parseFloat(price), category, image, quantity: 1 });
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let existingItem = cart.find(item => item.id === id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ id, name, price: parseFloat(price), category, image, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
     }
-    localStorage.setItem('cart', JSON.stringify(cart));
+
     updateCartAndOrderCounts();
     setBusy(btn, false);
-    showToast(`"${name}" added to your cart`);
-    pointToCart();
+    showToast(isEvent ? `🎟️ "${name}" ticket added` : `"${name}" added to your cart`);
+    pointToCart(isEvent);
   }, 500);
 };
 
@@ -705,6 +813,9 @@ async function loadFeaturedProducts(isBackground = false) {
           </div>
         </div>`;
     }).join("");
+
+    // the cards just appeared: if the guide is showing, add arrows for them
+    if (guideOn) renderGuide();
 
   } catch (err) {
     console.error("Featured items load error:", err);
