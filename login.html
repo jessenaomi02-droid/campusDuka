@@ -3,332 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>CampusDuka | Login</title>
 
-<!-- Fonts & Icons -->
+<!-- Speed: start the logo and API connection immediately -->
+<link rel="preload" as="image" href="images/logo.png" fetchpriority="high">
+<link rel="preconnect" href="https://campusduka-api.onrender.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+body { background: #f8fafc; color: #1f2d3d; display: flex; flex-direction: column; min-height: 100vh; }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.navbar { position: sticky; top: 0; z-index: 1100; display: flex; justify-content: center; align-items: center; padding: 16px 5%; background: #1f2d3d; border-bottom: 2px solid #164e63; box-shadow: 0 4px 15px rgba(0,0,0,0.15); min-height: 77px; }
+.logo-link { display: flex; align-items: center; text-decoration: none; }
+.logo-img { height: 44px; width: auto; display: block; }
 
-body {
-    background: #f8fafc;
-    color: #1f2d3d;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+.main-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 50px 20px; background: radial-gradient(circle at top, rgba(69,137,190,0.08) 0%, transparent 70%); }
+.container { width: 100%; max-width: 420px; background: #fff; padding: 36px 32px; border-radius: 16px; box-shadow: 0 10px 30px rgba(31,45,61,0.08); border: 1px solid #e2e8f0; }
 
-/* NAVBAR - Clean Brand Layout without Nav Links */
+.step-note { text-align: center; margin-bottom: 10px; }
+.step-note span { background: rgba(22,78,99,0.1); color: #164e63; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+.container h2 { text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 22px; }
 
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px 5%;
-    background: #1f2d3d; /* Brand Charcoal Base */
-    border-bottom: 2px solid #164e63; /* Brand Slate Teal */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
+svg.ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.input-wrapper { position: relative; margin-bottom: 16px; }
+.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+.toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; }
+.toggle-password:hover { color: #4589be; }
 
-.logo {
-    color: white;
-    font-size: 26px;
-    font-weight: 700;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+input { width: 100%; padding: 13px 45px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #f8fafc; color: #1f2d3d; transition: border-color .2s, box-shadow .2s, background .2s; }
+input::placeholder { color: #94a3b8; }
+input:focus { background: #fff; border-color: #164e63; box-shadow: 0 0 0 4px rgba(22,78,99,0.15); }
 
-.logo i {
-    color: #4589be; /* Brand Accent Blue */
-}
+button.submit-btn { width: 100%; padding: 14px; background: #164e63; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 14px rgba(22,78,99,0.3); transition: background .2s, transform .2s; }
+button.submit-btn:hover { background: #1f6b88; transform: translateY(-2px); }
+button.submit-btn:active { transform: translateY(0); }
+button.submit-btn:disabled { opacity: .6; cursor: wait; transform: none; }
+button:focus-visible, a:focus-visible { outline: 3px solid #4589be; outline-offset: 2px; }
 
-.logo span {
-    color: #4589be;
-}
+.divider { display: flex; align-items: center; gap: 12px; color: #94a3b8; font-size: 13px; margin: 20px 0; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e2e8f0; }
+#googleBtn { display: flex; justify-content: center; min-height: 44px; }
 
-/* MAIN CONTENT CONTAINER */
+.msg { display: none; padding: 12px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+.msg.info { display: block; background: #e8f3fb; color: #164e63; border: 1px solid #bcd9ee; }
+.msg.error { display: block; background: #fdecec; color: #9b1c1c; border: 1px solid #f5c2c2; }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px 20px;
-    background: radial-gradient(circle at top, rgba(69, 137, 190, 0.08) 0%, transparent 70%);
-}
+.signup { text-align: center; margin-top: 22px; font-size: 14px; color: #64748b; }
+.signup a { color: #4589be; text-decoration: none; font-weight: 700; }
+.signup a:hover { color: #164e63; text-decoration: underline; }
 
-.container {
-    width: 100%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 40px 32px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
-    border: 1px solid #e2e8f0;
-    animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.badge-tag {
-    text-align: center;
-    margin-bottom: 8px;
-}
-
-.badge-tag span {
-    background: rgba(22, 78, 99, 0.1);
-    color: #164e63;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 4px 12px;
-    border-radius: 20px;
-}
-
-.container h2 {
-    text-align: center;
-    color: #1f2d3d;
-    margin: 0 0 25px 0;
-    font-size: 26px;
-    font-weight: 700;
-}
-
-.input-wrapper {
-    position: relative;
-    margin-bottom: 16px;
-}
-
-.input-wrapper .left-icon {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 15px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    cursor: pointer;
-    user-select: none;
-    font-size: 15px;
-}
-
-.toggle-password:hover {
-    color: #4589be;
-}
-
-input {
-    width: 100%;
-    padding: 13px 45px 13px 45px;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    background: #f8fafc;
-    color: #1f2d3d;
-}
-
-input::placeholder {
-    color: #94a3b8;
-}
-
-input:focus {
-    background: #ffffff;
-    border-color: #164e63;
-    box-shadow: 0 0 0 4px rgba(22, 78, 99, 0.15);
-}
-
-button.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: #164e63; /* Brand Slate Teal */
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-    box-shadow: 0 4px 14px rgba(22, 78, 99, 0.3);
-}
-
-button.submit-btn:hover {
-    background: #1f6b88;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(31, 107, 136, 0.35);
-}
-
-button.submit-btn:active {
-    transform: translateY(0);
-}
-
-.signup {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 14px;
-    color: #64748b;
-}
-
-.signup a {
-    color: #4589be;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.signup a:hover {
-    color: #164e63;
-    text-decoration: underline;
-}
-
-footer {
-    background: #1f2d3d;
-    border-top: 1px solid #2d3f55;
-    color: #94a3b8;
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+footer { background: #1f2d3d; border-top: 1px solid #2d3f55; color: #94a3b8; text-align: center; padding: 20px; font-size: 14px; }
 </style>
 </head>
-
 <body>
 
+<!-- Icon sprite (replaces the heavy Font Awesome download) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+</svg>
+
 <nav class="navbar">
-    <a href="index2.html" class="logo">
-        <i class="fa-solid fa-graduation-cap"></i> CampusDuka
+    <a href="index2.html" class="logo-link">
+        <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" height="44" fetchpriority="high" decoding="async" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+        <span id="logoFallback" style="display:none; color:white; font-size:26px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
     </a>
 </nav>
 
 <div class="main-content">
     <div class="container">
-        <div class="badge-tag">
-            <span>Welcome Back</span>
-        </div>
-        <h2>Login</h2>
+        <div class="step-note"><span>Welcome back</span></div>
+        <h2>Log in to your account</h2>
+
+        <div class="msg" id="message" role="alert"></div>
+
+        <div id="googleBtn"></div>
+        <div class="divider">or log in with email</div>
 
         <div class="input-wrapper">
-            <i class="fa-solid fa-envelope left-icon"></i>
-            <input type="email" id="email" placeholder="Email Address">
+            <svg class="ic left-icon"><use href="#i-mail"/></svg>
+            <input type="email" id="email" placeholder="Email address" autocomplete="email">
         </div>
-
         <div class="input-wrapper">
-            <i class="fa-solid fa-lock left-icon"></i>
-            <input type="password" id="password" placeholder="Password">
-            <i class="fa-solid fa-eye toggle-password" id="toggleEye" onclick="togglePasswordVisibility()"></i>
+            <svg class="ic left-icon"><use href="#i-lock"/></svg>
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+            <svg class="ic toggle-password" id="toggleEye" onclick="togglePasswordVisibility()"><use href="#i-eye"/></svg>
         </div>
 
-        <button class="submit-btn" onclick="login()">Login</button>
+        <button class="submit-btn" id="loginBtn" onclick="login()">Log in</button>
 
         <div class="signup">
-            Don't have an account? <a href="signup.html">Sign Up</a>
+            Don't have an account? <a href="signup.html">Sign up</a>
         </div>
     </div>
 </div>
 
-<footer>
-    © 2026 CampusDuka. All rights reserved.
-</footer>
+<footer>© 2026 CampusDuka. All rights reserved.</footer>
 
 <script>
+const API = "https://campusduka-api.onrender.com";
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // same ID as signup.html
+const $ = id => document.getElementById(id);
 
-// Forward the redirect target to Sign Up too, so someone arriving from
-// checkout without an account yet isn't dropped after signing up instead
-// of logging in. Harmless if signup.html doesn't read it.
-(function forwardRedirectToSignup() {
-    const params = new URLSearchParams(window.location.search);
-    const redirectTo = params.get("redirect");
-    if (!redirectTo) return;
-    const signupLink = document.querySelector('.signup a');
-    if (signupLink) {
-        signupLink.href = `signup.html?redirect=${encodeURIComponent(redirectTo)}`;
-    }
+// Wake the server now (free Render servers sleep and are slow on first request)
+fetch(API + "/", { mode: "no-cors" }).catch(() => {});
+
+// Safe redirect target (plain page names only, so it can't point off-site)
+const _r = new URLSearchParams(location.search).get("redirect");
+const REDIRECT = _r && /^[a-zA-Z0-9_-]+\.html$/.test(_r) ? _r : null;
+const AFTER_LOGIN = REDIRECT || "index2.html";
+
+function showMessage(text, type) { const b = $("message"); b.textContent = text; b.className = "msg " + type; }
+
+// Keep the redirect target on the Sign Up link
+if (REDIRECT) document.querySelector(".signup a").href = "signup.html?redirect=" + encodeURIComponent(REDIRECT);
+
+// Coming from sign up: prefill email and explain why they're here
+(function () {
+    const p = new URLSearchParams(location.search);
+    if (p.get("email")) { $("email").value = p.get("email"); $("password").focus(); }
+    if (p.get("exists") === "1") showMessage("You already have an account with this email. Please log in.", "info");
 })();
 
-// Function to toggle password visibility
 function togglePasswordVisibility() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.getElementById("toggleEye");
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
-    } else {
-        passwordInput.type = "password";
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
-    }
+    const input = $("password"), show = input.type === "password";
+    input.type = show ? "text" : "password";
+    $("toggleEye").firstElementChild.setAttribute("href", show ? "#i-eye-off" : "#i-eye");
 }
 
-async function login(){
+function finish(data) {
+    if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
+    if (data.token) localStorage.setItem("token", data.token);
+    window.location = AFTER_LOGIN;
+}
 
-    const userData = {
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
-    };
-
+async function login() {
+    const userData = { email: $("email").value.trim(), password: $("password").value };
+    if (!userData.email || !userData.password) { showMessage("Enter your email and password.", "error"); return; }
+    const btn = $("loginBtn");
+    btn.disabled = true; btn.textContent = "Logging in…";
     try {
-        const response = await fetch("https://campusduka-api.onrender.com/login", {
+        const res = await fetch(API + "/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
         });
+        const data = await res.json();
+        if (data.success) { finish(data); return; }
+        showMessage(data.message || "Login failed. Check your details and try again.", "error");
+    } catch (err) {
+        console.error("Error during login:", err);
+        showMessage("Could not reach the server. Check your connection and try again.", "error");
+    }
+    btn.disabled = false; btn.textContent = "Log in";
+}
+$("password").addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 
-        const data = await response.json();
-
-        alert(data.message);
-
-        if (data.success) {
-            localStorage.setItem("user", JSON.stringify(data.user));
-
-            // FEATURE: send the person back to wherever they came from
-            // (e.g. checkout.html sends people here with
-            // ?redirect=checkout.html so they don't lose their place and
-            // have to re-add cart items) instead of always landing on the
-            // homepage. Only a plain relative page name is accepted —
-            // anything that looks like it points off-site is ignored, so
-            // this can't be turned into an open redirect via a crafted link.
-            const params = new URLSearchParams(window.location.search);
-            const redirectTo = params.get("redirect");
-            const isSafeRedirect = redirectTo
-                && /^[a-zA-Z0-9_-]+\.html$/.test(redirectTo);
-
-            window.location = isSafeRedirect ? redirectTo : "index2.html";
-        }
-    } catch (error) {
-        console.error("Error during login:", error);
+async function handleGoogle(response) {
+    try {
+        const res = await fetch(API + "/google-auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ credential: response.credential })
+        });
+        const data = await res.json();
+        if (!res.ok) { showMessage(data.message || "Google login failed. Please try again.", "error"); return; }
+        finish(data);
+    } catch (err) {
+        console.error("Google auth error:", err);
+        showMessage("Could not reach the server. Check your connection and try again.", "error");
     }
 }
-</script>
 
+window.addEventListener("load", () => {
+    const wait = setInterval(() => {
+        if (window.google && google.accounts) {
+            clearInterval(wait);
+            google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogle });
+            google.accounts.id.renderButton($("googleBtn"), { theme: "outline", size: "large", text: "signin_with", width: Math.min(356, $("googleBtn").offsetWidth || 356) });
+        }
+    }, 200);
+    setTimeout(() => clearInterval(wait), 10000);
+});
+</script>
 </body>
 </html>
