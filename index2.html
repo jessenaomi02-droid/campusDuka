@@ -401,9 +401,9 @@ function pointToCart(isEvent) {
   const cartIcon = document.querySelector(".cart-link");
   const p = document.getElementById("cartPointer");
   if (!cartIcon || !p) return;
-  // Tickets live in their own cart page, products in the normal one
-  p.dataset.href = isEvent ? "event_cart.html" : "cart.html";
-  p.querySelector("span").textContent = isEvent ? "Your tickets · tap to view" : "Your cart · tap to view";
+  // Products and tickets now share one cart page
+  p.dataset.href = "cart.html";
+  p.querySelector("span").textContent = isEvent ? "Your tickets are in your cart · tap to view" : "Your cart · tap to view";
   const r = cartIcon.getBoundingClientRect();
   p.classList.add("show");
   const left = Math.min(Math.max(8, r.left + r.width / 2 - p.offsetWidth / 2), innerWidth - p.offsetWidth - 8);
@@ -526,10 +526,6 @@ function updateCartAndOrderCounts() {
   let eventCart = JSON.parse(localStorage.getItem('eventCart')) || [];
   let count = cart.reduce((s, i) => s + i.quantity, 0) + eventCart.reduce((s, i) => s + i.quantity, 0);
   document.getElementById('cart-count').innerText = count;
-
-  // If only tickets are in the basket, the cart icon should open the tickets page
-  const cartLink = document.querySelector('.cart-link');
-  if (cartLink) cartLink.setAttribute('href', (cart.length === 0 && eventCart.length > 0) ? 'event_cart.html' : 'cart.html');
 
   // Order notifications are stored per signed-in email (not per payment phone)
   let sessionUser = null;
