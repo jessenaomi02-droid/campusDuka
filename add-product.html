@@ -11,408 +11,110 @@
 
 <style>
 :root {
-  --color-charcoal: #1f2d3d;
-  --color-slate-teal: #164e63;
-  --color-medium-teal: #1f6b88;
-  --color-accent-blue: #4589be;
-  
-  --primary: #164e63;
-  --primary-hover: #1f6b88;
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --text-main: #1f2d3d;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --radius: 16px;
+  --color-charcoal: #1f2d3d; --color-slate-teal: #164e63; --color-medium-teal: #1f6b88; --color-accent-blue: #4589be;
+  --primary: #164e63; --primary-hover: #1f6b88; --bg: #f8fafc; --card: #ffffff;
+  --text-main: #1f2d3d; --text-muted: #64748b; --border: #e2e8f0; --radius: 16px;
 }
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text-main);
-  min-height: 100vh;
-  padding-bottom: 50px;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { background: var(--bg); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; }
 
 /* NAVBAR */
-.navbar {
-  background: var(--color-charcoal);
-  padding: 14px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid var(--color-slate-teal);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: 800;
-  color: #ffffff;
-  text-decoration: none;
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.navbar { background: var(--color-charcoal); padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--color-slate-teal); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+.logo { font-size: 22px; font-weight: 800; color: #ffffff; text-decoration: none; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
 
 /* CONTAINER */
-.container {
-  width: 90%;
-  max-width: 650px;
-  margin: 40px auto;
-  background: var(--card);
-  padding: 35px;
-  border-radius: var(--radius);
-  box-shadow: 0 10px 25px rgba(31, 45, 61, 0.05);
-  border: 1px solid var(--border);
-}
+.container { width: 90%; max-width: 650px; margin: 40px auto; background: var(--card); padding: 35px; border-radius: var(--radius); box-shadow: 0 10px 25px rgba(31, 45, 61, 0.05); border: 1px solid var(--border); }
+h2 { text-align: center; color: var(--color-slate-teal); margin-bottom: 24px; font-weight: 800; font-size: 26px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.form-group { margin-bottom: 22px; }
+label { display: block; font-size: 14px; font-weight: 700; color: var(--color-charcoal); margin-bottom: 8px; }
+.input-wrapper { position: relative; }
+.input-wrapper i.field-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-slate-teal); font-size: 16px; }
+input, textarea, select { width: 100%; padding: 14px 16px 14px 44px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-weight: 500; background: #f8fafc; color: var(--text-main); outline: none; transition: all 0.2s ease; }
+textarea { height: 110px; resize: none; padding-left: 44px; }
+.textarea-icon { top: 22px !important; transform: none !important; }
+input:focus, textarea:focus, select:focus { border-color: var(--color-slate-teal); background: #ffffff; box-shadow: 0 0 0 4px rgba(22, 78, 99, 0.12); }
 
-h2 {
-  text-align: center;
-  color: var(--color-slate-teal);
-  margin-bottom: 24px;
-  font-weight: 800;
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.form-group {
-  margin-bottom: 22px;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-charcoal);
-  margin-bottom: 8px;
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.input-wrapper i.field-icon {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-slate-teal);
-  font-size: 16px;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 14px 16px 14px 44px;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  background: #f8fafc;
-  color: var(--text-main);
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-textarea {
-  height: 110px;
-  resize: none;
-  padding-left: 44px;
-}
-
-.textarea-icon {
-  top: 22px !important;
-  transform: none !important;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--color-slate-teal);
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(22, 78, 99, 0.12);
-}
-
-/* VISUAL CATEGORY SELECTOR GRID */
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 10px;
-  margin-top: 6px;
-}
-
-.category-card {
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 8px;
-  text-align: center;
-  background: #f8fafc;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.category-card i {
-  font-size: 20px;
-  color: var(--color-slate-teal);
-}
-
-.category-card span {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-charcoal);
-}
-
-.category-card:hover {
-  border-color: var(--color-medium-teal);
-  background: #ffffff;
-}
-
-.category-card.selected {
-  border-color: var(--color-slate-teal);
-  background: rgba(22, 78, 99, 0.08);
-  box-shadow: 0 0 0 2px var(--color-slate-teal);
-}
-
-.category-card.selected i,
-.category-card.selected span {
-  color: var(--color-slate-teal);
-  font-weight: 700;
-}
+/* CATEGORY GRID */
+.category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 6px; }
+.category-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; background: #f8fafc; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.category-card i { font-size: 20px; color: var(--color-slate-teal); }
+.category-card span { font-size: 12px; font-weight: 600; color: var(--color-charcoal); }
+.category-card:hover { border-color: var(--color-medium-teal); background: #ffffff; }
+.category-card.selected { border-color: var(--color-slate-teal); background: rgba(22, 78, 99, 0.08); box-shadow: 0 0 0 2px var(--color-slate-teal); }
+.category-card.selected i, .category-card.selected span { color: var(--color-slate-teal); font-weight: 700; }
+/* NEW: tags that show which categories need sizes / colours */
+.tag-row { display: flex; gap: 4px; min-height: 16px; justify-content: center; }
+.category-card .tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 20px; background: rgba(69,137,190,0.15); color: var(--color-medium-teal); }
+.category-card .tag.req { background: var(--color-slate-teal); color: #fff; }
 
 /* PRICE FIELD */
-.price-container {
-  position: relative;
-}
+.price-container { position: relative; }
+.price-container span.currency { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--color-slate-teal); font-size: 14px; }
+.price-container input { padding-left: 55px; }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.row-2 input, .row-2 select { padding-left: 16px; }
+@media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
 
-.price-container span.currency {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: 700;
-  color: var(--color-slate-teal);
-  font-size: 14px;
-}
+/* NEW: VARIANT BOXES (SIZES & COLOURS) */
+.variant-box { display: none; background: #f8fafc; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 22px; }
+.variant-box.show { display: block; }
+.variant-box label i { color: var(--color-slate-teal); margin-right: 6px; }
+.variant-box .hint { font-size: 12px; color: var(--text-muted); font-weight: 500; margin: -4px 0 12px; }
+.req-star { color: #dc2626; }
+.size-type-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.pill { padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--border); background: #fff; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--color-charcoal); }
+.pill.active { background: var(--color-charcoal); border-color: var(--color-charcoal); color: #fff; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-width: 46px; text-align: center; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; font-size: 13px; font-weight: 700; cursor: pointer; user-select: none; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+.chip:hover { border-color: var(--color-medium-teal); }
+.chip.on { background: var(--color-slate-teal); border-color: var(--color-slate-teal); color: #fff; }
+.chip .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.25); flex-shrink: 0; }
+.chip.on .dot { border-color: #fff; }
+.chip .x { font-size: 11px; opacity: 0.7; }
+.add-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+.add-row input[type="text"] { padding: 10px 12px; flex: 1; }
+.add-row input[type="color"] { width: 46px; height: 42px; padding: 3px; cursor: pointer; flex: none; }
+.add-row button { padding: 10px 16px; border: none; background: var(--color-charcoal); color: #fff; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; }
+.add-row button:hover { background: var(--color-slate-teal); }
+.field-error { border-color: #dc2626 !important; }
+.err-msg { color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 8px; display: none; }
 
-.price-container input {
-  padding-left: 55px;
-}
+/* UPLOAD */
+.upload-zone { border: 2px dashed var(--border); padding: 25px; border-radius: 12px; text-align: center; background: #f8fafc; cursor: pointer; transition: all 0.2s ease; }
+.upload-zone:hover { border-color: var(--color-slate-teal); background: rgba(22, 78, 99, 0.02); }
+.upload-zone i { font-size: 32px; color: var(--color-slate-teal); margin-bottom: 8px; }
+.upload-zone p { margin: 0; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+#imageUpload { display: none; }
+.preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+.preview-wrapper { position: relative; aspect-ratio: 4/3; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.preview-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-/* CUSTOM UPLOAD DROPZONE & GRID */
-.upload-zone {
-  border: 2px dashed var(--border);
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
-  background: #f8fafc;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+/* BUTTONS */
+.btn-group { display: flex; gap: 12px; margin-top: 15px; }
+.btn-secondary { flex: 1; padding: 14px; background: #f1f5f9; color: var(--color-charcoal); border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-primary { flex: 2; padding: 14px; background: var(--color-slate-teal); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(22, 78, 99, 0.25); }
+.btn-primary:hover { background: var(--color-medium-teal); transform: translateY(-1px); }
+.btn-primary:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
 
-.upload-zone:hover {
-  border-color: var(--color-slate-teal);
-  background: rgba(22, 78, 99, 0.02);
-}
-
-.upload-zone i {
-  font-size: 32px;
-  color: var(--color-slate-teal);
-  margin-bottom: 8px;
-}
-
-.upload-zone p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-#imageUpload {
-  display: none;
-}
-
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.preview-wrapper {
-  position: relative;
-  aspect-ratio: 4/3;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.preview-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ACTION BUTTONS */
-.btn-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.btn-secondary {
-  flex: 1;
-  padding: 14px;
-  background: #f1f5f9;
-  color: var(--color-charcoal);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-secondary:hover {
-  background: #e2e8f0;
-}
-
-.btn-primary {
-  flex: 2;
-  padding: 14px;
-  background: var(--color-slate-teal);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(22, 78, 99, 0.25);
-}
-
-.btn-primary:hover {
-  background: var(--color-medium-teal);
-  transform: translateY(-1px);
-}
-
-.btn-primary:disabled {
-  background: #cbd5e1;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* MODAL: LIVE PREVIEW */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.modal-card {
-  background: #ffffff;
-  border-radius: var(--radius);
-  max-width: 420px;
-  width: 100%;
-  padding: 24px;
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.modal-header h3 {
-  font-size: 18px;
-  color: var(--color-slate-teal);
-}
-
-.preview-card-box {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: #ffffff;
-}
-
-.preview-card-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  background: #f1f5f9;
-}
-
-.preview-card-body {
-  padding: 14px;
-}
-
-.preview-badge {
-  display: inline-block;
-  background: rgba(22, 78, 99, 0.1);
-  color: var(--color-slate-teal);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 6px;
-  margin-bottom: 6px;
-}
-
-.preview-card-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.preview-card-price {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--color-slate-teal);
-  margin-bottom: 8px;
-}
-
-.preview-card-desc {
-  font-size: 12px;
-  color: var(--text-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+/* MODAL */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+.modal-card { background: #ffffff; border-radius: var(--radius); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-header h3 { font-size: 18px; color: var(--color-slate-teal); }
+.preview-card-box { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #ffffff; }
+.preview-card-img { width: 100%; height: 180px; object-fit: cover; background: #f1f5f9; }
+.preview-card-body { padding: 14px; }
+.preview-badge { display: inline-block; background: rgba(22, 78, 99, 0.1); color: var(--color-slate-teal); font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; margin-bottom: 6px; margin-right: 4px; }
+.preview-badge.cond { background: rgba(69,137,190,0.15); color: var(--color-medium-teal); }
+.preview-card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.preview-card-price { font-size: 16px; font-weight: 800; color: var(--color-slate-teal); margin-bottom: 8px; }
+.preview-card-desc { font-size: 12px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.preview-variants { margin-top: 12px; }
+.preview-variants .pv-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.preview-variants .chip { padding: 4px 10px; min-width: 0; font-size: 12px; cursor: default; }
+.preview-variants .chip .dot { width: 12px; height: 12px; }
+.preview-variants .chip-row { gap: 6px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -441,7 +143,7 @@ input:focus, textarea:focus, select:focus {
       </div>
     </div>
 
-    <!-- CATEGORY CLASSIFICATION GRID WITH ICONS -->
+    <!-- CATEGORY GRID -->
     <div class="form-group">
       <label>Category Classification</label>
       <input type="hidden" id="category" value="Electronics">
@@ -494,12 +196,53 @@ input:focus, textarea:focus, select:focus {
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="price">Price</label>
-      <div class="price-container">
-        <span class="currency">KES</span>
-        <input id="price" type="number" placeholder="0.00">
+    <!-- NEW: SIZES (shown only for categories that use sizes) -->
+    <div class="variant-box" id="sizeBox">
+      <label><i class="fa-solid fa-ruler"></i> Available Sizes <span class="req-star" id="sizeReq">*</span></label>
+      <p class="hint">Tap every size you have in stock.</p>
+      <div class="size-type-row" id="sizeTypeRow"></div>
+      <div class="chip-row" id="sizeChips"></div>
+      <div class="add-row">
+        <input type="text" id="customSize" placeholder="Custom size (e.g., 3XL, Age 10)" maxlength="15" onkeydown="if(event.key==='Enter'){addCustomSize();}">
+        <button type="button" onclick="addCustomSize()"><i class="fa-solid fa-plus"></i> Add</button>
       </div>
+      <div class="err-msg" id="sizeErr">Please select at least one size.</div>
+    </div>
+
+    <!-- NEW: COLOURS (shown only for categories that use colours) -->
+    <div class="variant-box" id="colorBox">
+      <label><i class="fa-solid fa-palette"></i> Available Colours <span style="font-weight:500;color:var(--text-muted)">(optional)</span></label>
+      <p class="hint">Pick the colours you have. Don't see yours? Add a custom one below.</p>
+      <div class="chip-row" id="colorPresets"></div>
+      <div class="add-row">
+        <input type="color" id="customColorHex" value="#4589be" title="Pick a colour">
+        <input type="text" id="customColorName" placeholder="Colour name (e.g., Teal)" maxlength="20" onkeydown="if(event.key==='Enter'){addCustomColor();}">
+        <button type="button" onclick="addCustomColor()"><i class="fa-solid fa-plus"></i> Add</button>
+      </div>
+    </div>
+
+    <div class="row-2 form-group">
+      <div>
+        <label for="price">Price</label>
+        <div class="price-container">
+          <span class="currency">KES</span>
+          <input id="price" type="number" min="0" placeholder="0.00">
+        </div>
+      </div>
+      <div>
+        <label for="stock">Quantity in Stock</label>
+        <input id="stock" type="number" min="1" value="1" placeholder="1">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="condition">Condition</label>
+      <select id="condition" style="padding-left:16px;">
+        <option value="New">Brand New</option>
+        <option value="Like New">Like New</option>
+        <option value="Used - Good">Used - Good</option>
+        <option value="Used - Fair">Used - Fair</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -518,8 +261,6 @@ input:focus, textarea:focus, select:focus {
         <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Supports PNG, JPG (Maximum 2 items)</p>
       </div>
       <input type="file" id="imageUpload" multiple accept="image/*" onchange="handleImagePreview(this)">
-      
-      <!-- Interactive Grid Box Preview -->
       <div class="preview-grid" id="previewGrid"></div>
     </div>
 
@@ -533,7 +274,7 @@ input:focus, textarea:focus, select:focus {
     </div>
   </div>
 
-  <!-- FEATURE: LIVE PREVIEW MODAL -->
+  <!-- LIVE PREVIEW MODAL -->
   <div class="modal-overlay" id="previewModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -544,10 +285,11 @@ input:focus, textarea:focus, select:focus {
       <div class="preview-card-box">
         <img id="modalPreviewImg" src="https://via.placeholder.com/400x300?text=No+Image+Uploaded" class="preview-card-img" alt="Item preview">
         <div class="preview-card-body">
-          <span class="preview-badge" id="modalCategoryBadge">Electronics</span>
+          <span class="preview-badge" id="modalCategoryBadge">Electronics</span><span class="preview-badge cond" id="modalCondBadge">Brand New</span>
           <div class="preview-card-title" id="modalTitle">Product Title</div>
           <div class="preview-card-price" id="modalPrice">KES 0.00</div>
           <div class="preview-card-desc" id="modalDesc">Product description will appear here...</div>
+          <div class="preview-variants" id="modalVariants"></div>
         </div>
       </div>
 
@@ -560,15 +302,150 @@ input:focus, textarea:focus, select:focus {
 <script>
 let localDataUrls = [];
 
+/* ---------- CATEGORY RULES ----------
+   sizes: show the size picker | sizesRequired: seller must pick a size | colors: show colour picker
+   Edit this table to change which categories ask for what. */
+const CATEGORY_CONFIG = {
+  'Electronics':       { colors: true },
+  'Clothes':           { sizes: true, sizesRequired: true, colors: true },
+  'Household':         { colors: true },
+  'Study Materials':   {},
+  'Beauty & Care':     { colors: true },
+  'Sports & Outdoors': { sizes: true, colors: true },
+  'Gaming':            { colors: true },
+  'Tools & Equipment': {},
+  'Food':              {},
+  'Events':            {},
+  'Others':            { colors: true }
+};
+
+const SIZE_SETS = {
+  'Clothing':  ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+  'Shoes':     ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'],
+  'Waist':     ['28', '30', '32', '34', '36', '38', '40'],
+  'Free size': ['Free size']
+};
+
+const PRESET_COLORS = [
+  ['Black', '#111111'], ['White', '#ffffff'], ['Grey', '#9ca3af'], ['Red', '#dc2626'],
+  ['Blue', '#2563eb'], ['Navy', '#1e3a5f'], ['Green', '#16a34a'], ['Yellow', '#facc15'],
+  ['Orange', '#f97316'], ['Pink', '#ec4899'], ['Purple', '#7c3aed'], ['Brown', '#78350f'],
+  ['Beige', '#d6c3a3']
+];
+
+let selectedSizes = [];            // e.g. ['M','L']
+let selectedColors = new Map();    // name -> hex
+let activeSizeType = 'Clothing';
+
+// Tag each category card with "Sizes" / "Colours" so sellers can tell them apart
+function decorateCategoryCards() {
+  document.querySelectorAll('.category-card').forEach(card => {
+    const cfg = CATEGORY_CONFIG[card.querySelector('span').textContent.trim()] || {};
+    const row = document.createElement('div');
+    row.className = 'tag-row';
+    if (cfg.sizes) row.innerHTML += `<small class="tag${cfg.sizesRequired ? ' req' : ''}">Sizes</small>`;
+    if (cfg.colors) row.innerHTML += `<small class="tag">Colours</small>`;
+    card.appendChild(row);
+  });
+}
+
 // VISUAL CATEGORY SELECTOR
 function selectCategory(categoryName, element) {
   document.getElementById("category").value = categoryName;
-  const cards = document.querySelectorAll('.category-card');
-  cards.forEach(card => card.classList.remove('selected'));
+  document.querySelectorAll('.category-card').forEach(card => card.classList.remove('selected'));
   element.classList.add('selected');
+  applyCategoryRules();
 }
 
-// DYNAMIC IMAGE PREVIEW SYSTEM (MAX 2)
+function applyCategoryRules() {
+  const cfg = CATEGORY_CONFIG[document.getElementById("category").value] || {};
+  document.getElementById("sizeBox").classList.toggle("show", !!cfg.sizes);
+  document.getElementById("colorBox").classList.toggle("show", !!cfg.colors);
+  document.getElementById("sizeReq").style.display = cfg.sizesRequired ? "inline" : "none";
+  // Drop selections that no longer apply so they aren't submitted by accident
+  if (!cfg.sizes) selectedSizes = [];
+  if (!cfg.colors) selectedColors.clear();
+  renderSizes();
+  renderColors();
+}
+
+/* ---------- SIZES ---------- */
+function renderSizeTypes() {
+  const row = document.getElementById("sizeTypeRow");
+  row.innerHTML = "";
+  Object.keys(SIZE_SETS).forEach(type => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "pill" + (type === activeSizeType ? " active" : "");
+    b.textContent = type === 'Clothing' ? 'Clothing (S-XL)' : type === 'Shoes' ? 'Shoes (EU)' : type === 'Waist' ? 'Waist / Trousers' : 'Free size';
+    b.onclick = () => { activeSizeType = type; selectedSizes = []; renderSizeTypes(); renderSizes(); };
+    row.appendChild(b);
+  });
+}
+
+function renderSizes() {
+  const wrap = document.getElementById("sizeChips");
+  wrap.innerHTML = "";
+  const all = [...SIZE_SETS[activeSizeType]];
+  selectedSizes.forEach(s => { if (!all.includes(s)) all.push(s); }); // keep custom sizes visible
+  all.forEach(size => {
+    const chip = document.createElement("div");
+    const on = selectedSizes.includes(size);
+    chip.className = "chip" + (on ? " on" : "");
+    chip.textContent = size;
+    chip.onclick = () => toggleSize(size);
+    wrap.appendChild(chip);
+  });
+  document.getElementById("sizeErr").style.display = "none";
+}
+
+function toggleSize(size) {
+  const i = selectedSizes.indexOf(size);
+  if (i > -1) selectedSizes.splice(i, 1); else selectedSizes.push(size);
+  renderSizes();
+}
+
+function addCustomSize() {
+  const input = document.getElementById("customSize");
+  const val = input.value.trim();
+  if (val && !selectedSizes.some(s => s.toLowerCase() === val.toLowerCase())) selectedSizes.push(val);
+  input.value = "";
+  renderSizes();
+}
+
+/* ---------- COLOURS ---------- */
+function renderColors() {
+  const wrap = document.getElementById("colorPresets");
+  wrap.innerHTML = "";
+  const list = [...PRESET_COLORS];
+  selectedColors.forEach((hex, name) => { if (!list.some(c => c[0] === name)) list.push([name, hex]); });
+  list.forEach(([name, hex]) => {
+    const chip = document.createElement("div");
+    chip.className = "chip" + (selectedColors.has(name) ? " on" : "");
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = hex;
+    chip.appendChild(dot);
+    chip.appendChild(document.createTextNode(name));
+    chip.onclick = () => {
+      if (selectedColors.has(name)) selectedColors.delete(name); else selectedColors.set(name, hex);
+      renderColors();
+    };
+    wrap.appendChild(chip);
+  });
+}
+
+function addCustomColor() {
+  const nameInput = document.getElementById("customColorName");
+  const name = nameInput.value.trim();
+  if (!name) { nameInput.focus(); return; }
+  const key = name.charAt(0).toUpperCase() + name.slice(1);
+  selectedColors.set(key, document.getElementById("customColorHex").value);
+  nameInput.value = "";
+  renderColors();
+}
+
+/* ---------- IMAGE PREVIEW (MAX 2) ---------- */
 function handleImagePreview(input) {
   const grid = document.getElementById("previewGrid");
   grid.innerHTML = "";
@@ -576,7 +453,6 @@ function handleImagePreview(input) {
   
   if (input.files && input.files.length) {
     const filesArray = Array.from(input.files).slice(0, 2);
-    
     filesArray.forEach(file => {
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -591,7 +467,7 @@ function handleImagePreview(input) {
   }
 }
 
-// COOL FEATURE: LIVE INSTANT PREVIEW MODAL
+/* ---------- LIVE PREVIEW MODAL ---------- */
 function openPreviewModal() {
   const nameVal = document.getElementById("name").value.trim() || "Sample Product Title";
   const priceVal = document.getElementById("price").value.trim() || "0.00";
@@ -602,14 +478,36 @@ function openPreviewModal() {
   document.getElementById("modalPrice").textContent = `KES ${parseFloat(priceVal || 0).toLocaleString()}`;
   document.getElementById("modalDesc").textContent = descVal;
   document.getElementById("modalCategoryBadge").textContent = catVal;
+  document.getElementById("modalCondBadge").textContent = document.getElementById("condition").value;
 
-  const modalImg = document.getElementById("modalPreviewImg");
-  if (localDataUrls.length > 0) {
-    modalImg.src = localDataUrls[0];
-  } else {
-    modalImg.src = "https://via.placeholder.com/400x300?text=No+Image+Uploaded";
+  // Sizes & colours as the buyer will see them
+  const pv = document.getElementById("modalVariants");
+  pv.innerHTML = "";
+  if (selectedSizes.length) {
+    pv.innerHTML += `<div class="pv-label">Sizes</div>`;
+    const row = document.createElement("div");
+    row.className = "chip-row";
+    selectedSizes.forEach(s => { const c = document.createElement("div"); c.className = "chip"; c.textContent = s; row.appendChild(c); });
+    pv.appendChild(row);
+  }
+  if (selectedColors.size) {
+    pv.innerHTML += `<div class="pv-label">Colours</div>`;
+    const row = document.createElement("div");
+    row.className = "chip-row";
+    selectedColors.forEach((hex, name) => {
+      const c = document.createElement("div");
+      c.className = "chip";
+      const dot = document.createElement("span");
+      dot.className = "dot";
+      dot.style.background = hex;
+      c.appendChild(dot);
+      c.appendChild(document.createTextNode(name));
+      row.appendChild(c);
+    });
+    pv.appendChild(row);
   }
 
+  document.getElementById("modalPreviewImg").src = localDataUrls.length > 0 ? localDataUrls[0] : "https://via.placeholder.com/400x300?text=No+Image+Uploaded";
   document.getElementById("previewModal").style.display = "flex";
 }
 
@@ -617,23 +515,32 @@ function closePreviewModal() {
   document.getElementById("previewModal").style.display = "none";
 }
 
-// PROCESSING EXECUTION LOOP
+/* ---------- SUBMIT ---------- */
 async function addProduct() {
   const submitBtn = document.getElementById("submitBtn");
   let inputFiles = document.getElementById("imageUpload").files;
   let images = [];
 
-  // Frontend Validation Check
   const nameVal = document.getElementById("name").value.trim();
   const priceVal = document.getElementById("price").value.trim();
   const descVal = document.getElementById("description").value.trim();
+  const stockVal = parseInt(document.getElementById("stock").value, 10);
+  const cfg = CATEGORY_CONFIG[document.getElementById("category").value] || {};
 
   if(!nameVal || !priceVal || !descVal) {
     alert("Please fill in all details before proceeding.");
     return;
   }
+  if (!stockVal || stockVal < 1) {
+    alert("Please enter a quantity of at least 1.");
+    return;
+  }
+  if (cfg.sizesRequired && selectedSizes.length === 0) {
+    document.getElementById("sizeErr").style.display = "block";
+    document.getElementById("sizeBox").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
 
-  // Toggle Loading State Animation
   submitBtn.disabled = true;
   submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing Assets...`;
 
@@ -668,7 +575,13 @@ async function addProduct() {
       price: priceVal,
       images: images,
       category: document.getElementById("category").value,
-      seller_id: seller.id
+      seller_id: seller.id,
+      stock: stockVal,
+      condition: document.getElementById("condition").value,
+      // Only sent when the category uses them (empty array otherwise)
+      sizes: cfg.sizes ? selectedSizes : [],
+      size_type: cfg.sizes ? activeSizeType : null,
+      colors: cfg.colors ? Array.from(selectedColors, ([name, hex]) => ({ name, hex })) : []
     };
 
     const response = await fetch("https://campusduka-api.onrender.com/add-product", {
@@ -695,6 +608,11 @@ async function addProduct() {
     submitBtn.innerHTML = `<i class="fa-solid fa-plus"></i> Submit for Review`;
   }
 }
+
+// INIT
+decorateCategoryCards();
+renderSizeTypes();
+applyCategoryRules();
 </script>
 </body>
 </html>
