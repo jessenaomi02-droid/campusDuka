@@ -3,313 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>CampusDuka | Sign Up</title>
 
-<!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+body { background: #f8fafc; color: #1f2d3d; display: flex; flex-direction: column; min-height: 100vh; }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.navbar { position: sticky; top: 0; z-index: 1100; display: flex; justify-content: center; align-items: center; padding: 16px 5%; background: #1f2d3d; border-bottom: 2px solid #164e63; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+.logo-link { display: flex; align-items: center; text-decoration: none; }
+.logo-img { height: 44px; width: auto; display: block; }
 
-body {
-    background: #f8fafc;
-    color: #1f2d3d;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+.main-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 50px 20px; background: radial-gradient(circle at top, rgba(69,137,190,0.08) 0%, transparent 70%); }
+.container { width: 100%; max-width: 420px; background: #fff; padding: 36px 32px; border-radius: 16px; box-shadow: 0 10px 30px rgba(31,45,61,0.08); border: 1px solid #e2e8f0; }
 
-/* NAVBAR - Clean Brand Layout without Nav Links */
+.step-note { text-align: center; margin-bottom: 10px; }
+.step-note span { background: rgba(22,78,99,0.1); color: #164e63; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
 
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px 5%;
-    background: #1f2d3d; /* Brand Charcoal Base */
-    border-bottom: 2px solid #164e63; /* Brand Slate Teal */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
+.container h2 { text-align: center; color: #1f2d3d; font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.why { text-align: center; color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
 
-.logo {
-    color: white;
-    font-size: 26px;
-    font-weight: 700;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.input-wrapper { position: relative; margin-bottom: 16px; }
+.input-wrapper .left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 15px; }
+.toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; user-select: none; font-size: 15px; }
+.toggle-password:hover { color: #4589be; }
 
-.logo i {
-    color: #4589be; /* Brand Accent Blue */
-}
+input { width: 100%; padding: 13px 45px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #f8fafc; color: #1f2d3d; }
+input::placeholder { color: #94a3b8; }
+input:focus { background: #fff; border-color: #164e63; box-shadow: 0 0 0 4px rgba(22,78,99,0.15); }
+input[readonly] { background: #eef2f6; color: #475569; }
 
-/* MAIN CONTENT CONTAINER */
+button.submit-btn { width: 100%; padding: 14px; background: #164e63; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 14px rgba(22,78,99,0.3); }
+button.submit-btn:hover { background: #1f6b88; transform: translateY(-2px); }
+button.submit-btn:active { transform: translateY(0); }
+button.submit-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+button:focus-visible, a:focus-visible { outline: 3px solid #4589be; outline-offset: 2px; }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px 20px;
-    background: radial-gradient(circle at top, rgba(69, 137, 190, 0.08) 0%, transparent 70%);
-}
+.divider { display: flex; align-items: center; gap: 12px; color: #94a3b8; font-size: 13px; margin: 20px 0; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e2e8f0; }
 
-.container {
-    width: 100%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 40px 32px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
-    border: 1px solid #e2e8f0;
-    animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
+#googleBtn { display: flex; justify-content: center; min-height: 44px; }
 
-.badge-tag {
-    text-align: center;
-    margin-bottom: 8px;
-}
+.msg { display: none; padding: 12px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+.msg.info { display: block; background: #e8f3fb; color: #164e63; border: 1px solid #bcd9ee; }
+.msg.error { display: block; background: #fdecec; color: #9b1c1c; border: 1px solid #f5c2c2; }
 
-.badge-tag span {
-    background: rgba(22, 78, 99, 0.1);
-    color: #164e63;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 4px 12px;
-    border-radius: 20px;
-}
+.change-email { display: block; text-align: right; font-size: 13px; margin: -8px 0 14px; color: #4589be; font-weight: 600; text-decoration: none; }
+.change-email:hover { color: #164e63; text-decoration: underline; }
 
-.container h2 {
-    text-align: center;
-    color: #1f2d3d;
-    margin: 0 0 25px 0;
-    font-size: 26px;
-    font-weight: 700;
-}
+.hidden { display: none; }
 
-.input-wrapper {
-    position: relative;
-    margin-bottom: 16px;
-}
+.login { text-align: center; margin-top: 22px; font-size: 14px; color: #64748b; }
+.login a { color: #4589be; text-decoration: none; font-weight: 700; }
+.login a:hover { color: #164e63; text-decoration: underline; }
 
-.input-wrapper .left-icon {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 15px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    cursor: pointer;
-    user-select: none;
-    font-size: 15px;
-}
-
-.toggle-password:hover {
-    color: #4589be;
-}
-
-input {
-    width: 100%;
-    padding: 13px 45px 13px 45px;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    background: #f8fafc;
-    color: #1f2d3d;
-}
-
-input::placeholder {
-    color: #94a3b8;
-}
-
-input:focus {
-    background: #ffffff;
-    border-color: #164e63;
-    box-shadow: 0 0 0 4px rgba(22, 78, 99, 0.15);
-}
-
-button.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: #164e63; /* Brand Slate Teal */
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-    box-shadow: 0 4px 14px rgba(22, 78, 99, 0.3);
-}
-
-button.submit-btn:hover {
-    background: #1f6b88;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(31, 107, 136, 0.35);
-}
-
-button.submit-btn:active {
-    transform: translateY(0);
-}
-
-.login {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 14px;
-    color: #64748b;
-}
-
-.login a {
-    color: #4589be;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.login a:hover {
-    color: #164e63;
-    text-decoration: underline;
-}
-
-footer {
-    background: #1f2d3d;
-    border-top: 1px solid #2d3f55;
-    color: #94a3b8;
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+footer { background: #1f2d3d; border-top: 1px solid #2d3f55; color: #94a3b8; text-align: center; padding: 20px; font-size: 14px; }
 </style>
 </head>
-
 <body>
 
 <nav class="navbar">
-    <a href="index2.html" class="logo">
-        <i class="fa-solid fa-graduation-cap"></i> CampusDuka
+    <a href="index2.html" class="logo-link">
+        <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+        <span id="logoFallback" style="display:none; color:white; font-size:26px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
     </a>
 </nav>
 
 <div class="main-content">
     <div class="container">
-        <div class="badge-tag">
-            <span>Join CampusDuka</span>
-        </div>
-        <h2>Create Account</h2>
+        <div class="step-note"><span id="stepLabel">Step 1 of 2</span></div>
+        <h2>Create your account to continue</h2>
+        <p class="why">You need a free CampusDuka account to go further. It only takes a minute.</p>
 
-        <div class="input-wrapper">
-            <i class="fa-solid fa-user left-icon"></i>
-            <input type="text" id="fullname" placeholder="Full Name">
-        </div>
+        <div class="msg" id="message" role="alert"></div>
 
-        <div class="input-wrapper">
-            <i class="fa-solid fa-envelope left-icon"></i>
-            <input type="email" id="email" placeholder="Email Address">
-        </div>
+        <!-- STEP 1: Google or email -->
+        <div id="step1">
+            <div id="googleBtn"></div>
+            <div class="divider">or use your email</div>
 
-        <div class="input-wrapper">
-            <i class="fa-solid fa-phone left-icon"></i>
-            <input type="text" id="phone" placeholder="Phone Number">
+            <div class="input-wrapper">
+                <i class="fa-solid fa-envelope left-icon"></i>
+                <input type="email" id="email" placeholder="Email address" autocomplete="email">
+            </div>
+            <button class="submit-btn" id="continueBtn" onclick="checkEmail()">Continue</button>
         </div>
 
-        <div class="input-wrapper">
-            <i class="fa-solid fa-lock left-icon"></i>
-            <input type="password" id="password" placeholder="Password">
-            <i class="fa-solid fa-eye toggle-password" id="toggleEye" onclick="togglePasswordVisibility()"></i>
-        </div>
+        <!-- STEP 2: New users only -->
+        <div id="step2" class="hidden">
+            <div class="input-wrapper">
+                <i class="fa-solid fa-envelope left-icon"></i>
+                <input type="email" id="emailShown" readonly>
+            </div>
+            <a href="#" class="change-email" onclick="backToStep1(); return false;">Use a different email</a>
 
-        <button class="submit-btn" onclick="signup()">Create Account</button>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-user left-icon"></i>
+                <input type="text" id="fullname" placeholder="Full name" autocomplete="name">
+            </div>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-phone left-icon"></i>
+                <input type="tel" id="phone" placeholder="Phone number" autocomplete="tel">
+            </div>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-lock left-icon"></i>
+                <input type="password" id="password" placeholder="Create a password" autocomplete="new-password">
+                <i class="fa-solid fa-eye toggle-password" id="toggleEye" onclick="togglePasswordVisibility()"></i>
+            </div>
+            <button class="submit-btn" id="signupBtn" onclick="signup()">Create account and continue</button>
+        </div>
 
         <div class="login">
-            Already have an account? <a href="login.html">Login</a>
+            Already have an account? <a href="login.html">Log in</a>
         </div>
     </div>
 </div>
 
-<footer>
-    © 2026 CampusDuka. All rights reserved.
-</footer>
+<footer>© 2026 CampusDuka. All rights reserved.</footer>
 
 <script>
+// ===== SETTINGS =====
+const API = "https://campusduka-api.onrender.com";
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // from Google Cloud Console
+const AFTER_GOOGLE_PAGE = "index2.html";   // where Google users go once signed in
+const LOGIN_PAGE = "login.html";
 
-// Function to toggle password visibility
-function togglePasswordVisibility() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.getElementById("toggleEye");
+const $ = id => document.getElementById(id);
 
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
-    } else {
-        passwordInput.type = "password";
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
-    }
+function showMessage(text, type) {
+    const box = $("message");
+    box.textContent = text;
+    box.className = "msg " + type;
+}
+function clearMessage() { $("message").className = "msg"; }
+
+function goToLogin(email) {
+    showMessage("You already have an account with this email. Taking you to log in…", "info");
+    setTimeout(() => {
+        window.location.href = LOGIN_PAGE + "?email=" + encodeURIComponent(email) + "&exists=1";
+    }, 1800);
 }
 
-async function signup(){
+function togglePasswordVisibility() {
+    const input = $("password"), eye = $("toggleEye");
+    const show = input.type === "password";
+    input.type = show ? "text" : "password";
+    eye.classList.toggle("fa-eye", !show);
+    eye.classList.toggle("fa-eye-slash", show);
+}
 
-    const userData = {
-        fullname: document.getElementById("fullname").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        password: document.getElementById("password").value
-    };
+function backToStep1() {
+    clearMessage();
+    $("step2").classList.add("hidden");
+    $("step1").classList.remove("hidden");
+    $("stepLabel").textContent = "Step 1 of 2";
+    $("email").focus();
+}
 
+function showStep2(email) {
+    clearMessage();
+    $("emailShown").value = email;
+    $("step1").classList.add("hidden");
+    $("step2").classList.remove("hidden");
+    $("stepLabel").textContent = "Step 2 of 2";
+    $("fullname").focus();
+}
+
+// ===== STEP 1: is this a new or existing user? =====
+async function checkEmail() {
+    const email = $("email").value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMessage("Enter a valid email address to continue.", "error");
+        return;
+    }
+    const btn = $("continueBtn");
+    btn.disabled = true; btn.textContent = "Checking…";
     try {
-        const response = await fetch("https://campusduka-api.onrender.com/signup", {
+        const res = await fetch(API + "/check-email", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.exists) { goToLogin(email); return; }
+        showStep2(email);
+    } catch (err) {
+        // If the check can't run, let them continue; signup() also catches existing accounts.
+        console.error("Email check failed:", err);
+        showStep2(email);
+    } finally {
+        btn.disabled = false; btn.textContent = "Continue";
+    }
+}
+$("email").addEventListener("keydown", e => { if (e.key === "Enter") checkEmail(); });
+
+// ===== STEP 2: create the account =====
+async function signup() {
+    const userData = {
+        fullname: $("fullname").value.trim(),
+        email: $("emailShown").value,
+        phone: $("phone").value.trim(),
+        password: $("password").value
+    };
+    if (!userData.fullname || !userData.phone || userData.password.length < 6) {
+        showMessage("Fill in your name, phone number and a password of at least 6 characters.", "error");
+        return;
+    }
+    const btn = $("signupBtn");
+    btn.disabled = true; btn.textContent = "Creating account…";
+    try {
+        const res = await fetch(API + "/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
         });
+        const data = await res.json();
 
-        const data = await response.json();
-
-        alert(data.message);
-
-        // Redirect automatically if request was successful (HTTP status 200-299)
-        if (response.ok) {
-            window.location.href = "login.html";
+        if (res.ok) {
+            showMessage("Account created. Taking you to log in…", "info");
+            setTimeout(() => window.location.href = LOGIN_PAGE + "?email=" + encodeURIComponent(userData.email), 1200);
+        } else if (res.status === 409 || /exist|already/i.test(data.message || "")) {
+            goToLogin(userData.email);
+        } else {
+            showMessage(data.message || "Something went wrong. Please try again.", "error");
         }
-    } catch (error) {
-        console.error("Error during signup:", error);
+    } catch (err) {
+        console.error("Error during signup:", err);
+        showMessage("Could not reach the server. Check your connection and try again.", "error");
+    } finally {
+        btn.disabled = false; btn.textContent = "Create account and continue";
     }
 }
+
+// ===== GOOGLE SIGN-UP =====
+async function handleGoogle(response) {
+    clearMessage();
+    try {
+        const res = await fetch(API + "/google-auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ credential: response.credential })
+        });
+        const data = await res.json();
+        if (!res.ok) { showMessage(data.message || "Google sign-up failed. Please try again.", "error"); return; }
+        if (data.token) localStorage.setItem("token", data.token);
+        showMessage(data.isNew ? "Account created with Google. Taking you in…" : "Welcome back. Taking you in…", "info");
+        setTimeout(() => window.location.href = AFTER_GOOGLE_PAGE, 1200);
+    } catch (err) {
+        console.error("Google auth error:", err);
+        showMessage("Could not reach the server. Check your connection and try again.", "error");
+    }
+}
+
+window.addEventListener("load", () => {
+    const wait = setInterval(() => {
+        if (window.google && google.accounts) {
+            clearInterval(wait);
+            google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogle });
+            google.accounts.id.renderButton($("googleBtn"), {
+                theme: "outline", size: "large", text: "signup_with", shape: "rectangular",
+                width: Math.min(356, $("googleBtn").offsetWidth || 356)
+            });
+        }
+    }, 200);
+    setTimeout(() => clearInterval(wait), 10000);
+});
 </script>
 
 </body>
