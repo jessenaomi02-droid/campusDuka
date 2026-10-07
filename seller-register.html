@@ -1,327 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seller Registration | CampusDuka</title>
+
+<link rel="preload" as="image" href="images/logo.png" fetchpriority="high">
+<link rel="preconnect" href="https://campusduka-api.onrender.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* ==========================
-    MODERN PREMIUM UI THEME
-========================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: #f8fafc; color: #0f172a; min-height: 100vh; display: flex; flex-direction: column; }
 
-body {
-  background: #f8fafc;
-  color: #0f172a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 40px 20px;
-}
+.navbar { display: flex; justify-content: center; align-items: center; padding: 18px 5%; background: #1f2d3d; border-bottom: 3px solid #164e63; box-shadow: 0 4px 15px rgba(0,0,0,0.15); min-height: 96px; }
+.logo-link { display: flex; align-items: center; text-decoration: none; }
+.logo-img { height: 64px; width: auto; display: block; }
 
-.box {
-  width: 100%;
-  max-width: 480px;
-  background: white;
-  padding: 40px 35px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-  border: 1px solid #e2e8f0;
-}
+.page { flex: 1; display: flex; justify-content: center; padding: 40px 20px; background: radial-gradient(circle at top, rgba(69,137,190,0.08) 0%, transparent 70%); }
+.box { width: 100%; max-width: 640px; background: #fff; padding: 36px 32px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; height: fit-content; }
 
-.brand-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+.head { text-align: center; margin-bottom: 26px; }
+.head h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+.head p { font-size: 14px; color: #64748b; margin-top: 6px; }
 
-.brand-header i {
-  font-size: 36px;
-  color: #003366;
-  margin-bottom: 12px;
-}
+svg.ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.form-group { margin-bottom: 16px; position: relative; }
+.form-group svg.ic { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+input:not([type=radio]), select { width: 100%; padding: 13px 14px 13px 42px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; color: #0f172a; outline: none; transition: border-color .2s, box-shadow .2s, background .2s; }
+input:focus, select:focus { border-color: #164e63; background: #fff; box-shadow: 0 0 0 4px rgba(22,78,99,0.15); }
 
-.brand-header h2 {
-  font-size: 26px;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.5px;
-}
+h3 { font-size: 16px; font-weight: 700; margin: 26px 0 4px; }
+.sub { font-size: 13px; color: #64748b; margin-bottom: 14px; line-height: 1.5; }
 
-.brand-header h2 span {
-  color: #003366;
-}
+/* Option cards */
+.cards { display: grid; gap: 12px; }
+.cards.two { grid-template-columns: 1fr 1fr; }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.opt .card { display: block; height: 100%; padding: 16px 14px; border: 2px solid #e2e8f0; border-radius: 12px; background: #fff; transition: border-color .2s, background .2s, box-shadow .2s; }
+.opt input:checked + .card { border-color: #164e63; background: #f0f7fa; box-shadow: 0 0 0 4px rgba(22,78,99,0.1); }
+.opt input:focus-visible + .card { outline: 3px solid #4589be; outline-offset: 2px; }
+.card .t { font-size: 14px; font-weight: 700; display: block; }
+.card .big { font-size: 24px; font-weight: 800; color: #164e63; display: block; margin: 4px 0; line-height: 1.2; }
+.card .d { font-size: 12.5px; color: #475569; line-height: 1.5; display: block; }
+.card .price { font-size: 12px; font-weight: 600; color: #4589be; display: block; margin-top: 6px; }
 
-.brand-header p {
-  font-size: 14px;
-  color: #64748b;
-  margin-top: 6px;
-}
+.compare { background: #f0f7ff; border-left: 4px solid #164e63; border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 13px; color: #1e3a5f; line-height: 1.6; margin: 14px 0 0; }
+#plansBox { margin-top: 6px; }
+.hidden { display: none; }
 
-/* ================= FORM ARCHITECTURE ================= */
-.form-group {
-  margin-bottom: 18px;
-  position: relative;
-}
+.msg { display: none; padding: 12px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-top: 18px; }
+.msg.info { display: block; background: #e8f3fb; color: #164e63; border: 1px solid #bcd9ee; }
+.msg.error { display: block; background: #fdecec; color: #9b1c1c; border: 1px solid #f5c2c2; }
 
-.form-group i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-  font-size: 14px;
-}
+button.submit { width: 100%; padding: 14px; background: #164e63; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 22px; box-shadow: 0 4px 14px rgba(22,78,99,0.3); transition: background .2s, transform .2s; }
+button.submit:hover { background: #1f6b88; transform: translateY(-2px); }
+button.submit:disabled { opacity: .6; cursor: wait; transform: none; }
+button:focus-visible, a:focus-visible { outline: 3px solid #4589be; outline-offset: 2px; }
 
-input, select {
-  width: 100%;
-  padding: 13px 14px 13px 42px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #0f172a;
-  outline: none;
-  transition: all 0.2s ease;
-}
+.login-redirect { text-align: center; font-size: 14px; color: #64748b; margin-top: 20px; }
+.login-redirect a { color: #4589be; text-decoration: none; font-weight: 700; }
+.login-redirect a:hover { color: #164e63; text-decoration: underline; }
 
-input:focus, select:focus {
-  border-color: #003366;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
-}
-
-/* ================= INTERACTIVE BUSINESS MATRIX ================= */
-.model-descriptor {
-  background: #f0f7ff;
-  border-left: 4px solid #003366;
-  padding: 14px 16px;
-  border-radius: 0 8px 8px 0;
-  margin: 15px 0;
-  font-size: 13px;
-  color: #1e3a8a;
-  line-height: 1.6;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ================= SUBMIT AND REDIRECTS ================= */
-button {
-  width: 100%;
-  padding: 14px;
-  background: #003366;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 25px;
-}
-
-button:hover {
-  background: #002244;
-  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
-}
-
-.box p.login-redirect {
-  text-align: center;
-  font-size: 14px;
-  color: #64748b;
-  margin-top: 20px;
-}
-
-.box p.login-redirect a {
-  color: #003366;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.box p.login-redirect a:hover {
-  text-decoration: underline;
+@media (max-width: 560px) {
+  .box { padding: 28px 18px; }
+  .cards.two { grid-template-columns: 1fr; }
+  .cards.four { grid-template-columns: 1fr 1fr; }
+  .logo-img { height: 56px; }
 }
 </style>
 </head>
-
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-id" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4M6 16c.5-1.5 5.5-1.5 6 0"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+</svg>
+
+<nav class="navbar">
+  <a href="index2.html" class="logo-link">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" height="64" fetchpriority="high" decoding="async" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <span id="logoFallback" style="display:none; color:white; font-size:34px; font-weight:800; letter-spacing:-0.5px;">Campus<span style="color:#4589be;">Duka</span></span>
+  </a>
+</nav>
+
+<div class="page">
 <div class="box">
-  <div class="brand-header">
-    <i class="fas fa-store-lines"></i>
-    <h2>Campus<span>Duka</span></h2>
-    <p>Launch your storefront in the student marketplace</p>
+  <div class="head">
+    <h1>Open your seller account</h1>
+    <p>Sell to students on CampusDuka. Set up takes about two minutes.</p>
   </div>
 
-  <!-- NAME -->
-  <div class="form-group">
-    <i class="fas fa-user"></i>
-    <input id="name" type="text" placeholder="Full Name or Business Name">
-  </div>
-
-  <!-- EMAIL -->
-  <div class="form-group">
-    <i class="fas fa-envelope"></i>
-    <input id="email" type="email" placeholder="Email Address">
-  </div>
-    
-  <!-- PHONE NUMBER -->
-  <div class="form-group">
-    <i class="fas fa-phone"></i>
-    <input id="phone" type="tel" placeholder="Phone Number (e.g., 07...)">
-  </div>
-
-  <!-- SELLER CLASSIFICATION TYPE -->
-  <div class="form-group">
-    <i class="fas fa-id-card"></i>
+  <div class="form-group"><svg class="ic"><use href="#i-user"/></svg>
+    <input id="name" type="text" placeholder="Full name or business name" autocomplete="name"></div>
+  <div class="form-group"><svg class="ic"><use href="#i-mail"/></svg>
+    <input id="email" type="email" placeholder="Email address" autocomplete="email"></div>
+  <div class="form-group"><svg class="ic"><use href="#i-phone"/></svg>
+    <input id="phone" type="tel" placeholder="Phone number (e.g. 07...)" autocomplete="tel"></div>
+  <div class="form-group"><svg class="ic"><use href="#i-id"/></svg>
     <select id="sellerType">
-      <option value="student">Student Seller (Campus Resident)</option>
-      <option value="institution">Institution / External Business</option>
-    </select>
+      <option value="student">Student seller (campus resident)</option>
+      <option value="institution">Institution / external business</option>
+    </select></div>
+  <div class="form-group"><svg class="ic"><use href="#i-lock"/></svg>
+    <input id="password" type="password" placeholder="Create a password" autocomplete="new-password"></div>
+
+  <h3>How do you want to pay CampusDuka?</h3>
+  <p class="sub">Choose one. You pay either a share of each sale or a fixed monthly fee, not both.</p>
+
+  <div class="cards two" role="radiogroup" aria-label="Payment model">
+    <label class="opt">
+      <input type="radio" name="model" value="commission" onchange="onModelChange()">
+      <span class="card">
+        <span class="t">Commission</span>
+        <span class="big">15% per sale</span>
+        <span class="d">No monthly fee. CampusDuka takes 15% of each completed sale. You pay only when you sell.</span>
+      </span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="model" value="subscription" onchange="onModelChange()" checked>
+      <span class="card">
+        <span class="t">Subscription</span>
+        <span class="big">0% per sale</span>
+        <span class="d">Keep 100% of each sale. Pay a fixed monthly fee based on how many products you list. Renews every month.</span>
+      </span>
+    </label>
   </div>
 
-  <!-- BUSINESS OPERATIONAL MODEL MATRIX -->
-  <div class="form-group">
-    <i class="fas fa-briefcase"></i>
-    <select id="businessModel" onchange="updateModelDescriptor()">
-      <option value="subscription">Flexible Subscription Model (Tiered Plans)</option>
-      <option value="commission">CampusDuka Managed Commission Model</option>
-    </select>
+  <div id="plansBox">
+    <h3>Pick a monthly plan</h3>
+    <p class="sub">Every plan renews monthly. You can change plans later.</p>
+    <div class="cards four" id="plans" role="radiogroup" aria-label="Subscription plan"></div>
   </div>
 
-  <!-- DYNAMIC MATRIX DISCLOSURE BOX -->
-  <div id="modelDescriptorBox" class="model-descriptor">
-    <i class="fas fa-info-circle"></i> <strong>Subscription Tier:</strong> Activate specific plans via the dashboard starting at KSh 1/month. Retain 100% of your retail sales value directly. Perfect for fast-scaling active accounts.
-  </div>
+  <p class="compare"><strong>Not sure?</strong> Commission suits sellers who are just starting out. Subscription suits sellers who sell often and want to keep all their earnings.</p>
 
-  <!-- SECURE CREDENTIAL PASSWORD -->
-  <div class="form-group">
-    <i class="fas fa-lock"></i>
-    <input id="password" type="password" placeholder="Create Password">
-  </div>
+  <div class="msg" id="message" role="alert"></div>
 
-  <!-- REGISTRATION SUBMIT TRIGGER -->
-  <button onclick="createSellerAccount()">
-    <i class="fas fa-user-plus"></i> Create Account
-  </button>
-  
-  <p class="login-redirect">
-    Already have a merchant account? <a href="seller-login.html">Login here</a>
-  </p>
+  <button class="submit" id="submitBtn" onclick="createSellerAccount()">Create seller account</button>
+
+  <p class="login-redirect">Already have a seller account? <a href="seller-login.html">Log in</a></p>
+</div>
 </div>
 
 <script>
-/* DYNAMICALLY DEFINE AND EXPLAIN BUSINESS OPERATION MODELS */
-function updateModelDescriptor() {
-  const selectedModel = document.getElementById("businessModel").value;
-  const descriptorBox = document.getElementById("modelDescriptorBox");
+const API = "https://campusduka-api.onrender.com";
+const COMMISSION_PERCENT = 15;
 
-  if (selectedModel === "subscription") {
-    descriptorBox.innerHTML = `<i class="fas fa-info-circle"></i> <strong>Subscription Tier:</strong> Activate specific plans via the dashboard starting at KSh 1/month. Retain 100% of your retail sales value directly. Perfect for fast-scaling active accounts.`;
-    descriptorBox.style.borderColor = "#003366";
-    descriptorBox.style.background = "#f0f7ff";
-    descriptorBox.style.color = "#1e3a8a";
-  } else if (selectedModel === "commission") {
-    descriptorBox.innerHTML = `<i class="fas fa-hand-holding-dollar"></i> <strong>Commission Tier:</strong> Zero dynamic flat fee setups. CampusDuka processes client clearing workflows safely and retains an absolute 10% commission on successful transaction processing payouts.`;
-    descriptorBox.style.borderColor = "#10b981";
-    descriptorBox.style.background = "#f0fdf4";
-    descriptorBox.style.color = "#14532d";
-  }
+// Edit prices here. Leave price as null to hide the price line on a card.
+const PLANS = [
+  { id: "free",   name: "Free",   products: "2",         price: 0 },
+  { id: "copper", name: "Copper", products: "20",        price: null },
+  { id: "bronze", name: "Bronze", products: "100",       price: null },
+  { id: "gold",   name: "Gold",   products: "Unlimited", price: null }
+];
+
+const $ = id => document.getElementById(id);
+
+// Wake the server now (free Render servers sleep and are slow on first request)
+fetch(API + "/", { mode: "no-cors" }).catch(() => {});
+
+function priceText(p) {
+  if (p.price === null) return "";
+  return p.price === 0 ? "KSh 0 / month" : "KSh " + p.price.toLocaleString() + " / month";
 }
 
-/* API ACCOUNT CREATION WORKSPACE PIPELINE */
-async function createSellerAccount(){
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const password = document.getElementById("password").value;
-  const seller_type = document.getElementById("sellerType").value;
-  const business_model = document.getElementById("businessModel").value;
+$("plans").innerHTML = PLANS.map((p, i) => `
+  <label class="opt">
+    <input type="radio" name="plan" value="${p.id}" ${i === 0 ? "checked" : ""}>
+    <span class="card">
+      <span class="t">${p.name}</span>
+      <span class="big">${p.products}</span>
+      <span class="d">${p.products === "Unlimited" ? "products" : "products"}</span>
+      ${priceText(p) ? `<span class="price">${priceText(p)}</span>` : ""}
+    </span>
+  </label>`).join("");
+
+const selected = name => document.querySelector(`input[name="${name}"]:checked`).value;
+
+function onModelChange() {
+  $("plansBox").classList.toggle("hidden", selected("model") !== "subscription");
+}
+
+function showMessage(text, type) { const b = $("message"); b.textContent = text; b.className = "msg " + type; }
+
+async function createSellerAccount() {
+  const name = $("name").value.trim();
+  const email = $("email").value.trim();
+  const phone = $("phone").value.trim();
+  const password = $("password").value;
+  const seller_type = $("sellerType").value;
+  const business_model = selected("model");
+  const plan = business_model === "subscription" ? selected("plan") : null;
 
   if (!name || !email || !phone || !password) {
-    alert("Please fill out all credential registration input rows.");
+    showMessage("Fill in your name, email, phone number and password to continue.", "error");
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMessage("Enter a valid email address.", "error");
+    return;
+  }
+  if (password.length < 6) {
+    showMessage("Your password needs at least 6 characters.", "error");
     return;
   }
 
+  const btn = $("submitBtn");
+  btn.disabled = true; btn.textContent = "Creating account…";
+
   try {
-    const data = { 
-      name, 
-      email, 
-      phone, 
-      password, 
-      seller_type, 
-      business_model,
-      // Default to standard starter plan if choosing subscription, or flag it commission explicitly
-      subscription_plan: business_model === "commission" ? "commission" : "free"
+    const data = {
+      name, email, phone, password, seller_type, business_model,
+      // New accounts start on the free plan. A paid plan is sent as a request,
+      // so nobody gets Copper/Bronze/Gold before paying.
+      subscription_plan: business_model === "commission" ? "commission" : "free",
+      requested_plan: plan,
+      commission_rate: business_model === "commission" ? COMMISSION_PERCENT : 0
     };
-    
-    const response = await fetch("https://campusduka-api.onrender.com/seller-register", {
+
+    const response = await fetch(API + "/seller-register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-
     const result = await response.json();
-    console.log(result);
 
     if (response.ok) {
-      // Opt-in check: Inform admin panel if an external structural entity establishes a commission log tracking pipeline
-      if (business_model === "commission") {
-        await notifyAdminFinancesOfPartner(name, seller_type);
-      }
-
-      alert(result.message || "Account registered successfully! Redirecting to setup portal...");
-      window.location.href = "seller-login.html";
-    } else {
-      alert(result.error || result.message || "Registration processing failure.");
+      if (business_model === "commission") await notifyAdminFinancesOfPartner(name, seller_type);
+      const paid = plan && plan !== "free";
+      showMessage(paid
+        ? "Seller account created. Log in to activate your " + plan + " plan. Taking you to log in…"
+        : "Seller account created. Taking you to log in…", "info");
+      setTimeout(() => window.location.href = "seller-login.html", 1800);
+      return;
     }
-
-  } catch(error) {
-    console.error(error);
-    alert("Something went wrong connecting to the backend core system.");
+    showMessage(result.error || result.message || "Registration failed. Please try again.", "error");
+  } catch (err) {
+    console.error(err);
+    showMessage("Could not reach the server. Check your connection and try again.", "error");
   }
+  btn.disabled = false; btn.textContent = "Create seller account";
 }
 
-// LOG REGISTRATION DETAILS DIRECTLY TO THE ADMIN DATABASE FOR COMMISSION VERIFICATION TRACKING
+// Log commission sign-ups to the admin ledger
 async function notifyAdminFinancesOfPartner(partnerName, type) {
   try {
-    await fetch("https://campusduka-api.onrender.com/add-transaction", {
+    await fetch(API + "/add-transaction", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         seller_id: "NEW_PARTNER",
         seller_name: partnerName,
         type: "Partner Registration",
-        description: `Registered as an ${type.toUpperCase()} utilizing the 10% Commission Pipeline Architecture`,
+        description: `Registered as ${type.toUpperCase()} on the ${COMMISSION_PERCENT}% commission model`,
         amount: 0,
         status: "pending",
         date: new Date().toISOString()
       })
     });
-    console.log("Admin ledger successfully noted of new commission account model setup.");
-  } catch(e) {
-    console.error("Could not broadcast background registration transaction mapping metric to admin core data: ", e);
+  } catch (e) {
+    console.error("Could not notify admin ledger:", e);
   }
 }
 </script>
-
 </body>
 </html>
