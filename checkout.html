@@ -384,13 +384,29 @@
   </div>
 
   <script>
+    // HELPER: is this cart item an event ticket?
+    // Events can arrive in either cart: events.html saves them to "eventCart",
+    // and the homepage used to save them to the normal "cart". Anything with
+    // the category "Events" is a ticket, whichever cart it is sitting in.
+    function isEventItem(item) {
+      return !!item && String(item.category || "").trim().toLowerCase() === "events";
+    }
+
+    // HELPER: split the baskets into physical items (need delivery) and tickets (don't)
+    function splitCarts(regularCart, eventCart) {
+      const physicalItems = regularCart.filter(item => !isEventItem(item));
+      const ticketItems = [...regularCart.filter(isEventItem), ...eventCart];
+      return { physicalItems, ticketItems };
+    }
+
     // HELPER: CALCULATE APPLICABLE DELIVERY FEE
     function calculateDeliveryFee(regularCart, eventCart) {
-      // If order contains physical products from regularCart, charge 50 delivery fee
-      if (regularCart.length > 0) {
+      const { physicalItems } = splitCarts(regularCart, eventCart);
+      // If the order contains physical products, charge 50 delivery fee
+      if (physicalItems.length > 0) {
         return 50;
       }
-      // If order contains ONLY event tickets, delivery fee is 0
+      // If the order contains ONLY event tickets, delivery fee is 0
       return 0;
     }
 
@@ -447,12 +463,13 @@
       const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
       const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
       const combinedCart = [...regularCart, ...eventCart];
+      const { physicalItems, ticketItems } = splitCarts(regularCart, eventCart);
 
       // FEATURE: a ticket-only order has nothing to deliver, so the
       // delivery location field is hidden and no longer required —
       // otherwise the form would block submission on an address that
       // doesn't apply to a digital ticket.
-      const isTicketOnly = eventCart.length > 0 && regularCart.length === 0;
+      const isTicketOnly = ticketItems.length > 0 && physicalItems.length === 0;
       const locationField = document.getElementById("location");
       if (isTicketOnly) {
         document.getElementById("locationGroup").style.display = "none";
@@ -514,7 +531,8 @@
       // caught a logged-out visitor, but this guards against edge cases
       // (e.g. session cleared in another tab) rather than letting an order
       // go through with no verified identity behind it.
-      if (!getSessionUser()) {
+      const sessionUser = getSessionUser();
+      if (!sessionUser) {
         alert("Please log in to continue with checkout.");
         window.location.href = "login.html?redirect=checkout.html";
         return;
@@ -539,7 +557,12 @@
       const activeDeliveryFee = calculateDeliveryFee(regularCart, eventCart);
       const subtotal = combinedCart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
       const grandTotal = subtotal + activeDeliveryFee;
-      const isTicketOnly = eventCart.length > 0 && regularCart.length === 0;
+      const { physicalItems, ticketItems } = splitCarts(regularCart, eventCart);
+      const isTicketOnly = ticketItems.length > 0 && physicalItems.length === 0;
+
+      // The account email is what identifies this buyer on "My Orders",
+      // regardless of which phone number is used to pay.
+      const buyerEmail = (sessionUser.email || "").trim().toLowerCase();
 
       // FEATURE: ticket-only orders skip the delivery address, but admin
       // still needs something meaningful in that field rather than a blank
@@ -585,6 +608,7 @@
           body: JSON.stringify({
             fullname: document.getElementById("fullname").value,
             phone: formattedPhone,
+            email: buyerEmail,
             location: locationValue,
             cart: cartToSend,
             amount: grandTotal
