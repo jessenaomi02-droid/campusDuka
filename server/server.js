@@ -646,39 +646,57 @@ app.post("/stkpush", async (req, res) => {
       return res.status(400).json({ success: false, error: "Cart cannot be empty" });
     }
 
-    const firstItem = cart[0];
-
-    // Safely check frontend variations of Product ID and Seller ID
-    const resolvedProductId = firstItem.product_id || firstItem.id || null;
-    const resolvedSellerId = firstItem.seller_id || firstItem.sellerId || null;
-
-    if (!resolvedProductId || !resolvedSellerId) {
+    // Resolve the product + seller for EVERY item in the cart (not just the
+    // first one), so a product and an event bought together both get an order.
+    const resolvedItems = cart.map(item => ({
+      item,
+      productId: item.product_id || item.id || null,
+      sellerId: item.seller_id || item.sellerId || null
+    }));
+    const unresolved = resolvedItems.find(r => !r.productId || !r.sellerId);
+    if (unresolved) {
       return res.status(400).json({
         success: false,
-        error: `Could not identify product/seller values. ID: ${resolvedProductId}, Seller: ${resolvedSellerId}`
+        error: `Could not identify product/seller values for "${unresolved.item.name || "an item"}". ID: ${unresolved.productId}, Seller: ${unresolved.sellerId}`
       });
     }
 
-    // Compute splits for payment metrics
     const rawAmt = parseFloat(amount);
-    const commSplit = rawAmt * 0.10;
-    const finalPayout = rawAmt - commSplit;
+
+    // Split the payment across the items: each item's own price x quantity,
+    // and any delivery fee (what is left over) goes on the first non-event
+    // item, because tickets are never delivered.
+    const itemTotals = cart.map(i => (parseFloat(i.price) || 0) * (parseInt(i.quantity) || 1));
+    const itemsSum = itemTotals.reduce((a, b) => a + b, 0);
+    const deliveryFee = Math.max(0, rawAmt - itemsSum);
+    let feeIndex = cart.findIndex(i => String(i.category || "").trim().toLowerCase() !== "events");
+    if (feeIndex === -1) feeIndex = 0;
 
     // The buyer's sign-in email is what "My Orders" uses to find their orders
     const buyerEmail = email ? String(email).trim().toLowerCase() : null;
 
-    const orderResult = await db.query(
-      `
-      INSERT INTO orders
-      (buyer_name, buyer_phone, buyer_email, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-      RETURNING id
-      `,
-      [fullname, phone, buyerEmail, location, resolvedSellerId, resolvedProductId, rawAmt, commSplit, finalPayout, 'pending']
-    );
+    // One order row per cart item, so the admin page lists every product and event
+    const orderIds = [];
+    for (let idx = 0; idx < resolvedItems.length; idx++) {
+      const rowAmt = Math.round(itemTotals[idx] + (idx === feeIndex ? deliveryFee : 0));
+      const commSplit = rowAmt * 0.10;
+      const finalPayout = rowAmt - commSplit;
+      const orderResult = await db.query(
+        `
+        INSERT INTO orders
+        (buyer_name, buyer_phone, buyer_email, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
+        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+        RETURNING id
+        `,
+        [fullname, phone, buyerEmail, location, resolvedItems[idx].sellerId, resolvedItems[idx].productId, rowAmt, commSplit, finalPayout, 'pending']
+      );
+      orderIds.push(orderResult.rows[0].id);
+    }
 
-    const orderId = orderResult.rows[0].id;
-    console.log("Order Created:", orderId);
+    // The first order id is what the waiting page tracks; the callback
+    // receives all of them so every row is marked paid/failed together.
+    const orderId = orderIds[0];
+    console.log("Orders Created:", orderIds.join(","));
 
     const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString("base64");
     const tokenResponse = await axios.get(
@@ -702,7 +720,7 @@ app.post("/stkpush", async (req, res) => {
         PartyB: BUSINESS_SHORTCODE,
         PhoneNumber: phone,
         // Passing the orderId as a query parameter guarantees we update the right record on return
-        CallBackURL: `https://campusduka-api.onrender.com/mpesa-callback?orderId=${orderId}`,
+        CallBackURL: `https://campusduka-api.onrender.com/mpesa-callback?orderId=${orderIds.join(",")}`,
         AccountReference: `ORDER_${orderId}`,
         TransactionDesc: "CampusDuka Order"
       },
@@ -737,18 +755,22 @@ app.post("/mpesa-callback", async (req, res) => {
     return res.status(400).json({ error: "Missing orderId" });
   }
 
+  // orderId can be one id or several, e.g. "12,13" when a product and an
+  // event were paid for together
+  const orderIdList = String(orderId).split(",").map(n => parseInt(n, 10)).filter(Number.isInteger);
+
   if (callback.ResultCode === 0) {
     await db.query(
-      `UPDATE orders SET payment_status='paid' WHERE id = $1`,
-      [orderId]
+      `UPDATE orders SET payment_status='paid' WHERE id = ANY($1::int[])`,
+      [orderIdList]
     );
-    console.log(`Order ${orderId} marked as PAID`);
+    console.log(`Orders ${orderIdList.join(",")} marked as PAID`);
   } else {
     await db.query(
-      `UPDATE orders SET payment_status='failed' WHERE id = $1`,
-      [orderId]
+      `UPDATE orders SET payment_status='failed' WHERE id = ANY($1::int[])`,
+      [orderIdList]
     );
-    console.log(`Order ${orderId} marked as FAILED`);
+    console.log(`Orders ${orderIdList.join(",")} marked as FAILED`);
   }
 
   res.status(200).json({
