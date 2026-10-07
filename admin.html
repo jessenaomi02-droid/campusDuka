@@ -257,6 +257,12 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                             <h2 class="font-bold text-gray-800">Products Waiting for Review</h2>
                         </div>
+                        <div class="px-6 py-3 border-b border-gray-100">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input id="pending-search" type="search" oninput="applySearch('pending-search','pending-products-list','pending-search-empty')" placeholder="Search pending products by name, seller, category or price..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                            </div>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
@@ -273,6 +279,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 </tbody>
                             </table>
                         </div>
+                        <p id="pending-search-empty" class="hidden text-sm text-gray-500 italic px-6 py-4">No pending products match your search.</p>
                     </div>
                 </section>
 
@@ -330,6 +337,12 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                             <h2 class="font-bold text-gray-800">Orders Log & Delivery Status Updates</h2>
                         </div>
+                        <div class="px-6 py-3 border-b border-gray-100">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input id="orders-search" type="search" oninput="applySearch('orders-search','orders-list','orders-search-empty')" placeholder="Search orders by buyer, phone, item, order ID or status..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                            </div>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
@@ -347,6 +360,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 </tbody>
                             </table>
                         </div>
+                        <p id="orders-search-empty" class="hidden text-sm text-gray-500 italic px-6 py-4">No orders match your search.</p>
                     </div>
                 </section>
 
@@ -356,6 +370,12 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                             <h2 class="font-bold text-gray-800">Verified Sellers & Product Catalog</h2>
                             <p class="text-xs text-gray-400 mt-1">Every product live on the website right now. Edit or delete any item directly.</p>
+                        </div>
+                        <div class="px-6 py-3 border-b border-gray-100">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input id="sellers-search" type="search" oninput="applySellerSearch()" placeholder="Search sellers (name, email, phone, ID) or products..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                            </div>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="responsive-table w-full text-left border-collapse">
@@ -373,6 +393,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 </tbody>
                             </table>
                         </div>
+                        <p id="sellers-search-empty" class="hidden text-sm text-gray-500 italic px-6 py-4">No sellers or products match your search.</p>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -444,6 +465,12 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                             <h2 class="font-bold text-gray-800">Registered Buyers Database</h2>
                         </div>
+                        <div class="px-6 py-3 border-b border-gray-100">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input id="users-search" type="search" oninput="applySearch('users-search','users-list','users-search-empty')" placeholder="Search buyers by name, email, phone or ID..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                            </div>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="responsive-table w-full text-left border-collapse">
                                 <thead>
@@ -459,6 +486,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 </tbody>
                             </table>
                         </div>
+                        <p id="users-search-empty" class="hidden text-sm text-gray-500 italic px-6 py-4">No buyers match your search.</p>
                     </div>
                 </section>
 
@@ -677,6 +705,124 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             fetchRevenueSummary();
         }
 
+        /* -------------------------------------------------------------
+           SEARCH BOXES
+           Every list has a search box. Rows carry a lowercase
+           "data-search" text, and the filter is re-applied after every
+           refresh so what you typed stays in effect while the page
+           keeps syncing in the background.
+        ------------------------------------------------------------- */
+        function escAttr(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;');
+        }
+
+        function searchText(...parts) {
+            return escAttr(parts.filter(p => p != null && p !== '').join(' ').toLowerCase());
+        }
+
+        function applySearch(inputId, tbodyId, emptyId) {
+            const input = document.getElementById(inputId);
+            const tbody = document.getElementById(tbodyId);
+            if (!input || !tbody) return;
+            const q = input.value.trim().toLowerCase();
+            const rows = Array.from(tbody.children);
+            let visible = 0;
+            rows.forEach(tr => {
+                const hit = !q || (tr.dataset.search || '').includes(q);
+                tr.style.display = hit ? '' : 'none';
+                if (hit) visible++;
+            });
+            const empty = document.getElementById(emptyId);
+            if (empty) empty.classList.toggle('hidden', !(q && rows.length > 0 && visible === 0));
+        }
+
+        // Sellers & Products: a seller shows if the seller matches OR one of
+        // their products matches. When only a product matches, just that
+        // product is shown inside the seller's row, so it can be seen on its own.
+        function applySellerSearch() {
+            const input = document.getElementById('sellers-search');
+            const tbody = document.getElementById('sellers-list');
+            if (!input || !tbody) return;
+            const q = input.value.trim().toLowerCase();
+            const rows = Array.from(tbody.children);
+            let visibleRows = 0;
+
+            rows.forEach(tr => {
+                const sellerHit = !q || (tr.dataset.seller || '').includes(q);
+                let anyProductHit = false;
+                tr.querySelectorAll('[data-product]').forEach(el => {
+                    const productHit = !!q && el.dataset.product.includes(q);
+                    if (productHit) anyProductHit = true;
+                    el.style.display = (!q || sellerHit || productHit) ? '' : 'none';
+                });
+                const show = !q || sellerHit || anyProductHit;
+                tr.style.display = show ? '' : 'none';
+                if (show) visibleRows++;
+            });
+
+            let visibleOrphans = 0;
+            const orphans = Array.from(document.querySelectorAll('#orphaned-products-list [data-product]'));
+            orphans.forEach(el => {
+                const show = !q || el.dataset.product.includes(q);
+                el.style.display = show ? '' : 'none';
+                if (show) visibleOrphans++;
+            });
+
+            const empty = document.getElementById('sellers-search-empty');
+            if (empty) empty.classList.toggle('hidden', !(q && (rows.length > 0 || orphans.length > 0) && visibleRows === 0 && visibleOrphans === 0));
+        }
+
+        /* -------------------------------------------------------------
+           ORDER GROUPING
+           One purchase can contain several items (e.g. a product and an
+           event). The server saves one row per item, tied together by
+           payment_group. Older rows without a group are matched by the
+           same buyer + phone placed within a minute of each other.
+        ------------------------------------------------------------- */
+        function groupOrders(orders) {
+            if (!Array.isArray(orders)) return [];
+            const sorted = [...orders].sort((a, b) => a.id - b.id);
+            const groups = [];
+            const byGroupId = {};
+
+            sorted.forEach(o => {
+                const time = o.created_at ? new Date(o.created_at).getTime() : NaN;
+                let group = null;
+
+                if (o.payment_group != null) {
+                    group = byGroupId['g' + o.payment_group];
+                    if (!group) {
+                        group = { items: [], legacy: false, time };
+                        byGroupId['g' + o.payment_group] = group;
+                        groups.push(group);
+                    }
+                } else {
+                    for (let i = groups.length - 1; i >= 0; i--) {
+                        const g = groups[i];
+                        const first = g.items[0];
+                        if (g.legacy
+                            && first.buyer_phone === o.buyer_phone
+                            && first.buyer_name === o.buyer_name
+                            && Math.abs(time - g.time) <= 60000) {
+                            group = g;
+                            break;
+                        }
+                    }
+                    if (!group) {
+                        group = { items: [], legacy: true, time };
+                        groups.push(group);
+                    }
+                }
+                group.items.push(o);
+            });
+
+            groups.sort((a, b) => b.items[0].id - a.items[0].id);
+            return groups;
+        }
+
         async function fetchStats() {
             try {
                 const pend = await fetch(`${API_BASE_URL}/pending-products`).then(r => r.json());
@@ -684,8 +830,11 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 const sel = await fetch(`${API_BASE_URL}/all-sellers`).then(r => r.json());
                 const usr = await fetch(`${API_BASE_URL}/all-users`).then(r => r.json());
 
+                // items bought together count as one order
+                const orderGroups = groupOrders(ord);
+
                 const currentPending = Array.isArray(pend) ? pend.length : 0;
-                const currentOrders = Array.isArray(ord) ? ord.length : 0;
+                const currentOrders = orderGroups.length;
 
                 if (previousPendingCount !== null && currentPending > previousPendingCount) playNotificationSound();
                 if (previousOrdersCount !== null && currentOrders > previousOrdersCount) playNotificationSound();
@@ -702,9 +851,8 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 // the pending products count; the Orders badge counts orders that
                 // still need action (delivery status still "Pending").
                 setBadge('badge-pending', currentPending);
-                const unattendedOrders = Array.isArray(ord)
-                    ? ord.filter(o => (o.delivery_status || 'Pending').toLowerCase() === 'pending').length
-                    : 0;
+                const unattendedOrders = orderGroups
+                    .filter(g => (g.items[0].delivery_status || 'Pending').toLowerCase() === 'pending').length;
                 setBadge('badge-orders', unattendedOrders);
             } catch (err) {}
         }
@@ -748,7 +896,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         const phone = u.phone_number || u.phone || 'N/A';
 
                         tbody.innerHTML += `
-                            <tr>
+                            <tr data-search="${searchText(u.id, fullName, email, phone)}">
                                 <td class="p-4 font-semibold text-gray-500">#${u.id}</td>
                                 <td class="p-4 font-bold text-gray-800">${fullName}</td>
                                 <td class="p-4 text-gray-600">${email}</td>
@@ -762,6 +910,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         `;
                     });
                 }
+                applySearch('users-search', 'users-list', 'users-search-empty');
             } catch (err) {}
         }
 
@@ -825,7 +974,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         productsHTML = sellerProducts.map(p => {
                             const thumb = (Array.isArray(p.images) && p.images[0]) || NO_IMAGE_PLACEHOLDER;
                             return `
-                            <div class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
+                            <div data-product="${searchText(p.name, p.category, p.price, p.id)}" class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <img src="${thumb}" class="w-8 h-8 object-cover rounded border flex-shrink-0" onerror="this.onerror=null;this.src='${NO_IMAGE_PLACEHOLDER}'">
                                     <span class="font-medium text-slate-700 truncate max-w-[100px]">${p.name}</span>
@@ -845,7 +994,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     }
 
                     rowsHTML += `
-                        <tr class="align-top">
+                        <tr class="align-top" data-seller="${searchText(s.id, s.store_name, s.name, s.email, s.phone_number, s.phone, s.subscription_plan)}">
                             <td class="p-4 font-semibold text-gray-500">#${s.id}</td>
                             <td class="p-4">
                                 <div class="font-bold text-gray-800">${s.store_name || s.name || 'Seller Store'}</div>
@@ -869,6 +1018,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
 
                 tbody.innerHTML = rowsHTML;
                 renderOrphanedProducts(sellers);
+                applySellerSearch();
             } catch (err) {}
         }
 
@@ -890,7 +1040,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             }
 
             container.innerHTML = orphaned.map(p => `
-                <div class="flex items-center justify-between gap-2 text-xs bg-red-50 border border-red-100 p-2.5 rounded my-1">
+                <div data-product="${searchText(p.name, p.category, p.price, p.id)}" class="flex items-center justify-between gap-2 text-xs bg-red-50 border border-red-100 p-2.5 rounded my-1">
                     <div>
                         <span class="font-medium text-slate-700">${p.name}</span>
                         <span class="text-slate-400"> &middot; KES ${p.price}</span>
@@ -993,7 +1143,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         }
 
         /* -------------------------------------------------------------
-           4. ORDERS & M-PESA
+           4. ORDERS & M-PESA  (items bought together are ONE order)
         ------------------------------------------------------------- */
         async function fetchOrders() {
             try {
@@ -1002,44 +1152,68 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 tbody.innerHTML = '';
 
                 if (Array.isArray(orders)) {
-                    orders.forEach(o => {
-                        const productName = o.product_name || o.item_name || o.title || o.product_title || 'Item Order';
-                        const typedLocation = o.location || o.pickup_location || o.address || o.delivery_location || 'Not Specified';
-                        const time = o.created_at ? new Date(o.created_at).toLocaleString() : 'Recent';
+                    groupOrders(orders).forEach(group => {
+                        const items = group.items;
+                        const first = items[0];
+                        const ids = items.map(i => i.id);
+                        const idList = ids.join(',');
+                        const isMulti = items.length > 1;
 
-                        const buyerName = o.buyer_name || o.customer_name || 'Buyer';
-                        const buyerPhone = o.buyer_phone || o.phone || 'N/A';
-                        const amount = o.amount || o.price || 0;
-                        const paymentStatus = (o.payment_status || 'pending').toUpperCase();
+                        const typedLocation = first.location || first.pickup_location || first.address || first.delivery_location || 'Not Specified';
+                        const time = first.created_at ? new Date(first.created_at).toLocaleString() : 'Recent';
+
+                        const buyerName = first.buyer_name || first.customer_name || 'Buyer';
+                        const buyerPhone = first.buyer_phone || first.phone || 'N/A';
+
+                        const itemNames = items.map(o => o.product_name || o.item_name || o.title || o.product_title || 'Item Order');
+                        const totalAmount = items.reduce((sum, o) => sum + Number(o.amount || o.price || 0), 0);
+                        const paymentStatus = Array.from(new Set(items.map(o => (o.payment_status || 'pending').toUpperCase()))).join(' / ');
+
+                        const itemsHTML = items.map((o, i) => `
+                            <div class="font-bold text-indigo-700 ${i > 0 ? 'mt-1' : ''}">
+                                <i class="fa-solid fa-box text-xs mr-1"></i>${itemNames[i]}
+                                ${isMulti ? `<span class="text-xs font-semibold text-gray-500">(KES ${Number(o.amount || o.price || 0)})</span>` : ''}
+                            </div>
+                        `).join('');
+
+                        const idHTML = isMulti
+                            ? `#${ids[0]}<div class="text-[11px] font-normal text-gray-400">${items.length} items, one payment</div>`
+                            : `#${ids[0]}`;
+
+                        const search = searchText(
+                            ids.map(id => '#' + id + ' ' + id).join(' '),
+                            buyerName, buyerPhone, itemNames.join(' '), typedLocation,
+                            paymentStatus, first.delivery_status || 'Pending'
+                        );
 
                         tbody.innerHTML += `
-                            <tr>
-                                <td class="p-4 font-semibold text-gray-500">#${o.id}</td>
+                            <tr data-search="${search}">
+                                <td class="p-4 font-semibold text-gray-500">${idHTML}</td>
                                 <td class="p-4">
                                     <div class="font-bold text-gray-800">${buyerName}</div>
                                     <div class="text-xs text-gray-500">${buyerPhone}</div>
                                 </td>
                                 <td class="p-4">
-                                    <div class="font-bold text-indigo-700"><i class="fa-solid fa-box text-xs mr-1"></i>${productName}</div>
+                                    ${itemsHTML}
                                 </td>
                                 <td class="p-4">
                                     <div class="font-semibold text-gray-800"><i class="fa-solid fa-location-dot text-red-500 text-xs mr-1"></i>${typedLocation}</div>
                                     <div class="text-xs text-gray-400">${time}</div>
                                 </td>
                                 <td class="p-4">
-                                    <div class="font-bold text-emerald-600">KES ${amount}</div>
+                                    <div class="font-bold text-emerald-600">KES ${totalAmount}</div>
                                     <div class="text-xs font-mono bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded inline-block mt-0.5">${paymentStatus}</div>
                                 </td>
                                 <td class="p-4">
-                                    <select onchange="updateOrderStatus(${o.id}, this.value)" class="border border-gray-300 rounded p-1 text-xs bg-white">
-                                        <option value="Pending" ${o.delivery_status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                        <option value="In-Transit" ${o.delivery_status === 'In-Transit' ? 'selected' : ''}>In-Transit</option>
-                                        <option value="Delivered" ${o.delivery_status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                                        <option value="Cancelled" ${o.delivery_status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                    <select onchange="updateOrderStatus('${idList}', this.value)" class="border border-gray-300 rounded p-1 text-xs bg-white">
+                                        <option value="Pending" ${first.delivery_status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="In-Transit" ${first.delivery_status === 'In-Transit' ? 'selected' : ''}>In-Transit</option>
+                                        <option value="Delivered" ${first.delivery_status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                        <option value="Cancelled" ${first.delivery_status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                                     </select>
                                 </td>
                                 <td class="p-4 text-right">
-                                    <button onclick="deleteOrder(${o.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs">
+                                    <button onclick="deleteOrder('${idList}')" class="text-red-500 hover:text-red-700 font-semibold text-xs">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </td>
@@ -1047,31 +1221,42 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         `;
                     });
                 }
+                applySearch('orders-search', 'orders-list', 'orders-search-empty');
             } catch (err) {}
         }
 
-        async function updateOrderStatus(id, status) {
+        // idList is one id or several joined by commas (all items of one order)
+        async function updateOrderStatus(idList, status) {
             try {
-                await fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
+                const ids = String(idList).split(',');
+                await Promise.all(ids.map(id => fetch(`${API_BASE_URL}/update-delivery-status/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: status })
-                });
+                })));
                 fetchStats();
             } catch (err) {
                 alert('Failed to update status');
             }
         }
 
-        async function deleteOrder(id) {
-            if (!confirm('Are you sure you want to delete this order?')) return;
+        async function deleteOrder(idList) {
+            const ids = String(idList).split(',');
+            const question = ids.length > 1
+                ? `Are you sure you want to delete this order and all ${ids.length} items in it?`
+                : 'Are you sure you want to delete this order?';
+            if (!confirm(question)) return;
             try {
-                const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' });
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok) {
-                    alert(data.message || 'Only delivered orders can be deleted.');
-                    return;
+                let failureMessage = null;
+                for (const id of ids) {
+                    const res = await fetch(`${API_BASE_URL}/delete-order/${id}`, { method: 'DELETE' });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) {
+                        failureMessage = data.message || 'Only delivered orders can be deleted.';
+                        break;
+                    }
                 }
+                if (failureMessage) alert(failureMessage);
                 fetchOrders();
                 fetchStats();
             } catch (err) {
@@ -1100,7 +1285,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         const thumb = imagesArr[0] || NO_IMAGE_PLACEHOLDER;
 
                         tbody.innerHTML += `
-                            <tr>
+                            <tr data-search="${searchText(p.id, p.name, p.description, seller, p.seller_phone, p.seller_email, p.category, p.price)}">
                                 <td class="p-4">
                                     <div class="font-bold text-gray-800">${p.name}</div>
                                     <div class="text-xs text-gray-500 line-clamp-1">${p.description || ''}</div>
@@ -1125,6 +1310,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         `;
                     });
                 }
+                applySearch('pending-search', 'pending-products-list', 'pending-search-empty');
             } catch (err) {}
         }
 
