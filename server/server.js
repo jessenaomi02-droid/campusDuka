@@ -557,6 +557,7 @@ app.get("/create-orders", async (req, res) => {
         id SERIAL PRIMARY KEY,
         buyer_name TEXT,
         buyer_phone VARCHAR(20),
+        buyer_email VARCHAR(100),
         delivery_location TEXT,
         seller_id INTEGER,
         product_id INTEGER,
@@ -575,21 +576,34 @@ app.get("/create-orders", async (req, res) => {
   }
 });
 
+/* ADD BUYER EMAIL COLUMN TO ORDERS
+   "My Orders" now finds a buyer's orders by the email they signed in with,
+   not by the phone number they paid with. Safe to run more than once. */
+app.get("/add-buyer-email", async (req, res) => {
+  try {
+    await db.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS buyer_email VARCHAR(100)`);
+    res.send("buyer_email column added to orders");
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
 /* CREATE ORDER (AUTOMATICALLY COMPUTE COMMISSIONS / PAYOUT PARTS) */
 app.post("/create-order", async (req, res) => {
   try {
-    const { buyer_name, buyer_phone, delivery_location, seller_id, product_id, amount } = req.body;
+    const { buyer_name, buyer_phone, buyer_email, delivery_location, seller_id, product_id, amount } = req.body;
     
     // Compute splitting fractions (10% commission fee)
     const rawAmt = parseFloat(amount);
     const commSplit = rawAmt * 0.10;
     const finalPayout = rawAmt - commSplit;
+    const cleanEmail = buyer_email ? String(buyer_email).trim().toLowerCase() : null;
 
     await db.query(
       `INSERT INTO orders
-      (buyer_name, buyer_phone, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-      [buyer_name, buyer_phone, delivery_location, seller_id, product_id, rawAmt, commSplit, finalPayout, 'pending']
+      (buyer_name, buyer_phone, buyer_email, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+      [buyer_name, buyer_phone, cleanEmail, delivery_location, seller_id, product_id, rawAmt, commSplit, finalPayout, 'pending']
     );
 
     res.json({
@@ -626,7 +640,7 @@ app.get("/mpesa-token", async (req, res) => {
 /* STK PUSH (ROBUSTLY PARSE INCOMING DATA KEYS AND ENFORCED STRICT TYPING) */
 app.post("/stkpush", async (req, res) => {
   try {
-    const { fullname, phone, location, cart, amount } = req.body;
+    const { fullname, phone, email, location, cart, amount } = req.body;
     
     if (!cart || cart.length === 0) {
       return res.status(400).json({ success: false, error: "Cart cannot be empty" });
@@ -650,14 +664,17 @@ app.post("/stkpush", async (req, res) => {
     const commSplit = rawAmt * 0.10;
     const finalPayout = rawAmt - commSplit;
 
+    // The buyer's sign-in email is what "My Orders" uses to find their orders
+    const buyerEmail = email ? String(email).trim().toLowerCase() : null;
+
     const orderResult = await db.query(
       `
       INSERT INTO orders
-      (buyer_name, buyer_phone, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      (buyer_name, buyer_phone, buyer_email, delivery_location, seller_id, product_id, amount, commission_amount, seller_payout, payout_status)
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING id
       `,
-      [fullname, phone, location, resolvedSellerId, resolvedProductId, rawAmt, commSplit, finalPayout, 'pending']
+      [fullname, phone, buyerEmail, location, resolvedSellerId, resolvedProductId, rawAmt, commSplit, finalPayout, 'pending']
     );
 
     const orderId = orderResult.rows[0].id;
@@ -769,6 +786,34 @@ app.put("/update-delivery-status/:id", async (req, res) => {
       [status, req.params.id]
     );
     res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+/* ORDERS FOR ONE BUYER, FOUND BY THE EMAIL THEY SIGNED IN WITH
+   (used by My Orders — independent of the phone number used to pay) */
+app.get("/orders/by-email/:email", async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT
+        orders.*,
+        products.name AS product_name,
+        products.images AS product_images,
+        products.price AS product_price,
+        sellers.name AS seller_name,
+        sellers.phone AS seller_phone_number
+      FROM orders
+      LEFT JOIN products ON orders.product_id = products.id
+      LEFT JOIN sellers ON orders.seller_id = sellers.id
+      WHERE LOWER(orders.buyer_email) = LOWER($1)
+      ORDER BY orders.id DESC`,
+      [String(req.params.email).trim()]
+    );
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -1469,6 +1514,13 @@ app.get("/admin/revenue-summary", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+/* Make sure the orders table has the buyer_email column every time the
+   server starts, so saving an order can never fail because the one-time
+   /add-buyer-email URL was forgotten. Harmless if the column exists. */
+db.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS buyer_email VARCHAR(100)`)
+  .then(() => console.log("orders.buyer_email is ready"))
+  .catch(err => console.log("Could not ensure orders.buyer_email:", err.message));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
