@@ -5,308 +5,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Cart | CampusDuka</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
 :root{
-  --primary:#0d6efd;
-  --light:#f5f7fb;
-  --dark:#333;
+  --color-charcoal:#1f2d3d; --color-slate-teal:#164e63; --color-medium-teal:#1f6b88; --color-accent-blue:#4589be;
+  --bg-main:#f8fafc; --text-dark:#1f2d3d; --text-muted:#64748b; --border-light:#e2e8f0;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px -1px rgba(31,45,61,.08),0 2px 4px -1px rgba(31,45,61,.04);
+  --shadow-lg:0 10px 20px -3px rgba(31,45,61,.12),0 4px 6px -4px rgba(31,45,61,.08);
 }
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+body{background:var(--bg-main);color:var(--text-dark);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none}
+button{cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid var(--color-accent-blue);outline-offset:2px}
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial, sans-serif;
+/* NAVBAR */
+.navbar{background:var(--color-charcoal);display:flex;justify-content:space-between;align-items:center;gap:16px;padding:0 5%;height:70px;position:sticky;top:0;z-index:1000;border-bottom:2px solid var(--color-slate-teal);box-shadow:0 4px 15px rgba(0,0,0,.15)}
+.logo-link{display:flex;align-items:center;flex-shrink:0}
+.logo-img{height:44px;width:auto;display:block}
+.logo-fallback{display:none;align-items:center;gap:10px}
+.logo-svg{height:38px;width:auto}
+.logo-text{color:#fff;font-size:22px;font-weight:800;letter-spacing:-.5px}
+.logo-text span{color:var(--color-accent-blue)}
+.nav-links{display:flex;gap:8px;list-style:none;margin:0 auto 0 24px}
+.nav-links a{color:rgba(255,255,255,.8);font-weight:500;font-size:14px;padding:9px 16px;border-radius:10px;display:block;transition:all .2s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.menu-icon{display:none;color:#fff;font-size:22px;cursor:pointer}
+.cart-link{position:relative;color:#fff;display:flex;align-items:center;gap:10px;background:var(--color-medium-teal);padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600}
+.cart-link i{font-size:18px}
+#nav-count{background:#ef4444;color:#fff;border-radius:99px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;font-size:11px;font-weight:700}
+
+/* PAGE */
+.page{max-width:1100px;width:100%;margin:30px auto 50px;padding:0 20px;flex:1}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.page-head h1{font-size:28px;font-weight:800;color:var(--color-slate-teal);display:flex;align-items:center;gap:12px;letter-spacing:-.5px}
+.page-head h1 small{font-size:13px;font-weight:600;color:var(--text-muted);background:#fff;border:1px solid var(--border-light);padding:4px 12px;border-radius:20px}
+.clear-btn{background:transparent;border:1px solid var(--border-light);color:var(--text-muted);font-size:13px;font-weight:600;padding:8px 16px;border-radius:30px;transition:all .2s}
+.clear-btn:hover{color:#dc2626;border-color:#fca5a5;background:#fff5f5}
+
+.layout{display:grid;grid-template-columns:1fr 340px;gap:26px;align-items:start}
+.section-title{font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.section-title:not(:first-child){margin-top:26px}
+
+/* CART ROWS */
+.item{background:#fff;border:1px solid var(--border-light);border-radius:16px;padding:16px;display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:center;margin-bottom:14px;box-shadow:var(--shadow-sm);transition:box-shadow .25s,opacity .3s,transform .3s}
+.item:hover{box-shadow:var(--shadow-md)}
+.item.removing{opacity:0;transform:translateX(30px)}
+.item img{width:96px;height:96px;object-fit:contain;border-radius:12px;background:#f1f5f9}
+.item-name{font-size:16px;font-weight:600;line-height:1.4;margin-bottom:6px}
+.ticket-tag{display:inline-block;margin-left:8px;background:#e0f2fe;color:#0369a1;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;white-space:nowrap;vertical-align:middle}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.opt{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border:1px solid var(--border-light);background:#f8fafc;color:var(--text-dark);padding:3px 10px;border-radius:20px}
+.opt .dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.25)}
+.unit-price{font-size:13px;color:var(--text-muted)}
+.item-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.line-total{font-size:18px;font-weight:800;color:var(--color-slate-teal)}
+.line-total.free{color:#10b981}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--border-light);border-radius:10px;overflow:hidden}
+.qty button{width:34px;height:36px;border:none;background:#f8fafc;font-size:16px;font-weight:700;color:var(--text-dark);transition:background .2s}
+.qty button:hover{background:var(--border-light)}
+.qty span{min-width:34px;text-align:center;font-weight:700;font-size:14px}
+.remove-btn{background:none;border:none;color:var(--text-muted);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:4px 0;transition:color .2s}
+.remove-btn:hover{color:#dc2626}
+
+/* SUMMARY */
+.summary{background:#fff;border:1px solid var(--border-light);border-radius:18px;padding:24px;box-shadow:var(--shadow-md);position:sticky;top:90px}
+.summary h2{font-size:18px;font-weight:700;margin-bottom:16px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--text-muted);padding:7px 0}
+.sum-row strong{color:var(--text-dark);font-weight:600}
+.sum-total{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-light);margin-top:10px;padding-top:16px;font-weight:700}
+.sum-total span:last-child{font-size:24px;font-weight:800;color:var(--color-slate-teal)}
+.checkout-btn{width:100%;margin-top:18px;background:var(--color-slate-teal);color:#fff;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 12px rgba(22,78,99,.25);transition:all .2s}
+.checkout-btn:hover{background:var(--color-medium-teal);transform:translateY(-1px)}
+.continue{display:block;text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--color-accent-blue)}
+.continue:hover{text-decoration:underline}
+
+/* EMPTY */
+.empty{background:#fff;border:1px dashed var(--border-light);border-radius:18px;text-align:center;padding:70px 20px;color:var(--text-muted)}
+.empty i{font-size:56px;opacity:.4;margin-bottom:18px}
+.empty h2{color:var(--text-dark);font-size:20px;margin-bottom:6px}
+.empty-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.empty-links a{padding:11px 22px;border-radius:30px;font-size:14px;font-weight:600;background:var(--color-slate-teal);color:#fff;transition:background .2s}
+.empty-links a:hover{background:var(--color-medium-teal)}
+.empty-links a.alt{background:#fff;color:var(--color-slate-teal);border:1px solid var(--border-light)}
+
+footer{background:var(--color-charcoal);color:#fff;text-align:center;padding:24px;font-size:14px;border-top:3px solid var(--color-slate-teal)}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .summary{position:static}
 }
-
-body{
-  background:var(--light);
-}
-
-/* ===== NAVBAR ===== */
-.navbar{
-  background:var(--primary);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 20px;
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-
-.logo a{
-  color:#fff;
-  text-decoration:none;
-  font-size:22px;
-  font-weight:bold;
-}
-
-.menu-icon{
-  display:none;
-  font-size:24px;
-  cursor:pointer;
-}
-
-.nav-links{
-  list-style:none;
-  display:flex;
-  gap:20px;
-}
-
-.nav-links a{
-  color:#fff;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.nav-links a:hover{
-  text-decoration:underline;
-}
-
-/* ===== MOBILE NAV ===== */
 @media(max-width:768px){
-  .menu-icon{
-    display:block;
-  }
-
-  .nav-links{
-    position:absolute;
-    top:60px;
-    left:0;
-    width:100%;
-    background:var(--primary);
-    flex-direction:column;
-    align-items:center;
-    display:none;
-    padding:15px 0;
-  }
-
-  .nav-links.active{
-    display:flex;
-  }
+  .navbar{padding:0 16px;height:64px}
+  .menu-icon{display:block;order:3}
+  .nav-links{display:none;position:absolute;top:64px;left:0;width:100%;background:var(--color-charcoal);flex-direction:column;padding:16px;gap:6px;margin:0;border-bottom:2px solid var(--color-slate-teal)}
+  .nav-links.active{display:flex}
+  .nav-links a{text-align:center}
+  .cart-label{display:none}
+  .cart-link{padding:10px 14px;margin-left:auto}
+  .logo-img{height:38px}
 }
-
-/* ===== CART ===== */
-.cart-container{
-  max-width:1000px;
-  margin:30px auto;
-  background:#fff;
-  border-radius:12px;
-  padding:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+@media(max-width:560px){
+  .item{grid-template-columns:76px 1fr;gap:12px}
+  .item img{width:76px;height:76px}
+  .item-side{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
+  .page-head h1{font-size:23px}
 }
-
-.cart-container h2{
-  text-align:center;
-  margin-bottom:20px;
-  color:var(--dark);
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:12px;
-  border-bottom:1px solid #ddd;
-  text-align:center;
-}
-
-th{
-  background:var(--primary);
-  color:#fff;
-}
-
-td img{
-  width:70px;
-  border-radius:10px;
-}
-
-/* small label shown next to event tickets */
-.ticket-tag{
-  display:inline-block;
-  margin-left:6px;
-  background:#e0f2fe;
-  color:#0369a1;
-  font-size:11px;
-  font-weight:bold;
-  padding:2px 8px;
-  border-radius:20px;
-  white-space:nowrap;
-}
-
-/* ticket quantity control (carried over from the old tickets cart) */
-.qty-control{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-}
-
-.qty-btn{
-  background:#f1f5f9;
-  border:1px solid #ddd;
-  color:var(--dark);
-  width:28px;
-  height:28px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.qty-btn:hover{
-  background:var(--primary);
-  color:#fff;
-  border-color:var(--primary);
-}
-
-.qty-val{
-  font-weight:bold;
-  min-width:20px;
-  text-align:center;
-}
-
-.btn{
-  padding:8px 12px;
-  border:none;
-  border-radius:6px;
-  color:#fff;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.delete-btn{
-  background:#dc3545;
-}
-
-.similar-btn{
-  background:#198754;
-}
-
-.checkout-section{
-  margin-top:20px;
-  display:flex;
-  justify-content:flex-end;
-  align-items:center;
-  gap:15px;
-}
-
-.total{
-  font-size:18px;
-  font-weight:bold;
-}
-
-.checkout-btn{
-  background:var(--primary);
-  padding:10px 18px;
-  border:none;
-  border-radius:6px;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.empty{
-  text-align:center;
-  font-size:18px;
-  color:gray;
-  margin-top:20px;
-}
-
-/* ===== MOBILE TABLE ===== */
-@media(max-width:768px){
-  table, thead, tbody, th, td, tr{
-    display:block;
-  }
-
-  thead{
-    display:none;
-  }
-
-  tr{
-    margin-bottom:15px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    padding:10px;
-  }
-
-  td{
-    border:none;
-    display:flex;
-    justify-content:space-between;
-    padding:8px 5px;
-  }
-
-  td::before{
-    content:attr(data-label);
-    font-weight:bold;
-  }
-}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 
 <body>
 
-<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
-  <div class="logo">
-    <a href="index2.html">CampusDuka</a>
-  </div>
-
-  <div class="menu-icon" id="menuIcon">
-    <i class="fas fa-bars"></i>
-  </div>
+  <a href="index2.html" class="logo-link" aria-label="CampusDuka home">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+    <span id="logoFallback" class="logo-fallback">
+      <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#164e63"/><stop offset="100%" stop-color="#4589be"/></linearGradient></defs>
+        <rect x="20" y="25" width="60" height="50" rx="8" fill="url(#logo-grad)"/>
+        <polygon points="50,15 20,25 80,25" fill="#ffffff"/>
+        <circle cx="50" cy="50" r="10" fill="#ffffff"/>
+        <path d="M44,50 L56,50 M50,44 L50,56" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Campus<span>Duka</span></span>
+    </span>
+  </a>
 
   <ul class="nav-links" id="navLinks">
     <li><a href="index2.html">Home</a></li>
     <li><a href="products.html">Products</a></li>
+    <li><a href="food.html">Fast Foods</a></li>
     <li><a href="events.html">Events</a></li>
-    
     <li><a href="contact.html">Contact</a></li>
-    
   </ul>
+
+  <a href="cart.html" class="cart-link" aria-label="Your cart">
+    <i class="fas fa-shopping-cart"></i><span class="cart-label">Cart</span>
+    <span id="nav-count">0</span>
+  </a>
+  <div class="menu-icon" id="menuIcon" aria-label="Menu"><i class="fas fa-bars"></i></div>
 </nav>
 
-<!-- ===== CART ===== -->
-<div class="cart-container">
-  <h2>Your Shopping Cart</h2>
-
-  <table id="cart-table">
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <div class="checkout-section">
-    <span class="total" id="cart-total">Total: KES 0</span>
-    <button class="checkout-btn" onclick="location.href='checkout.html'">
-      Checkout
-    </button>
+<main class="page">
+  <div class="page-head">
+    <h1><i class="fa-solid fa-cart-shopping"></i> Your Cart <small id="headCount"></small></h1>
+    <button class="clear-btn" id="clearBtn" onclick="clearCart()" style="display:none"><i class="fa-regular fa-trash-can"></i> Clear cart</button>
   </div>
 
-  <p class="empty" id="empty-cart" style="display:none;">Your cart is empty 😢</p>
-</div>
+  <div id="content"></div>
+</main>
+
+<footer>&copy; 2026 CampusDuka • All Rights Reserved</footer>
 
 <script>
-/* ===== MOBILE NAV ===== */
-const menuIcon = document.getElementById("menuIcon");
-const navLinks = document.getElementById("navLinks");
+const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#f1f5f9"/><text x="50%" y="53%" font-family="Arial" font-size="14" fill="#94a3b8" text-anchor="middle">No image</text></svg>');
 
-menuIcon.addEventListener("click", ()=>{
-  navLinks.classList.toggle("active");
+/* ===== MOBILE NAV ===== */
+document.getElementById("menuIcon").addEventListener("click", () => {
+  document.getElementById("navLinks").classList.toggle("active");
 });
+
+function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function money(n){ return Number(n || 0).toLocaleString(); }
+function read(key){ try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e){ return []; } }
+function save(key, arr){ localStorage.setItem(key, JSON.stringify(arr)); }
 
 /* ===== BOOKING LINKS =====
    A link such as cart.html?id=5&name=Fest&price=300&image=... adds that
@@ -319,7 +187,7 @@ function processIncomingBooking(){
   const image = params.get("image");
 
   if(id && name){
-    let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
+    let eventCart = read("eventCart");
     const existingIndex = eventCart.findIndex(item => String(item.id) === String(id));
 
     if(existingIndex > -1){
@@ -335,119 +203,128 @@ function processIncomingBooking(){
       });
     }
 
-    localStorage.setItem("eventCart", JSON.stringify(eventCart));
+    save("eventCart", eventCart);
     // clean the link so a refresh doesn't add the ticket again
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 }
 
-/* ===== TICKET QUANTITY (- / +) ===== */
-function updateTicketQty(index, delta){
-  let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
-  if(eventCart[index]){
-    eventCart[index].quantity += delta;
-    if(eventCart[index].quantity <= 0){
-      eventCart.splice(index,1);
-    }
-    localStorage.setItem("eventCart", JSON.stringify(eventCart));
-    location.reload();
-  }
+/* ===== ROW ACTIONS (work for both baskets: "cart" and "eventCart") ===== */
+function changeQty(source, index, delta){
+  const arr = read(source);
+  if (!arr[index]) return;
+  arr[index].quantity += delta;
+  if (arr[index].quantity <= 0) arr.splice(index, 1);
+  else if (arr[index].quantity > 99) arr[index].quantity = 99;
+  save(source, arr);
+  render();
 }
 
-/* ===== CART LOGIC =====
+function removeItem(source, index, el){
+  const row = el.closest(".item");
+  row.classList.add("removing");
+  setTimeout(() => {
+    const arr = read(source);
+    arr.splice(index, 1);
+    save(source, arr);
+    render();
+  }, 280);
+}
+
+function clearCart(){
+  if (!confirm("Remove everything from your cart?")) return;
+  localStorage.removeItem("cart");
+  localStorage.removeItem("eventCart");
+  render();
+}
+
+/* ===== RENDER =====
    Products live in "cart" and event tickets in "eventCart". This page
    shows both together, so there is only one place to review everything
    before checkout. */
-document.addEventListener("DOMContentLoaded", ()=>{
-  processIncomingBooking();
+const COLOR_HEX = { black:"#111", white:"#fff", grey:"#9ca3af", gray:"#9ca3af", red:"#dc2626", blue:"#2563eb", navy:"#1e3a5f", green:"#16a34a", yellow:"#facc15", orange:"#f97316", pink:"#ec4899", purple:"#7c3aed", brown:"#78350f", beige:"#d6c3a3" };
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
-  const tbody = document.querySelector("#cart-table tbody");
-  const totalDisplay = document.getElementById("cart-total");
-  const emptyMsg = document.getElementById("empty-cart");
+function rowHTML(item, source, index){
+  const isTicket = source === "eventCart" || String(item.category || "").trim().toLowerCase() === "events";
+  const price = Number(item.price) || 0;
+  const qty = item.quantity || 1;
+  const lineTotal = price * qty;
 
-  tbody.innerHTML = "";
+  // Size / colour chosen on the products page; show the clean product name next to them
+  const baseName = (item.size || item.color) && item.baseName ? item.baseName : item.name;
+  const opts = [];
+  if (item.size) opts.push(`<span class="opt"><i class="fa-solid fa-ruler"></i> Size ${esc(item.size)}</span>`);
+  if (item.color) opts.push(`<span class="opt"><span class="dot" style="background:${esc(COLOR_HEX[String(item.color).toLowerCase()] || String(item.color).toLowerCase())}"></span>${esc(item.color)}</span>`);
 
-  // one combined list; remember which basket and position each row came from
-  const rows = [
-    ...cart.map((item,index)=>({item, source:"cart", index})),
-    ...eventCart.map((item,index)=>({item, source:"eventCart", index}))
-  ];
+  return `
+  <div class="item">
+    <img src="${esc(item.image || (isTicket ? "images/event1.jpg" : PLACEHOLDER))}" alt="${esc(baseName)}" onerror="this.onerror=null;this.src=PLACEHOLDER;">
+    <div>
+      <div class="item-name">${esc(baseName)}${isTicket ? '<span class="ticket-tag">🎟️ Ticket</span>' : ""}</div>
+      ${opts.length ? `<div class="opts">${opts.join("")}</div>` : ""}
+      <div class="unit-price">${price === 0 ? "Free" : "KES " + money(price) + " each"}</div>
+    </div>
+    <div class="item-side">
+      <div class="line-total ${lineTotal === 0 ? "free" : ""}">${lineTotal === 0 ? "Free" : "KES " + money(lineTotal)}</div>
+      <div class="qty">
+        <button onclick="changeQty('${source}', ${index}, -1)" aria-label="Decrease quantity">-</button>
+        <span>${qty}</span>
+        <button onclick="changeQty('${source}', ${index}, 1)" aria-label="Increase quantity">+</button>
+      </div>
+      <button class="remove-btn" onclick="removeItem('${source}', ${index}, this)"><i class="fa-regular fa-trash-can"></i> Remove</button>
+    </div>
+  </div>`;
+}
 
-  if(rows.length === 0){
-    emptyMsg.style.display = "block";
-    totalDisplay.style.display = "none";
+function render(){
+  const cart = read("cart");
+  const eventCart = read("eventCart");
+  const content = document.getElementById("content");
+
+  const total = [...cart, ...eventCart].reduce((s, i) => s + (Number(i.price) || 0) * (i.quantity || 1), 0);
+  const productCount = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+  const ticketCount = eventCart.reduce((s, i) => s + (i.quantity || 1), 0);
+  const count = productCount + ticketCount;
+
+  document.getElementById("nav-count").innerText = count;
+  document.getElementById("headCount").textContent = count ? `${count} item${count === 1 ? "" : "s"}` : "";
+  document.getElementById("clearBtn").style.display = count ? "" : "none";
+
+  if (count === 0){
+    content.innerHTML = `
+      <div class="empty">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything yet.</p>
+        <div class="empty-links">
+          <a href="products.html"><i class="fa-solid fa-bag-shopping"></i> Browse products</a>
+          <a href="food.html" class="alt"><i class="fa-solid fa-utensils"></i> Order food</a>
+          <a href="events.html" class="alt"><i class="fa-solid fa-ticket"></i> Find events</a>
+        </div>
+      </div>`;
     return;
   }
 
-  let grandTotal = 0;
+  content.innerHTML = `
+    <div class="layout">
+      <div>
+        ${cart.length ? `<h3 class="section-title"><i class="fa-solid fa-bag-shopping"></i> Items</h3>${cart.map((it, i) => rowHTML(it, "cart", i)).join("")}` : ""}
+        ${eventCart.length ? `<h3 class="section-title"><i class="fa-solid fa-ticket"></i> Event tickets</h3>${eventCart.map((it, i) => rowHTML(it, "eventCart", i)).join("")}` : ""}
+      </div>
+      <aside class="summary">
+        <h2>Order summary</h2>
+        ${productCount ? `<div class="sum-row"><span>Items (${productCount})</span><strong>KES ${money(cart.reduce((s, i) => s + (Number(i.price) || 0) * (i.quantity || 1), 0))}</strong></div>` : ""}
+        ${ticketCount ? `<div class="sum-row"><span>Tickets (${ticketCount})</span><strong>KES ${money(eventCart.reduce((s, i) => s + (Number(i.price) || 0) * (i.quantity || 1), 0))}</strong></div>` : ""}
+        <div class="sum-total"><span>Total</span><span id="cart-total">${total === 0 ? "Free" : "KES " + money(total)}</span></div>
+        <button class="checkout-btn" onclick="location.href='checkout.html'"><i class="fa-solid fa-lock"></i> Checkout</button>
+        <a class="continue" href="products.html"><i class="fa-solid fa-arrow-left"></i> Continue shopping</a>
+      </aside>
+    </div>`;
+}
 
-  rows.forEach(({item, source, index})=>{
-    const itemTotal = item.price * item.quantity;
-    grandTotal += itemTotal;
-
-    const isTicket = source === "eventCart" || String(item.category || "").trim().toLowerCase() === "events";
-
-    // tickets keep the - / + quantity control from the old tickets cart;
-    // products keep Delete / Add Similar exactly as before
-    const qtyCell = source === "eventCart"
-      ? `<div class="qty-control">
-           <button class="qty-btn" onclick="updateTicketQty(${index}, -1)">-</button>
-           <span class="qty-val">${item.quantity}</span>
-           <button class="qty-btn" onclick="updateTicketQty(${index}, 1)">+</button>
-         </div>`
-      : `${item.quantity}`;
-
-    const actionCell = source === "eventCart"
-      ? `<button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>`
-      : `<button class="btn delete-btn" data-source="${source}" data-index="${index}">Delete</button>
-         <button class="btn similar-btn" data-source="${source}" data-index="${index}">Add Similar</button>`;
-
-    const priceText = item.price === 0 ? "Free" : `KES ${item.price}`;
-    const totalText = itemTotal === 0 ? "Free" : `KES ${itemTotal}`;
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td data-label="Image"><img src="${item.image || 'images/event1.jpg'}"></td>
-      <td data-label="Item">${item.name}${isTicket ? '<span class="ticket-tag">🎟️ Ticket</span>' : ''}</td>
-      <td data-label="Price">${priceText}</td>
-      <td data-label="Qty">${qtyCell}</td>
-      <td data-label="Total">${totalText}</td>
-      <td data-label="Actions">${actionCell}</td>
-    `;
-    tbody.appendChild(row);
-  });
-
-  totalDisplay.textContent = `Total: KES ${grandTotal.toLocaleString()}`;
-
-  document.querySelectorAll(".delete-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-      if(btn.dataset.source === "eventCart"){
-        eventCart.splice(btn.dataset.index,1);
-        localStorage.setItem("eventCart",JSON.stringify(eventCart));
-      }else{
-        cart.splice(btn.dataset.index,1);
-        localStorage.setItem("cart",JSON.stringify(cart));
-      }
-      location.reload();
-    };
-  });
-
-  document.querySelectorAll(".similar-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-      if(btn.dataset.source === "eventCart"){
-        const item = eventCart[btn.dataset.index];
-        eventCart.push({...item});
-        localStorage.setItem("eventCart",JSON.stringify(eventCart));
-      }else{
-        const item = cart[btn.dataset.index];
-        cart.push({...item});
-        localStorage.setItem("cart",JSON.stringify(cart));
-      }
-      location.reload();
-    };
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  processIncomingBooking();
+  render();
 });
 </script>
 
