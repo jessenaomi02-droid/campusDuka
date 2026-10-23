@@ -19,6 +19,7 @@ const upload = multer({
 const CONSUMER_KEY = process.env.CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 const BUSINESS_SHORTCODE = process.env.BUSINESS_SHORTCODE;
+const TILL_NUMBER = process.env.TILL_NUMBER;
 const PASSKEY = process.env.PASSKEY;
 
 app.use(cors({
@@ -712,13 +713,13 @@ app.post("/stkpush", async (req, res) => {
       "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
       {
         BusinessShortCode: BUSINESS_SHORTCODE,
-        Password: password,
-        Timestamp: timestamp,
-        TransactionType: "CustomerPayBillOnline",
-        Amount: Math.round(rawAmt),
-        PartyA: phone,
-        PartyB: BUSINESS_SHORTCODE,
-        PhoneNumber: phone,
+Password: password,
+Timestamp: timestamp,
+TransactionType: "CustomerBuyGoodsOnline",
+Amount: Math.round(rawAmt),
+PartyA: phone,
+PartyB: TILL_NUMBER,
+PhoneNumber: phone,
         // Passing the orderId as a query parameter guarantees we update the right record on return
         CallBackURL: `https://campusduka-api.onrender.com/mpesa-callback?orderId=${orderIds.join(",")}`,
         AccountReference: `ORDER_${orderId}`,
