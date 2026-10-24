@@ -131,6 +131,12 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
   #ad-income-list td:nth-child(2)::before{content:"Company"}
   #ad-income-list td:nth-child(3)::before{content:"Notes"}
   #ad-income-list td:nth-child(4)::before{content:"Amount"}
+
+  #subscription-payments-list td:nth-child(1)::before{content:"Date"}
+  #subscription-payments-list td:nth-child(2)::before{content:"Paid by"}
+  #subscription-payments-list td:nth-child(3)::before{content:"Plan"}
+  #subscription-payments-list td:nth-child(4)::before{content:"Amount"}
+  #subscription-payments-list td:nth-child(5)::before{content:"M-Pesa code"}
 }
 
 /* Small phones: tighter padding, hide decorative banner icons */
@@ -379,6 +385,39 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 <p id="rev-ads-count" class="text-xs text-gray-400 mt-1">Entered by hand below</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Subscription payments: every successful payment and who made it -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-wrap justify-between items-center gap-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">Subscription payments received</h3>
+                                <p class="text-xs text-gray-400 mt-0.5">Only successful payments are listed. Pending and failed payments are left out.</p>
+                            </div>
+                            <span id="subscription-payments-total-label" class="text-sm font-bold text-emerald-600">KES 0.00</span>
+                        </div>
+                        <div class="px-6 py-3 border-b border-gray-100">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input id="subscription-search" type="search" oninput="applySearch('subscription-search','subscription-payments-list','subscription-search-empty')" placeholder="Search by seller, phone, plan or M-Pesa code..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="responsive-table w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">Date</th>
+                                        <th class="p-4">Paid by</th>
+                                        <th class="p-4">Plan</th>
+                                        <th class="p-4">Amount</th>
+                                        <th class="p-4">M-Pesa code</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subscription-payments-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                </tbody>
+                            </table>
+                        </div>
+                        <p id="subscription-search-empty" class="hidden text-sm text-gray-500 italic px-6 py-4">No subscription payments match your search.</p>
                     </div>
 
                     <div>
@@ -920,6 +959,11 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         let messageFilter = 'all';
         let lastSellerBalances = [];
 
+        // Revenue figures from the server, and the total of the subscription
+        // payments that were actually received (successful ones only).
+        let lastRevenueSummary = null;
+        let verifiedSubscriptionTotal = null;
+
         document.addEventListener("DOMContentLoaded", () => {
             resetIncomeDate();
             renderAttention();
@@ -1048,6 +1092,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             fetchAds();
             fetchRevenueSummary();
             fetchAdIncome();
+            fetchSubscriptionPayments();
             fetchPayouts();
             fetchMessages();
         }
@@ -2086,27 +2131,44 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 const d = await res.json();
                 if (!d.success) return;
 
-                setText('dash-total-revenue', kes(d.total_revenue));
-                setText('dash-gross-sales', kes(d.gross_sales));
-                setText('dash-owed', kes(d.payouts_owed));
-
-                setText('rev-total', kes(d.total_revenue));
-                setText('rev-products-gross', kes(d.products_gross));
-                setText('rev-products-commission', kes(d.products_commission));
-                setText('rev-food-gross', kes(d.food_gross));
-                setText('rev-food-commission', kes(d.food_commission));
-                setText('rev-events-gross', kes(d.events_gross));
-                setText('rev-events-commission', kes(d.events_commission));
-                setText('rev-subscriptions', kes(d.subscriptions_total));
-                setText('rev-featured-total', kes(d.featured_fees_total));
-                setText('rev-featured-note', `${kes(d.featured_fees_deducted)} already taken from payouts`);
-                setText('rev-ads-total', kes(d.ad_income_total));
-                setText('rev-payouts-owed', kes(d.payouts_owed));
-                setText('rev-payouts-transferred', kes(d.payouts_transferred));
-
-                renderMix(d);
-                renderMonthly(d);
+                lastRevenueSummary = d;
+                renderRevenue(d);
             } catch (err) {}
+        }
+
+        // Draws every revenue figure. The Subscriptions figure (and the total
+        // that includes it) uses the successful subscription payments listed
+        // on the page, once those have loaded, so the number always matches
+        // the payments you can see.
+        function renderRevenue(serverSummary) {
+            const d = Object.assign({}, serverSummary);
+            if (verifiedSubscriptionTotal !== null) {
+                d.total_revenue = Number(serverSummary.total_revenue || 0)
+                    - Number(serverSummary.subscriptions_total || 0)
+                    + verifiedSubscriptionTotal;
+                d.subscriptions_total = verifiedSubscriptionTotal;
+            }
+
+            setText('dash-total-revenue', kes(d.total_revenue));
+            setText('dash-gross-sales', kes(d.gross_sales));
+            setText('dash-owed', kes(d.payouts_owed));
+
+            setText('rev-total', kes(d.total_revenue));
+            setText('rev-products-gross', kes(d.products_gross));
+            setText('rev-products-commission', kes(d.products_commission));
+            setText('rev-food-gross', kes(d.food_gross));
+            setText('rev-food-commission', kes(d.food_commission));
+            setText('rev-events-gross', kes(d.events_gross));
+            setText('rev-events-commission', kes(d.events_commission));
+            setText('rev-subscriptions', kes(d.subscriptions_total));
+            setText('rev-featured-total', kes(d.featured_fees_total));
+            setText('rev-featured-note', `${kes(d.featured_fees_deducted)} already taken from payouts`);
+            setText('rev-ads-total', kes(d.ad_income_total));
+            setText('rev-payouts-owed', kes(d.payouts_owed));
+            setText('rev-payouts-transferred', kes(d.payouts_transferred));
+
+            renderMix(d);
+            renderMonthly(d);
         }
 
         function renderMix(d) {
@@ -2169,6 +2231,64 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     <span class="text-[11px] text-gray-500">${m.label}</span>
                 </div>
             `).join('');
+        }
+
+        /* -------------------------------------------------------------
+           8b. SUBSCRIPTION PAYMENTS (actual payments, and who paid)
+           Only successful payments are listed and added up. A payment that
+           is still pending, or that failed, is never shown or counted.
+        ------------------------------------------------------------- */
+        function isSuccessfulPayment(row) {
+            const status = String(row.status || row.payment_status || '').trim().toLowerCase();
+            if (!status) return true;
+            return ['paid', 'success', 'successful', 'completed', 'complete', 'confirmed'].includes(status);
+        }
+
+        async function fetchSubscriptionPayments() {
+            const tbody = document.getElementById('subscription-payments-list');
+            if (!tbody) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/subscription-payments`);
+                const data = await res.json();
+                const all = Array.isArray(data) ? data : (data && Array.isArray(data.payments) ? data.payments : null);
+                if (!res.ok || !all) throw new Error('Unexpected response');
+
+                const rows = all.filter(isSuccessfulPayment);
+                verifiedSubscriptionTotal = rows.reduce((sum, r) => sum + Number(r.amount || 0), 0);
+                setText('subscription-payments-total-label', kes(verifiedSubscriptionTotal));
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-xs text-gray-400 italic" style="display:table-cell">No successful subscription payments yet.</td></tr>`;
+                } else {
+                    tbody.innerHTML = rows.map(r => {
+                        const paidAt = r.paid_at || r.created_at || r.payment_date || '';
+                        const name = r.seller_name || r.store_name || r.name || ('Seller #' + (r.seller_id != null ? r.seller_id : '?'));
+                        const contact = r.seller_phone || r.phone_number || r.phone || r.seller_email || r.email || '';
+                        const plan = r.plan || r.subscription_plan || r.plan_name || '-';
+                        const receipt = r.mpesa_receipt || r.mpesa_receipt_number || r.mpesa_code || r.receipt || r.transaction_id || '';
+
+                        return `
+                        <tr data-search="${searchText(name, contact, plan, receipt, r.amount)}">
+                            <td class="p-4 text-gray-500 whitespace-nowrap">${paidAt ? esc(new Date(paidAt).toLocaleString()) : ''}</td>
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800">${esc(name)}</div>
+                                <div class="text-xs text-gray-400">${esc(contact)}</div>
+                            </td>
+                            <td class="p-4"><span class="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">${esc(plan)}</span></td>
+                            <td class="p-4 font-bold text-emerald-600 whitespace-nowrap">${kes(r.amount)}</td>
+                            <td class="p-4 text-xs font-mono text-gray-600">${esc(receipt || '-')}</td>
+                        </tr>`;
+                    }).join('');
+                }
+
+                applySearch('subscription-search', 'subscription-payments-list', 'subscription-search-empty');
+                if (lastRevenueSummary) renderRevenue(lastRevenueSummary);
+            } catch (err) {
+                verifiedSubscriptionTotal = null;
+                setText('subscription-payments-total-label', '');
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-xs text-amber-600" style="display:table-cell">Could not load the subscription payments from the server. The server needs a route that lists them (/admin/subscription-payments).</td></tr>`;
+            }
         }
 
         /* -------------------------------------------------------------
