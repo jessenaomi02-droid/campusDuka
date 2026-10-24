@@ -24,17 +24,47 @@ body {
 /* ================= HEADER SECTION ================= */
 .header {
   background: #0f172a;
-  padding: 30px 40px;
+  padding: 20px 40px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Logo + title */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-img {
+  height: 52px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  background: white;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+#logoFallback {
+  display: none;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  background: #0077ff;
+  color: white;
+  border-radius: 10px;
+  font-size: 22px;
+}
+
 .header h1 {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
@@ -44,7 +74,7 @@ body {
 }
 
 .header p {
-  margin-top: 6px;
+  margin-top: 4px;
   color: #94a3b8;
   font-size: 15px;
 }
@@ -129,11 +159,53 @@ button {
   justify-content: center;
 }
 
+/* ================= TAB BAR ================= */
+.tabs-bar {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 0 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.tab-btn {
+  background: none;
+  color: #64748b;
+  border-radius: 0;
+  padding: 16px 18px;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.tab-btn:hover {
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.tab-btn.active {
+  color: #0077ff;
+  border-bottom-color: #0077ff;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
 /* ================= CORE CONTAINER ================= */
 .container {
   max-width: 1200px;
   margin: auto;
-  padding: 40px 20px;
+  padding: 35px 20px;
 }
 
 /* ================= PAYOUT NOTICE BANNER ================= */
@@ -156,6 +228,35 @@ button {
 .payout-notice-banner i {
   font-size: 20px;
   color: #0077ff;
+}
+
+/* ================= UPLOAD LIMIT ALERT ================= */
+.limit-alert {
+  display: none;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 5px solid #f59e0b;
+  color: #92400e;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.limit-alert .limit-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.limit-alert i.fa-triangle-exclamation {
+  font-size: 20px;
+  color: #f59e0b;
 }
 
 /* ================= GRID PATTERNS ================= */
@@ -322,6 +423,7 @@ button {
   top: 90px;
   right: 40px;
   width: 340px;
+  max-width: calc(100% - 20px);
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
@@ -551,6 +653,19 @@ button {
   margin-bottom: 20px;
 }
 
+.section-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.section-top .section-heading {
+  margin-bottom: 0;
+}
+
 #products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -686,15 +801,29 @@ button {
   .actions button, .actions a {
     flex-grow: 1;
   }
+  .tabs-bar {
+    padding: 0 10px;
+  }
+  .tab-btn {
+    padding: 14px 12px;
+    font-size: 13px;
+  }
+  .earnings-flex {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div>
-    <h1>CampusDuka <span>Dashboard</span></h1>
-    <p>Welcome back, <b id="sellerName">Seller</b> 🚀</p>
+  <div class="brand">
+    <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <span id="logoFallback"><i class="fas fa-store"></i></span>
+    <div>
+      <h1>CampusDuka <span>Dashboard</span></h1>
+      <p>Welcome back, <b id="sellerName">Seller</b> 🚀</p>
+    </div>
   </div>
   <div class="actions">
     <button class="notif-bell-btn" onclick="toggleNotifications()">
@@ -704,22 +833,20 @@ button {
     <button class="upload-btn" onclick="goToUpload()">
       <i class="fas fa-plus"></i> Upload Product
     </button>
-    <!-- Membership Matrix Nav Item -->
-    <a href="#membershipMatrixSection" style="text-decoration: none;">
-      <button class="nav-btn">
-        <i class="fas fa-layer-group" style="color: #0077ff;"></i> Membership Matrix
-      </button>
-    </a>
-    <!-- Dynamic Plan Upgrade Button (Hidden for Commission Mode Sellers) -->
-    <a id="subPlanLink" href="subscription.html" style="text-decoration: none;">
-      <button class="nav-btn">
-        <i class="fas fa-star" style="color: #eab308;"></i> Premium Plans
-      </button>
-    </a>
     <button class="logout-btn" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i> Logout
     </button>
   </div>
+</div>
+
+<!-- TAB BAR: one place to move between every section -->
+<div class="tabs-bar" id="tabsBar">
+  <button class="tab-btn active" data-tab="overview" onclick="showTab('overview')"><i class="fas fa-house"></i> Overview</button>
+  <button class="tab-btn" data-tab="products" onclick="showTab('products')"><i class="fas fa-box"></i> My Products</button>
+  <button class="tab-btn" data-tab="sales" onclick="showTab('sales')"><i class="fas fa-shopping-bag"></i> Sales</button>
+  <button class="tab-btn" data-tab="promote" onclick="showTab('promote')"><i class="fas fa-star"></i> Promote</button>
+  <button class="tab-btn" data-tab="plan" onclick="showTab('plan')"><i class="fas fa-award"></i> My Plan</button>
+  <button class="tab-btn" data-tab="support" onclick="showTab('support')"><i class="fas fa-envelope"></i> Support</button>
 </div>
 
 <div id="notif-drawer" class="notification-drawer">
@@ -734,77 +861,205 @@ button {
 
 <div class="container">
 
-  <!-- PAYOUT NOTIFICATION BANNER -->
-  <div class="payout-notice-banner">
-    <i class="fas fa-clock"></i>
-    <span><b>Payout Notice:</b> Payment will be processed and transferred to your account within <b>24 hours</b> from the time a customer purchases your item.</span>
-  </div>
-  
-  <div class="dashboard-grid">
-    <div class="card-box">
-      <div class="card-title">
-        <i class="fas fa-wallet" style="color:#10b981;"></i> Merchant Ledger & Revenue
-      </div>
-      <div class="earnings-flex">
-        <div class="earnings-card">
-          <h4>Platform Sales Pool</h4>
-          <p id="totalEarnings">KES 0.00</p>
-        </div>
-        <div class="earnings-card success">
-          <h4>Due to store Seller</h4>
-          <p id="payoutEarnings">KES 0.00</p>
-        </div>
-      </div>
-      <p style="font-size: 12px; color: #64748b; line-height: 1.6;">
-        Our platform commissions are capped at a secure <b>10% split fee</b>. Track individual product delivery state directly on payouts to disburse balances to your phone configuration.
-      </p>
+  <!-- ========== TAB 1: OVERVIEW ========== -->
+  <div id="tab-overview" class="tab-panel active">
+
+    <!-- PAYOUT NOTIFICATION BANNER -->
+    <div class="payout-notice-banner">
+      <i class="fas fa-clock"></i>
+      <span><b>Payout Notice:</b> Payment will be processed and transferred to your account within <b>24 hours</b> from the time a customer purchases your item.</span>
     </div>
 
-    <div class="card-box">
+    <!-- UPLOAD LIMIT ALERT (subscription sellers only, shown when the limit is reached) -->
+    <div id="limitAlert" class="limit-alert">
+      <div class="limit-text">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span id="limitAlertText">You have reached your upload limit.</span>
+      </div>
+      <a href="subscription.html" style="text-decoration: none;">
+        <button class="upload-btn"><i class="fas fa-star"></i> Choose a Plan</button>
+      </a>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card-box">
+        <div class="card-title">
+          <i class="fas fa-wallet" style="color:#10b981;"></i> Merchant Ledger & Revenue
+        </div>
+        <div class="earnings-flex">
+          <div class="earnings-card">
+            <h4>Platform Sales Pool</h4>
+            <p id="totalEarnings">KES 0.00</p>
+          </div>
+          <div class="earnings-card success">
+            <h4>Due to store Seller</h4>
+            <p id="payoutEarnings">KES 0.00</p>
+          </div>
+        </div>
+        <p style="font-size: 12px; color: #64748b; line-height: 1.6;">
+          Our platform commissions are capped at a secure <b>15% split fee</b>. Track individual product delivery state directly on payouts to disburse balances to your phone configuration.
+        </p>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title">
+          <i class="fas fa-award" style="color:#0077ff;"></i> Your Plan
+        </div>
+        <div id="ovPlanBadge" class="plan-badge" style="display:inline-block; margin-bottom: 15px;">Loading...</div>
+        <p style="font-size: 12px; color:#64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Upload Slots Used</p>
+        <p id="ovUploads" style="font-size: 20px; font-weight: 700; color:#0f172a; margin-bottom: 18px;">Loading...</p>
+        <button class="nav-btn" style="width:100%; justify-content:center;" onclick="showTab('plan')">
+          <i class="fas fa-layer-group" style="color: #0077ff;"></i> See plan details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TAB 2: MY PRODUCTS ========== -->
+  <div id="tab-products" class="tab-panel">
+    <div class="section-top">
+      <h2 class="section-heading">Your Active Listings</h2>
+      <button class="upload-btn" onclick="goToUpload()"><i class="fas fa-plus"></i> Upload Product</button>
+    </div>
+    <div id="products"></div>
+  </div>
+
+  <!-- ========== TAB 3: SALES ========== -->
+  <div id="tab-sales" class="tab-panel">
+    <!-- PURCHASED ITEMS SECTION -->
+    <div class="purchased-section">
+      <div class="card-title" style="margin-bottom: 15px;">
+        <i class="fas fa-shopping-bag" style="color:#0077ff;"></i> Purchased Items & Sales
+      </div>
+      <div class="table-responsive">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Amount</th>
+              <th>Seller Payout (85%)</th>
+              <th>Payment Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="purchasedItemsBody">
+            <tr>
+              <td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Loading purchased items...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TAB 4: PROMOTE ========== -->
+  <div id="tab-promote" class="tab-panel">
+    <div class="dashboard-grid">
+      <div class="card-box">
+        <div class="card-title">
+          <i class="fas fa-paper-plane" style="color: #0077ff;"></i> Get Featured
+        </div>
+
+        <!-- FEATURE: request-based homepage feature flow (replaces the old
+             direct self-service "boost" that bypassed admin and falsely
+             claimed to trigger an M-Pesa STK push). Sellers now send a
+             request; admin reviews it in the Featured Deals Control panel
+             and approves or rejects it. Nothing is charged up front. -->
+        <div class="feature-request-box" style="margin-bottom: 0;">
+          <div class="fr-heading"><i class="fas fa-star"></i> Ask to Be Featured on the Home Page</div>
+          <form onsubmit="handleRequestFeature(event)">
+            <div class="form-group">
+              <label>Which Product?</label>
+              <select id="boostProductSelect" class="form-control" required onchange="updateCostPreview()">
+                <option value="">Select an Approved Item...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>How Many Days?</label>
+              <input type="number" id="boostDays" class="form-control" min="1" value="3" required oninput="updateCostPreview()">
+            </div>
+            <div class="cost-preview">
+              <span id="costPreviewText">3 days &times; KES 50/day</span>
+              <span id="costPreviewTotal">= KES 150</span>
+            </div>
+            <div class="form-group">
+              <label>Note to Admin (optional)</label>
+              <textarea id="boostNote" rows="2" class="form-control" placeholder="Anything that helps admin decide — e.g. 'running low stock, want to sell out this week'" style="resize:none; font-size:13px;"></textarea>
+            </div>
+            <div class="payout-deduction-note">
+              <i class="fas fa-circle-info"></i>
+              <span>No payment needed now. If approved, <b>KES 50 per day</b> is simply deducted from your next payout — nothing is charged to your phone.</span>
+            </div>
+            <button type="submit" class="form-btn boost-submit-btn">
+              <i class="fas fa-paper-plane"></i> Send Request to Admin
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- FEATURE REQUEST HISTORY -->
+      <div class="card-box">
+        <div class="card-title" style="margin-bottom: 15px;">
+          <i class="fas fa-star" style="color:#7c3aed;"></i> My Feature Requests
+        </div>
+        <div id="featureRequestHistory">
+          <p style="text-align:center; color:#94a3b8; padding:20px; font-size:13px;">Loading your requests...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TAB 5: MY PLAN ========== -->
+  <div id="tab-plan" class="tab-panel">
+    <!-- MEMBERSHIP MATRIX PANEL -->
+    <div id="membershipMatrixSection" class="subscription-card">
+      <div class="subscription-title">
+        <h2><i class="fas fa-award" style="color:#0077ff;"></i> Merchant Membership Matrix</h2>
+        <div id="planBadge" class="plan-badge">Loading...</div>
+      </div>
+      <div class="info-grid">
+        <div class="info-box">
+          <h3>Business Model</h3>
+          <p id="businessModel">Loading...</p>
+        </div>
+        <div class="info-box">
+          <h3>Upload Slots Used</h3>
+          <p id="uploads">Loading...</p>
+        </div>
+        <div class="info-box">
+          <h3>Tier Expiry</h3>
+          <p id="expiry">Loading...</p>
+        </div>
+        <div class="info-box">
+          <h3>Active Benefits</h3>
+          <p id="planBenefits">Loading...</p>
+        </div>
+      </div>
+      <div class="progress-wrapper">
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <!-- Dynamic Plan Upgrade Button (Hidden for Commission Mode Sellers) -->
+      <a id="subPlanLink" href="subscription.html" style="text-decoration: none; display: inline-block; margin-top: 25px;">
+        <button class="upload-btn">
+          <i class="fas fa-star" style="color: #fde68a;"></i> Premium Plans
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <!-- ========== TAB 6: SUPPORT ========== -->
+  <div id="tab-support" class="tab-panel">
+    <div class="card-box" style="max-width: 640px; height: auto;">
       <div class="card-title">
-        <i class="fas fa-paper-plane" style="color: #0077ff;"></i> CampusDuka Hub Connect
+        <i class="fas fa-envelope" style="color: #0077ff;"></i> CampusDuka Hub Connect
       </div>
-
-      <!-- FEATURE: request-based homepage feature flow (replaces the old
-           direct self-service "boost" that bypassed admin and falsely
-           claimed to trigger an M-Pesa STK push). Sellers now send a
-           request; admin reviews it in the Featured Deals Control panel
-           and approves or rejects it. Nothing is charged up front. -->
-      <div class="feature-request-box">
-        <div class="fr-heading"><i class="fas fa-star"></i> Ask to Be Featured on the Home Page</div>
-        <form onsubmit="handleRequestFeature(event)">
-          <div class="form-group">
-            <label>Which Product?</label>
-            <select id="boostProductSelect" class="form-control" required onchange="updateCostPreview()">
-              <option value="">Select an Approved Item...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>How Many Days?</label>
-            <input type="number" id="boostDays" class="form-control" min="1" value="3" required oninput="updateCostPreview()">
-          </div>
-          <div class="cost-preview">
-            <span id="costPreviewText">3 days &times; KES 50/day</span>
-            <span id="costPreviewTotal">= KES 150</span>
-          </div>
-          <div class="form-group">
-            <label>Note to Admin (optional)</label>
-            <textarea id="boostNote" rows="2" class="form-control" placeholder="Anything that helps admin decide — e.g. 'running low stock, want to sell out this week'" style="resize:none; font-size:13px;"></textarea>
-          </div>
-          <div class="payout-deduction-note">
-            <i class="fas fa-circle-info"></i>
-            <span>No payment needed now. If approved, <b>KES 50 per day</b> is simply deducted from your next payout — nothing is charged to your phone.</span>
-          </div>
-          <button type="submit" class="form-btn boost-submit-btn">
-            <i class="fas fa-paper-plane"></i> Send Request to Admin
-          </button>
-        </form>
-      </div>
-
       <form onsubmit="handleSendMessage(event)">
         <div class="form-group">
           <label>Send Message to CampusDuka Admin</label>
-          <textarea id="supportMsg" rows="3" class="form-control" placeholder="Write feedback, system reports, or dispute reviews..." required style="resize: none; font-size:13px;"></textarea>
+          <textarea id="supportMsg" rows="5" class="form-control" placeholder="Write feedback, system reports, or dispute reviews..." required style="resize: none; font-size:13px;"></textarea>
         </div>
         <button type="submit" class="form-btn" style="padding: 8px 12px; font-size:12px;">
           <i class="fas fa-envelope"></i> Dispatch Message
@@ -813,82 +1068,80 @@ button {
     </div>
   </div>
 
-  <!-- MEMBERSHIP MATRIX PANEL -->
-  <div id="membershipMatrixSection" class="subscription-card">
-    <div class="subscription-title">
-      <h2><i class="fas fa-award" style="color:#0077ff;"></i> Merchant Membership Matrix</h2>
-      <div id="planBadge" class="plan-badge">Loading...</div>
-    </div>
-    <div class="info-grid">
-      <div class="info-box">
-        <h3>Business Model</h3>
-        <p id="businessModel">Loading...</p>
-      </div>
-      <div class="info-box">
-        <h3>Upload Slots Used</h3>
-        <p id="uploads">Loading...</p>
-      </div>
-      <div class="info-box">
-        <h3>Tier Expiry</h3>
-        <p id="expiry">Loading...</p>
-      </div>
-      <div class="info-box">
-        <h3>Active Benefits</h3>
-        <p id="planBenefits">Loading...</p>
-      </div>
-    </div>
-    <div class="progress-wrapper">
-      <div class="progress">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FEATURE REQUEST HISTORY -->
-  <div class="feature-history-section">
-    <div class="card-title" style="margin-bottom: 15px;">
-      <i class="fas fa-star" style="color:#7c3aed;"></i> My Feature Requests
-    </div>
-    <div id="featureRequestHistory">
-      <p style="text-align:center; color:#94a3b8; padding:20px; font-size:13px;">Loading your requests...</p>
-    </div>
-  </div>
-
-  <!-- PURCHASED ITEMS SECTION -->
-  <div class="purchased-section">
-    <div class="card-title" style="margin-bottom: 15px;">
-      <i class="fas fa-shopping-bag" style="color:#0077ff;"></i> Purchased Items & Sales
-    </div>
-    <div class="table-responsive">
-      <table class="orders-table">
-        <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Amount</th>
-            <th>Seller Payout (90%)</th>
-            <th>Payment Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="purchasedItemsBody">
-          <tr>
-            <td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Loading purchased items...</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <h2 class="section-heading">Your Active Listings</h2>
-  <div id="products"></div>
 </div>
 
 <script>
 const API_BASE_URL = "https://campusduka-api.onrender.com";
 
+// Platform commission rate (15% of every sale)
+const COMMISSION_RATE = 0.15;
+
 // Authentication Core Checks
 let seller = JSON.parse(localStorage.getItem("seller"));
 let localNotifications = [];
+
+/* ================= TABS ================= */
+const TAB_NAMES = ["overview", "products", "sales", "promote", "plan", "support"];
+
+function showTab(name) {
+  if (!TAB_NAMES.includes(name)) name = "overview";
+
+  document.querySelectorAll(".tab-panel").forEach(panel => {
+    panel.classList.toggle("active", panel.id === "tab-" + name);
+  });
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === name);
+  });
+
+  // Lets the browser Back button and refresh stay on the same tab
+  if (history.replaceState) history.replaceState(null, "", "#" + name);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ================= PLAN + UPLOAD LIMIT HELPER ================= */
+// One place that works out the seller's model, plan and upload limit, used
+// by the plan panel, the limit alert and the Upload Product button.
+function getUploadInfo(s) {
+  const isCommission = s.business_model === 'commission' || s.pricing_mode === 'commission';
+
+  if (isCommission) {
+    return { isCommission: true, plan: "commission", limit: Infinity, label: "Unlimited (Commission Mode)" };
+  }
+
+  let plan = s.subscription_plan ? s.subscription_plan.toLowerCase() : "free";
+  let limit;
+  let label;
+
+  switch (plan) {
+    case "free":
+      limit = 2;
+      label = 2;
+      break;
+    case "copper":
+      limit = 20;
+      label = 20;
+      break;
+    case "bronze":
+      limit = 100;
+      label = 100;
+      break;
+    case "gold":
+      limit = Infinity;
+      label = "Unlimited";
+      break;
+    default:
+      limit = 2;
+      label = 2;
+      plan = "free";
+  }
+
+  return { isCommission: false, plan: plan, limit: limit, label: label };
+}
+
+function hasReachedUploadLimit(s) {
+  const info = getUploadInfo(s);
+  return !info.isCommission && info.limit !== Infinity && (s.uploads_used || 0) >= info.limit;
+}
 
 // FIX: setting window.location.href does not stop script execution — it
 // only schedules a page navigation. Every line after it was still running
@@ -901,6 +1154,9 @@ if (!seller) {
     document.getElementById("sellerName").innerText = seller.name || seller.store_name || "Seller";
 
     localNotifications = JSON.parse(localStorage.getItem(`notifs_${seller.id}`)) || [];
+
+    // Open the tab named in the address (#sales etc.), otherwise Overview
+    showTab(window.location.hash.replace("#", "") || "overview");
 
     // Initial Sync Operations
     loadSellerDetails();
@@ -935,46 +1191,25 @@ async function loadSellerDetails() {
 
         document.getElementById("sellerName").innerHTML = seller.name || seller.store_name || "Seller";
         
-        const isCommission = seller.business_model === 'commission' || seller.pricing_mode === 'commission';
+        const info = getUploadInfo(seller);
+        const isCommission = info.isCommission;
+        const activePlan = info.plan;
+        const limit = info.limit;
         const subPlanBtn = document.getElementById("subPlanLink");
 
         if (isCommission) {
-            document.getElementById("businessModel").innerHTML = 'Commission Mode (10% per sale)';
+            document.getElementById("businessModel").innerHTML = 'Commission Mode (15% per sale)';
             if (subPlanBtn) subPlanBtn.style.display = "none"; 
         } else {
             document.getElementById("businessModel").innerHTML = 'Subscription Flat Rate';
             if (subPlanBtn) subPlanBtn.style.display = "inline-block";
         }
 
-        let limit;
-        let activePlan = seller.subscription_plan ? seller.subscription_plan.toLowerCase() : "free";
+        const uploadsText = `${seller.uploads_used || 0} / ${info.label}`;
+        document.getElementById("uploads").innerHTML = uploadsText;
+        document.getElementById("ovUploads").innerHTML = uploadsText;
 
-        if (isCommission) {
-            limit = "Unlimited (Commission Mode)";
-            activePlan = "commission";
-        } else {
-            switch (activePlan) {
-                case "free":
-                    limit = 2;
-                    break;
-                case "copper":
-                    limit = 20;
-                    break;
-                case "bronze":
-                    limit = 100;
-                    break;
-                case "gold":
-                    limit = "Unlimited";
-                    break;
-                default:
-                    limit = 2;
-                    activePlan = "free";
-            }
-        }
-
-        document.getElementById("uploads").innerHTML = `${seller.uploads_used || 0} / ${limit}`;
-
-        if (limit !== "Unlimited" && !isCommission) {
+        if (limit !== Infinity && !isCommission) {
             const percent = ((seller.uploads_used || 0) / limit) * 100;
             document.getElementById("progressBar").style.width = Math.min(percent, 100) + "%";
         } else {
@@ -984,6 +1219,10 @@ async function loadSellerDetails() {
         const badge = document.getElementById("planBadge");
         badge.className = "plan-badge " + activePlan;
         badge.innerHTML = isCommission ? "Commission Mode" : activePlan;
+
+        const ovBadge = document.getElementById("ovPlanBadge");
+        ovBadge.className = "plan-badge " + activePlan;
+        ovBadge.innerHTML = isCommission ? "Commission Mode" : activePlan;
 
         if (!isCommission && seller.subscription_expiry && activePlan !== "free") {
             const expiry = new Date(seller.subscription_expiry);
@@ -998,7 +1237,7 @@ async function loadSellerDetails() {
 
         let benefits = "";
         if (isCommission) {
-            benefits = "Pay 10% Only Per Sales • No Monthly Subscriptions Required";
+            benefits = "Pay 15% Only Per Sales • No Monthly Subscriptions Required";
         } else {
             switch (activePlan) {
                 case "free":
@@ -1016,6 +1255,16 @@ async function loadSellerDetails() {
             }
         }
         document.getElementById("planBenefits").innerHTML = benefits;
+
+        // Upload limit alert for subscription sellers who have used every slot
+        const limitAlert = document.getElementById("limitAlert");
+        if (hasReachedUploadLimit(seller)) {
+            document.getElementById("limitAlertText").innerHTML =
+                `You have used all <b>${limit}</b> uploads on the <b>${activePlan}</b> plan. Choose a plan to keep uploading.`;
+            limitAlert.style.display = "flex";
+        } else {
+            limitAlert.style.display = "none";
+        }
 
     } catch (err) {
         console.error("Failed to parse configurations cleanly:", err);
@@ -1096,7 +1345,7 @@ async function loadSellerEarnings() {
       if (o.seller_phone === seller.phone || String(o.seller_id) === String(seller.id)) {
         if (o.payment_status === 'paid') {
           const itemVal = parseFloat(o.amount || 0);
-          const comm = parseFloat(o.commission_amount || (itemVal * 0.10));
+          const comm = parseFloat(o.commission_amount || (itemVal * COMMISSION_RATE));
           const actualSellerPayout = itemVal - comm;
           
           grossEarnings += itemVal;
@@ -1129,7 +1378,7 @@ async function loadPurchasedItems() {
 
     sellerOrders.forEach(o => {
       const amount = parseFloat(o.amount || 0);
-      const commission = parseFloat(o.commission_amount || (amount * 0.10));
+      const commission = parseFloat(o.commission_amount || (amount * COMMISSION_RATE));
       const payout = amount - commission;
       const statusClass = o.payment_status === 'paid' ? 'status-paid' : 'status-pending';
       const orderDate = o.created_at ? new Date(o.created_at).toLocaleDateString() : 'N/A';
@@ -1214,7 +1463,7 @@ async function loadMyFeatureRequests() {
     const container = document.getElementById("featureRequestHistory");
 
     if (!Array.isArray(requests) || requests.length === 0) {
-      container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px; font-size:13px;">You haven't asked to be featured yet — use the form above to send your first request.</p>`;
+      container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px; font-size:13px;">You haven't asked to be featured yet — use the form to send your first request.</p>`;
       return;
     }
 
@@ -1344,6 +1593,14 @@ function triggerNotificationAudio() {
 }
 
 function goToUpload() {
+  // Subscription sellers who have used every upload slot go to the
+  // subscription page to pick a plan; everyone else goes to the upload page.
+  if (hasReachedUploadLimit(seller)) {
+    const info = getUploadInfo(seller);
+    alert(`You have reached the ${info.limit}-upload limit on your ${info.plan} plan. Please choose a plan to keep uploading.`);
+    window.location.href = "subscription.html";
+    return;
+  }
   window.location.href = "add-product.html";
 }
 
