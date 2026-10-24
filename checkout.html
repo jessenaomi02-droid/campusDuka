@@ -63,6 +63,123 @@
       gap: 10px;
     }
 
+    .logo-img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    /* TILL (MANUAL PAYMENT) FALLBACK PANEL */
+    .till-panel {
+      display: none;
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 14px;
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+    }
+
+    .till-panel h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .till-panel > p {
+      font-size: 13px;
+      color: #78350f;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .till-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1.5px dashed #f59e0b;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+    }
+
+    .till-box .till-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .till-box .till-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--color-charcoal);
+      letter-spacing: 1px;
+    }
+
+    .copy-btn {
+      background: var(--color-slate-teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--color-medium-teal);
+    }
+
+    .till-steps {
+      margin: 14px 0 16px 18px;
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    .field-error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #dc2626;
+      display: none;
+    }
+
+    .confirm-till-btn {
+      width: 100%;
+      background: #059669;
+      border: none;
+      color: white;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .confirm-till-btn:hover {
+      background: #047857;
+    }
+
+    .confirm-till-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
     /* CHECKOUT LAYOUT */
     .checkout-container {
       max-width: 1100px;
@@ -292,11 +409,14 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <a href="index2.html" class="logo">
-      <svg height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="25" width="60" height="50" rx="8" fill="#164e63"/>
-        <polygon points="50,15 20,25 80,25" fill="#ffffff"/>
-        <circle cx="50" cy="50" r="10" fill="#ffffff"/>
-      </svg>
+      <img src="images/logo.png" alt="CampusDuka Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+      <span id="logoFallback" style="display:none;">
+        <svg height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="25" width="60" height="50" rx="8" fill="#164e63"/>
+          <polygon points="50,15 20,25 80,25" fill="#ffffff"/>
+          <circle cx="50" cy="50" r="10" fill="#ffffff"/>
+        </svg>
+      </span>
       CampusDuka
     </a>
   </nav>
@@ -328,9 +448,10 @@
             <label for="phone">M-Pesa Mobile Number</label>
             <div class="input-wrapper">
               <i class="fa-solid fa-phone"></i>
-              <input id="phone" type="tel" placeholder="e.g. 0712345678" required>
+              <input id="phone" type="tel" placeholder="e.g. 0712345678" maxlength="13" autocomplete="off" required>
             </div>
-            <p style="font-size:11px; color:var(--text-muted);">Pre-filled from your account — change it if you're paying from a different phone.</p>
+            <p style="font-size:11px; color:var(--text-muted);">Enter the Safaricom number that will receive the M-Pesa prompt.</p>
+            <p class="field-error" id="phoneError">Enter a valid Safaricom number, e.g. 0712345678 or +254712345678.</p>
           </div>
 
           <div class="form-group" id="locationGroup">
@@ -353,6 +474,49 @@
             <i class="fa-solid fa-shield-halved"></i> Complete & Pay Now
           </button>
         </form>
+
+        <!-- FALLBACK: PAY MANUALLY WITH TILL NUMBER (shown only if STK push fails) -->
+        <div class="till-panel" id="tillPanel">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> M-Pesa prompt didn't go through?</h3>
+          <p>No problem — you can pay manually using our Till Number, then confirm below with the M-Pesa code from your SMS.</p>
+
+          <div class="till-box">
+            <div>
+              <div class="till-label">Till Number</div>
+              <div class="till-value" id="tillNumberValue">3483067</div>
+            </div>
+            <button type="button" class="copy-btn" id="copyTillBtn"><i class="fa-regular fa-copy"></i> Copy</button>
+          </div>
+
+          <div class="till-box">
+            <div>
+              <div class="till-label">Amount to Pay</div>
+              <div class="till-value" id="tillAmountValue">KES 0</div>
+            </div>
+            <button type="button" class="copy-btn" id="copyAmountBtn"><i class="fa-regular fa-copy"></i> Copy</button>
+          </div>
+
+          <ol class="till-steps">
+            <li>Open <strong>M-Pesa</strong> on your phone</li>
+            <li>Select <strong>Lipa na M-Pesa</strong> → <strong>Buy Goods and Services</strong></li>
+            <li>Enter Till Number <strong>3483067</strong></li>
+            <li>Enter the exact amount shown above, then your M-Pesa PIN</li>
+            <li>Paste the confirmation code from the SMS below</li>
+          </ol>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label for="mpesaCode">M-Pesa Confirmation Code</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-hashtag"></i>
+              <input id="mpesaCode" type="text" placeholder="e.g. SJK3L9ABCD" maxlength="10" autocomplete="off" style="text-transform:uppercase;">
+            </div>
+            <p class="field-error" id="mpesaCodeError">Enter the 10-character code from your M-Pesa SMS.</p>
+          </div>
+
+          <button type="button" class="confirm-till-btn" id="confirmTillBtn">
+            <i class="fa-solid fa-circle-check"></i> I've Paid — Confirm Order
+          </button>
+        </div>
       </div>
 
       <!-- RIGHT: CART SUMMARY -->
@@ -438,6 +602,44 @@
       return trimmed;
     }
 
+    // FEATURE: checks the number really looks like a Kenyan mobile number
+    // BEFORE sending the STK push, so a typo is caught on the page instead of
+    // failing at M-Pesa.
+    function isValidMpesaPhone(rawPhone) {
+      return /^254[17]\d{8}$/.test(formatMpesaPhone(rawPhone));
+    }
+
+    // FEATURE: manual Till payment fallback. The order details are remembered
+    // here when the STK push is attempted so the buyer can still complete the
+    // order by paying to the Till and entering their M-Pesa code.
+    const TILL_NUMBER = "3483067";
+    let pendingOrder = null;
+
+    function showTillPanel(amount) {
+      document.getElementById("tillAmountValue").textContent = "KES " + Number(amount).toLocaleString();
+      const panel = document.getElementById("tillPanel");
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function copyText(text, btn) {
+      const original = btn.innerHTML;
+      const done = () => {
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+        setTimeout(() => { btn.innerHTML = original; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(() => {});
+      } else {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand("copy"); done(); } catch (err) {}
+        document.body.removeChild(temp);
+      }
+    }
+
     // FEATURE: checkout now requires being logged in. This ties every
     // order to a real account instead of trusting whatever name/phone a
     // guest happened to type in, which is what made buyer identity easy to
@@ -461,14 +663,13 @@
       }
 
       // Pre-fill from the authenticated account. Name is locked to the
-      // account identity; phone stays editable since the M-Pesa payment
-      // phone can legitimately differ from the account's registered phone.
+      // account identity. The M-Pesa phone is deliberately NOT pre-filled —
+      // the buyer types the number they are paying from.
       const fullnameField = document.getElementById("fullname");
       fullnameField.value = sessionUser.fullname || "";
       fullnameField.readOnly = true;
       fullnameField.style.background = "#f1f5f9";
       fullnameField.style.cursor = "not-allowed";
-      document.getElementById("phone").value = sessionUser.phone || "";
 
       const sessionBanner = document.getElementById("sessionBanner");
       if (sessionUser.fullname) {
@@ -555,10 +756,20 @@
       }
 
       const payBtn = document.querySelector(".pay-btn");
+
+      const phoneInput = document.getElementById("phone").value;
+      const phoneError = document.getElementById("phoneError");
+      if (!isValidMpesaPhone(phoneInput)) {
+        phoneError.style.display = "block";
+        document.getElementById("phone").focus();
+        return;
+      }
+      phoneError.style.display = "none";
+
       payBtn.disabled = true;
       payBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Triggering M-Pesa...`;
 
-      const phone = document.getElementById("phone").value;
+      const phone = phoneInput;
       const regularCart = JSON.parse(localStorage.getItem("cart")) || [];
       const eventCart = JSON.parse(localStorage.getItem("eventCart")) || [];
       const combinedCart = [...regularCart, ...eventCart];
@@ -586,6 +797,15 @@
       const locationValue = isTicketOnly
         ? "N/A — Digital event ticket, no delivery required"
         : document.getElementById("location").value;
+
+      pendingOrder = {
+        fullname: document.getElementById("fullname").value,
+        phone: formatMpesaPhone(phone),
+        email: buyerEmail,
+        location: locationValue,
+        cart: combinedCart,
+        amount: grandTotal
+      };
 
       try {
         const formattedPhone = formatMpesaPhone(phone);
@@ -615,6 +835,8 @@
             console.error("Could not backfill seller ids for cart items:", lookupErr);
           }
         }
+
+        pendingOrder.cart = cartToSend;
 
         const mpesaResponse = await fetch("https://campusduka-api.onrender.com/stkpush", {
           method: "POST",
@@ -666,13 +888,87 @@
           // the real reason arrives in mpesaData.error, which this never
           // checked — it silently fell back to a generic "Invalid
           // parameters" message instead of showing what actually failed.
-          alert("Failed to send M-Pesa push: " + (mpesaData.CustomerMessage || mpesaData.ResponseDescription || mpesaData.error || "Invalid parameters"));
+          showTillPanel(grandTotal);
+          alert("Failed to send M-Pesa push: " + (mpesaData.CustomerMessage || mpesaData.ResponseDescription || mpesaData.error || "Invalid parameters") + "\n\nYou can pay with our Till Number instead — see the instructions on the page.");
         }
       } catch (err) {
         payBtn.disabled = false;
         payBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Complete & Pay Now`;
         console.error("Payment connectivity crash:", err);
-        alert("Could not connect to M-Pesa backend gateway. Please try again later.");
+        showTillPanel(grandTotal);
+        alert("Could not connect to M-Pesa backend gateway. You can pay with our Till Number instead — see the instructions on the page.");
+      }
+    });
+
+    // TILL PANEL BUTTONS
+    document.getElementById("copyTillBtn").addEventListener("click", (e) => {
+      copyText(TILL_NUMBER, e.currentTarget);
+    });
+
+    document.getElementById("copyAmountBtn").addEventListener("click", (e) => {
+      if (pendingOrder) copyText(String(pendingOrder.amount), e.currentTarget);
+    });
+
+    // FEATURE: buyer paid manually to the Till and submits the M-Pesa code so
+    // the order can be verified. The cart is only cleared once the server
+    // accepts it, so nothing is lost if this request fails.
+    document.getElementById("confirmTillBtn").addEventListener("click", async () => {
+      const sessionUser = getSessionUser();
+      if (!sessionUser) {
+        alert("Please log in to continue with checkout.");
+        window.location.href = "login.html?redirect=checkout.html";
+        return;
+      }
+      if (!pendingOrder) return;
+
+      const codeInput = document.getElementById("mpesaCode");
+      const codeError = document.getElementById("mpesaCodeError");
+      const mpesaCode = codeInput.value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{10}$/.test(mpesaCode)) {
+        codeError.style.display = "block";
+        codeInput.focus();
+        return;
+      }
+      codeError.style.display = "none";
+
+      const confirmBtn = document.getElementById("confirmTillBtn");
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+
+      try {
+        const tillResponse = await fetch("https://campusduka-api.onrender.com/till-payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ...pendingOrder,
+            tillNumber: TILL_NUMBER,
+            mpesaCode: mpesaCode
+          })
+        });
+
+        const tillData = await tillResponse.json();
+        console.log("Till payment response: ", tillData);
+
+        if (tillResponse.ok && !tillData.error) {
+          localStorage.setItem("buyerPhone", pendingOrder.phone);
+          localStorage.setItem("buyerName", pendingOrder.fullname);
+          if (tillData.orderId) localStorage.setItem("latestOrderId", tillData.orderId);
+          localStorage.removeItem("cart");
+          localStorage.removeItem("eventCart");
+          alert("Thank you! We've received your M-Pesa code and will confirm your payment shortly.");
+          window.location.href = "my-orders.html";
+        } else {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> I've Paid — Confirm Order`;
+          alert("Could not submit your payment: " + (tillData.error || "Please try again."));
+        }
+      } catch (err) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> I've Paid — Confirm Order`;
+        console.error("Till payment submission failed:", err);
+        alert("Could not reach the server. Keep your M-Pesa SMS and try again in a moment.");
       }
     });
   </script>
