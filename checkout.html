@@ -386,13 +386,29 @@
   <script>
     // HELPER: is this cart item an event ticket?
     // Events can arrive in either cart: events.html saves them to "eventCart",
-    // and the homepage used to save them to the normal "cart". Anything with
-    // the category "Events" is a ticket, whichever cart it is sitting in.
+    // and the homepage used to save them to the normal "cart". Anything that
+    // is marked as an event/ticket is a ticket, whichever cart it is sitting in.
+    // FIX: this used to only match category === "events" exactly. Items saved
+    // as "Event", "Ticket", with the label in another field (type, etc.), or
+    // saved before a category existed (old data left in an account's
+    // localStorage) were treated as physical products, so the KES 50 delivery
+    // fee got added to ticket-only orders for those accounts. It now accepts
+    // singular/plural spellings and checks the other fields an event item may
+    // carry.
     function isEventItem(item) {
-      return !!item && String(item.category || "").trim().toLowerCase() === "events";
+      if (!item) return false;
+      const eventWords = ["event", "events", "ticket", "tickets"];
+      const labels = [item.category, item.category_name, item.categoryName, item.type, item.item_type, item.itemType];
+      const labelledAsEvent = labels.some(value =>
+        eventWords.includes(String(value || "").trim().toLowerCase())
+      );
+      const hasEventId = !!(item.event_id || item.eventId);
+      return labelledAsEvent || hasEventId;
     }
 
     // HELPER: split the baskets into physical items (need delivery) and tickets (don't)
+    // FIX: everything inside "eventCart" is a ticket by definition, so it is
+    // never counted as a physical item even if it somehow lacks a label.
     function splitCarts(regularCart, eventCart) {
       const physicalItems = regularCart.filter(item => !isEventItem(item));
       const ticketItems = [...regularCart.filter(isEventItem), ...eventCart];
