@@ -4,10 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CampusDuka - Admin Panel</title>
-    <!-- Tailwind CSS & FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (v3 build: includes the emerald, slate and amber colours this page uses) & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // CampusDuka colours: the blue (#0077ff) and navy (#0f172a) used on the seller dashboard.
+        // The old "indigo" shades are mapped to the CampusDuka blue so every existing button,
+        // badge and highlight picks up the brand colour.
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        indigo: {
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+                            400: '#4da3ff', 500: '#0077ff', 600: '#0077ff', 700: '#005ecb',
+                            800: '#1e3a8a', 900: '#0f172a'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+body{font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
+
+/* ===== Action buttons (solid colours, so they are always visible) ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-weight:700;font-size:.75rem;padding:.5rem .85rem;border-radius:.5rem;color:#fff;border:0;cursor:pointer;transition:filter .15s,transform .15s;line-height:1.1}
+.btn:hover{filter:brightness(.92);transform:translateY(-1px)}
+.btn-approve{background:#16a34a}
+.btn-edit{background:#0077ff}
+.btn-reject{background:#dc2626}
+.btn-send{background:#0077ff;padding:.6rem 1rem;font-size:.8rem}
+.btn-disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
+.btn-disabled:hover{filter:none;transform:none}
+.btn-soft{display:inline-flex;align-items:center;gap:.4rem;font-weight:600;font-size:.75rem;padding:.4rem .75rem;border-radius:.5rem;background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;cursor:pointer;text-decoration:none;transition:background .15s}
+.btn-soft:hover{background:#e2e8f0}
+.pill{border:1px solid #e2e8f0;background:#fff;color:#475569;font-weight:600;font-size:.75rem;padding:.4rem .9rem;border-radius:999px;cursor:pointer;transition:all .15s}
+.pill:hover{background:#f8fafc}
+.pill.active{background:#0077ff;border-color:#0077ff;color:#fff}
+
+/* ===== Logo ===== */
+.admin-logo{height:44px;width:auto;max-width:130px;object-fit:contain;background:#fff;border-radius:10px;padding:3px}
+.logo-fallback{display:none;width:44px;height:44px;align-items:center;justify-content:center;background:#0077ff;color:#fff;border-radius:10px;font-size:20px;flex-shrink:0}
+
+/* ===== Cards and charts ===== */
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:1rem;padding:1.25rem;box-shadow:0 4px 20px rgba(15,23,42,.03)}
+.stream-card{background:#fff;border:1px solid #e2e8f0;border-radius:1rem;padding:1.25rem;border-top:4px solid #0077ff;box-shadow:0 4px 20px rgba(15,23,42,.03)}
+.attention-card{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:#fff;border:1px solid #e2e8f0;border-radius:.9rem;padding:.9rem 1rem;cursor:pointer;transition:all .15s;text-align:left;width:100%}
+.attention-card:hover{border-color:#0077ff;box-shadow:0 6px 18px rgba(0,119,255,.12);transform:translateY(-1px)}
+.mix-bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:#e2e8f0}
+.mix-bar > span{display:block;height:100%}
+.month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:0}
+.month-track{width:100%;height:120px;display:flex;align-items:flex-end}
+.month-bar{width:100%;border-radius:.5rem .5rem 0 0;background:#0077ff;min-height:2px}
+.msg-card{background:#fff;border:1px solid #e2e8f0;border-radius:.9rem;padding:1rem 1.1rem;border-left:4px solid #cbd5e1}
+.msg-card.unread{border-left-color:#0077ff;background:#f8fbff}
+.msg-card.from-seller.unread{border-left-color:#16a34a}
+
 /* ===== Responsive additions ===== */
 html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
 body{touch-action:manipulation}
@@ -57,6 +112,25 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
   #users-list td:nth-child(2)::before{content:"Name"}
   #users-list td:nth-child(3)::before{content:"Email"}
   #users-list td:nth-child(4)::before{content:"Phone"}
+
+  #payouts-list td:nth-child(1)::before{content:"Seller"}
+  #payouts-list td:nth-child(2)::before{content:"Waiting"}
+  #payouts-list td:nth-child(3)::before{content:"Featured fees"}
+  #payouts-list td:nth-child(4)::before{content:"Net to send"}
+  #payouts-list td:nth-child(5)::before{content:"Sent so far"}
+
+  #transfers-history-list td:nth-child(1)::before{content:"Date"}
+  #transfers-history-list td:nth-child(2)::before{content:"Seller"}
+  #transfers-history-list td:nth-child(3)::before{content:"Orders"}
+  #transfers-history-list td:nth-child(4)::before{content:"Earned"}
+  #transfers-history-list td:nth-child(5)::before{content:"Fees"}
+  #transfers-history-list td:nth-child(6)::before{content:"Sent"}
+  #transfers-history-list td:nth-child(7)::before{content:"Note"}
+
+  #ad-income-list td:nth-child(1)::before{content:"Date"}
+  #ad-income-list td:nth-child(2)::before{content:"Company"}
+  #ad-income-list td:nth-child(3)::before{content:"Notes"}
+  #ad-income-list td:nth-child(4)::before{content:"Amount"}
 }
 
 /* Small phones: tighter padding, hide decorative banner icons */
@@ -68,7 +142,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
 }
 </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-slate-100 font-sans">
 
     <div class="app-shell flex h-screen overflow-hidden">
 
@@ -78,29 +152,42 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         <!-- Sidebar -->
         <div id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col justify-between overflow-y-auto transform fixed md:static inset-y-0 left-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-300" style="background-color: #0f172a;">
             <div>
-                <div class="p-5 text-2xl font-bold border-b border-slate-800 flex items-center gap-2" style="border-color: #1e293b;">
-                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
-                    <span>CampusDuka</span>
-                    <span class="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                <div class="p-5 border-b border-slate-800" style="border-color: #1e293b;">
+                    <div class="flex items-center gap-3">
+                        <img src="images/logo.png" alt="CampusDuka Logo" class="admin-logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                        <span id="logoFallback" class="logo-fallback"><i class="fa-solid fa-store"></i></span>
+                        <div class="min-w-0">
+                            <div class="text-lg font-bold leading-tight">CampusDuka</div>
+                            <span class="text-[10px] bg-indigo-500 text-white px-2 py-0.5 rounded-full font-semibold">Admin</span>
+                        </div>
+                    </div>
                 </div>
                 <nav class="p-4 space-y-1">
-                    <a href="#" onclick="showSection('dashboard', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-                    <a href="#" onclick="showSection('revenue-section', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-sack-dollar text-emerald-400"></i> Revenue & Earnings</a>
-                    <a href="#" onclick="showSection('pending-products', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-hourglass-half"></i> Pending Approvals</span>
+                    <a href="#" data-section="dashboard" onclick="showSection('dashboard', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white"><i class="fa-solid fa-chart-line w-4"></i> Dashboard</a>
+                    <a href="#" data-section="revenue-section" onclick="showSection('revenue-section', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-sack-dollar text-emerald-400 w-4"></i> Revenue & Earnings</a>
+                    <a href="#" data-section="payouts" onclick="showSection('payouts', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-money-bill-transfer text-emerald-400 w-4"></i> Seller Payouts</span>
+                        <span id="badge-payouts" class="hidden bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                    </a>
+                    <a href="#" data-section="messages" onclick="showSection('messages', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-inbox w-4"></i> Messages</span>
+                        <span id="badge-messages" class="hidden bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                    </a>
+                    <a href="#" data-section="pending-products" onclick="showSection('pending-products', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-hourglass-half w-4"></i> Pending Approvals</span>
                         <span id="badge-pending" class="hidden bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
                     </a>
-                    <a href="#" onclick="showSection('featured-manager', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-star"></i> Featured Deals Control</span>
+                    <a href="#" data-section="featured-manager" onclick="showSection('featured-manager', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-star w-4"></i> Featured Deals Control</span>
                         <span id="badge-feature-requests" class="hidden bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
                     </a>
-                    <a href="#" onclick="showSection('orders', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-cart-shopping"></i> Orders & M-Pesa</span>
+                    <a href="#" data-section="orders" onclick="showSection('orders', event)" class="nav-link flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                        <span class="flex items-center gap-3"><i class="fa-solid fa-cart-shopping w-4"></i> Orders & M-Pesa</span>
                         <span id="badge-orders" class="hidden bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
                     </a>
-                    <a href="#" onclick="showSection('sellers', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store"></i> Sellers & Products</a>
-                    <a href="#" onclick="showSection('ads-manager', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-bullhorn"></i> Homepage Ads</a>
-                    <a href="#" onclick="showSection('users', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users"></i> Registered Users</a>
+                    <a href="#" data-section="sellers" onclick="showSection('sellers', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-store w-4"></i> Sellers & Products</a>
+                    <a href="#" data-section="ads-manager" onclick="showSection('ads-manager', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-bullhorn w-4"></i> Homepage Ads</a>
+                    <a href="#" data-section="users" onclick="showSection('users', event)" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"><i class="fa-solid fa-users w-4"></i> Registered Users</a>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center" style="border-color: #1e293b;">
@@ -139,29 +226,59 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
 
                 <!-- Dashboard Section -->
                 <section id="dashboard" class="space-y-6">
+
+                    <!-- Hero: total CampusDuka earnings -->
+                    <div class="rounded-2xl p-6 md:p-8 text-white shadow-md" style="background:linear-gradient(135deg,#0f172a 0%,#0b3d91 55%,#0077ff 100%);">
+                        <div class="flex flex-wrap justify-between items-end gap-6">
+                            <div>
+                                <p class="text-sm text-blue-200 font-medium">CampusDuka total earnings</p>
+                                <h2 id="dash-total-revenue" class="text-3xl md:text-5xl font-bold mt-1">KES 0.00</h2>
+                                <p class="text-xs md:text-sm text-blue-200 mt-2 max-w-xl">15% commission on paid orders, plus subscriptions, featured-listing fees and ad income.</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 w-full sm:w-auto">
+                                <div class="bg-white/10 rounded-xl px-4 py-3">
+                                    <p class="text-blue-200 text-xs">Sales through the site</p>
+                                    <p id="dash-gross-sales" class="font-bold text-base md:text-lg">KES 0.00</p>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-4 py-3">
+                                    <p class="text-blue-200 text-xs">Owed to sellers</p>
+                                    <p id="dash-owed" class="font-bold text-base md:text-lg">KES 0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Needs attention -->
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-500 mb-3">Needs your attention</h3>
+                        <div id="attention-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                        </div>
+                    </div>
+
+                    <!-- Counts -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="stat-card flex items-center gap-4">
                             <div class="p-4 bg-yellow-50 text-yellow-600 rounded-lg text-2xl"><i class="fa-solid fa-clock"></i></div>
                             <div>
                                 <p class="text-gray-500 text-sm font-medium">Pending Approvals</p>
                                 <h3 id="stat-pending" class="text-2xl font-bold text-gray-800">0</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="stat-card flex items-center gap-4">
                             <div class="p-4 bg-green-50 text-green-600 rounded-lg text-2xl"><i class="fa-solid fa-money-bill-wave"></i></div>
                             <div>
                                 <p class="text-gray-500 text-sm font-medium">Total Orders</p>
                                 <h3 id="stat-orders" class="text-2xl font-bold text-gray-800">0</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="stat-card flex items-center gap-4">
                             <div class="p-4 bg-indigo-50 text-indigo-600 rounded-lg text-2xl"><i class="fa-solid fa-store"></i></div>
                             <div>
                                 <p class="text-gray-500 text-sm font-medium">Total Sellers</p>
                                 <h3 id="stat-sellers" class="text-2xl font-bold text-gray-800">0</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="stat-card flex items-center gap-4">
                             <div class="p-4 bg-blue-50 text-blue-600 rounded-lg text-2xl"><i class="fa-solid fa-users"></i></div>
                             <div>
                                 <p class="text-gray-500 text-sm font-medium">Total Buyers</p>
@@ -170,9 +287,27 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-screwdriver-wrench text-indigo-500 mr-2"></i>Database Setup Helpers</h2>
-                        <div class="flex flex-wrap gap-3">
+                    <!-- Where earnings come from + last 6 months -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+                        <div class="stat-card">
+                            <h3 class="font-bold text-gray-800 mb-1">Where your earnings come from</h3>
+                            <p class="text-xs text-gray-400 mb-4">Share of total earnings</p>
+                            <div id="mix-bar" class="mix-bar"></div>
+                            <div id="mix-legend" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mt-5 text-sm">
+                                <p class="text-xs text-gray-400 italic">No earnings recorded yet.</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="font-bold text-gray-800 mb-1">Commission earned, last 6 months</h3>
+                            <p class="text-xs text-gray-400 mb-4">From paid orders only</p>
+                            <div id="monthly-chart" class="flex items-end gap-2 sm:gap-3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <details class="stat-card">
+                        <summary class="cursor-pointer font-bold text-gray-800"><i class="fa-solid fa-screwdriver-wrench text-indigo-500 mr-2"></i>Database Setup Helpers</summary>
+                        <div class="flex flex-wrap gap-3 mt-4">
                             <button onclick="runDbHelper('/create-users')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Users Table</button>
                             <button onclick="runDbHelper('/create-products')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Products & Sellers Tables</button>
                             <button onclick="runDbHelper('/create-orders')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Orders Table</button>
@@ -183,71 +318,235 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                             <button onclick="runDbHelper('/add-rejection-reason')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Add Rejection Reason Column</button>
                             <button onclick="runDbHelper('/create-feature-requests')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Feature Requests Table</button>
                             <button onclick="runDbHelper('/create-ads')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Create Ads Table</button>
+                            <button onclick="confirmRecalcCommission()" class="bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-semibold px-4 py-2 rounded-lg transition">Apply 15% to orders not yet transferred</button>
                         </div>
-                        <p class="text-xs text-gray-400 mt-3">First time setting this up? Click the two purple buttons once each — they create the tables the new Featured Requests and Homepage Ads sections need.</p>
-                    </div>
+                        <p class="text-xs text-gray-400 mt-3">First time setting this up? Click the two purple buttons once each — they create the tables the Featured Requests and Homepage Ads sections need. The amber button is a one-time fix: orders saved before the switch to 15% still carry the old 10% split, and it brings them in line. Orders already transferred to sellers are never changed.</p>
+                    </details>
                 </section>
 
                 <!-- REVENUE & EARNINGS SECTION -->
                 <section id="revenue-section" class="hidden space-y-6">
-                    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-6 rounded-xl shadow-md flex justify-between items-center">
+                    <div class="text-white p-6 rounded-2xl shadow-md flex justify-between items-center gap-4" style="background:linear-gradient(135deg,#0f172a 0%,#0b3d91 60%,#0077ff 100%);">
                         <div>
-                            <h2 class="text-2xl font-bold">Revenue & Earnings Overview</h2>
-                            <p class="text-sm text-emerald-200 mt-1">Money from products & food, money from events, subscriptions, and what sellers are owed.</p>
+                            <h2 class="text-xl md:text-2xl font-bold">Revenue & Earnings</h2>
+                            <p class="text-sm text-blue-200 mt-1">Only paid orders are counted. Commission is 15% of every sale.</p>
+                            <p id="rev-total" class="text-3xl md:text-4xl font-bold mt-3">KES 0.00</p>
+                            <p class="text-xs text-blue-200">Total CampusDuka earnings</p>
                         </div>
-                        <i class="fa-solid fa-coins text-5xl text-emerald-300 opacity-80"></i>
+                        <i class="fa-solid fa-coins text-5xl text-blue-200 opacity-80"></i>
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">Products & Food (events not included)</h3>
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Money Paid</p>
-                                <h3 id="rev-products-gross" class="text-2xl font-bold text-gray-800 mt-2">KES 0</h3>
-                                <p class="text-xs text-gray-400 mt-1">All product & food orders</p>
+                        <h3 class="text-sm font-bold text-slate-500 mb-3">Money from sales</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div class="stream-card">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-bag-shopping text-indigo-500 mr-1"></i> Products</p>
+                                <h3 id="rev-products-commission" class="text-2xl font-bold text-emerald-600 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">Our commission</p>
+                                <p class="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100">Customers paid <strong id="rev-products-gross" class="text-gray-800">KES 0.00</strong></p>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Our Commission (10%)</p>
-                                <h3 id="rev-products-commission" class="text-2xl font-bold text-emerald-600 mt-2">KES 0</h3>
-                                <p class="text-xs text-gray-400 mt-1">What CampusDuka keeps</p>
+                            <div class="stream-card" style="border-top-color:#f59e0b;">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-burger text-amber-500 mr-1"></i> Food</p>
+                                <h3 id="rev-food-commission" class="text-2xl font-bold text-emerald-600 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">Our commission</p>
+                                <p class="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100">Customers paid <strong id="rev-food-gross" class="text-gray-800">KES 0.00</strong></p>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Money Owed to Sellers</p>
-                                <h3 id="rev-payouts-owed" class="text-2xl font-bold text-amber-500 mt-2">KES 0</h3>
-                                <p class="text-xs text-gray-400 mt-1">Not yet paid out (across all orders)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">Events (kept separate from products & food)</h3>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Money Paid for Events</p>
-                                <h3 id="rev-events-gross" class="text-2xl font-bold text-gray-800 mt-2">KES 0</h3>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Our Commission (10%)</p>
-                                <h3 id="rev-events-commission" class="text-2xl font-bold text-emerald-600 mt-2">KES 0</h3>
+                            <div class="stream-card" style="border-top-color:#7c3aed;">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-ticket text-purple-500 mr-1"></i> Events</p>
+                                <h3 id="rev-events-commission" class="text-2xl font-bold text-emerald-600 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">Our commission</p>
+                                <p class="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100">Customers paid <strong id="rev-events-gross" class="text-gray-800">KES 0.00</strong></p>
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">Seller Subscriptions</h3>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Paid by Sellers</p>
-                            <h3 id="rev-subscriptions" class="text-2xl font-bold text-gray-800 mt-2">KES 0</h3>
-                            <p class="text-xs text-gray-400 mt-1">Real payments recorded so far — plans are priced at KES 1 while testing, so this number will look small until real pricing is turned on.</p>
+                        <h3 class="text-sm font-bold text-slate-500 mb-3">Other income</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div class="stream-card" style="border-top-color:#16a34a;">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-crown text-green-600 mr-1"></i> Seller subscriptions</p>
+                                <h3 id="rev-subscriptions" class="text-2xl font-bold text-gray-800 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">Paid by sellers so far</p>
+                            </div>
+                            <div class="stream-card" style="border-top-color:#ec4899;">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-star text-pink-500 mr-1"></i> Featured listing fees</p>
+                                <h3 id="rev-featured-total" class="text-2xl font-bold text-gray-800 mt-2">KES 0.00</h3>
+                                <p id="rev-featured-note" class="text-xs text-gray-400 mt-1">Taken from seller payouts</p>
+                            </div>
+                            <div class="stream-card" style="border-top-color:#0f172a;">
+                                <p class="text-gray-500 text-xs font-semibold"><i class="fa-solid fa-bullhorn text-slate-700 mr-1"></i> Ad income</p>
+                                <h3 id="rev-ads-total" class="text-2xl font-bold text-gray-800 mt-2">KES 0.00</h3>
+                                <p id="rev-ads-count" class="text-xs text-gray-400 mt-1">Entered by hand below</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-500 mb-3">Seller money</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="stat-card">
+                                <p class="text-gray-500 text-xs font-semibold">Waiting to be transferred to sellers</p>
+                                <h3 id="rev-payouts-owed" class="text-2xl font-bold text-amber-500 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">Paid orders not yet transferred. <a href="#" onclick="showSection('payouts', event)" class="text-indigo-600 font-semibold">Go to Seller Payouts</a></p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="text-gray-500 text-xs font-semibold">Already transferred to seller portals</p>
+                                <h3 id="rev-payouts-transferred" class="text-2xl font-bold text-gray-800 mt-2">KES 0.00</h3>
+                                <p class="text-xs text-gray-400 mt-1">After featured-listing fees were deducted</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ad income (entered by hand) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-gray-800 mb-1">Record ad income</h3>
+                            <p class="text-xs text-gray-400 mb-4">Ads are agreed one-on-one with a company, so enter each payment here when you receive it. It is saved and counted in your total earnings.</p>
+                            <form id="ad-income-form" onsubmit="handleAddAdIncome(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 mb-1">Company</label>
+                                    <input type="text" id="income-company" placeholder="e.g. Fast Joint Burgers" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-500 mb-1">Amount received (KES)</label>
+                                        <input type="number" id="income-amount" min="1" step="0.01" placeholder="e.g. 5000" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-500 mb-1">Date received</label>
+                                        <input type="date" id="income-date" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 mb-1">Notes (optional)</label>
+                                    <textarea id="income-notes" rows="2" placeholder="e.g. 2 weeks homepage banner, paid by M-Pesa" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-edit w-full" style="padding:.7rem 1rem;font-size:.85rem;"><i class="fa-solid fa-plus"></i> Save ad income</button>
+                            </form>
+                        </div>
+                        <div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center gap-3">
+                                <h3 class="font-bold text-gray-800">Ad income recorded</h3>
+                                <span id="ad-income-total-label" class="text-sm font-bold text-emerald-600">KES 0.00</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="responsive-table w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                            <th class="p-4">Date</th>
+                                            <th class="p-4">Company</th>
+                                            <th class="p-4">Notes</th>
+                                            <th class="p-4">Amount</th>
+                                            <th class="p-4 text-right"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ad-income-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                         <h3 class="font-bold text-gray-800 mb-3">How This Is Worked Out</h3>
                         <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs text-slate-600 space-y-2">
-                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> We take <strong>10% commission</strong> on every product, food, and event sale.</p>
-                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Subscriptions are priced at <strong>KES 1</strong> right now for testing — real prices will replace this later.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Only orders that were <strong>paid</strong> are counted. Orders waiting for payment or that failed are left out.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> We take <strong>15% commission</strong> on every product, food and event sale. The seller keeps the other 85%.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> An order counts as <strong>Events</strong> when its category is Events, as <strong>Food</strong> when the category name contains the word "food", and as <strong>Products</strong> otherwise.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> <strong>Subscriptions</strong> are the real payments sellers have made. <strong>Featured listing fees</strong> are the charges on featured products, taken out of the seller's next transfer. <strong>Ad income</strong> is what you enter by hand.</p>
+                            <p><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> <strong>Total earnings</strong> = commission + subscriptions + featured listing fees + ad income.</p>
                         </div>
+                    </div>
+                </section>
+
+                <!-- SELLER PAYOUTS SECTION -->
+                <section id="payouts" class="hidden space-y-6">
+                    <div class="text-white p-6 rounded-2xl shadow-md flex justify-between items-center gap-4" style="background:linear-gradient(135deg,#0f172a 0%,#0b3d91 60%,#0077ff 100%);">
+                        <div>
+                            <h2 class="text-xl font-bold">Seller Payouts</h2>
+                            <p class="text-sm text-blue-200 mt-1">Send each seller their money. It shows up in their dashboard straight away.</p>
+                        </div>
+                        <i class="fa-solid fa-money-bill-transfer text-4xl text-blue-200"></i>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-lg p-4 leading-relaxed">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        <strong>How Transfer works:</strong> it updates the seller's portal and marks their paid orders as paid out. It does <strong>not</strong> send M-Pesa by itself, so pay the seller first, then press Transfer. Any featured-listing fees the seller owes are taken off automatically.
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h3 class="font-bold text-gray-800">Seller balances</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="responsive-table w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">Seller</th>
+                                        <th class="p-4">Earned, waiting</th>
+                                        <th class="p-4">Featured fees</th>
+                                        <th class="p-4">Net to send</th>
+                                        <th class="p-4">Sent so far</th>
+                                        <th class="p-4 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payouts-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                            <h3 class="font-bold text-gray-800">Transfer history</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="responsive-table w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b border-gray-200">
+                                        <th class="p-4">Date</th>
+                                        <th class="p-4">Seller</th>
+                                        <th class="p-4">Orders</th>
+                                        <th class="p-4">Earned</th>
+                                        <th class="p-4">Fees</th>
+                                        <th class="p-4">Sent</th>
+                                        <th class="p-4">Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transfers-history-list" class="divide-y divide-gray-100 text-sm text-gray-700">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MESSAGES SECTION -->
+                <section id="messages" class="hidden space-y-6">
+                    <div class="text-white p-6 rounded-2xl shadow-md flex justify-between items-center gap-4" style="background:linear-gradient(135deg,#0f172a 0%,#0b3d91 60%,#0077ff 100%);">
+                        <div>
+                            <h2 class="text-xl font-bold">Messages</h2>
+                            <p class="text-sm text-blue-200 mt-1">Everything sellers and buyers send to CampusDuka lands here.</p>
+                        </div>
+                        <i class="fa-solid fa-inbox text-4xl text-blue-200"></i>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex flex-wrap gap-2" id="message-filters">
+                                <button class="pill active" data-filter="all" onclick="setMessageFilter('all')">All</button>
+                                <button class="pill" data-filter="unread" onclick="setMessageFilter('unread')">Unread</button>
+                                <button class="pill" data-filter="seller" onclick="setMessageFilter('seller')">From sellers</button>
+                                <button class="pill" data-filter="buyer" onclick="setMessageFilter('buyer')">From buyers</button>
+                            </div>
+                            <button onclick="markAllMessagesRead()" class="btn-soft"><i class="fa-solid fa-check-double"></i> Mark all read</button>
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input id="messages-search" type="search" oninput="renderMessages()" placeholder="Search messages by name, phone, email or text..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                        </div>
+                    </div>
+
+                    <div id="messages-list" class="space-y-3">
                     </div>
                 </section>
 
@@ -288,7 +587,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
                         <div>
                             <h2 class="text-xl font-bold">Featured Deals Control</h2>
-                            <p class="text-sm text-indigo-200 mt-1">Approve seller requests to be featured, or feature any product yourself.</p>
+                            <p class="text-sm text-indigo-200 mt-1">Approve seller requests to be featured, or feature any product yourself. KES 50 per day is taken from the seller's next payout.</p>
                         </div>
                         <i class="fa-solid fa-star text-4xl text-amber-400"></i>
                     </div>
@@ -411,7 +710,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     <div class="bg-slate-800 text-white p-6 rounded-xl shadow-sm flex justify-between items-center">
                         <div>
                             <h2 class="text-xl font-bold">Homepage Ads</h2>
-                            <p class="text-sm text-slate-300 mt-1">Add or remove the ad banners shown on the home page.</p>
+                            <p class="text-sm text-slate-300 mt-1">Add or remove the ad banners shown on the home page. To record the money a company paid you for an ad, use Revenue & Earnings.</p>
                         </div>
                         <i class="fa-solid fa-bullhorn text-4xl text-amber-400"></i>
                     </div>
@@ -614,16 +913,58 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         let soundEnabled = true;
         let previousPendingCount = null;
         let previousOrdersCount = null;
+        let previousUnreadCount = null;
         let globalAllProducts = [];
         let globalPendingProducts = [];
+        let allMessages = [];
+        let messageFilter = 'all';
+        let lastSellerBalances = [];
 
         document.addEventListener("DOMContentLoaded", () => {
+            resetIncomeDate();
+            renderAttention();
             refreshAllData();
             
             setInterval(() => {
                 refreshAllData(true);
             }, 8000);
         });
+
+        /* -------------------------------------------------------------
+           SMALL HELPERS
+        ------------------------------------------------------------- */
+        // Escapes text typed by other people (messages, company names, notes)
+        // before it is placed on the page.
+        function esc(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function kes(n) {
+            return 'KES ' + Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function kesShort(n) {
+            n = Number(n || 0);
+            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+            return String(Math.round(n));
+        }
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = value;
+        }
+
+        function resetIncomeDate() {
+            const local = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+            const el = document.getElementById('income-date');
+            if (el) el.value = local.toISOString().slice(0, 10);
+        }
 
         function playNotificationSound() {
             if(!soundEnabled) return;
@@ -663,15 +1004,16 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             document.getElementById(sectionId).classList.remove('hidden');
             document.querySelector('.flex-1.min-w-0').scrollTo({ top: 0 });
             
+            // Highlight the matching menu item (works from the sidebar and from
+            // the "Needs your attention" shortcuts on the dashboard)
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-indigo-600', 'text-white');
                 link.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+                if (link.dataset.section === sectionId) {
+                    link.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+                    link.classList.add('bg-indigo-600', 'text-white');
+                }
             });
-            
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
-                event.currentTarget.classList.add('bg-indigo-600', 'text-white');
-            }
 
             // On mobile, picking a section should also close the drawer so
             // the newly-shown section is actually visible.
@@ -682,7 +1024,9 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
 
             const sectionTitles = {
                 'dashboard': 'Dashboard Overview',
-                'revenue-section': 'Revenue & Financial Earnings',
+                'revenue-section': 'Revenue & Earnings',
+                'payouts': 'Seller Payouts',
+                'messages': 'Messages From Sellers & Buyers',
                 'pending-products': 'Pending Products Approval Queue',
                 'featured-manager': 'Featured Deals Control',
                 'orders': 'Orders Log & Payment Verifications',
@@ -703,6 +1047,51 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             fetchFeatureRequests();
             fetchAds();
             fetchRevenueSummary();
+            fetchAdIncome();
+            fetchPayouts();
+            fetchMessages();
+        }
+
+        /* -------------------------------------------------------------
+           NEEDS YOUR ATTENTION (dashboard shortcuts)
+        ------------------------------------------------------------- */
+        const attention = { messages: 0, pending: 0, features: 0, orders: 0, payouts: 0 };
+
+        const ATTENTION_ITEMS = [
+            { key: 'messages', label: 'Unread messages',            section: 'messages',         icon: 'fa-inbox',               color: '#0077ff' },
+            { key: 'pending',  label: 'Products waiting for approval', section: 'pending-products', icon: 'fa-hourglass-half',      color: '#d97706' },
+            { key: 'features', label: 'Featured requests to review',  section: 'featured-manager', icon: 'fa-star',                color: '#7c3aed' },
+            { key: 'orders',   label: 'Orders still to deliver',      section: 'orders',           icon: 'fa-cart-shopping',       color: '#16a34a' },
+            { key: 'payouts',  label: 'Sellers waiting to be paid',   section: 'payouts',          icon: 'fa-money-bill-transfer', color: '#dc2626' }
+        ];
+
+        function setAttention(key, count) {
+            attention[key] = count;
+            renderAttention();
+        }
+
+        function renderAttention() {
+            const container = document.getElementById('attention-list');
+            if (!container) return;
+            const active = ATTENTION_ITEMS.filter(item => attention[item.key] > 0);
+
+            if (active.length === 0) {
+                container.innerHTML = `
+                    <div class="stat-card sm:col-span-2 xl:col-span-3 flex items-center gap-3 text-sm text-gray-500">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i> You are all caught up. Nothing is waiting for you right now.
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = active.map(item => `
+                <button type="button" class="attention-card" onclick="showSection('${item.section}')">
+                    <span class="flex items-center gap-3 min-w-0">
+                        <span class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${item.color}1a;color:${item.color}"><i class="fa-solid ${item.icon}"></i></span>
+                        <span class="text-sm font-semibold text-gray-700">${item.label}</span>
+                    </span>
+                    <span class="text-lg font-bold" style="color:${item.color}">${attention[item.key]}</span>
+                </button>
+            `).join('');
         }
 
         /* -------------------------------------------------------------
@@ -854,6 +1243,10 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 const unattendedOrders = orderGroups
                     .filter(g => (g.items[0].delivery_status || 'Pending').toLowerCase() === 'pending').length;
                 setBadge('badge-orders', unattendedOrders);
+
+                attention.pending = currentPending;
+                attention.orders = unattendedOrders;
+                renderAttention();
             } catch (err) {}
         }
 
@@ -878,6 +1271,11 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             } catch (err) {
                 alert("Helper execution failed.");
             }
+        }
+
+        function confirmRecalcCommission() {
+            if (!confirm('This sets the commission to 15% on every order that has not been transferred to a seller yet. Orders already transferred are not touched. Continue?')) return;
+            runDbHelper('/apply-new-commission-to-unpaid-orders').then(fetchRevenueSummary);
         }
 
         /* -------------------------------------------------------------
@@ -1301,9 +1699,9 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 </td>
                                 <td class="p-4 text-right">
                                     <div class="flex flex-wrap justify-end gap-2">
-                                        <button onclick="approveProduct(${p.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
-                                        <button onclick="openEditModal(${p.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Edit</button>
-                                        <button onclick="openRejectionModal(${p.id})" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Reject</button>
+                                        <button onclick="approveProduct(${p.id})" class="btn btn-approve"><i class="fa-solid fa-check"></i> Approve</button>
+                                        <button onclick="openEditModal(${p.id})" class="btn btn-edit"><i class="fa-solid fa-pen"></i> Edit</button>
+                                        <button onclick="openRejectionModal(${p.id})" class="btn btn-reject"><i class="fa-solid fa-xmark"></i> Reject</button>
                                     </div>
                                 </td>
                             </tr>
@@ -1414,23 +1812,25 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 if (!Array.isArray(requests) || requests.length === 0) {
                     container.innerHTML = `<p class="text-xs text-gray-400 italic px-2 py-4">No requests from sellers right now.</p>`;
                     setBadge('badge-feature-requests', 0);
+                    setAttention('features', 0);
                     return;
                 }
 
                 setBadge('badge-feature-requests', requests.length);
+                setAttention('features', requests.length);
 
                 requests.forEach(r => {
                     container.innerHTML += `
                         <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-50 border border-slate-200 rounded-lg p-3">
                             <div>
                                 <p class="font-bold text-slate-800 text-sm">${r.product_name || 'Product #' + r.product_id}</p>
-                                <p class="text-xs text-slate-500">Asked for ${r.requested_days} day(s) &middot; KES ${r.product_price || '—'}</p>
+                                <p class="text-xs text-slate-500">Asked for ${r.requested_days} day(s) &middot; KES ${r.product_price || '—'} &middot; fee KES ${(r.requested_days || 1) * 50}</p>
                                 <p class="text-xs text-indigo-600 mt-1"><i class="fa-solid fa-store text-[10px]"></i> ${r.seller_name || 'Seller'} &middot; ${r.seller_phone || r.seller_email || 'no contact on file'}</p>
-                                ${r.seller_note ? `<p class="text-xs text-slate-600 mt-1 italic">"${r.seller_note}"</p>` : ''}
+                                ${r.seller_note ? `<p class="text-xs text-slate-600 mt-1 italic">"${esc(r.seller_note)}"</p>` : ''}
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="approveFeatureRequest(${r.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Approve</button>
-                                <button onclick="rejectFeatureRequest(${r.id})" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold transition">Reject</button>
+                                <button onclick="approveFeatureRequest(${r.id})" class="btn btn-approve"><i class="fa-solid fa-check"></i> Approve</button>
+                                <button onclick="rejectFeatureRequest(${r.id})" class="btn btn-reject"><i class="fa-solid fa-xmark"></i> Reject</button>
                             </div>
                         </div>
                     `;
@@ -1610,7 +2010,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 <p class="text-[11px] text-slate-400 mt-1">Placement: ${ad.placement === 'mid' ? 'Middle of homepage' : 'Top of homepage'} &middot; ${ad.active ? 'Showing now' : 'Hidden'}</p>
                             </div>
                             <div class="flex flex-col gap-1.5 items-end">
-                                <button onclick="toggleAd(${ad.id})" class="text-xs font-semibold px-2.5 py-1 rounded ${ad.active ? 'bg-slate-200 text-slate-700' : 'bg-emerald-500 text-white'}">
+                                <button onclick="toggleAd(${ad.id})" class="text-xs font-semibold px-2.5 py-1 rounded ${ad.active ? 'bg-slate-200 text-slate-700' : 'btn-approve text-white'}" ${ad.active ? '' : 'style="background:#16a34a;color:#fff"'}>
                                     ${ad.active ? 'Hide' : 'Show'}
                                 </button>
                                 <button onclick="deleteAd(${ad.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold">
@@ -1678,21 +2078,406 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         }
 
         /* -------------------------------------------------------------
-           8. REVENUE SUMMARY
+           8. REVENUE SUMMARY (real figures from paid orders)
         ------------------------------------------------------------- */
         async function fetchRevenueSummary() {
             try {
                 const res = await fetch(`${API_BASE_URL}/admin/revenue-summary`);
+                const d = await res.json();
+                if (!d.success) return;
+
+                setText('dash-total-revenue', kes(d.total_revenue));
+                setText('dash-gross-sales', kes(d.gross_sales));
+                setText('dash-owed', kes(d.payouts_owed));
+
+                setText('rev-total', kes(d.total_revenue));
+                setText('rev-products-gross', kes(d.products_gross));
+                setText('rev-products-commission', kes(d.products_commission));
+                setText('rev-food-gross', kes(d.food_gross));
+                setText('rev-food-commission', kes(d.food_commission));
+                setText('rev-events-gross', kes(d.events_gross));
+                setText('rev-events-commission', kes(d.events_commission));
+                setText('rev-subscriptions', kes(d.subscriptions_total));
+                setText('rev-featured-total', kes(d.featured_fees_total));
+                setText('rev-featured-note', `${kes(d.featured_fees_deducted)} already taken from payouts`);
+                setText('rev-ads-total', kes(d.ad_income_total));
+                setText('rev-payouts-owed', kes(d.payouts_owed));
+                setText('rev-payouts-transferred', kes(d.payouts_transferred));
+
+                renderMix(d);
+                renderMonthly(d);
+            } catch (err) {}
+        }
+
+        function renderMix(d) {
+            const parts = [
+                { label: 'Products commission', value: d.products_commission, color: '#0077ff' },
+                { label: 'Food commission', value: d.food_commission, color: '#f59e0b' },
+                { label: 'Events commission', value: d.events_commission, color: '#7c3aed' },
+                { label: 'Subscriptions', value: d.subscriptions_total, color: '#16a34a' },
+                { label: 'Featured listing fees', value: d.featured_fees_total, color: '#ec4899' },
+                { label: 'Ad income', value: d.ad_income_total, color: '#0f172a' }
+            ];
+            const total = parts.reduce((sum, p) => sum + Number(p.value || 0), 0);
+            const bar = document.getElementById('mix-bar');
+            const legend = document.getElementById('mix-legend');
+            if (!bar || !legend) return;
+
+            if (total <= 0) {
+                bar.innerHTML = '';
+                legend.innerHTML = `<p class="text-xs text-gray-400 italic">No earnings recorded yet.</p>`;
+                return;
+            }
+
+            bar.innerHTML = parts
+                .filter(p => p.value > 0)
+                .map(p => `<span style="width:${(p.value / total * 100).toFixed(2)}%;background:${p.color}" title="${p.label}"></span>`)
+                .join('');
+
+            legend.innerHTML = parts.map(p => `
+                <div class="flex items-center justify-between gap-3">
+                    <span class="flex items-center gap-2 text-gray-600"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background:${p.color}"></span>${p.label}</span>
+                    <span class="font-semibold text-gray-800 text-right">${kes(p.value)} <span class="text-xs text-gray-400 font-normal">${(p.value / total * 100).toFixed(0)}%</span></span>
+                </div>
+            `).join('');
+        }
+
+        function renderMonthly(d) {
+            const container = document.getElementById('monthly-chart');
+            if (!container) return;
+
+            const byMonth = {};
+            (d.monthly || []).forEach(m => { byMonth[m.month] = m; });
+
+            const now = new Date();
+            const months = [];
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const key = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
+                months.push({
+                    label: date.toLocaleString(undefined, { month: 'short' }),
+                    commission: byMonth[key] ? byMonth[key].commission : 0,
+                    gross: byMonth[key] ? byMonth[key].gross : 0
+                });
+            }
+
+            const max = Math.max(1, ...months.map(m => m.commission));
+            container.innerHTML = months.map(m => `
+                <div class="month-col" title="${m.label}: sales ${kes(m.gross)}, commission ${kes(m.commission)}">
+                    <span class="text-[10px] text-gray-500 font-semibold">${m.commission > 0 ? kesShort(m.commission) : ''}</span>
+                    <div class="month-track"><div class="month-bar" style="height:${m.commission > 0 ? Math.max(4, m.commission / max * 100) : 1}%;${m.commission > 0 ? '' : 'background:#e2e8f0'}"></div></div>
+                    <span class="text-[11px] text-gray-500">${m.label}</span>
+                </div>
+            `).join('');
+        }
+
+        /* -------------------------------------------------------------
+           9. AD INCOME (entered by hand)
+        ------------------------------------------------------------- */
+        async function fetchAdIncome() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/ad-income`);
+                const rows = await res.json();
+                const tbody = document.getElementById('ad-income-list');
+                if (!tbody || !Array.isArray(rows)) return;
+
+                const total = rows.reduce((sum, r) => sum + Number(r.amount || 0), 0);
+                setText('ad-income-total-label', kes(total));
+                setText('rev-ads-count', rows.length === 1 ? '1 payment recorded' : `${rows.length} payments recorded`);
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-xs text-gray-400 italic" style="display:table-cell">No ad income recorded yet. Use the form to add the first one.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = rows.map(r => `
+                    <tr>
+                        <td class="p-4 text-gray-500 whitespace-nowrap">${esc(r.received_date)}</td>
+                        <td class="p-4 font-bold text-gray-800">${esc(r.company)}</td>
+                        <td class="p-4 text-xs text-gray-500">${esc(r.notes || '')}</td>
+                        <td class="p-4 font-bold text-emerald-600 whitespace-nowrap">${kes(r.amount)}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="deleteAdIncome(${r.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs" title="Delete this entry"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {}
+        }
+
+        async function handleAddAdIncome(event) {
+            event.preventDefault();
+            const payload = {
+                company: document.getElementById('income-company').value,
+                amount: document.getElementById('income-amount').value,
+                received_date: document.getElementById('income-date').value,
+                notes: document.getElementById('income-notes').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/add-ad-income`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success) {
+                    document.getElementById('ad-income-form').reset();
+                    resetIncomeDate();
+                    fetchAdIncome();
+                    fetchRevenueSummary();
+                } else {
+                    alert(data.message || 'Could not save this ad income on the server.');
+                }
+            } catch (err) {
+                alert('Error connecting to backend server.');
+            }
+        }
+
+        async function deleteAdIncome(id) {
+            if (!confirm('Delete this ad income entry? It will no longer count in your total earnings.')) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/delete-ad-income/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    alert('The server could not delete this entry.');
+                    return;
+                }
+                fetchAdIncome();
+                fetchRevenueSummary();
+            } catch (err) {
+                alert('Failed to delete — could not reach the server.');
+            }
+        }
+
+        /* -------------------------------------------------------------
+           10. SELLER PAYOUTS + TRANSFER TO PORTAL
+        ------------------------------------------------------------- */
+        async function fetchPayouts() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/seller-balances`);
                 const data = await res.json();
                 if (!data.success) return;
 
-                document.getElementById('rev-products-gross').innerText = `KES ${Number(data.products_gross).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('rev-products-commission').innerText = `KES ${Number(data.products_commission).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('rev-payouts-owed').innerText = `KES ${Number(data.payouts_owed).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('rev-events-gross').innerText = `KES ${Number(data.events_gross).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('rev-events-commission').innerText = `KES ${Number(data.events_commission).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('rev-subscriptions').innerText = `KES ${Number(data.subscriptions_total).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                lastSellerBalances = data.sellers || [];
+                const tbody = document.getElementById('payouts-list');
+
+                if (lastSellerBalances.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-xs text-gray-400 italic" style="display:table-cell">No sellers yet.</td></tr>`;
+                } else {
+                    tbody.innerHTML = lastSellerBalances.map(s => {
+                        const canTransfer = s.pending_orders > 0;
+                        return `
+                        <tr>
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800">${esc(s.name || 'Seller #' + s.id)}</div>
+                                <div class="text-xs text-gray-400">${esc(s.phone || s.email || '')}</div>
+                                <div class="text-[11px] text-gray-400">${s.pending_orders} paid order(s) waiting</div>
+                            </td>
+                            <td class="p-4 text-gray-700 whitespace-nowrap">${kes(s.pending_gross)}</td>
+                            <td class="p-4 whitespace-nowrap ${s.deduction > 0 ? 'text-pink-600 font-semibold' : 'text-gray-400'}">${s.deduction > 0 ? '- ' + kes(s.deduction) : '-'}${s.outstanding_fees > s.deduction ? `<div class="text-[11px] text-gray-400 font-normal">${kes(s.outstanding_fees - s.deduction)} still owed after this</div>` : ''}</td>
+                            <td class="p-4 font-bold text-emerald-600 whitespace-nowrap">${kes(s.net_to_transfer)}</td>
+                            <td class="p-4 text-gray-600 whitespace-nowrap">${kes(s.total_sent)}</td>
+                            <td class="p-4 text-right">
+                                <button onclick="transferToSeller(${s.id})" class="btn btn-send ${canTransfer ? '' : 'btn-disabled'}" ${canTransfer ? '' : 'disabled'}>
+                                    <i class="fa-solid fa-money-bill-transfer"></i> Transfer to portal
+                                </button>
+                            </td>
+                        </tr>`;
+                    }).join('');
+                }
+
+                const waiting = lastSellerBalances.filter(s => s.pending_orders > 0).length;
+                setBadge('badge-payouts', waiting);
+                setAttention('payouts', waiting);
+
+                const history = document.getElementById('transfers-history-list');
+                const transfers = data.transfers || [];
+                if (transfers.length === 0) {
+                    history.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-xs text-gray-400 italic" style="display:table-cell">No transfers made yet.</td></tr>`;
+                } else {
+                    history.innerHTML = transfers.map(t => `
+                        <tr>
+                            <td class="p-4 text-gray-500 whitespace-nowrap">${t.created_at ? new Date(t.created_at).toLocaleString() : ''}</td>
+                            <td class="p-4 font-semibold text-gray-800">${esc(t.seller_name || 'Seller #' + t.seller_id)}</td>
+                            <td class="p-4 text-gray-600">${t.orders_count}</td>
+                            <td class="p-4 text-gray-600 whitespace-nowrap">${kes(t.gross_amount)}</td>
+                            <td class="p-4 whitespace-nowrap ${Number(t.featured_deduction) > 0 ? 'text-pink-600' : 'text-gray-400'}">${Number(t.featured_deduction) > 0 ? '- ' + kes(t.featured_deduction) : '-'}</td>
+                            <td class="p-4 font-bold text-emerald-600 whitespace-nowrap">${kes(t.net_amount)}</td>
+                            <td class="p-4 text-xs text-gray-500">${esc(t.note || '')}</td>
+                        </tr>
+                    `).join('');
+                }
             } catch (err) {}
+        }
+
+        async function transferToSeller(sellerId) {
+            const s = lastSellerBalances.find(x => x.id == sellerId);
+            if (!s || s.pending_orders === 0) return;
+
+            let message = `Transfer ${kes(s.net_to_transfer)} to ${s.name || 'this seller'}'s portal?\n\n` +
+                `Earned from ${s.pending_orders} paid order(s): ${kes(s.pending_gross)}`;
+            if (s.deduction > 0) message += `\nFeatured listing fees taken off: - ${kes(s.deduction)}`;
+            message += `\n\nThis updates the seller's dashboard and marks these orders as paid out. It does not send M-Pesa, so pay the seller first.` +
+                `\n\nOptional: type a note for your records (for example the M-Pesa code you paid with), then press OK.`;
+
+            const note = prompt(message, '');
+            if (note === null) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/transfer-to-seller/${sellerId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note: note.trim() })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success) {
+                    alert(data.message || 'Transfer recorded.');
+                    fetchPayouts();
+                    fetchRevenueSummary();
+                } else {
+                    alert(data.message || 'The server could not complete this transfer.');
+                }
+            } catch (err) {
+                alert('Transfer failed — could not reach the server.');
+            }
+        }
+
+        /* -------------------------------------------------------------
+           11. MESSAGES FROM SELLERS & BUYERS
+        ------------------------------------------------------------- */
+        async function fetchMessages() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/all-feedback`);
+                const data = await res.json();
+                if (!Array.isArray(data)) return;
+
+                const unread = data.filter(m => !m.is_read).length;
+                if (previousUnreadCount !== null && unread > previousUnreadCount) playNotificationSound();
+                previousUnreadCount = unread;
+
+                allMessages = data;
+                setBadge('badge-messages', unread);
+                setAttention('messages', unread);
+                renderMessages();
+            } catch (err) {}
+        }
+
+        function setMessageFilter(filter) {
+            messageFilter = filter;
+            document.querySelectorAll('#message-filters .pill').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+            renderMessages();
+        }
+
+        function whatsappNumber(phone) {
+            const digits = String(phone || '').replace(/\D/g, '');
+            if (digits.length < 9) return null;
+            if (digits.startsWith('254')) return digits;
+            if (digits.startsWith('0')) return '254' + digits.slice(1);
+            return '254' + digits;
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('messages-list');
+            if (!container) return;
+
+            const q = (document.getElementById('messages-search').value || '').trim().toLowerCase();
+            const list = allMessages.filter(m => {
+                const type = String(m.user_type || 'buyer').toLowerCase();
+                if (messageFilter === 'unread' && m.is_read) return false;
+                if (messageFilter === 'seller' && type !== 'seller') return false;
+                if (messageFilter === 'buyer' && type === 'seller') return false;
+                if (!q) return true;
+                return [m.name, m.email, m.phone, m.message, m.topic].join(' ').toLowerCase().includes(q);
+            });
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white border border-gray-100 rounded-xl p-10 text-center text-sm text-gray-400">
+                        <i class="fa-solid fa-inbox text-3xl text-gray-300 mb-3 block"></i>
+                        ${allMessages.length === 0 ? 'No messages yet. When a seller or buyer writes to you, it shows up here.' : 'No messages match this view.'}
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(m => {
+                const isSeller = String(m.user_type || 'buyer').toLowerCase() === 'seller';
+                const unread = !m.is_read;
+                const wa = whatsappNumber(m.phone);
+                const hasEmail = m.email && String(m.email).includes('@');
+                const phoneDigits = String(m.phone || '').replace(/[^\d+]/g, '');
+
+                return `
+                <div class="msg-card ${unread ? 'unread' : ''} ${isSeller ? 'from-seller' : ''}">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-bold text-gray-800">${esc(m.name || 'Unknown')}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isSeller ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}">${isSeller ? 'Seller' : 'Buyer'}</span>
+                                ${unread ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600">New</span>' : ''}
+                                ${m.topic ? `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">${esc(m.topic)}</span>` : ''}
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">
+                                ${hasEmail ? `<i class="fa-solid fa-envelope mr-1"></i>${esc(m.email)} &nbsp;` : ''}
+                                ${m.phone && m.phone !== 'N/A' ? `<i class="fa-solid fa-phone mr-1"></i>${esc(m.phone)} &nbsp;` : ''}
+                                <i class="fa-regular fa-clock mr-1"></i>${m.created_at ? new Date(m.created_at).toLocaleString() : ''}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 mt-3 whitespace-pre-wrap break-words">${esc(m.message)}</p>
+                    <div class="flex flex-wrap items-center gap-2 mt-4">
+                        ${hasEmail ? `<a class="btn-soft" href="mailto:${esc(m.email)}"><i class="fa-solid fa-envelope"></i> Reply by email</a>` : ''}
+                        ${wa ? `<a class="btn-soft" href="https://wa.me/${wa}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : ''}
+                        ${phoneDigits.length >= 9 ? `<a class="btn-soft" href="tel:${esc(phoneDigits)}"><i class="fa-solid fa-phone"></i> Call</a>` : ''}
+                        <button class="btn-soft" onclick="toggleMessageRead(${m.id}, ${unread ? 'true' : 'false'})"><i class="fa-solid ${unread ? 'fa-check' : 'fa-rotate-left'}"></i> ${unread ? 'Mark as read' : 'Mark as unread'}</button>
+                        <button class="btn-soft" style="color:#dc2626" onclick="deleteMessage(${m.id})"><i class="fa-solid fa-trash"></i> Delete</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function toggleMessageRead(id, markRead) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/mark-feedback-read/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ read: !!markRead })
+                });
+                if (!res.ok) {
+                    alert('The server could not update this message.');
+                    return;
+                }
+                fetchMessages();
+            } catch (err) {
+                alert('Could not reach the server.');
+            }
+        }
+
+        async function markAllMessagesRead() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/mark-all-feedback-read`, { method: 'PUT' });
+                if (!res.ok) {
+                    alert('The server could not update the messages.');
+                    return;
+                }
+                fetchMessages();
+            } catch (err) {
+                alert('Could not reach the server.');
+            }
+        }
+
+        async function deleteMessage(id) {
+            if (!confirm('Delete this message for good?')) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/delete-feedback/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    alert('The server could not delete this message.');
+                    return;
+                }
+                fetchMessages();
+            } catch (err) {
+                alert('Could not reach the server.');
+            }
         }
     </script>
 </body>
