@@ -16,11 +16,39 @@ const upload = multer({
   storage: multer.memoryStorage()
 });
 
-const CONSUMER_KEY = process.env.CONSUMER_KEY;
-const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
-const BUSINESS_SHORTCODE = process.env.BUSINESS_SHORTCODE;
-const TILL_NUMBER = process.env.TILL_NUMBER;
-const PASSKEY = process.env.PASSKEY;
+// Removes stray spaces and wrapping quotes that often sneak into env values
+// (e.g. BUSINESS_SHORTCODE=" 123456 " on a hosting dashboard). Any of these
+// makes Daraja answer "Invalid BusinessShortCode".
+function cleanEnv(value) {
+  return String(value || "").trim().replace(/^["']+|["']+$/g, "").trim();
+}
+
+const CONSUMER_KEY = cleanEnv(process.env.CONSUMER_KEY);
+const CONSUMER_SECRET = cleanEnv(process.env.CONSUMER_SECRET);
+const BUSINESS_SHORTCODE = cleanEnv(process.env.BUSINESS_SHORTCODE);
+const TILL_NUMBER = cleanEnv(process.env.TILL_NUMBER);
+const PASSKEY = cleanEnv(process.env.PASSKEY);
+
+// Daraja wants the phone as 2547XXXXXXXX / 2541XXXXXXXX (digits only)
+function formatPhone(phone) {
+  let p = String(phone || "").replace(/\D/g, "");
+  if (p.startsWith("0")) p = "254" + p.substring(1);
+  else if (p.length === 9 && (p.startsWith("7") || p.startsWith("1"))) p = "254" + p;
+  return p;
+}
+
+// Daraja timestamp, YYYYMMDDHHmmss, in Nairobi time (UTC+3)
+function darajaTimestamp() {
+  const d = new Date(Date.now() + 3 * 60 * 60 * 1000);
+  return d.toISOString().replace(/[-:TZ.]/g, "").substring(0, 14);
+}
+
+// Printed once at startup so you can confirm which values the live server
+// actually loaded. This never prints the passkey, key or secret.
+console.log("M-Pesa config -> BusinessShortCode:", JSON.stringify(BUSINESS_SHORTCODE),
+  "| Till:", JSON.stringify(TILL_NUMBER),
+  "| passkey set:", !!PASSKEY,
+  "| consumer key set:", !!CONSUMER_KEY);
 
 app.use(cors({
   origin: '*',
@@ -647,6 +675,38 @@ app.post("/stkpush", async (req, res) => {
       return res.status(400).json({ success: false, error: "Cart cannot be empty" });
     }
 
+    // Check the M-Pesa settings BEFORE creating any orders, so a bad
+    // configuration can't leave a pile of pending orders behind.
+    // For Buy Goods (Till): BUSINESS_SHORTCODE = Head Office / store number,
+    // TILL_NUMBER = the Till number customers pay to.
+    if (!BUSINESS_SHORTCODE || !TILL_NUMBER || !PASSKEY || !CONSUMER_KEY || !CONSUMER_SECRET) {
+      console.error("M-Pesa env vars missing:", {
+        BUSINESS_SHORTCODE: !!BUSINESS_SHORTCODE,
+        TILL_NUMBER: !!TILL_NUMBER,
+        PASSKEY: !!PASSKEY,
+        CONSUMER_KEY: !!CONSUMER_KEY,
+        CONSUMER_SECRET: !!CONSUMER_SECRET
+      });
+      return res.status(500).json({
+        success: false,
+        error: "Payment is not configured on the server. Check BUSINESS_SHORTCODE, TILL_NUMBER, PASSKEY, CONSUMER_KEY and CONSUMER_SECRET."
+      });
+    }
+    if (BUSINESS_SHORTCODE === "174379") {
+      return res.status(500).json({
+        success: false,
+        error: "BUSINESS_SHORTCODE is still the sandbox value (174379). Set your live Head Office / store number."
+      });
+    }
+
+    const formattedPhone = formatPhone(phone);
+    if (!/^254[17]\d{8}$/.test(formattedPhone)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid phone number. Use a Safaricom number like 07XXXXXXXX or 2547XXXXXXXX."
+      });
+    }
+
     // Resolve the product + seller for EVERY item in the cart (not just the
     // first one), so a product and an event bought together both get an order.
     const resolvedItems = cart.map(item => ({
@@ -706,20 +766,22 @@ app.post("/stkpush", async (req, res) => {
     );
 
     const token = tokenResponse.data.access_token;
-    const timestamp = new Date().toISOString().replace(/[-:TZ.]/g, "").substring(0, 14);
+    const timestamp = darajaTimestamp();
     const password = Buffer.from(BUSINESS_SHORTCODE + PASSKEY + timestamp).toString("base64");
+
+    console.log("STK request -> BusinessShortCode:", BUSINESS_SHORTCODE, "| PartyB (Till):", TILL_NUMBER, "| Phone:", formattedPhone);
 
     const response = await axios.post(
       "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
       {
         BusinessShortCode: BUSINESS_SHORTCODE,
-Password: password,
-Timestamp: timestamp,
-TransactionType: "CustomerBuyGoodsOnline",
-Amount: Math.round(rawAmt),
-PartyA: phone,
-PartyB: TILL_NUMBER,
-PhoneNumber: phone,
+        Password: password,
+        Timestamp: timestamp,
+        TransactionType: "CustomerBuyGoodsOnline",
+        Amount: Math.round(rawAmt),
+        PartyA: formattedPhone,
+        PartyB: TILL_NUMBER,
+        PhoneNumber: formattedPhone,
         // Passing the orderId as a query parameter guarantees we update the right record on return
         CallBackURL: `https://campusduka-api.onrender.com/mpesa-callback?orderId=${orderIds.join(",")}`,
         AccountReference: `ORDER_${orderId}`,
@@ -1123,19 +1185,23 @@ app.put("/feature-product/:id", async (req, res) => {
 app.post("/stkpush-subscription", async (req, res) => {
   try {
     const { seller_id, phone, plan, amount } = req.body;
-    let formattedPhone = phone;
-    if (formattedPhone.startsWith("0")) {
-      formattedPhone = "254" + formattedPhone.substring(1);
+    const formattedPhone = formatPhone(phone);
+
+    if (!BUSINESS_SHORTCODE || !TILL_NUMBER || !PASSKEY || !CONSUMER_KEY || !CONSUMER_SECRET) {
+      return res.status(500).json({
+        success: false,
+        error: "Payment is not configured on the server. Check BUSINESS_SHORTCODE, TILL_NUMBER, PASSKEY, CONSUMER_KEY and CONSUMER_SECRET."
+      });
     }
 
     const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString("base64");
     const tokenResponse = await axios.get(
-      "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+      "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
       { headers: { Authorization: `Basic ${auth}` } }
     );
 
     const token = tokenResponse.data.access_token;
-    const timestamp = new Date().toISOString().replace(/[-:TZ.]/g, "").substring(0, 14);
+    const timestamp = darajaTimestamp();
     const password = Buffer.from(BUSINESS_SHORTCODE + PASSKEY + timestamp).toString("base64");
 
     const payment = await db.query(
@@ -1148,15 +1214,15 @@ app.post("/stkpush-subscription", async (req, res) => {
     );
 
     const response = await axios.post(
-      "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+      "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
       {
         BusinessShortCode: BUSINESS_SHORTCODE,
         Password: password,
         Timestamp: timestamp,
-        TransactionType: "CustomerPayBillOnline",
-        Amount: amount,
+        TransactionType: "CustomerBuyGoodsOnline",
+        Amount: Math.round(parseFloat(amount)),
         PartyA: formattedPhone,
-        PartyB: BUSINESS_SHORTCODE,
+        PartyB: TILL_NUMBER,
         PhoneNumber: formattedPhone,
         CallBackURL: "https://campusduka-api.onrender.com/subscription-callback",
         AccountReference: `SELLER_${seller_id}`,
@@ -1179,9 +1245,11 @@ app.post("/stkpush-subscription", async (req, res) => {
       CustomerMessage: response.data.CustomerMessage
     });
   } catch (err) {
+    console.error("Subscription STK Failure context:", err.response ? err.response.data : err.message);
     res.status(500).json({
       success: false,
-      error: err.message
+      error: err.message,
+      details: err.response ? err.response.data : null
     });
   }
 });
