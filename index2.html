@@ -146,6 +146,22 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #facc
 .view-all{margin-top:36px;text-align:center}
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:15px;color:#475569;font-weight:500}
 
+/* COLOURS & SIZES (featured cards and quick view) */
+.mini-opts{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.swatch{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.2);display:inline-block}
+.mini-size{font-size:10px;font-weight:600;border:1px solid var(--line);padding:2px 6px;border-radius:5px;color:var(--muted)}
+.mini-more{font-size:11px;color:var(--muted)}
+.qv-label{font-size:13px;font-weight:700;margin:0 0 8px;color:var(--charcoal)}
+.qv-label small{font-weight:500;color:var(--muted)}
+.qv-opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.qv-chip{min-width:44px;text-align:center;padding:8px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:13px;font-weight:600;color:var(--charcoal);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center;transition:.15s}
+.qv-chip:hover{border-color:var(--teal2)}
+.qv-chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.qv-chip .dot{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.25)}
+.qv-err{color:#dc2626;font-size:12px;font-weight:600;margin:-8px 0 12px;display:none}
+.qv-opts.shake{animation:qvShake .4s}
+@keyframes qvShake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
 /* WHY CHOOSE */
 .why-band{background:linear-gradient(180deg,#eef4f8 0%,#f8fafc 100%);padding:70px 0;margin:70px 0}
 .why-band .sec{margin:0 auto}
@@ -456,6 +472,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #facc
       <h3 id="quickviewName"></h3>
       <div class="product-price" id="quickviewPrice"></div>
       <p id="quickviewDescription"></p>
+      <div id="qvSizeBlock" style="display:none">
+        <div class="qv-label">Size <small>(choose one)</small></div>
+        <div class="qv-opts" id="qvSizeRow"></div>
+        <div class="qv-err" id="qvSizeErr">Please choose a size.</div>
+      </div>
+      <div id="qvColorBlock" style="display:none">
+        <div class="qv-label">Colour: <small id="qvColorName">choose one</small></div>
+        <div class="qv-opts" id="qvColorRow"></div>
+        <div class="qv-err" id="qvColorErr">Please choose a colour.</div>
+      </div>
       <button class="card-action-btn cart-btn" id="quickviewAddBtn" style="width:100%;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
     </div>
   </div>
@@ -975,14 +1001,64 @@ window.handleCartAddition = function (id, name, price, category, image, btn, sel
   }, 500);
 };
 
+// Same cart line format as the products page: each size/colour combination is
+// its own line, and the chosen options are added to the name.
+function addVariantToCart(p, size, color, btn) {
+  if (btn && btn.disabled) return;
+  setBusy(btn, true);
+  setTimeout(() => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const idx = cart.findIndex(i => String(i.id) === String(p.id) && (i.size || null) === (size || null) && (i.color || null) === (color || null));
+    const label = [size ? "Size " + size : "", color || ""].filter(Boolean).join(", ");
+    const displayName = label ? `${p.name} (${label})` : p.name;
+    if (idx > -1) {
+      cart[idx].quantity += 1;
+    } else {
+      cart.push({ id: p.id, seller_id: p.seller_id, name: displayName, baseName: p.name, price: parseFloat(p.price), category: p.category, image: p.image, quantity: 1, size: size || null, color: color || null });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartAndOrderCounts();
+    setBusy(btn, false);
+    showToast(`"${displayName}" added to your cart`);
+    pointToCart(false);
+  }, 500);
+}
+
 /* ===== FEATURED PRODUCTS ===== */
 const featuredMap = {};
-function hasChoices(v) {
-  if (!v) return false;
-  if (Array.isArray(v)) return v.length > 0;
-  return String(v).replace(/[{}\[\]"\s]/g, "").length > 0;
+
+// The server sends sizes as a list of text and colours as a list of { name, hex }.
+// These helpers also cope with the older text formats.
+function toList(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v;
+  if (typeof v === "string") {
+    const s = v.trim();
+    if (s.startsWith("[")) { try { return JSON.parse(s); } catch (e) {} }
+    return s.replace(/^\{|\}$/g, "").split(",").map(x => x.replace(/^"|"$/g, "").trim()).filter(Boolean);
+  }
+  return [];
 }
-function goChoose(name) { showPageLoader(); location.href = "products.html?q=" + encodeURIComponent(name); }
+function normSizes(v) {
+  return toList(v).map(String).filter(Boolean);
+}
+function normColors(v) {
+  return toList(v).map(c => {
+    if (typeof c === "string") { const t = c.trim(); if (t.startsWith("{")) { try { c = JSON.parse(t); } catch (e) {} } }
+    return typeof c === "string" ? { name: c, hex: c.toLowerCase() } : { name: c.name, hex: c.hex || String(c.name).toLowerCase() };
+  }).filter(c => c.name);
+}
+
+// Small colour dots and size tags shown on each featured card
+function miniOptions(sizes, colors) {
+  if (!sizes.length && !colors.length) return "";
+  const sw = colors.slice(0, 5).map(c => `<span class="swatch" title="${esc(c.name)}" style="background:${esc(c.hex)}"></span>`).join("");
+  const more = colors.length > 5 ? `<span class="mini-more">+${colors.length - 5}</span>` : "";
+  const sz = sizes.slice(0, 4).map(s => `<span class="mini-size">${esc(s)}</span>`).join("");
+  const szMore = sizes.length > 4 ? `<span class="mini-more">+${sizes.length - 4}</span>` : "";
+  return `<div class="mini-opts">${sw}${more}${sz}${szMore}</div>`;
+}
+
 function addFeatured(id, btn) {
   const p = featuredMap[id];
   if (p) handleCartAddition(p.id, p.name, p.price, p.category || 'General', p.image, btn, p.seller_id);
@@ -1011,8 +1087,10 @@ async function loadFeaturedProducts(isBackground = false) {
 
     container.innerHTML = featuredOnly.map(p => {
       const pImage = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'images/placeholder.jpg');
-      const needsChoice = hasChoices(p.sizes) || hasChoices(p.colors);
-      featuredMap[p.id] = { id: p.id, seller_id: p.seller_id, name: p.name, description: p.description, price: p.price, category: p.category, image: pImage, needsChoice };
+      const sizes = normSizes(p.sizes);
+      const colors = normColors(p.colors);
+      const needsChoice = sizes.length > 0 || colors.length > 0;
+      featuredMap[p.id] = { id: p.id, seller_id: p.seller_id, name: p.name, description: p.description, price: p.price, category: p.category, image: pImage, sizes, colors, needsChoice };
 
       const allocatedDays = parseInt(p.featured_days) || 1;
       const createdTime = p.created_at ? new Date(p.created_at).getTime() : Date.now();
@@ -1035,11 +1113,12 @@ async function loadFeaturedProducts(isBackground = false) {
             <div><span class="product-category">${esc(p.category || 'General')}</span></div>
             <h3>${esc(p.name)}</h3>
             <div class="product-price">KES ${esc(p.price)}</div>
+            ${miniOptions(sizes, colors)}
             <p>${esc(p.description || 'Quality product available on campus.')}</p>
             <div class="countdown-box"><i class="fas fa-clock"></i> ${timerText}</div>
             <div class="card-actions-wrapper">
               ${needsChoice
-                ? `<button onclick="goChoose(featuredMap[${p.id}].name)" class="card-action-btn cart-btn"><i class="fas fa-sliders"></i> Choose options</button>`
+                ? `<button onclick="openQuickView(${p.id})" class="card-action-btn cart-btn"><i class="fas fa-sliders"></i> Choose options</button>`
                 : `<button onclick="addFeatured(${p.id}, this)" class="card-action-btn cart-btn"><i class="fas fa-cart-plus"></i> Add</button>`}
               <button onclick="openQuickView(${p.id})" class="card-action-btn view-btn" title="See full description"><i class="fas fa-eye"></i></button>
             </div>
@@ -1066,10 +1145,21 @@ setInterval(() => {
   updateCartAndOrderCounts();
 }, 20000);
 
-/* ===== QUICK VIEW ===== */
+/* ===== QUICK VIEW (with size and colour choice) ===== */
+let qvPick = { size: null, color: null };
+
+function qvFlagMissing(kind) {
+  document.getElementById("qv" + kind + "Err").style.display = "block";
+  const row = document.getElementById("qv" + kind + "Row");
+  row.classList.remove("shake");
+  void row.offsetWidth;
+  row.classList.add("shake");
+}
+
 function openQuickView(id) {
   const product = featuredMap[id];
   if (!product) return;
+  qvPick = { size: null, color: null };
   document.getElementById('quickviewImage').src = product.image || 'images/placeholder.jpg';
   document.getElementById('quickviewImage').alt = product.name;
   document.getElementById('quickviewCategory').innerText = product.category || 'General';
@@ -1077,12 +1167,55 @@ function openQuickView(id) {
   document.getElementById('quickviewPrice').innerText = `KES ${product.price}`;
   document.getElementById('quickviewDescription').innerText = product.description || 'Quality product available on campus.';
 
+  // Size picker
+  const sizeRow = document.getElementById("qvSizeRow");
+  document.getElementById("qvSizeBlock").style.display = product.sizes.length ? "block" : "none";
+  document.getElementById("qvSizeErr").style.display = "none";
+  sizeRow.innerHTML = "";
+  product.sizes.forEach(s => {
+    const c = document.createElement("div");
+    c.className = "qv-chip";
+    c.textContent = s;
+    c.onclick = () => {
+      qvPick.size = s;
+      sizeRow.querySelectorAll(".qv-chip").forEach(x => x.classList.toggle("on", x === c));
+      document.getElementById("qvSizeErr").style.display = "none";
+    };
+    sizeRow.appendChild(c);
+  });
+
+  // Colour picker
+  const colorRow = document.getElementById("qvColorRow");
+  document.getElementById("qvColorBlock").style.display = product.colors.length ? "block" : "none";
+  document.getElementById("qvColorErr").style.display = "none";
+  document.getElementById("qvColorName").textContent = "choose one";
+  colorRow.innerHTML = "";
+  product.colors.forEach(col => {
+    const c = document.createElement("div");
+    c.className = "qv-chip";
+    c.innerHTML = `<span class="dot" style="background:${esc(col.hex)}"></span>${esc(col.name)}`;
+    c.onclick = () => {
+      qvPick.color = col.name;
+      colorRow.querySelectorAll(".qv-chip").forEach(x => x.classList.toggle("on", x === c));
+      document.getElementById("qvColorName").textContent = col.name;
+      document.getElementById("qvColorErr").style.display = "none";
+    };
+    colorRow.appendChild(c);
+  });
+
   const addBtn = document.getElementById('quickviewAddBtn');
   addBtn.disabled = false;
   addBtn.classList.remove("is-loading");
   if (product.needsChoice) {
-    addBtn.innerHTML = '<i class="fas fa-sliders"></i> Choose options';
-    addBtn.onclick = () => goChoose(product.name);
+    addBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
+    addBtn.onclick = () => {
+      let ok = true;
+      if (product.sizes.length && !qvPick.size) { ok = false; qvFlagMissing("Size"); }
+      if (product.colors.length && !qvPick.color) { ok = false; qvFlagMissing("Color"); }
+      if (!ok) return;
+      addVariantToCart(product, qvPick.size, qvPick.color, addBtn);
+      setTimeout(closeQuickView, 600);
+    };
   } else {
     addBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
     addBtn.onclick = () => {
