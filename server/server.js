@@ -259,9 +259,22 @@ app.get("/update-products", async (req, res) => {
 /* ADD PRODUCT */
 app.post("/add-product", async (req, res) => {
   try {
-    const { name, description, price, images, category, seller_id } = req.body;
+    const { name, description, price, images, category, seller_id, sizes, size_type, colors } = req.body;
     const status = "pending";
     const featured = false;
+
+    // Tidy the sizes / colours sent by the add-product page. Sizes are a list
+    // of strings; colours are a list of { name, hex }. Anything missing or
+    // malformed is stored as an empty list so other pages never break.
+    const cleanSizes = Array.isArray(sizes)
+      ? sizes.map(s => String(s).trim()).filter(Boolean)
+      : [];
+    const cleanSizeType = cleanSizes.length > 0 && size_type ? String(size_type).trim() : null;
+    const cleanColors = Array.isArray(colors)
+      ? colors
+          .filter(c => c && c.name && String(c.name).trim())
+          .map(c => ({ name: String(c.name).trim(), hex: String(c.hex || "#cccccc").trim() }))
+      : [];
 
     const seller = await db.query(
       "SELECT * FROM sellers WHERE id=$1",
@@ -290,10 +303,13 @@ app.post("/add-product", async (req, res) => {
     await db.query(
       `
       INSERT INTO products
-      (name, description, price, images, category, status, seller_id, featured)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      (name, description, price, images, category, status, seller_id, featured, sizes, size_type, colors)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11::jsonb)
       `,
-      [name, description, price, images || [], category, status, seller_id, featured]
+      [
+        name, description, price, images || [], category, status, seller_id, featured,
+        JSON.stringify(cleanSizes), cleanSizeType, JSON.stringify(cleanColors)
+      ]
     );
 
     await db.query(
@@ -1612,6 +1628,18 @@ app.get("/admin/revenue-summary", async (req, res) => {
 db.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS buyer_email VARCHAR(100)`)
   .then(() => console.log("orders.buyer_email is ready"))
   .catch(err => console.log("Could not ensure orders.buyer_email:", err.message));
+
+/* Same idea for product colours and sizes: the columns are created
+   automatically on every start, so no one-time URL is needed. Harmless if
+   they already exist. Existing products simply get empty lists. */
+db.query(`
+  ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS sizes JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS size_type VARCHAR(20),
+  ADD COLUMN IF NOT EXISTS colors JSONB DEFAULT '[]'::jsonb
+`)
+  .then(() => console.log("products.sizes / size_type / colors are ready"))
+  .catch(err => console.log("Could not ensure products variant columns:", err.message));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
