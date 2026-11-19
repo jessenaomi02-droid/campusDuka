@@ -63,6 +63,15 @@ body{font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
 .msg-card.unread{border-left-color:#0077ff;background:#f8fbff}
 .msg-card.from-seller.unread{border-left-color:#16a34a}
 
+/* ===== Product sizes and colours ===== */
+.v-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem;margin-top:.35rem}
+.v-label{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:.03em}
+.v-chip{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:600;color:#334155;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:.1rem .5rem}
+.v-chip.v-size{border-radius:.35rem;background:#fff}
+.v-dot{width:.8rem;height:.8rem;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block;flex-shrink:0}
+.v-dot-only{width:.9rem;height:.9rem;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block}
+.v-none{font-size:.7rem;color:#94a3b8;font-style:italic}
+
 /* ===== Responsive additions ===== */
 html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
 body{touch-action:manipulation}
@@ -598,7 +607,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div class="px-6 py-3 border-b border-gray-100">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
-                                <input id="pending-search" type="search" oninput="applySearch('pending-search','pending-products-list','pending-search-empty')" placeholder="Search pending products by name, seller, category or price..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
+                                <input id="pending-search" type="search" oninput="applySearch('pending-search','pending-products-list','pending-search-empty')" placeholder="Search pending products by name, seller, category, price, size or colour..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm">
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -863,6 +872,10 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Description</label>
                     <textarea id="edit-prod-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours <span class="normal-case font-normal text-gray-400">(set by the seller)</span></label>
+                    <div id="edit-prod-variants" class="bg-slate-50 border border-slate-200 rounded-lg p-3"></div>
+                </div>
                 <div class="flex justify-end gap-3 text-sm font-semibold pt-2">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">Save & Update</button>
@@ -897,6 +910,10 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Description</label>
                     <textarea id="approved-edit-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours <span class="normal-case font-normal text-gray-400">(set by the seller)</span></label>
+                    <div id="approved-edit-variants" class="bg-slate-50 border border-slate-200 rounded-lg p-3"></div>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Photo</label>
@@ -1002,6 +1019,68 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         function setText(id, value) {
             const el = document.getElementById(id);
             if (el) el.innerText = value;
+        }
+
+        /* -------------------------------------------------------------
+           PRODUCT SIZES AND COLOURS
+           The server sends sizes as a list of text and colours as a list of
+           { name, hex }. These helpers also cope with the older text formats.
+        ------------------------------------------------------------- */
+        function toList(v) {
+            if (!v) return [];
+            if (Array.isArray(v)) return v;
+            if (typeof v === 'string') {
+                const s = v.trim();
+                if (s.startsWith('[')) { try { return JSON.parse(s); } catch (e) {} }
+                return s.replace(/^\{|\}$/g, '').split(',').map(x => x.replace(/^"|"$/g, '').trim()).filter(Boolean);
+            }
+            return [];
+        }
+
+        function normSizes(v) {
+            return toList(v).map(String).filter(Boolean);
+        }
+
+        function normColors(v) {
+            return toList(v).map(c => {
+                if (typeof c === 'string') { const t = c.trim(); if (t.startsWith('{')) { try { c = JSON.parse(t); } catch (e) {} } }
+                return typeof c === 'string' ? { name: c, hex: c.toLowerCase() } : { name: c.name, hex: c.hex || String(c.name).toLowerCase() };
+            }).filter(c => c.name);
+        }
+
+        // Plain text of a product's sizes and colours, used by the search boxes
+        function variantSearchText(p) {
+            return normSizes(p.sizes).join(' ') + ' ' + normColors(p.colors).map(c => c.name).join(' ');
+        }
+
+        // Sizes and colours as small tags. compact = colour dots only (for tight spaces).
+        function variantsHTML(p, compact) {
+            const sizes = normSizes(p.sizes);
+            const colors = normColors(p.colors);
+            if (!sizes.length && !colors.length) return '';
+
+            const sizeTags = sizes.map(s => `<span class="v-chip v-size">${esc(s)}</span>`).join('');
+            const colorTags = compact
+                ? colors.map(c => `<span class="v-dot-only" title="${esc(c.name)}" style="background:${esc(c.hex)}"></span>`).join('')
+                : colors.map(c => `<span class="v-chip"><span class="v-dot" style="background:${esc(c.hex)}"></span>${esc(c.name)}</span>`).join('');
+
+            return `<div class="v-wrap">${sizeTags}${colorTags}</div>`;
+        }
+
+        // Fuller version with labels, used in the edit windows
+        function variantsDetailHTML(p) {
+            const sizes = normSizes(p.sizes);
+            const colors = normColors(p.colors);
+            if (!sizes.length && !colors.length) return `<span class="v-none">No sizes or colours were set for this product.</span>`;
+
+            let html = '';
+            if (sizes.length) {
+                html += `<div class="v-label">Sizes${p.size_type ? ' (' + esc(p.size_type) + ')' : ''}</div><div class="v-wrap" style="margin-top:.2rem">${sizes.map(s => `<span class="v-chip v-size">${esc(s)}</span>`).join('')}</div>`;
+            }
+            if (colors.length) {
+                html += `<div class="v-label" style="margin-top:.6rem">Colours</div><div class="v-wrap" style="margin-top:.2rem">${colors.map(c => `<span class="v-chip"><span class="v-dot" style="background:${esc(c.hex)}"></span>${esc(c.name)}</span>`).join('')}</div>`;
+            }
+            return html;
         }
 
         function resetIncomeDate() {
@@ -1417,10 +1496,13 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         productsHTML = sellerProducts.map(p => {
                             const thumb = (Array.isArray(p.images) && p.images[0]) || NO_IMAGE_PLACEHOLDER;
                             return `
-                            <div data-product="${searchText(p.name, p.category, p.price, p.id)}" class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
+                            <div data-product="${searchText(p.name, p.category, p.price, p.id, variantSearchText(p))}" class="flex items-center justify-between gap-2 text-xs bg-slate-50 p-1.5 rounded border my-1">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <img src="${thumb}" class="w-8 h-8 object-cover rounded border flex-shrink-0" onerror="this.onerror=null;this.src='${NO_IMAGE_PLACEHOLDER}'">
-                                    <span class="font-medium text-slate-700 truncate max-w-[100px]">${p.name}</span>
+                                    <div class="min-w-0">
+                                        <span class="font-medium text-slate-700 truncate max-w-[100px] block">${p.name}</span>
+                                        ${variantsHTML(p, true)}
+                                    </div>
                                 </div>
                                 <span class="font-bold text-indigo-600 flex-shrink-0">KES ${p.price}</span>
                                 <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -1520,6 +1602,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             document.getElementById('approved-edit-price').value = item.price || '';
             document.getElementById('approved-edit-category').value = item.category || '';
             document.getElementById('approved-edit-description').value = item.description || '';
+            document.getElementById('approved-edit-variants').innerHTML = variantsDetailHTML(item);
 
             const currentImage = (Array.isArray(item.images) && item.images[0]) || '';
             document.getElementById('approved-edit-image').value = currentImage;
@@ -1728,10 +1811,11 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         const thumb = imagesArr[0] || NO_IMAGE_PLACEHOLDER;
 
                         tbody.innerHTML += `
-                            <tr data-search="${searchText(p.id, p.name, p.description, seller, p.seller_phone, p.seller_email, p.category, p.price)}">
+                            <tr data-search="${searchText(p.id, p.name, p.description, seller, p.seller_phone, p.seller_email, p.category, p.price, variantSearchText(p))}">
                                 <td class="p-4">
                                     <div class="font-bold text-gray-800">${p.name}</div>
                                     <div class="text-xs text-gray-500 line-clamp-1">${p.description || ''}</div>
+                                    ${variantsHTML(p)}
                                 </td>
                                 <td class="p-4 font-semibold text-gray-600">${seller}</td>
                                 <td class="p-4 font-bold text-emerald-600">KES ${p.price}</td>
@@ -1767,6 +1851,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             document.getElementById('edit-prod-category').value = item.category || '';
             document.getElementById('edit-prod-image').value = (item.images && item.images[0]) || item.image || '';
             document.getElementById('edit-prod-description').value = item.description || '';
+            document.getElementById('edit-prod-variants').innerHTML = variantsDetailHTML(item);
 
             document.getElementById('edit-modal').classList.remove('hidden');
         }
@@ -1995,6 +2080,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <div>
                             <p class="font-bold text-slate-800">${p.name}</p>
                             <p class="text-indigo-600 font-mono">${timerText}</p>
+                            ${variantsHTML(p, true)}
                         </div>
                         <button onclick="unfeatureProduct(${p.id})" class="text-red-600 hover:text-red-800 font-bold bg-white px-2 py-1 rounded border shadow-sm">
                             <i class="fa-solid fa-star-half-stroke mr-1"></i> Unfeature
