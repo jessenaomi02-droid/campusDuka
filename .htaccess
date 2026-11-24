@@ -3,12 +3,20 @@ DirectoryIndex index2.html
 
 RewriteEngine On
 
-# Do not interfere with existing files or folders
+# Redirect the old homepage address
+RewriteCond %{THE_REQUEST} \s/+index2\.html(?:[?\s]) [NC]
+RewriteRule ^index2\.html$ / [R=301,L]
+
+# Redirect all other .html page addresses to clean URLs
+RewriteCond %{THE_REQUEST} \s/+([A-Za-z0-9_-]+)\.html(?:[?\s]) [NC]
+RewriteRule ^([A-Za-z0-9_-]+)\.html$ /$1 [R=301,L,NE]
+
+# Leave existing files and folders untouched
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Serve matching HTML pages using clean URLs
+# Internally serve the matching HTML page
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^([A-Za-z0-9_-]+)$ $1.html [END]
 
