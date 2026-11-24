@@ -1,2 +1,14 @@
+
 DirectoryIndex index2.html
-Options +Indexes
+
+RewriteEngine On
+
+# Do not interfere with existing files or folders
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Serve matching HTML pages using clean URLs
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([A-Za-z0-9_-]+)$ $1.html [END]
+
