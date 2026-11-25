@@ -72,6 +72,24 @@ body{font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
 .v-dot-only{width:.9rem;height:.9rem;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block}
 .v-none{font-size:.7rem;color:#94a3b8;font-style:italic}
 
+/* ===== Size and colour editor (inside the edit windows) ===== */
+.ve-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:.6rem;padding:.8rem}
+.ve-pills{display:flex;flex-wrap:wrap;gap:.35rem;margin:.3rem 0 .7rem}
+.ve-pill{padding:.3rem .7rem;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;font-size:.7rem;font-weight:700;cursor:pointer;color:#1f2d3d}
+.ve-pill.active{background:#0f172a;border-color:#0f172a;color:#fff}
+.ve-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .5rem}
+.ve-chip{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-width:2.6rem;padding:.35rem .7rem;border:1.5px solid #e2e8f0;border-radius:.6rem;background:#fff;font-size:.75rem;font-weight:700;cursor:pointer;user-select:none;color:#1f2d3d}
+.ve-chip:hover{border-color:#0077ff}
+.ve-chip.on{background:#0f172a;border-color:#0f172a;color:#fff}
+.ve-chip .v-dot{width:.95rem;height:.95rem}
+.ve-chip.on .v-dot{border-color:#fff}
+.ve-add{display:flex;gap:.4rem;align-items:center;margin:.2rem 0 .8rem}
+.ve-add input[type="text"]{flex:1;min-width:0;border:1px solid #d1d5db;border-radius:.5rem;padding:.45rem .65rem;font-size:.8rem;background:#fff}
+.ve-add input[type="color"]{width:2.4rem;height:2.1rem;padding:2px;border:1px solid #d1d5db;border-radius:.4rem;cursor:pointer;background:#fff;flex:none}
+.ve-add button{padding:.45rem .8rem;border:0;border-radius:.5rem;background:#0f172a;color:#fff;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.ve-add button:hover{background:#0077ff}
+.ve-note{font-size:.7rem;color:#94a3b8;margin-top:-.4rem;margin-bottom:.4rem}
+
 /* ===== Responsive additions ===== */
 html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
 body{touch-action:manipulation}
@@ -864,6 +882,21 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <input type="text" id="edit-prod-category" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                     </div>
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Quantity in Stock</label>
+                        <input type="number" id="edit-prod-stock" min="1" step="1" placeholder="No limit set" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Condition</label>
+                        <select id="edit-prod-condition" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm">
+                            <option value="New">Brand New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Used - Good">Used - Good</option>
+                            <option value="Used - Fair">Used - Fair</option>
+                        </select>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Image URL</label>
                     <input type="url" id="edit-prod-image" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" placeholder="https://..." required>
@@ -873,8 +906,8 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                     <textarea id="edit-prod-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours <span class="normal-case font-normal text-gray-400">(set by the seller)</span></label>
-                    <div id="edit-prod-variants" class="bg-slate-50 border border-slate-200 rounded-lg p-3"></div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours</label>
+                    <div id="edit-prod-variants" class="ve-box"></div>
                 </div>
                 <div class="flex justify-end gap-3 text-sm font-semibold pt-2">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg">Cancel</button>
@@ -884,7 +917,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         </div>
     </div>
 
-    <!-- Edit Approved Product Modal (name, description, category, price) -->
+    <!-- Edit Approved Product Modal (name, description, category, price, stock, condition, sizes, colours, photo) -->
     <div id="edit-approved-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-2xl relative overflow-y-auto" style="max-height:90vh;">
             <div class="flex justify-between items-center mb-4 border-b pb-3">
@@ -907,13 +940,28 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                         <input type="text" id="approved-edit-category" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm" required>
                     </div>
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Quantity in Stock</label>
+                        <input type="number" id="approved-edit-stock" min="1" step="1" placeholder="No limit set" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Condition</label>
+                        <select id="approved-edit-condition" class="w-full border border-gray-300 rounded-lg p-2.5 bg-white text-sm">
+                            <option value="New">Brand New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Used - Good">Used - Good</option>
+                            <option value="Used - Fair">Used - Fair</option>
+                        </select>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Description</label>
                     <textarea id="approved-edit-description" rows="3" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours <span class="normal-case font-normal text-gray-400">(set by the seller)</span></label>
-                    <div id="approved-edit-variants" class="bg-slate-50 border border-slate-200 rounded-lg p-3"></div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Sizes &amp; Colours</label>
+                    <div id="approved-edit-variants" class="ve-box"></div>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Product Photo</label>
@@ -1067,20 +1115,175 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             return `<div class="v-wrap">${sizeTags}${colorTags}</div>`;
         }
 
-        // Fuller version with labels, used in the edit windows
-        function variantsDetailHTML(p) {
-            const sizes = normSizes(p.sizes);
-            const colors = normColors(p.colors);
-            if (!sizes.length && !colors.length) return `<span class="v-none">No sizes or colours were set for this product.</span>`;
+        /* -------------------------------------------------------------
+           SIZE AND COLOUR EDITOR (used by both edit windows)
+           Same choices as the add-product page: a size type, the sizes in
+           stock, custom sizes, preset colours and custom colours. One
+           editor state is kept per window ("pending" and "approved").
+        ------------------------------------------------------------- */
+        const SIZE_SETS = {
+            'Clothing':  ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            'Shoes':     ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'],
+            'Waist':     ['28', '30', '32', '34', '36', '38', '40'],
+            'Free size': ['Free size']
+        };
 
-            let html = '';
-            if (sizes.length) {
-                html += `<div class="v-label">Sizes${p.size_type ? ' (' + esc(p.size_type) + ')' : ''}</div><div class="v-wrap" style="margin-top:.2rem">${sizes.map(s => `<span class="v-chip v-size">${esc(s)}</span>`).join('')}</div>`;
+        const SIZE_TYPE_LABELS = {
+            'Clothing': 'Clothing (S-XL)',
+            'Shoes': 'Shoes (EU)',
+            'Waist': 'Waist / Trousers',
+            'Free size': 'Free size'
+        };
+
+        const PRESET_COLORS = [
+            ['Black', '#111111'], ['White', '#ffffff'], ['Grey', '#9ca3af'], ['Red', '#dc2626'],
+            ['Blue', '#2563eb'], ['Navy', '#1e3a5f'], ['Green', '#16a34a'], ['Yellow', '#facc15'],
+            ['Orange', '#f97316'], ['Pink', '#ec4899'], ['Purple', '#7c3aed'], ['Brown', '#78350f'],
+            ['Beige', '#d6c3a3']
+        ];
+
+        const variantEditors = {};
+
+        // Works out the size type for older products that were saved without one
+        function guessSizeType(sizes) {
+            if (!sizes.length) return 'Clothing';
+            const types = Object.keys(SIZE_SETS);
+            for (let i = 0; i < types.length; i++) {
+                if (sizes.every(s => SIZE_SETS[types[i]].includes(s))) return types[i];
             }
-            if (colors.length) {
-                html += `<div class="v-label" style="margin-top:.6rem">Colours</div><div class="v-wrap" style="margin-top:.2rem">${colors.map(c => `<span class="v-chip"><span class="v-dot" style="background:${esc(c.hex)}"></span>${esc(c.name)}</span>`).join('')}</div>`;
-            }
-            return html;
+            return 'Clothing';
+        }
+
+        function buildVariantEditor(key, containerId, product) {
+            const sizes = normSizes(product.sizes);
+            variantEditors[key] = {
+                sizeType: SIZE_SETS[product.size_type] ? product.size_type : guessSizeType(sizes),
+                sizes: sizes,
+                colors: new Map(normColors(product.colors).map(c => [c.name, c.hex]))
+            };
+
+            const box = document.getElementById(containerId);
+            box.innerHTML = `
+                <div class="v-label">Size type</div>
+                <div class="ve-pills" id="ve-${key}-types"></div>
+                <div class="v-label">Sizes in stock <span style="font-weight:500;text-transform:none">(tap to add or remove)</span></div>
+                <div class="ve-chips" id="ve-${key}-sizes"></div>
+                <div class="ve-add">
+                    <input type="text" id="ve-${key}-size-input" placeholder="Custom size (e.g., 3XL, Age 10)" maxlength="15">
+                    <button type="button" id="ve-${key}-size-add"><i class="fa-solid fa-plus"></i> Add</button>
+                </div>
+                <div class="v-label">Colours</div>
+                <div class="ve-chips" id="ve-${key}-colors"></div>
+                <div class="ve-add">
+                    <input type="color" id="ve-${key}-color-hex" value="#4589be" title="Pick a colour">
+                    <input type="text" id="ve-${key}-color-name" placeholder="Colour name (e.g., Teal)" maxlength="20">
+                    <button type="button" id="ve-${key}-color-add"><i class="fa-solid fa-plus"></i> Add</button>
+                </div>
+                <p class="ve-note" style="margin-bottom:0">Leave everything unselected if this product has no sizes or colours.</p>
+            `;
+
+            document.getElementById(`ve-${key}-size-add`).onclick = () => veAddSize(key);
+            document.getElementById(`ve-${key}-color-add`).onclick = () => veAddColor(key);
+            document.getElementById(`ve-${key}-size-input`).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); veAddSize(key); } });
+            document.getElementById(`ve-${key}-color-name`).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); veAddColor(key); } });
+
+            renderVariantEditor(key);
+        }
+
+        function renderVariantEditor(key) {
+            const st = variantEditors[key];
+            if (!st) return;
+
+            // size type buttons
+            const typesRow = document.getElementById(`ve-${key}-types`);
+            typesRow.innerHTML = '';
+            Object.keys(SIZE_SETS).forEach(type => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 've-pill' + (type === st.sizeType ? ' active' : '');
+                b.textContent = SIZE_TYPE_LABELS[type];
+                b.onclick = () => {
+                    if (st.sizeType !== type) { st.sizeType = type; st.sizes = []; }
+                    renderVariantEditor(key);
+                };
+                typesRow.appendChild(b);
+            });
+
+            // size chips (custom sizes stay visible)
+            const sizesRow = document.getElementById(`ve-${key}-sizes`);
+            sizesRow.innerHTML = '';
+            const allSizes = [...SIZE_SETS[st.sizeType]];
+            st.sizes.forEach(s => { if (!allSizes.includes(s)) allSizes.push(s); });
+            allSizes.forEach(size => {
+                const chip = document.createElement('div');
+                chip.className = 've-chip' + (st.sizes.includes(size) ? ' on' : '');
+                chip.textContent = size;
+                chip.onclick = () => {
+                    const i = st.sizes.indexOf(size);
+                    if (i > -1) st.sizes.splice(i, 1); else st.sizes.push(size);
+                    renderVariantEditor(key);
+                };
+                sizesRow.appendChild(chip);
+            });
+
+            // colour chips (custom colours stay visible)
+            const colorsRow = document.getElementById(`ve-${key}-colors`);
+            colorsRow.innerHTML = '';
+            const allColors = [...PRESET_COLORS];
+            st.colors.forEach((hex, name) => { if (!allColors.some(c => c[0] === name)) allColors.push([name, hex]); });
+            allColors.forEach(([name, hex]) => {
+                const chip = document.createElement('div');
+                chip.className = 've-chip' + (st.colors.has(name) ? ' on' : '');
+                const dot = document.createElement('span');
+                dot.className = 'v-dot';
+                dot.style.background = hex;
+                chip.appendChild(dot);
+                chip.appendChild(document.createTextNode(name));
+                chip.onclick = () => {
+                    if (st.colors.has(name)) st.colors.delete(name); else st.colors.set(name, hex);
+                    renderVariantEditor(key);
+                };
+                colorsRow.appendChild(chip);
+            });
+        }
+
+        function veAddSize(key) {
+            const st = variantEditors[key];
+            const input = document.getElementById(`ve-${key}-size-input`);
+            const val = input.value.trim();
+            if (val && !st.sizes.some(s => s.toLowerCase() === val.toLowerCase())) st.sizes.push(val);
+            input.value = '';
+            renderVariantEditor(key);
+        }
+
+        function veAddColor(key) {
+            const st = variantEditors[key];
+            const nameInput = document.getElementById(`ve-${key}-color-name`);
+            const name = nameInput.value.trim();
+            if (!name) { nameInput.focus(); return; }
+            const cleanName = name.charAt(0).toUpperCase() + name.slice(1);
+            st.colors.set(cleanName, document.getElementById(`ve-${key}-color-hex`).value);
+            nameInput.value = '';
+            renderVariantEditor(key);
+        }
+
+        // What the editor currently holds, in the form the server expects
+        function collectVariants(key) {
+            const st = variantEditors[key];
+            return {
+                sizes: st.sizes,
+                size_type: st.sizes.length ? st.sizeType : null,
+                colors: Array.from(st.colors, ([name, hex]) => ({ name, hex }))
+            };
+        }
+
+        // Reads the Quantity box: blank means "leave the stock as it is"
+        function readStock(inputId) {
+            const raw = document.getElementById(inputId).value.trim();
+            if (raw === '') return { ok: true, value: undefined };
+            const n = parseInt(raw, 10);
+            if (!n || n < 1) return { ok: false };
+            return { ok: true, value: n };
         }
 
         function resetIncomeDate() {
@@ -1602,7 +1805,9 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             document.getElementById('approved-edit-price').value = item.price || '';
             document.getElementById('approved-edit-category').value = item.category || '';
             document.getElementById('approved-edit-description').value = item.description || '';
-            document.getElementById('approved-edit-variants').innerHTML = variantsDetailHTML(item);
+            document.getElementById('approved-edit-stock').value = item.stock != null ? item.stock : '';
+            document.getElementById('approved-edit-condition').value = item.condition || 'New';
+            buildVariantEditor('approved', 'approved-edit-variants', item);
 
             const currentImage = (Array.isArray(item.images) && item.images[0]) || '';
             document.getElementById('approved-edit-image').value = currentImage;
@@ -1619,15 +1824,23 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             event.preventDefault();
             const id = document.getElementById('approved-edit-id').value;
             const imageUrl = document.getElementById('approved-edit-image').value.trim();
+            const stock = readStock('approved-edit-stock');
+            if (!stock.ok) {
+                alert('Please enter a quantity of at least 1, or leave it empty.');
+                return;
+            }
             const updatedData = {
                 name: document.getElementById('approved-edit-name').value,
                 price: parseFloat(document.getElementById('approved-edit-price').value),
                 category: document.getElementById('approved-edit-category').value,
                 description: document.getElementById('approved-edit-description').value,
+                stock: stock.value,
+                condition: document.getElementById('approved-edit-condition').value,
                 // Only sent when there's actually a value, so the server only
                 // swaps the photo when the admin meant to change it — the rest
                 // of a product's photo gallery is left untouched either way.
-                image_url: imageUrl || undefined
+                image_url: imageUrl || undefined,
+                ...collectVariants('approved')
             };
 
             try {
@@ -1815,6 +2028,7 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
                                 <td class="p-4">
                                     <div class="font-bold text-gray-800">${p.name}</div>
                                     <div class="text-xs text-gray-500 line-clamp-1">${p.description || ''}</div>
+                                    <div class="text-[11px] text-gray-400 mt-0.5">Stock: ${p.stock != null ? p.stock : 'not set'} &middot; ${esc(p.condition || 'New')}</div>
                                     ${variantsHTML(p)}
                                 </td>
                                 <td class="p-4 font-semibold text-gray-600">${seller}</td>
@@ -1851,7 +2065,9 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
             document.getElementById('edit-prod-category').value = item.category || '';
             document.getElementById('edit-prod-image').value = (item.images && item.images[0]) || item.image || '';
             document.getElementById('edit-prod-description').value = item.description || '';
-            document.getElementById('edit-prod-variants').innerHTML = variantsDetailHTML(item);
+            document.getElementById('edit-prod-stock').value = item.stock != null ? item.stock : '';
+            document.getElementById('edit-prod-condition').value = item.condition || 'New';
+            buildVariantEditor('pending', 'edit-prod-variants', item);
 
             document.getElementById('edit-modal').classList.remove('hidden');
         }
@@ -1863,11 +2079,19 @@ header.sticky{padding-top:max(.75rem,env(safe-area-inset-top))}
         async function savePendingProductEdits(event) {
             event.preventDefault();
             const id = document.getElementById('edit-prod-id').value;
+            const stock = readStock('edit-prod-stock');
+            if (!stock.ok) {
+                alert('Please enter a quantity of at least 1, or leave it empty.');
+                return;
+            }
             const updatedData = {
                 name: document.getElementById('edit-prod-name').value,
                 price: parseFloat(document.getElementById('edit-prod-price').value),
                 category: document.getElementById('edit-prod-category').value,
-                description: document.getElementById('edit-prod-description').value
+                description: document.getElementById('edit-prod-description').value,
+                stock: stock.value,
+                condition: document.getElementById('edit-prod-condition').value,
+                ...collectVariants('pending')
             };
 
             try {
