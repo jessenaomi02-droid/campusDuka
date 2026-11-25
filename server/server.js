@@ -256,25 +256,46 @@ app.get("/update-products", async (req, res) => {
   }
 });
 
+/* Helpers that tidy the sizes, colours, quantity and condition sent by the
+   add-product page and by the admin edit windows. Anything missing or
+   malformed becomes an empty list / a safe default, so other pages never break. */
+function cleanSizeList(sizes) {
+  return Array.isArray(sizes)
+    ? sizes.map(s => String(s).trim()).filter(Boolean)
+    : [];
+}
+
+function cleanColorList(colors) {
+  return Array.isArray(colors)
+    ? colors
+        .filter(c => c && c.name && String(c.name).trim())
+        .map(c => ({ name: String(c.name).trim(), hex: String(c.hex || "#cccccc").trim() }))
+    : [];
+}
+
+function cleanStock(value) {
+  const n = parseInt(value, 10);
+  return Number.isFinite(n) && n >= 1 ? n : 1;
+}
+
+function cleanCondition(value) {
+  const c = String(value || "").trim();
+  return c ? c.substring(0, 30) : "New";
+}
+
 /* ADD PRODUCT */
 app.post("/add-product", async (req, res) => {
   try {
-    const { name, description, price, images, category, seller_id, sizes, size_type, colors } = req.body;
+    const { name, description, price, images, category, seller_id, sizes, size_type, colors, stock, condition } = req.body;
     const status = "pending";
     const featured = false;
 
-    // Tidy the sizes / colours sent by the add-product page. Sizes are a list
-    // of strings; colours are a list of { name, hex }. Anything missing or
-    // malformed is stored as an empty list so other pages never break.
-    const cleanSizes = Array.isArray(sizes)
-      ? sizes.map(s => String(s).trim()).filter(Boolean)
-      : [];
+    // Tidy what the add-product page sent
+    const cleanSizes = cleanSizeList(sizes);
     const cleanSizeType = cleanSizes.length > 0 && size_type ? String(size_type).trim() : null;
-    const cleanColors = Array.isArray(colors)
-      ? colors
-          .filter(c => c && c.name && String(c.name).trim())
-          .map(c => ({ name: String(c.name).trim(), hex: String(c.hex || "#cccccc").trim() }))
-      : [];
+    const cleanColors = cleanColorList(colors);
+    const cleanStockValue = cleanStock(stock);
+    const cleanConditionValue = cleanCondition(condition);
 
     const seller = await db.query(
       "SELECT * FROM sellers WHERE id=$1",
@@ -303,12 +324,13 @@ app.post("/add-product", async (req, res) => {
     await db.query(
       `
       INSERT INTO products
-      (name, description, price, images, category, status, seller_id, featured, sizes, size_type, colors)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11::jsonb)
+      (name, description, price, images, category, status, seller_id, featured, sizes, size_type, colors, stock, "condition")
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11::jsonb,$12,$13)
       `,
       [
         name, description, price, images || [], category, status, seller_id, featured,
-        JSON.stringify(cleanSizes), cleanSizeType, JSON.stringify(cleanColors)
+        JSON.stringify(cleanSizes), cleanSizeType, JSON.stringify(cleanColors),
+        cleanStockValue, cleanConditionValue
       ]
     );
 
@@ -368,7 +390,21 @@ app.delete("/delete-product/:id", async (req, res) => {
 app.put("/edit-product/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, description, price, category, image_url } = req.body;
+    const { name, description, price, category, image_url, sizes, size_type, colors, stock, condition } = req.body;
+
+    // The UPDATE is built from the fields that were actually sent, so a caller
+    // that only sends name/price/etc. never wipes sizes, colours or stock.
+    const sets = [];
+    const values = [];
+    const setField = (column, value, cast) => {
+      values.push(value);
+      sets.push(`${column}=$${values.length}${cast || ""}`);
+    };
+
+    setField("name", name);
+    setField("description", description);
+    setField("price", price);
+    setField("category", category);
 
     if (image_url) {
       // Only touch the images array when the admin actually supplied a new
@@ -381,16 +417,29 @@ app.put("/edit-product/:id", async (req, res) => {
       } else {
         images = [image_url];
       }
-      await db.query(
-        `UPDATE products SET name=$1, description=$2, price=$3, category=$4, images=$5 WHERE id=$6`,
-        [name, description, price, category, images, id]
-      );
-    } else {
-      await db.query(
-        `UPDATE products SET name=$1, description=$2, price=$3, category=$4 WHERE id=$5`,
-        [name, description, price, category, id]
-      );
+      setField("images", images);
     }
+
+    if (sizes !== undefined) {
+      const cleanSizes = cleanSizeList(sizes);
+      setField("sizes", JSON.stringify(cleanSizes), "::jsonb");
+      setField("size_type", cleanSizes.length > 0 && size_type ? String(size_type).trim() : null);
+    }
+    if (colors !== undefined) {
+      setField("colors", JSON.stringify(cleanColorList(colors)), "::jsonb");
+    }
+    if (stock !== undefined && stock !== null && stock !== "") {
+      setField("stock", cleanStock(stock));
+    }
+    if (condition !== undefined) {
+      setField('"condition"', cleanCondition(condition));
+    }
+
+    values.push(id);
+    await db.query(
+      `UPDATE products SET ${sets.join(", ")} WHERE id=$${values.length}`,
+      values
+    );
 
     res.json({
       success: true,
@@ -1629,16 +1678,19 @@ db.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS buyer_email VARCHAR(100)`)
   .then(() => console.log("orders.buyer_email is ready"))
   .catch(err => console.log("Could not ensure orders.buyer_email:", err.message));
 
-/* Same idea for product colours and sizes: the columns are created
-   automatically on every start, so no one-time URL is needed. Harmless if
-   they already exist. Existing products simply get empty lists. */
+/* Same idea for product colours, sizes, quantity and condition: the columns
+   are created automatically on every start, so no one-time URL is needed.
+   Harmless if they already exist. Existing products get empty lists, no
+   quantity limit (stock stays empty until someone sets it) and condition New. */
 db.query(`
   ALTER TABLE products
   ADD COLUMN IF NOT EXISTS sizes JSONB DEFAULT '[]'::jsonb,
   ADD COLUMN IF NOT EXISTS size_type VARCHAR(20),
-  ADD COLUMN IF NOT EXISTS colors JSONB DEFAULT '[]'::jsonb
+  ADD COLUMN IF NOT EXISTS colors JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS stock INTEGER,
+  ADD COLUMN IF NOT EXISTS "condition" VARCHAR(30) DEFAULT 'New'
 `)
-  .then(() => console.log("products.sizes / size_type / colors are ready"))
+  .then(() => console.log("products.sizes / size_type / colors / stock / condition are ready"))
   .catch(err => console.log("Could not ensure products variant columns:", err.message));
 
 const PORT = process.env.PORT || 3000;
